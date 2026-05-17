@@ -6089,5 +6089,38 @@ self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() =>
     } catch (e) { /* silent */ }
   }
 </script>
+
+<script>
+  // === Diagnostic: visible JS-running indicator + error banner ===
+  (function(){
+    function showErrorBanner(msg){
+      var b = document.getElementById('__errBanner');
+      if(!b){
+        b = document.createElement('div');
+        b.id = '__errBanner';
+        b.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#dc2626;color:#fff;padding:10px 16px;font:12px/1.4 monospace;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+        b.innerHTML = '<strong>⚠️ Error JS — copia este mensaje y mándamelo:</strong><br>';
+        document.body && document.body.appendChild(b);
+      }
+      b.innerHTML += '• ' + String(msg).replace(/</g,'&lt;') + '<br>';
+    }
+    window.addEventListener('error', function(e){
+      showErrorBanner((e.message||'?') + ' @ ' + (e.filename||'').split('/').pop() + ':' + (e.lineno||0));
+    });
+    window.addEventListener('unhandledrejection', function(e){
+      showErrorBanner('Promise rejection: ' + ((e.reason && e.reason.message) || e.reason || '?'));
+    });
+    function showOk(){
+      var pill = document.createElement('div');
+      pill.id = '__jsOkPill';
+      pill.textContent = '✓ JS funciona';
+      pill.style.cssText = 'position:fixed;bottom:8px;left:8px;background:#16a34a;color:#fff;padding:6px 12px;font:600 11px/1 -apple-system,sans-serif;z-index:99998;border-radius:999px;box-shadow:0 4px 12px rgba(0,215,116,0.4);transition:opacity 0.4s ease;';
+      document.body && document.body.appendChild(pill);
+      setTimeout(function(){ pill.style.opacity = '0'; setTimeout(function(){ pill.remove(); }, 500); }, 3500);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showOk);
+    else showOk();
+  })();
+</script>
 </body>
 </html>
