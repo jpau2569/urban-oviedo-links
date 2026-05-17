@@ -876,6 +876,77 @@
     color: #fff; font-weight: 800; font-size: 13px;
     display: grid; place-items: center;
   }
+
+  /* ===== Free tools (Claude, Gemini, Codex) ===== */
+  .free-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  @media (max-width: 900px) { .free-tools-grid { grid-template-columns: 1fr; } }
+
+  .free-tool-card {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 18px 18px 16px;
+    border-radius: 14px;
+    background: var(--card-2);
+    border: 1px solid var(--input-border);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .free-tool-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-2);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+  }
+  .free-tool-card.claude:hover { border-color: #d97757; box-shadow: 0 12px 28px rgba(217,119,87,0.18); }
+  .free-tool-card.gemini:hover { border-color: #9b72cb; box-shadow: 0 12px 28px rgba(155,114,203,0.18); }
+  .free-tool-card.codex:hover { border-color: #10a37f; box-shadow: 0 12px 28px rgba(16,163,127,0.18); }
+
+  .tool-logo {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: grid; place-items: center;
+    margin-bottom: 4px;
+  }
+  .tool-logo.claude { background: #fff; color: #d97757; }
+  .tool-logo.gemini { background: #fff; }
+  .tool-logo.codex { background: #10a37f; color: #fff; }
+  .tool-logo svg { width: 28px; height: 28px; }
+
+  .free-tool-card h4 { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.1; }
+  .free-tool-card .tool-sub { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .free-tool-card .tool-desc { font-size: 13px; color: #d8dff5; line-height: 1.5; margin-top: 2px; }
+  .free-tool-card ul {
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 6px;
+    margin-top: 6px;
+  }
+  .free-tool-card ul li {
+    font-size: 12.5px; color: #c9d2eb; line-height: 1.45;
+    padding-left: 18px; position: relative;
+  }
+  .free-tool-card ul li::before {
+    content: "";
+    position: absolute; left: 0; top: 7px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+  }
+  .free-tool-card.claude ul li::before { background: #d97757; }
+  .free-tool-card.gemini ul li::before { background: #9b72cb; }
+  .free-tool-card.codex ul li::before { background: #10a37f; }
+
+  .tool-cta {
+    margin-top: auto;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding-top: 10px;
+    font-size: 13px; font-weight: 700;
+    color: var(--cyan);
+  }
+  .free-tool-card.claude .tool-cta { color: #ff9d6c; }
+  .free-tool-card.gemini .tool-cta { color: #b594d8; }
+  .free-tool-card.codex .tool-cta { color: #2ec699; }
 </style>
 </head>
 <body>
@@ -1907,6 +1978,78 @@
               <div data-label="Make/Zapier/n8n" class="cell-mid">Configurable</div>
               <div data-label="Custom" class="cell-good">Total</div>
             </div>
+          </div>
+        </div>
+
+        <div class="card help-card help-card-wide">
+          <div class="help-ic" style="background:rgba(0,215,116,0.12); color:var(--green);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3 class="flat">Herramientas gratuitas para construir</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.6;">
+            Tres herramientas con plan gratuito que puedes usar para montar lo mismo que ofrece El Constructor
+            (e incluso más), sin pagar suscripción y manteniendo control técnico total.
+          </p>
+
+          <div class="free-tools-grid">
+            <a href="https://claude.ai" target="_blank" rel="noopener" class="free-tool-card claude">
+              <div class="tool-logo claude">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L13.5 9 L21 10 L13.5 11 L12 18 L10.5 11 L3 10 L10.5 9 Z"/><path d="M12 6 L12.7 9.3 L16 10 L12.7 10.7 L12 14 L11.3 10.7 L8 10 L11.3 9.3 Z" transform="rotate(45 12 10)"/></svg>
+              </div>
+              <h4>Claude</h4>
+              <p class="tool-sub">Anthropic · claude.ai</p>
+              <p class="tool-desc">Conversación + razonamiento + escritura de código. Ideal para construir prompts, agentes, copys de venta, scripts de llamada y refinar arquitectura.</p>
+              <ul>
+                <li>Plan gratuito con Claude Sonnet</li>
+                <li>Proyectos y memoria por chat</li>
+                <li>Subida de imágenes y PDFs</li>
+                <li>Artifacts (vista previa de HTML/React)</li>
+              </ul>
+              <span class="tool-cta">Abrir Claude
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </a>
+
+            <a href="https://aistudio.google.com" target="_blank" rel="noopener" class="free-tool-card gemini">
+              <div class="tool-logo gemini">
+                <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="gemGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4285F4"/><stop offset=".5" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs><path fill="url(#gemGrad)" d="M12 2c.5 4 2.5 6 6.5 6.5C14.5 9 12.5 11 12 15c-.5-4-2.5-6-6.5-6.5C9.5 8 11.5 6 12 2zm0 9c.3 2.5 1.5 3.7 4 4-2.5.3-3.7 1.5-4 4-.3-2.5-1.5-3.7-4-4 2.5-.3 3.7-1.5 4-4z"/></svg>
+              </div>
+              <h4>Google AI Studio</h4>
+              <p class="tool-sub">Gemini · aistudio.google.com</p>
+              <p class="tool-desc">Playground de Gemini con API gratuita generosa. Perfecto para prototipar agentes, llamadas a IA en producción y procesar imágenes/audio/vídeo en lote.</p>
+              <ul>
+                <li>API key gratis con cuota diaria</li>
+                <li>Multimodal: texto, imagen, audio, vídeo</li>
+                <li>Gemini 2.5 Pro y Flash incluidos</li>
+                <li>Function calling para conectar herramientas</li>
+              </ul>
+              <span class="tool-cta">Abrir AI Studio
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </a>
+
+            <a href="https://chatgpt.com/codex" target="_blank" rel="noopener" class="free-tool-card codex">
+              <div class="tool-logo codex">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.3 9.6a5.9 5.9 0 0 0-.5-4.8 6 6 0 0 0-6.4-2.9 5.9 5.9 0 0 0-10 2.1A6 6 0 0 0 1.7 14.4a5.9 5.9 0 0 0 .5 4.8 6 6 0 0 0 6.4 2.9 5.9 5.9 0 0 0 10-2.1 6 6 0 0 0 3.7-10.4zM13.4 20.4a4.4 4.4 0 0 1-2.8-1l.1-.1 4.7-2.7a.8.8 0 0 0 .4-.7v-6.6l2 1.2v5.5a4.4 4.4 0 0 1-4.4 4.4zM4 17.3a4.4 4.4 0 0 1-.5-3l.1.1 4.7 2.7a.8.8 0 0 0 .8 0l5.8-3.3v2.3l-4.8 2.8a4.4 4.4 0 0 1-6.1-1.6zm-1.2-9a4.4 4.4 0 0 1 2.3-1.9v5.7a.8.8 0 0 0 .4.7l5.7 3.3-2 1.2-4.8-2.8a4.4 4.4 0 0 1-1.6-6zm16.3 3.8L13.4 8.8l2-1.2 4.8 2.8a4.4 4.4 0 0 1-.7 7.9V12.8a.8.8 0 0 0-.4-.7zm2-3-.1-.1L16.3 6.3a.8.8 0 0 0-.8 0L9.7 9.6V7.3l4.8-2.8a4.4 4.4 0 0 1 6.6 4.6zM8.6 13.2l-2-1.2V6.5a4.4 4.4 0 0 1 7.2-3.4l-.1.1L9 5.9a.8.8 0 0 0-.4.7zm1-2.3 2.6-1.5 2.6 1.5v3l-2.6 1.5-2.6-1.5z"/></svg>
+              </div>
+              <h4>ChatGPT Codex</h4>
+              <p class="tool-sub">OpenAI · chatgpt.com/codex</p>
+              <p class="tool-desc">Agente de programación que vive dentro de ChatGPT. Le pides "crea esto", "arregla este bug", "monta esta integración" y lo hace en un sandbox propio.</p>
+              <ul>
+                <li>Incluido en el plan gratuito de ChatGPT</li>
+                <li>Sandbox aislado por tarea</li>
+                <li>Pull requests automáticas en GitHub</li>
+                <li>Ejecuta tests, depura y refactoriza</li>
+              </ul>
+              <span class="tool-cta">Abrir Codex
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="tip" style="margin-top:14px;">
+            <span class="tip-ic">💡</span>
+            <span><strong>Combinación recomendada:</strong> Claude para conversación/agentes y copys, Google AI Studio para tu API de IA en producción (Gemini Flash es muy barato), y ChatGPT Codex para escribirte el código de las integraciones. Las 3 gratis cubren ~80% de lo que ofrece El Constructor.</span>
           </div>
         </div>
 
