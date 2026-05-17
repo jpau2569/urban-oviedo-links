@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"El Constructor","short_name":"Constructor","start_url":".","display":"standalone","background_color":"%230b1224","theme_color":"%236c5ce7","icons":[{"src":"data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 192 192\"%3E%3Crect width=\"192\" height=\"192\" rx=\"40\" fill=\"%236c5ce7\"/%3E%3Ctext x=\"96\" y=\"104\" font-family=\"Inter\" font-size=\"56\" font-weight=\"800\" fill=\"white\" text-anchor=\"middle\"%3EMKT%3C/text%3E%3Ctext x=\"96\" y=\"148\" font-family=\"Inter\" font-size=\"28\" font-weight=\"700\" fill=\"white\" text-anchor=\"middle\"%3EHACKER%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}' />
 <style>
   :root {
     --bg: #0b1224;
@@ -947,6 +948,462 @@
   .free-tool-card.claude .tool-cta { color: #ff9d6c; }
   .free-tool-card.gemini .tool-cta { color: #b594d8; }
   .free-tool-card.codex .tool-cta { color: #2ec699; }
+
+  /* ===================================================================== */
+  /* ========================  PRO UPGRADES  ============================= */
+  /* ===================================================================== */
+
+  /* Theme light */
+  body.theme-light {
+    --bg: #f4f6fb;
+    --bg-2: #ffffff;
+    --sidebar: #ffffff;
+    --sidebar-border: #e6e9f2;
+    --card: #ffffff;
+    --card-2: #f7f9fd;
+    --card-3: #eef2fa;
+    --input: #f4f6fb;
+    --input-border: #d8def0;
+    --fg: #0b1224;
+    --muted: #5b6480;
+    --muted-2: #8893b1;
+    color: var(--fg);
+  }
+  body.theme-light .nav button { color: #44506b; }
+  body.theme-light .nav button:hover { background: rgba(108,92,231,0.08); }
+  body.theme-light .nav button.active { background: rgba(108,92,231,0.1); color: #0b1224; }
+  body.theme-light .user-card { background: #f7f9fd; }
+  body.theme-light .user-email, body.theme-light .card-desc { color: var(--muted); }
+  body.theme-light .help-list li, body.theme-light .help-lead,
+  body.theme-light .help-example, body.theme-light .free-tool-card .tool-desc,
+  body.theme-light .free-tool-card ul li, body.theme-light .help-card p,
+  body.theme-light .diag-card p, body.theme-light .signal-feature p,
+  body.theme-light .tool-card .tool-desc, body.theme-light .tool-card ul li,
+  body.theme-light .analysis-intro p { color: #2d3658; }
+  body.theme-light .help-lead strong, body.theme-light .help-list li strong,
+  body.theme-light .diag-card strong, body.theme-light .recommendation-box h4,
+  body.theme-light .rec-item strong, body.theme-light .free-tool-card h4,
+  body.theme-light h1, body.theme-light h2, body.theme-light h3, body.theme-light h4,
+  body.theme-light .step-text, body.theme-light .area-meta h4,
+  body.theme-light .signal-feature h4, body.theme-light .tool-card h4 { color: #0b1224; }
+  body.theme-light .field input, body.theme-light .field textarea, body.theme-light .field select { color: var(--fg); }
+  body.theme-light .field input::placeholder, body.theme-light .field textarea::placeholder { color: #95a0bd; }
+  body.theme-light .step-hero h3, body.theme-light .resource-card h3,
+  body.theme-light .signal-banner h2, body.theme-light .signal-banner p { color: #fff; }
+  body.theme-light .step-hero .bg.dark { background: linear-gradient(135deg, #1a1340 0%, #0b1224 100%); }
+  body.theme-light .tip { background: rgba(255,197,23,0.08); color: #1a1f3a; }
+  body.theme-light .toast { background: #fff; color: #0b1224; border-color: #d8def0; box-shadow: 0 10px 30px rgba(20,30,60,0.12); }
+  body.theme-light .step-nav button { background: #0b1224; color: #fff; }
+  body.theme-light .step-nav button.next-disabled { background: #cbd0e1; color: #6a7494; }
+  body.theme-light .empty-state { background: #fff; }
+  body.theme-light .empty-state p { color: var(--muted); }
+  body.theme-light .compare-row > div { background: #fff; }
+  body.theme-light .compare-row.compare-head > div { background: #f7f9fd; }
+
+  /* App top bar (autosave / search / theme) */
+  .app-topbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    margin: -12px -16px 18px;
+    background: var(--card);
+    border-bottom: 1px solid var(--input-border);
+    border-radius: 0;
+    position: sticky; top: 0; z-index: 15;
+    backdrop-filter: blur(8px);
+  }
+  @media (min-width: 821px) {
+    .app-topbar { margin: 0 0 22px; border-radius: 12px; padding: 10px 14px; border: 1px solid var(--input-border); }
+  }
+  .topbar-spacer { flex: 1; }
+  .save-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px; border-radius: 999px;
+    background: rgba(0,215,116,0.1);
+    color: var(--green);
+    font-size: 12px; font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+  .save-pill.saving { background: rgba(159,231,245,0.1); color: var(--accent-2); }
+  .save-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .topbar-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border-radius: 10px;
+    background: var(--card-2);
+    border: 1px solid var(--input-border);
+    color: var(--fg); font-size: 13px; font-weight: 600;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .topbar-btn:hover { background: var(--card-3); border-color: var(--accent-2); }
+  .topbar-btn .kbd {
+    margin-left: 6px;
+    padding: 2px 6px; border-radius: 5px;
+    background: var(--input); color: var(--muted);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+  .topbar-btn svg { width: 14px; height: 14px; }
+
+  /* Roadmap progress */
+  .roadmap-progress {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+    font-size: 12px; color: var(--muted);
+    font-weight: 600;
+  }
+  .roadmap-progress .bar {
+    flex: 1; height: 6px; border-radius: 999px;
+    background: var(--input);
+    overflow: hidden;
+  }
+  .roadmap-progress .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+    transition: width 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+    border-radius: 999px;
+  }
+  .roadmap-progress .pct { color: var(--fg); min-width: 36px; text-align: right; }
+
+  /* Tab btn completion dot */
+  .tab-btn { position: relative; }
+  .tab-btn.completed::after {
+    content: ""; position: absolute; top: 6px; right: 8px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 0 2px var(--card);
+  }
+
+  /* Command Palette */
+  .cmd-overlay {
+    position: fixed; inset: 0;
+    background: rgba(11,18,36,0.7);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 12vh;
+    z-index: 100;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+  .cmd-overlay.open { opacity: 1; pointer-events: auto; }
+  .cmd-palette {
+    width: min(640px, calc(100vw - 32px));
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    transform: translateY(-8px);
+    transition: transform 0.18s ease;
+  }
+  .cmd-overlay.open .cmd-palette { transform: translateY(0); }
+  .cmd-input-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--input-border);
+  }
+  .cmd-input-row svg { width: 18px; height: 18px; color: var(--muted); flex-shrink: 0; }
+  .cmd-input-row input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--fg); font-size: 16px; font-family: inherit;
+  }
+  .cmd-input-row .kbd {
+    padding: 3px 8px; border-radius: 6px;
+    background: var(--input); color: var(--muted);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+  .cmd-list {
+    max-height: 50vh; overflow-y: auto;
+    padding: 8px;
+  }
+  .cmd-section { margin-bottom: 6px; }
+  .cmd-section-title {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted);
+    padding: 8px 10px 4px;
+  }
+  .cmd-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.1s ease;
+  }
+  .cmd-item:hover, .cmd-item.focused { background: var(--card-3); }
+  .cmd-item .cmd-ic {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--input);
+    display: grid; place-items: center;
+    color: var(--muted); flex-shrink: 0;
+  }
+  .cmd-item.focused .cmd-ic, .cmd-item:hover .cmd-ic { color: var(--cyan); }
+  .cmd-item .cmd-ic svg { width: 15px; height: 15px; }
+  .cmd-item-text { flex: 1; min-width: 0; }
+  .cmd-item-title { font-size: 14px; font-weight: 600; color: var(--fg); }
+  .cmd-item-sub { font-size: 12px; color: var(--muted); }
+  .cmd-empty { padding: 20px; text-align: center; color: var(--muted); font-size: 14px; }
+
+  /* Tab 4 — Ofertas */
+  .offer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 900px) { .offer-cards { grid-template-columns: 1fr; } }
+  .offer-card {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 16px; padding: 22px;
+    display: flex; flex-direction: column; gap: 12px;
+    position: relative; overflow: hidden;
+  }
+  .offer-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--cyan), var(--accent));
+  }
+  .offer-card.core::before { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+  .offer-card.premium::before { background: linear-gradient(90deg, var(--pink), var(--orange)); }
+  .offer-tier {
+    display: inline-block; padding: 4px 10px;
+    background: rgba(34,211,238,0.12);
+    color: var(--cyan);
+    font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px;
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+  .offer-card.core .offer-tier { background: rgba(108,92,231,0.12); color: #a78bfa; }
+  .offer-card.premium .offer-tier { background: rgba(255,77,141,0.12); color: var(--pink); }
+  .offer-card h4 { font-size: 19px; font-weight: 800; color: var(--fg); line-height: 1.15; }
+  .offer-card .offer-pitch { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .offer-card .offer-price { font-size: 26px; font-weight: 900; color: var(--fg); }
+  .offer-card .offer-price small { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .offer-card ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .offer-card ul li {
+    font-size: 13px; color: var(--fg); padding-left: 22px; position: relative; line-height: 1.5;
+  }
+  body.theme-light .offer-card ul li { color: #2d3658; }
+  .offer-card ul li::before {
+    content: ""; position: absolute; left: 0; top: 6px;
+    width: 14px; height: 14px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300d774' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
+  }
+
+  /* Tab 11 — Métricas */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  @media (max-width: 1024px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 14px; padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .kpi-card .kpi-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-card .kpi-value { font-size: 28px; font-weight: 900; color: var(--fg); line-height: 1; }
+  .kpi-card .kpi-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700;
+    color: var(--green);
+  }
+  .kpi-card .kpi-delta.down { color: var(--danger); }
+  .kpi-card .kpi-delta svg { width: 12px; height: 12px; }
+
+  .chart-card {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 14px; padding: 22px;
+    margin-bottom: 18px;
+  }
+  .chart-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .chart-card h3 { font-size: 16px; font-weight: 700; color: var(--fg); }
+  .chart-svg { width: 100%; height: 200px; }
+  .chart-bar { fill: url(#chartGrad); transition: opacity 0.2s ease; cursor: pointer; }
+  .chart-bar:hover { opacity: 0.7; }
+  .chart-label { fill: var(--muted); font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; }
+
+  .activity-list { display: flex; flex-direction: column; gap: 10px; }
+  .activity-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--card-2); border-radius: 10px;
+    font-size: 13px;
+  }
+  .activity-item .act-ic {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(34,211,238,0.12); color: var(--cyan);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .activity-item .act-ic svg { width: 16px; height: 16px; }
+  .activity-item .act-text { flex: 1; color: var(--fg); }
+  body.theme-light .activity-item .act-text { color: #2d3658; }
+  .activity-item .act-time { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  /* Mis Proyectos */
+  .projects-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; gap: 12px; flex-wrap: wrap; }
+  .projects-header h1 { font-size: 26px; font-weight: 800; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 14px; padding: 18px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+  }
+  .project-card:hover { transform: translateY(-2px); border-color: var(--cyan); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .project-card.active { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan); }
+  .project-card .active-badge {
+    position: absolute; top: 12px; right: 12px;
+    padding: 2px 8px; border-radius: 999px;
+    background: rgba(34,211,238,0.15); color: var(--cyan);
+    font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .project-card h4 { font-size: 16px; font-weight: 700; color: var(--fg); }
+  .project-card .project-meta { font-size: 12px; color: var(--muted); }
+  .project-card .project-bar { height: 4px; background: var(--input); border-radius: 999px; overflow: hidden; }
+  .project-card .project-bar .fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width 0.3s ease; }
+  .project-card .project-actions { display: flex; gap: 6px; margin-top: 4px; }
+  .project-card .project-actions button {
+    flex: 1; padding: 7px 10px; border-radius: 7px;
+    background: var(--card-2); border: 1px solid var(--input-border);
+    color: var(--fg); font-size: 12px; font-weight: 600;
+    transition: background 0.15s ease;
+  }
+  .project-card .project-actions button:hover { background: var(--card-3); }
+  .project-card .project-actions button.danger:hover { background: rgba(239,68,68,0.15); color: var(--danger); border-color: var(--danger); }
+
+  /* Ajustes */
+  .settings-section {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 14px; padding: 22px;
+    margin-bottom: 16px;
+  }
+  .settings-section h3 { font-size: 16px; font-weight: 800; margin-bottom: 14px; color: var(--fg); }
+  .settings-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--input-border);
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row .label { flex: 1; font-size: 14px; }
+  .settings-row .label small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  .toggle {
+    width: 44px; height: 24px; border-radius: 999px;
+    background: var(--input); border: 1px solid var(--input-border);
+    position: relative; cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .toggle::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--muted); transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .toggle.on { background: rgba(34,211,238,0.25); border-color: var(--cyan); }
+  .toggle.on::after { transform: translateX(20px); background: var(--cyan); }
+
+  .seg-control {
+    display: inline-flex; padding: 3px;
+    background: var(--input); border-radius: 10px;
+    border: 1px solid var(--input-border);
+  }
+  .seg-control button {
+    padding: 7px 12px; border-radius: 7px;
+    font-size: 12px; font-weight: 600;
+    color: var(--muted);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .seg-control button.active { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+  .api-key-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 8px;
+    align-items: center; margin-top: 10px;
+  }
+  .api-key-row input {
+    padding: 11px 14px; border-radius: 9px;
+    background: var(--input); border: 1px solid var(--input-border);
+    color: var(--fg); font-family: 'SF Mono', Monaco, monospace; font-size: 13px;
+  }
+  .api-key-row .status {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--input);
+    display: grid; place-items: center;
+    color: var(--muted);
+  }
+  .api-key-row .status.set { background: rgba(0,215,116,0.15); color: var(--green); }
+  .api-key-row .status svg { width: 14px; height: 14px; }
+  .api-provider-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+  .api-provider-label .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--muted);
+  }
+  .api-provider-label.anthropic .dot { background: #d97757; }
+  .api-provider-label.google .dot { background: #4285F4; }
+  .api-provider-label.openai .dot { background: #10a37f; }
+
+  /* Onboarding modal */
+  .onboard-overlay {
+    position: fixed; inset: 0;
+    background: rgba(11,18,36,0.85);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 90;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .onboard-overlay.open { opacity: 1; pointer-events: auto; }
+  .onboard-card {
+    width: min(520px, 100%);
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 20px;
+    padding: 32px;
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+  }
+  .onboard-overlay.open .onboard-card { transform: scale(1); }
+  .onboard-illust {
+    width: 80px; height: 80px; margin: 0 auto 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #6c5ce7, #ff4d8d, #ffb86b);
+    display: grid; place-items: center;
+    box-shadow: 0 16px 40px rgba(108,92,231,0.35);
+  }
+  .onboard-illust svg { width: 40px; height: 40px; color: #fff; }
+  .onboard-card h2 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 10px; }
+  .onboard-card p { text-align: center; color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+  .onboard-dots { display: flex; gap: 6px; justify-content: center; margin: 18px 0; }
+  .onboard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--input-border); transition: background 0.2s ease, width 0.2s ease; }
+  .onboard-dot.active { background: var(--cyan); width: 24px; border-radius: 4px; }
+  .onboard-actions { display: flex; gap: 10px; }
+  .onboard-actions button { flex: 1; }
+
+  /* Toast types */
+  .toast.success { border-color: rgba(0,215,116,0.4); }
+  .toast.error { border-color: rgba(239,68,68,0.4); }
+  .toast.error .toast-ic { color: var(--danger); }
+  .toast.success .toast-ic { color: var(--green); }
+  .toast-ic { display: inline-block; margin-right: 8px; vertical-align: -3px; }
+
+  /* Sidebar collapsed mode (small icons only) */
+  @media (min-width: 821px) {
+    .sidebar.collapsed { width: 72px; padding: 22px 12px; }
+    .sidebar.collapsed .brand-logo + * { display: none; }
+    .sidebar.collapsed .nav button span,
+    .sidebar.collapsed .nav button:not(:has(svg)) { display: none; }
+    .sidebar.collapsed .nav button { justify-content: center; }
+    .sidebar.collapsed .nav button { font-size: 0; }
+    .sidebar.collapsed .user-meta, .sidebar.collapsed .user-logout { display: none; }
+    .sidebar.collapsed .user-card { justify-content: center; padding: 8px; }
+  }
+
+  /* Smooth view transitions */
+  .view.active { animation: fadeSlide 0.3s cubic-bezier(0.2, 0.9, 0.3, 1); }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Streaming text effect */
+  .streaming-dot::after {
+    content: "▎"; color: var(--cyan); animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
 </style>
 </head>
 <body>
@@ -1009,6 +1466,27 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <strong style="font-size:14px;">El Constructor</strong>
+    </div>
+
+    <!-- ===== Global top bar ===== -->
+    <div class="app-topbar">
+      <button class="topbar-btn" id="topbarSearch" title="Buscar (Ctrl/⌘+K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Buscar
+        <span class="kbd">⌘K</span>
+      </button>
+      <button class="topbar-btn" id="projectSwitcher" title="Proyecto activo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span id="activeProjectName">Sin proyecto</span>
+      </button>
+      <div class="topbar-spacer"></div>
+      <span class="save-pill" id="savePill" title="Auto-guardado">
+        <span class="dot"></span>
+        <span id="savePillText">Guardado</span>
+      </span>
+      <button class="topbar-btn" id="themeToggle" title="Cambiar tema" aria-label="Cambiar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
 
     <!-- ====== DASHBOARD ====== -->
@@ -1174,6 +1652,12 @@
         <span class="roadmap-logo">MKT HACKER</span>
       </div>
 
+      <div class="roadmap-progress">
+        <span>Progreso del Mapa de Ruta</span>
+        <div class="bar"><div class="fill" id="progressFill" style="width:0%;"></div></div>
+        <span class="pct" id="progressPct">0%</span>
+      </div>
+
       <div class="tabs-bar" id="tabsBar">
         <button class="tab-btn" data-tab="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><span class="num">1</span></button>
         <button class="tab-btn" data-tab="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="num">2</span></button>
@@ -1322,13 +1806,37 @@
         </div>
       </div>
 
-      <!-- ===== TAB 4 ===== -->
+      <!-- ===== TAB 4 — Ofertas y Propuesta de Valor ===== -->
       <div class="tab-panel" data-tab-content="4">
-        <div class="tab-panel-header"><div class="tab-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div><h2>Paso 4</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div>
+            <h2>Ofertas y Propuesta de Valor</h2>
+            <p class="sub">Tres niveles de oferta listos para vender al nicho seleccionado</p>
+          </div>
         </div>
-        <div class="placeholder-view"><h2>Sección 4</h2><p>Aún sin material visual.</p></div>
+
+        <div class="card" style="margin-bottom:18px;">
+          <div style="display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap;">
+            <p style="font-size:14px; color:#d8dff5;">
+              <strong style="color:#fff;">Nicho activo:</strong>
+              <span id="offerNichoLabel" style="color:var(--cyan);">— ninguno —</span>
+            </p>
+            <button class="btn btn-purple" id="btnGenerarOfertasTab" style="padding:10px 16px; font-size:13px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.39 6.95H22l-6.19 4.5L18.18 19 12 14.77 5.82 19l2.37-6.55L2 7.95h7.61z"/></svg>
+              Regenerar ofertas
+            </button>
+          </div>
+        </div>
+
+        <div class="offer-cards" id="offerCards">
+          <!-- Generadas por JS -->
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="5">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
       </div>
 
       <!-- ===== TAB 5 — Landing Pages ===== -->
@@ -1604,13 +2112,105 @@
         </div>
       </div>
 
-      <!-- ===== TAB 11 ===== -->
+      <!-- ===== TAB 11 — Métricas ===== -->
       <div class="tab-panel" data-tab-content="11">
-        <div class="tab-panel-header"><div class="tab-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-          <div><h2>Métricas</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div>
+            <h2>Métricas</h2>
+            <p class="sub">Resumen de actividad de tu sistema de captación e IA</p>
+          </div>
         </div>
-        <div class="placeholder-view"><h2>Sección 11</h2><p>Aún sin material visual.</p></div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Leads captados</span>
+            <span class="kpi-value" data-counter="184">0</span>
+            <span class="kpi-delta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +24% vs anterior
+            </span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Conversaciones IA</span>
+            <span class="kpi-value" data-counter="612">0</span>
+            <span class="kpi-delta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +38%
+            </span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Citas agendadas</span>
+            <span class="kpi-value" data-counter="47">0</span>
+            <span class="kpi-delta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +12%
+            </span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Ingresos atribuidos</span>
+            <span class="kpi-value">€<span data-counter="8420">0</span></span>
+            <span class="kpi-delta down">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              -4%
+            </span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3>Leads últimos 7 días</h3>
+            <div class="seg-control">
+              <button class="active" data-range="7d">7d</button>
+              <button data-range="30d">30d</button>
+              <button data-range="90d">90d</button>
+            </div>
+          </div>
+          <svg class="chart-svg" id="leadsChart" viewBox="0 0 700 200" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#6c5ce7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="card">
+          <h3 class="flat" style="margin-bottom:14px;">Actividad reciente</h3>
+          <div class="activity-list">
+            <div class="activity-item">
+              <span class="act-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+              <span class="act-text">Setter IA cerró cita con <strong>María González</strong></span>
+              <span class="act-time">hace 12 min</span>
+            </div>
+            <div class="activity-item">
+              <span class="act-ic" style="background:rgba(108,92,231,0.15); color:#a78bfa;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+              <span class="act-text">Nuevo lead capturado desde Landing inmobiliaria</span>
+              <span class="act-time">hace 38 min</span>
+            </div>
+            <div class="activity-item">
+              <span class="act-ic" style="background:rgba(255,77,141,0.15); color:var(--pink);"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+              <span class="act-text">SignalCore atendió 8 mensajes en WhatsApp</span>
+              <span class="act-time">hace 1 h</span>
+            </div>
+            <div class="activity-item">
+              <span class="act-ic" style="background:rgba(0,215,116,0.15); color:var(--green);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span class="act-text">Flyer "Oferta primavera" generado y descargado</span>
+              <span class="act-time">hace 3 h</span>
+            </div>
+            <div class="activity-item">
+              <span class="act-ic" style="background:rgba(251,188,4,0.15); color:#fbbc04;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              <span class="act-text">Cliente firmó contrato de servicio mensual</span>
+              <span class="act-time">ayer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="10"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="1" style="opacity:0.5;">Reiniciar →</button>
+        </div>
       </div>
     </section>
 
@@ -1736,17 +2336,125 @@
 
     <!-- ====== PROYECTOS ====== -->
     <section class="view" data-view-content="proyectos">
-      <div class="placeholder-view">
-        <h2>Mis Proyectos</h2>
-        <p>Listado de proyectos guardados — mándame foto para replicarla.</p>
+      <div class="projects-header">
+        <h1>Mis Proyectos</h1>
+        <button class="btn btn-cyan" id="btnNuevoProyecto" style="padding:10px 16px; font-size:14px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo proyecto
+        </button>
+      </div>
+      <div class="projects-grid" id="projectsGrid"></div>
+      <div id="projectsEmpty" class="placeholder-view" style="display:none;">
+        <h2>Aún no tienes proyectos</h2>
+        <p>Pulsa "Nuevo proyecto" para crear el primero.</p>
       </div>
     </section>
 
     <!-- ====== AJUSTES ====== -->
     <section class="view" data-view-content="ajustes">
-      <div class="placeholder-view">
-        <h2>Ajustes</h2>
-        <p>Configuración de la cuenta — mándame foto para replicarla.</p>
+      <h1 class="dashboard-title">Ajustes</h1>
+
+      <div class="settings-section">
+        <h3>Perfil</h3>
+        <div class="settings-row">
+          <div class="label">
+            Nombre
+            <small>Cómo te llamamos en la app.</small>
+          </div>
+          <input class="topbar-btn" id="setUserName" type="text" value="PAU Rodríguez" style="border:1px solid var(--input-border); background:var(--input); padding:8px 12px; min-width:200px;" />
+        </div>
+        <div class="settings-row">
+          <div class="label">
+            Email
+            <small>Solo para identificación local.</small>
+          </div>
+          <input class="topbar-btn" id="setUserEmail" type="email" value="appsmovilpau@gmail.com" style="border:1px solid var(--input-border); background:var(--input); padding:8px 12px; min-width:240px;" />
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Apariencia e idioma</h3>
+        <div class="settings-row">
+          <div class="label">Tema<small>Claro u oscuro.</small></div>
+          <div class="seg-control" id="themeSeg">
+            <button data-theme="dark" class="active">🌙 Oscuro</button>
+            <button data-theme="light">☀️ Claro</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="label">Idioma<small>Idioma de la interfaz.</small></div>
+          <div class="seg-control" id="langSeg">
+            <button data-lang="es" class="active">🇪🇸 ES</button>
+            <button data-lang="en">🇬🇧 EN</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="label">Sidebar colapsado<small>Reduce el menú a iconos.</small></div>
+          <div class="toggle" id="toggleSidebar"></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Claves API (opcional)</h3>
+        <p style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+          Si pegas tu API key se usará para llamadas reales a la IA en lugar de respuestas simuladas.
+          <strong style="color:var(--accent);">Se guardan solo en tu navegador (localStorage)</strong>, nunca se envían a ningún servidor de terceros.
+        </p>
+
+        <div style="margin-top:14px;">
+          <span class="api-provider-label anthropic"><span class="dot"></span> Anthropic (Claude)</span>
+          <div class="api-key-row">
+            <input id="keyAnthropic" type="password" placeholder="sk-ant-..." autocomplete="off" />
+            <span class="status" id="statusAnthropic" aria-label="Estado"></span>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <span class="api-provider-label google"><span class="dot"></span> Google (Gemini)</span>
+          <div class="api-key-row">
+            <input id="keyGoogle" type="password" placeholder="AIza..." autocomplete="off" />
+            <span class="status" id="statusGoogle" aria-label="Estado"></span>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <span class="api-provider-label openai"><span class="dot"></span> OpenAI (ChatGPT)</span>
+          <div class="api-key-row">
+            <input id="keyOpenAI" type="password" placeholder="sk-..." autocomplete="off" />
+            <span class="status" id="statusOpenAI" aria-label="Estado"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Datos</h3>
+        <div class="settings-row">
+          <div class="label">Exportar configuración<small>Descarga un JSON con todos tus datos.</small></div>
+          <button class="topbar-btn" id="btnExport">Exportar JSON</button>
+        </div>
+        <div class="settings-row">
+          <div class="label">Importar configuración<small>Restaura desde un JSON exportado.</small></div>
+          <label class="topbar-btn" style="cursor:pointer;">
+            Importar JSON
+            <input type="file" id="fileImport" accept="application/json" style="display:none;" />
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="label">Borrar todo<small style="color:var(--danger);">Acción irreversible.</small></div>
+          <button class="topbar-btn" id="btnReset" style="border-color:var(--danger); color:var(--danger);">Borrar y reiniciar</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Sobre la app</h3>
+        <div class="settings-row">
+          <div class="label">Versión<small>Réplica visual con foco UX.</small></div>
+          <span style="font-size:13px; color:var(--muted); font-family:'SF Mono', Monaco, monospace;">El Constructor · v1.0.0</span>
+        </div>
+        <div class="settings-row">
+          <div class="label">Atajos de teclado<small>Combinaciones disponibles.</small></div>
+          <button class="topbar-btn" onclick="document.getElementById('cmdOverlay').classList.add('open'); document.getElementById('cmdInput').focus();">Ver atajos</button>
+        </div>
       </div>
     </section>
 
@@ -2083,6 +2791,39 @@
       </div>
     </section>
   </main>
+
+  <!-- ===== Command Palette ===== -->
+  <div class="cmd-overlay" id="cmdOverlay" role="dialog" aria-modal="true">
+    <div class="cmd-palette">
+      <div class="cmd-input-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="cmdInput" type="text" placeholder="Saltar a sección, herramienta o acción…" autocomplete="off" />
+        <span class="kbd">ESC</span>
+      </div>
+      <div class="cmd-list" id="cmdList"></div>
+    </div>
+  </div>
+
+  <!-- ===== Onboarding Modal ===== -->
+  <div class="onboard-overlay" id="onboardOverlay" role="dialog" aria-modal="true">
+    <div class="onboard-card">
+      <div class="onboard-illust" id="onboardIllust">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <h2 id="onboardTitle">Bienvenido a El Constructor</h2>
+      <p id="onboardText">Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para empresas. Te enseño en 4 pasos lo más importante.</p>
+      <div class="onboard-dots" id="onboardDots">
+        <span class="onboard-dot active"></span>
+        <span class="onboard-dot"></span>
+        <span class="onboard-dot"></span>
+        <span class="onboard-dot"></span>
+      </div>
+      <div class="onboard-actions">
+        <button class="topbar-btn" id="onboardSkip">Saltar</button>
+        <button class="btn btn-cyan" id="onboardNext" style="padding:10px 16px; font-size:14px;">Siguiente</button>
+      </div>
+    </div>
+  </div>
 
   <button class="chat-bubble" aria-label="Ayuda" title="¿Qué es El Constructor?" onclick="switchView('ayuda')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -2496,6 +3237,578 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   document.getElementById('btnGenerarRef')?.addEventListener('click', generateFromRef);
   document.getElementById('btnGenerarPrompt')?.addEventListener('click', generateFromPrompt);
   document.getElementById('btnGPT')?.addEventListener('click', () => showToast('Aquí abriría el GPT especializado en un flujo real.'));
+
+  // =====================================================================
+  // ============ STATE MANAGEMENT + LOCALSTORAGE PERSISTENCE ============
+  // =====================================================================
+  const STATE_KEY = 'mkthacker_constructor_state_v1';
+  const ONBOARD_KEY = 'mkthacker_onboarded_v1';
+
+  const state = {
+    version: 1,
+    theme: 'dark',
+    lang: 'es',
+    sidebarCollapsed: false,
+    user: { name: 'PAU Rodríguez', email: 'appsmovilpau@gmail.com' },
+    activeProjectId: null,
+    projects: [],
+    keys: { anthropic: '', google: '', openai: '' },
+    currentProject: {
+      areas: [],
+      customAreas: [],
+      nichos: [],
+      agencia: '',
+      landingModalidad: 'tradicional',
+      landingIdioma: 'es'
+    }
+  };
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (raw) Object.assign(state, JSON.parse(raw));
+    } catch (e) { console.warn('Could not load state', e); }
+  }
+  let saveTimer;
+  function saveState() {
+    clearTimeout(saveTimer);
+    setSavePill('saving');
+    saveTimer = setTimeout(() => {
+      try {
+        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        setSavePill('saved');
+      } catch (e) {
+        setSavePill('error');
+      }
+    }, 350);
+  }
+  function setSavePill(status) {
+    const pill = document.getElementById('savePill');
+    const text = document.getElementById('savePillText');
+    if (!pill) return;
+    pill.classList.remove('saving');
+    if (status === 'saving') { pill.classList.add('saving'); text.textContent = 'Guardando…'; }
+    else if (status === 'saved') text.textContent = 'Guardado';
+    else if (status === 'error') text.textContent = 'Error';
+  }
+
+  // ===== Theme =====
+  function applyTheme(theme) {
+    state.theme = theme;
+    document.body.classList.toggle('theme-light', theme === 'light');
+    const icon = document.getElementById('themeIcon');
+    if (icon) {
+      icon.innerHTML = theme === 'light'
+        ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    }
+    document.querySelectorAll('#themeSeg button').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    saveState();
+  }
+  document.getElementById('themeToggle')?.addEventListener('click', () => {
+    applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+  });
+  document.querySelectorAll('#themeSeg button').forEach(b => {
+    b.addEventListener('click', () => applyTheme(b.dataset.theme));
+  });
+
+  // ===== Sidebar collapsed =====
+  function applySidebarCollapsed(collapsed) {
+    state.sidebarCollapsed = collapsed;
+    document.getElementById('sidebar').classList.toggle('collapsed', collapsed);
+    document.getElementById('toggleSidebar')?.classList.toggle('on', collapsed);
+    saveState();
+  }
+  document.getElementById('toggleSidebar')?.addEventListener('click', () => applySidebarCollapsed(!state.sidebarCollapsed));
+
+  // ===== User profile =====
+  function applyUser() {
+    document.querySelector('.user-name').textContent = state.user.name;
+    document.querySelector('.user-email').textContent = state.user.email.length > 22 ? state.user.email.slice(0, 21) + '…' : state.user.email;
+    document.querySelector('.user-avatar').textContent = (state.user.name[0] || 'P').toUpperCase();
+    document.getElementById('setUserName').value = state.user.name;
+    document.getElementById('setUserEmail').value = state.user.email;
+  }
+  document.getElementById('setUserName')?.addEventListener('input', (e) => { state.user.name = e.target.value; applyUser(); saveState(); });
+  document.getElementById('setUserEmail')?.addEventListener('input', (e) => { state.user.email = e.target.value; applyUser(); saveState(); });
+
+  // ===== API keys =====
+  function applyApiKey(provider) {
+    const input = document.getElementById('key' + provider[0].toUpperCase() + provider.slice(1));
+    const status = document.getElementById('status' + provider[0].toUpperCase() + provider.slice(1));
+    if (!input || !status) return;
+    input.value = state.keys[provider] || '';
+    const ok = !!state.keys[provider] && state.keys[provider].length > 10;
+    status.classList.toggle('set', ok);
+    status.innerHTML = ok
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  }
+  ['anthropic', 'google', 'openai'].forEach(p => {
+    const id = 'key' + p[0].toUpperCase() + p.slice(1);
+    document.getElementById(id)?.addEventListener('input', (e) => {
+      state.keys[p] = e.target.value.trim();
+      applyApiKey(p); saveState();
+    });
+  });
+
+  // ===== Roadmap progress =====
+  function updateProgress() {
+    const total = 11;
+    let done = 0;
+    if (state.currentProject.areas.length > 0 || state.currentProject.customAreas.length > 0) done++;
+    if (state.currentProject.areas.length > 0) done++;
+    if (state.currentProject.nichos.length > 0) done++;
+    if (state.currentProject.nichos.length > 0) done++;
+    if (state.currentProject.agencia) done++;
+    // Tabs 6-11 count as not-yet-done by default
+    const pct = Math.round((done / total) * 100);
+    const fill = document.getElementById('progressFill');
+    const pctEl = document.getElementById('progressPct');
+    if (fill) fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('completed'));
+    if (state.currentProject.areas.length > 0) document.querySelector('.tab-btn[data-tab="1"]')?.classList.add('completed');
+    if (state.currentProject.areas.length > 0) document.querySelector('.tab-btn[data-tab="2"]')?.classList.add('completed');
+    if (state.currentProject.nichos.length > 0) document.querySelector('.tab-btn[data-tab="3"]')?.classList.add('completed');
+    if (state.currentProject.nichos.length > 0) document.querySelector('.tab-btn[data-tab="4"]')?.classList.add('completed');
+    if (state.currentProject.agencia) document.querySelector('.tab-btn[data-tab="5"]')?.classList.add('completed');
+  }
+
+  // ===== Tab 4 — Ofertas =====
+  function renderOfertas() {
+    const cards = document.getElementById('offerCards');
+    const label = document.getElementById('offerNichoLabel');
+    if (!cards) return;
+    const nicho = nichos[0] || '— ninguno —';
+    if (label) label.textContent = nicho;
+    if (nichos.length === 0) {
+      cards.innerHTML = `<div class="placeholder-view" style="grid-column:1/-1;"><h2>Selecciona un nicho primero</h2><p>Ve a la sección 3 y añade un nicho para generar tus ofertas.</p></div>`;
+      return;
+    }
+    const n = nichos[0];
+    const offers = [
+      {
+        tier: 'Front-end', cls: '',
+        title: `Auditoría IA gratuita para ${n}`,
+        pitch: 'Imán de leads: análisis rápido del negocio + propuesta de mejoras con IA. Gratis para enganchar.',
+        price: '€ 0', priceSub: 'lead magnet',
+        bullets: ['Auditoría 30 min', 'Diagnóstico personalizado', '3 mejoras concretas', 'Sin compromiso']
+      },
+      {
+        tier: 'Core', cls: 'core',
+        title: `Setter IA + Web para ${n}`,
+        pitch: 'Sistema completo de captación y atención automática 24/7. El servicio que vendes a casi todos.',
+        price: '€ 497', priceSub: '/mes',
+        bullets: ['Agente IA en WhatsApp', 'Landing optimizada', 'CRM con seguimiento', 'Soporte y mantenimiento']
+      },
+      {
+        tier: 'Premium', cls: 'premium',
+        title: `Sistema integral IA para ${n}`,
+        pitch: 'Implementación completa con integración a CRM/ERP, dashboard de métricas y consultoría mensual.',
+        price: '€ 1.997', priceSub: '/mes',
+        bullets: ['Todo lo del plan Core', 'Integraciones a medida', 'Dashboard de métricas', 'Consultoría 1:1 mensual', 'SLA con respuesta < 4h']
+      }
+    ];
+    cards.innerHTML = offers.map(o => `
+      <div class="offer-card ${o.cls}">
+        <span class="offer-tier">${o.tier}</span>
+        <h4>${escapeHTML(o.title)}</h4>
+        <p class="offer-pitch">${escapeHTML(o.pitch)}</p>
+        <div class="offer-price">${o.price} <small>${o.priceSub}</small></div>
+        <ul>${o.bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}</ul>
+      </div>
+    `).join('');
+  }
+  document.getElementById('btnGenerarOfertasTab')?.addEventListener('click', () => {
+    if (nichos.length === 0) return showToast('Añade un nicho en la sección 3 primero.', 'error');
+    renderOfertas();
+    showToast('Ofertas regeneradas.', 'success');
+  });
+
+  // ===== Tab 11 — Métricas =====
+  function animateCounters() {
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const target = +el.dataset.counter;
+      const duration = 1100;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('es-ES');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  function renderChart() {
+    const svg = document.getElementById('leadsChart');
+    if (!svg) return;
+    const data = [12, 18, 14, 26, 22, 31, 38];
+    const labels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    const max = Math.max(...data);
+    const w = 700, h = 200, pad = 24, barW = (w - pad * 2) / data.length * 0.65, gap = (w - pad * 2) / data.length;
+    const defs = svg.querySelector('defs');
+    svg.innerHTML = defs.outerHTML;
+    data.forEach((v, i) => {
+      const bh = (v / max) * (h - 50);
+      const x = pad + i * gap + (gap - barW) / 2;
+      const y = h - bh - 30;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('class', 'chart-bar');
+      rect.setAttribute('x', x); rect.setAttribute('y', h);
+      rect.setAttribute('width', barW); rect.setAttribute('height', 0);
+      rect.setAttribute('rx', 6);
+      svg.appendChild(rect);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('class', 'chart-label');
+      txt.setAttribute('x', x + barW / 2); txt.setAttribute('y', h - 10);
+      txt.setAttribute('text-anchor', 'middle'); txt.textContent = labels[i];
+      svg.appendChild(txt);
+      const val = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      val.setAttribute('class', 'chart-label');
+      val.setAttribute('x', x + barW / 2); val.setAttribute('y', y - 6);
+      val.setAttribute('text-anchor', 'middle'); val.textContent = v;
+      svg.appendChild(val);
+      setTimeout(() => {
+        rect.setAttribute('y', y); rect.setAttribute('height', bh);
+        rect.style.transition = 'y 0.7s cubic-bezier(0.2,0.9,0.3,1), height 0.7s cubic-bezier(0.2,0.9,0.3,1)';
+      }, 60 + i * 70);
+    });
+  }
+  document.querySelectorAll('[data-range]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('[data-range]').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      renderChart();
+    });
+  });
+
+  // ===== Mis Proyectos =====
+  function uid() { return 'p_' + Math.random().toString(36).slice(2, 10); }
+  function snapshotCurrent() {
+    return {
+      areas: [...selectedAreas],
+      customAreas: state.currentProject.customAreas,
+      nichos: [...nichos],
+      agencia: state.currentProject.agencia,
+      landingModalidad: state.currentProject.landingModalidad,
+      landingIdioma: state.currentProject.landingIdioma
+    };
+  }
+  function projectName(p) {
+    return p.nichos[0] ? `${p.nichos[0]}` : (p.agencia || 'Proyecto sin nombre');
+  }
+  function projectCompletion(p) {
+    let done = 0;
+    if (p.areas && p.areas.length) done += 2;
+    if (p.nichos && p.nichos.length) done += 2;
+    if (p.agencia) done += 1;
+    return Math.round((done / 5) * 100);
+  }
+  function renderProjects() {
+    const grid = document.getElementById('projectsGrid');
+    const empty = document.getElementById('projectsEmpty');
+    if (!grid) return;
+    if (state.projects.length === 0) {
+      grid.innerHTML = ''; empty.style.display = 'flex'; return;
+    }
+    empty.style.display = 'none';
+    grid.innerHTML = state.projects.map(p => {
+      const completion = projectCompletion(p);
+      const isActive = p.id === state.activeProjectId;
+      return `
+      <div class="project-card ${isActive ? 'active' : ''}" data-id="${p.id}">
+        ${isActive ? '<span class="active-badge">Activo</span>' : ''}
+        <h4>${escapeHTML(projectName(p))}</h4>
+        <div class="project-meta">${p.agencia ? escapeHTML(p.agencia) + ' · ' : ''}${new Date(p.createdAt).toLocaleDateString('es-ES')}</div>
+        <div class="project-bar"><div class="fill" style="width:${completion}%"></div></div>
+        <div class="project-meta">${completion}% completado</div>
+        <div class="project-actions">
+          <button data-action="open" data-id="${p.id}">Abrir</button>
+          <button data-action="duplicate" data-id="${p.id}">Duplicar</button>
+          <button data-action="delete" data-id="${p.id}" class="danger">Borrar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function setActiveProject(id) {
+    state.activeProjectId = id;
+    const p = state.projects.find(x => x.id === id);
+    if (p) {
+      // restore into current
+      selectedAreas.clear();
+      (p.areas || []).forEach(a => selectedAreas.add(a));
+      nichos.length = 0;
+      (p.nichos || []).forEach(n => nichos.push(n));
+      state.currentProject = { ...state.currentProject, ...p };
+      document.querySelectorAll('.area-card').forEach(c => c.classList.toggle('selected', selectedAreas.has(c.dataset.area)));
+      const agInput = document.getElementById('agenciaNombre');
+      if (agInput) agInput.value = p.agencia || '';
+      renderNichos(); renderProblemSolutions(); renderPropuesta();
+      renderLandingNichos(); renderOfertas();
+      const activeName = document.getElementById('activeProjectName');
+      if (activeName) activeName.textContent = projectName(p);
+    }
+    renderProjects(); updateProgress(); saveState();
+  }
+  document.getElementById('btnNuevoProyecto')?.addEventListener('click', () => {
+    const id = uid();
+    const newP = { id, createdAt: Date.now(), ...snapshotCurrent() };
+    state.projects.unshift(newP);
+    setActiveProject(id);
+    showToast('Proyecto creado.', 'success');
+  });
+  document.getElementById('projectsGrid')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'open') setActiveProject(id);
+    else if (btn.dataset.action === 'duplicate') {
+      const src = state.projects.find(p => p.id === id);
+      if (!src) return;
+      const copy = { ...JSON.parse(JSON.stringify(src)), id: uid(), createdAt: Date.now() };
+      state.projects.unshift(copy);
+      renderProjects(); saveState();
+      showToast('Proyecto duplicado.', 'success');
+    } else if (btn.dataset.action === 'delete') {
+      if (!confirm('¿Borrar este proyecto?')) return;
+      state.projects = state.projects.filter(p => p.id !== id);
+      if (state.activeProjectId === id) {
+        state.activeProjectId = state.projects[0]?.id || null;
+        if (state.activeProjectId) setActiveProject(state.activeProjectId);
+        else { document.getElementById('activeProjectName').textContent = 'Sin proyecto'; }
+      }
+      renderProjects(); saveState();
+      showToast('Proyecto borrado.', 'success');
+    }
+  });
+  document.getElementById('projectSwitcher')?.addEventListener('click', () => switchView('proyectos'));
+
+  // ===== Auto-save hooks =====
+  function autoSaveCurrent() {
+    if (state.activeProjectId) {
+      const p = state.projects.find(x => x.id === state.activeProjectId);
+      if (p) Object.assign(p, snapshotCurrent());
+    }
+    saveState();
+    updateProgress();
+  }
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'agenciaNombre') state.currentProject.agencia = e.target.value;
+    if (e.target.id === 'landingModalidad') state.currentProject.landingModalidad = e.target.value;
+    if (e.target.id === 'landingIdioma') state.currentProject.landingIdioma = e.target.value;
+    autoSaveCurrent();
+  });
+
+  // Wrap area click + nicho add to autosave
+  const _origRenderProblemSolutions = renderProblemSolutions;
+  renderProblemSolutions = function() { _origRenderProblemSolutions(); autoSaveCurrent(); renderOfertas(); };
+  const _origRenderNichos = renderNichos;
+  renderNichos = function() { _origRenderNichos(); autoSaveCurrent(); renderOfertas(); };
+
+  // ===== Export / Import / Reset =====
+  document.getElementById('btnExport')?.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'el-constructor-backup.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('Backup descargado.', 'success');
+  });
+  document.getElementById('fileImport')?.addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const data = JSON.parse(r.result);
+        Object.assign(state, data);
+        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        showToast('Importado. Recargando…', 'success');
+        setTimeout(() => location.reload(), 800);
+      } catch { showToast('JSON inválido.', 'error'); }
+    };
+    r.readAsText(f);
+  });
+  document.getElementById('btnReset')?.addEventListener('click', () => {
+    if (!confirm('Esto borrará TODO (proyectos, claves, ajustes). ¿Continuar?')) return;
+    localStorage.removeItem(STATE_KEY);
+    localStorage.removeItem(ONBOARD_KEY);
+    location.reload();
+  });
+
+  // ===== Command Palette =====
+  const COMMANDS = [
+    { id: 'go-dashboard', section: 'Navegación', title: 'Ir a Dashboard', sub: 'Recursos personalizados', action: () => switchView('dashboard') },
+    { id: 'go-mapa', section: 'Navegación', title: 'Ir a Mapa de Ruta', sub: 'Las 11 pestañas del flujo', action: () => switchView('mapa') },
+    { id: 'go-creador', section: 'Navegación', title: 'Ir a Creador de contenido', sub: 'Flyer Creator', action: () => switchView('creador') },
+    { id: 'go-proyectos', section: 'Navegación', title: 'Ir a Mis Proyectos', sub: 'Gestionar proyectos', action: () => switchView('proyectos') },
+    { id: 'go-ajustes', section: 'Navegación', title: 'Ir a Ajustes', sub: 'Tema, API keys, perfil…', action: () => switchView('ajustes') },
+    { id: 'go-ayuda', section: 'Navegación', title: 'Ir a Ayuda', sub: '¿Qué es El Constructor?', action: () => switchView('ayuda') },
+    { id: 'tab-areas', section: 'Mapa de Ruta', title: 'Áreas de Marketing', sub: 'Paso 1', action: () => { switchView('mapa'); gotoTab(1); } },
+    { id: 'tab-soluciones', section: 'Mapa de Ruta', title: 'Solucionar el Problema', sub: 'Paso 2', action: () => { switchView('mapa'); gotoTab(2); } },
+    { id: 'tab-nicho', section: 'Mapa de Ruta', title: 'Seleccionar Nicho', sub: 'Paso 3', action: () => { switchView('mapa'); gotoTab(3); } },
+    { id: 'tab-ofertas', section: 'Mapa de Ruta', title: 'Ofertas y Propuesta de Valor', sub: 'Paso 4', action: () => { switchView('mapa'); gotoTab(4); } },
+    { id: 'tab-landing', section: 'Mapa de Ruta', title: 'Configuración de Landing Pages', sub: 'Paso 5', action: () => { switchView('mapa'); gotoTab(5); } },
+    { id: 'tab-signalcore', section: 'Mapa de Ruta', title: 'SignalCore — Setter IA', sub: 'Paso 6', action: () => { switchView('mapa'); gotoTab(6); } },
+    { id: 'tab-crm', section: 'Mapa de Ruta', title: 'CRM (Airtable)', sub: 'Paso 7', action: () => { switchView('mapa'); gotoTab(7); } },
+    { id: 'tab-analizador', section: 'Mapa de Ruta', title: 'Analizador de Web', sub: 'Paso 8', action: () => { switchView('mapa'); gotoTab(8); } },
+    { id: 'tab-scripts', section: 'Mapa de Ruta', title: 'Generador de Scripts', sub: 'Paso 9', action: () => { switchView('mapa'); gotoTab(9); } },
+    { id: 'tab-prospeccion', section: 'Mapa de Ruta', title: 'Apollo / Apify', sub: 'Paso 10', action: () => { switchView('mapa'); gotoTab(10); } },
+    { id: 'tab-metricas', section: 'Mapa de Ruta', title: 'Métricas', sub: 'Paso 11', action: () => { switchView('mapa'); gotoTab(11); } },
+    { id: 'act-theme', section: 'Acciones', title: 'Cambiar tema', sub: 'Alternar claro / oscuro', action: () => applyTheme(state.theme === 'dark' ? 'light' : 'dark') },
+    { id: 'act-new-project', section: 'Acciones', title: 'Crear nuevo proyecto', sub: 'Guarda el estado actual', action: () => document.getElementById('btnNuevoProyecto').click() },
+    { id: 'act-export', section: 'Acciones', title: 'Exportar JSON', sub: 'Descargar backup', action: () => document.getElementById('btnExport').click() },
+    { id: 'act-onboarding', section: 'Acciones', title: 'Ver tour de bienvenida', sub: 'Volver a ver el onboarding', action: () => { localStorage.removeItem(ONBOARD_KEY); startOnboarding(); } }
+  ];
+  let cmdFocus = 0; let cmdFiltered = COMMANDS;
+  function renderCmdList() {
+    const list = document.getElementById('cmdList');
+    if (!list) return;
+    if (cmdFiltered.length === 0) {
+      list.innerHTML = '<div class="cmd-empty">Sin resultados</div>'; return;
+    }
+    const grouped = {};
+    cmdFiltered.forEach(c => { (grouped[c.section] = grouped[c.section] || []).push(c); });
+    list.innerHTML = Object.keys(grouped).map(section => `
+      <div class="cmd-section">
+        <div class="cmd-section-title">${section}</div>
+        ${grouped[section].map(c => {
+          const idx = cmdFiltered.indexOf(c);
+          return `<div class="cmd-item ${idx === cmdFocus ? 'focused' : ''}" data-idx="${idx}">
+            <span class="cmd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            <div class="cmd-item-text"><div class="cmd-item-title">${escapeHTML(c.title)}</div><div class="cmd-item-sub">${escapeHTML(c.sub)}</div></div>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('');
+    list.querySelectorAll('.cmd-item').forEach(el => {
+      el.addEventListener('click', () => { cmdFiltered[+el.dataset.idx].action(); closeCmd(); });
+      el.addEventListener('mousemove', () => { cmdFocus = +el.dataset.idx; renderCmdList(); });
+    });
+  }
+  function openCmd() {
+    document.getElementById('cmdOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('cmdInput').focus(), 50);
+    cmdFocus = 0; cmdFiltered = COMMANDS; document.getElementById('cmdInput').value = ''; renderCmdList();
+  }
+  function closeCmd() { document.getElementById('cmdOverlay').classList.remove('open'); }
+  document.getElementById('topbarSearch')?.addEventListener('click', openCmd);
+  document.getElementById('cmdInput')?.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    cmdFiltered = q ? COMMANDS.filter(c => (c.title + ' ' + c.sub + ' ' + c.section).toLowerCase().includes(q)) : COMMANDS;
+    cmdFocus = 0; renderCmdList();
+  });
+  document.getElementById('cmdInput')?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { cmdFocus = Math.min(cmdFocus + 1, cmdFiltered.length - 1); renderCmdList(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { cmdFocus = Math.max(cmdFocus - 1, 0); renderCmdList(); e.preventDefault(); }
+    else if (e.key === 'Enter') { cmdFiltered[cmdFocus]?.action(); closeCmd(); e.preventDefault(); }
+    else if (e.key === 'Escape') closeCmd();
+  });
+  document.getElementById('cmdOverlay')?.addEventListener('click', (e) => { if (e.target.id === 'cmdOverlay') closeCmd(); });
+
+  // Global shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmd(); }
+    if (e.key === 'Escape') closeCmd();
+  });
+
+  // ===== Onboarding =====
+  const ONBOARD_STEPS = [
+    { title: 'Bienvenido a El Constructor', text: 'Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para empresas.', icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>' },
+    { title: 'Mapa de Ruta en 11 pasos', text: 'Desde elegir nicho hasta atender leads con IA — todo guiado paso a paso en la sección Mapa de Ruta.', icon: '<polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/>' },
+    { title: 'Tus proyectos siempre guardados', text: 'Cada cambio se autoguarda en tu navegador. Crea varios proyectos desde "Mis Proyectos".', icon: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>' },
+    { title: 'Ctrl/⌘ + K para todo', text: 'Pulsa ⌘K o usa el botón Buscar para saltar a cualquier sección, herramienta o acción al instante.', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' }
+  ];
+  let onboardStep = 0;
+  function renderOnboard() {
+    const s = ONBOARD_STEPS[onboardStep];
+    document.getElementById('onboardTitle').textContent = s.title;
+    document.getElementById('onboardText').textContent = s.text;
+    document.getElementById('onboardIllust').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>`;
+    document.querySelectorAll('.onboard-dot').forEach((d, i) => d.classList.toggle('active', i === onboardStep));
+    document.getElementById('onboardNext').textContent = onboardStep === ONBOARD_STEPS.length - 1 ? 'Empezar' : 'Siguiente';
+  }
+  function startOnboarding() {
+    onboardStep = 0; renderOnboard();
+    document.getElementById('onboardOverlay').classList.add('open');
+  }
+  function endOnboarding() {
+    document.getElementById('onboardOverlay').classList.remove('open');
+    localStorage.setItem(ONBOARD_KEY, '1');
+  }
+  document.getElementById('onboardSkip')?.addEventListener('click', endOnboarding);
+  document.getElementById('onboardNext')?.addEventListener('click', () => {
+    if (onboardStep < ONBOARD_STEPS.length - 1) { onboardStep++; renderOnboard(); }
+    else endOnboarding();
+  });
+
+  // ===== Toast types =====
+  const _origShowToast = showToast;
+  showToast = function(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.classList.remove('success', 'error');
+    if (type === 'success') t.classList.add('success');
+    else if (type === 'error') t.classList.add('error');
+    const ic = type === 'success'
+      ? '<svg class="toast-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : type === 'error'
+      ? '<svg class="toast-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+      : '';
+    t.innerHTML = ic + escapeHTML(msg);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  };
+
+  // ===== Render metrics when tab opens =====
+  let metricsRendered = false;
+  document.querySelector('.tab-btn[data-tab="11"]')?.addEventListener('click', () => {
+    if (metricsRendered) return;
+    metricsRendered = true;
+    setTimeout(() => { animateCounters(); renderChart(); }, 200);
+  });
+
+  // ===== INIT =====
+  loadState();
+  applyTheme(state.theme || 'dark');
+  applySidebarCollapsed(state.sidebarCollapsed);
+  applyUser();
+  ['anthropic', 'google', 'openai'].forEach(applyApiKey);
+  // Restore current project into UI
+  if (state.currentProject) {
+    (state.currentProject.areas || []).forEach(a => selectedAreas.add(a));
+    document.querySelectorAll('.area-card').forEach(c => c.classList.toggle('selected', selectedAreas.has(c.dataset.area)));
+    (state.currentProject.nichos || []).forEach(n => nichos.push(n));
+    if (state.currentProject.agencia) document.getElementById('agenciaNombre').value = state.currentProject.agencia;
+    if (state.currentProject.landingModalidad) document.getElementById('landingModalidad').value = state.currentProject.landingModalidad;
+    if (state.currentProject.landingIdioma) document.getElementById('landingIdioma').value = state.currentProject.landingIdioma;
+    _origRenderProblemSolutions(); _origRenderNichos(); renderPropuesta(); renderLandingNichos(); renderOfertas();
+  }
+  if (state.activeProjectId) {
+    const p = state.projects.find(x => x.id === state.activeProjectId);
+    if (p) document.getElementById('activeProjectName').textContent = projectName(p);
+  }
+  renderProjects();
+  updateProgress();
+
+  // First-time onboarding
+  if (!localStorage.getItem(ONBOARD_KEY)) {
+    setTimeout(startOnboarding, 600);
+  }
+
+  // Register service worker (PWA) — uses Blob URL so no extra file needed
+  if ('serviceWorker' in navigator) {
+    const swCode = `self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', e => self.clients.claim());
+self.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });`;
+    try {
+      const blob = new Blob([swCode], { type: 'text/javascript' });
+      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+    } catch (e) { /* silent */ }
+  }
 </script>
 </body>
 </html>
