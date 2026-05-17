@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Flyer Creator | MKT Hacker</title>
-<meta name="description" content="Genera flyers para captar clientes utilizando la inteligencia artificial." />
-<meta name="theme-color" content="#0f1729" />
+<title>El Constructor | MKT Hacker</title>
+<meta name="description" content="Plataforma de marketing con IA: mapa de ruta, scripts, CRM, automatización y creador de contenido." />
+<meta name="theme-color" content="#0b1224" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -17,6 +17,7 @@
     --sidebar-border: #1b2540;
     --card: #141d36;
     --card-2: #182241;
+    --card-3: #1a2542;
     --input: #0e1730;
     --input-border: #243056;
     --fg: #e8eefc;
@@ -24,10 +25,14 @@
     --muted-2: #5b6480;
     --accent: #9fe7f5;
     --accent-2: #7dd3ee;
+    --cyan: #22d3ee;
     --green: #00d774;
     --green-2: #00b964;
     --danger: #ef4444;
     --purple: #6c5ce7;
+    --purple-2: #4d3fc8;
+    --pink: #ff4d8d;
+    --orange: #ffb86b;
     --required: #ff6b6b;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +49,7 @@
   button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
   input, textarea, select { font-family: inherit; }
 
-  /* ===================== SIDEBAR ===================== */
+  /* ===== Sidebar ===== */
   .sidebar {
     width: 250px;
     flex-shrink: 0;
@@ -56,467 +61,627 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    z-index: 10;
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 4px 8px 22px;
-  }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 22px; }
   .brand-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 44px; height: 44px; border-radius: 10px;
     background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 50%, #ffb86b 100%);
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-    font-size: 11px;
-    color: #fff;
-    letter-spacing: 0.5px;
-    line-height: 1;
-    text-align: center;
+    display: grid; place-items: center;
+    font-weight: 800; color: #fff; line-height: 1; text-align: center;
     box-shadow: 0 6px 24px rgba(108, 92, 231, 0.35);
   }
-  .brand-logo span { display: block; }
   .brand-logo .l1 { font-size: 13px; }
   .brand-logo .l2 { font-size: 9px; margin-top: 2px; opacity: 0.95; }
-
-  .nav { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
-  .nav a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 12px;
-    border-radius: 10px;
-    color: #c9d2eb;
-    font-size: 14px;
-    font-weight: 500;
+  .nav { display: flex; flex-direction: column; gap: 4px; }
+  .nav button {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 12px; border-radius: 10px;
+    color: #c9d2eb; font-size: 14px; font-weight: 500;
     transition: background 0.15s ease, color 0.15s ease;
+    width: 100%; text-align: left;
   }
-  .nav a:hover { background: rgba(255,255,255,0.04); color: #fff; }
-  .nav a.active { background: rgba(159, 231, 245, 0.08); color: #fff; }
-  .nav a svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
-
+  .nav button:hover { background: rgba(255,255,255,0.04); color: #fff; }
+  .nav button.active { background: rgba(159, 231, 245, 0.08); color: #fff; }
+  .nav svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
   .sidebar-bottom { margin-top: auto; }
   .user-card {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
     padding: 10px 12px;
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--sidebar-border);
     border-radius: 12px;
   }
   .user-avatar {
-    width: 34px; height: 34px;
-    border-radius: 50%;
+    width: 34px; height: 34px; border-radius: 50%;
     background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 100%);
-    display: grid;
-    place-items: center;
-    font-weight: 700;
-    font-size: 13px;
-    color: #fff;
-    flex-shrink: 0;
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0;
   }
   .user-meta { flex: 1; min-width: 0; }
   .user-name { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.2; }
   .user-email { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .user-logout {
-    width: 28px; height: 28px;
-    display: grid; place-items: center;
-    color: var(--muted);
-    border-radius: 6px;
-  }
+  .user-logout { width: 28px; height: 28px; display: grid; place-items: center; color: var(--muted); border-radius: 6px; }
   .user-logout:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
-  /* ===================== MAIN ===================== */
-  .main {
-    flex: 1;
-    padding: 28px 32px 60px;
-    min-width: 0;
-  }
-  .page-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 22px;
-  }
+  /* ===== Main ===== */
+  .main { flex: 1; padding: 28px 32px 60px; min-width: 0; }
+  .page-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
   .back-btn {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--card);
-    border: 1px solid var(--input-border);
-    display: grid;
-    place-items: center;
-    color: var(--fg);
-    flex-shrink: 0;
-    margin-top: 4px;
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--card); border: 1px solid var(--input-border);
+    display: grid; place-items: center; color: var(--fg); flex-shrink: 0; margin-top: 4px;
   }
   .back-btn:hover { background: var(--card-2); }
   .page-title { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
   .page-subtitle { color: var(--muted); font-size: 14px; margin-top: 6px; }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
+  .view { display: none; }
+  .view.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== Roadmap tabs ===== */
+  .roadmap-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 18px;
   }
-  @media (max-width: 1024px) {
-    .grid { grid-template-columns: 1fr; }
+  .roadmap-header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .roadmap-logo {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 800; color: #fff; font-size: 13px;
+    background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+
+  .tabs-bar {
+    display: flex; gap: 8px; overflow-x: auto;
+    padding: 4px 0 16px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--sidebar-border);
+    scrollbar-width: thin;
+  }
+  .tabs-bar::-webkit-scrollbar { height: 6px; }
+  .tabs-bar::-webkit-scrollbar-thumb { background: var(--input-border); border-radius: 4px; }
+  .tab-btn {
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    color: #c9d2eb; font-size: 14px; font-weight: 600;
+    transition: all 0.15s ease;
+    min-width: 60px;
+  }
+  .tab-btn:hover { background: var(--card-2); color: #fff; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(108,92,231,0.25), rgba(34,211,238,0.18));
+    border-color: var(--purple);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(108,92,231,0.2);
+  }
+  .tab-btn svg { width: 16px; height: 16px; opacity: 0.95; }
+  .tab-btn .num { font-weight: 700; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+  .tab-panel-header { margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .tab-panel-header h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
+  .tab-panel-header .tab-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(34,211,238,0.12);
+    border: 1px solid rgba(34,211,238,0.25);
+    display: grid; place-items: center;
+    color: var(--cyan);
+  }
+  .tab-panel-header .tab-icon svg { width: 20px; height: 20px; }
+  .tab-panel-subtitle { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
   .card {
     background: var(--card);
     border: 1px solid var(--input-border);
     border-radius: 16px;
     padding: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: flex; flex-direction: column; gap: 16px;
   }
-  .card h2 {
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: #fff;
+  .card h3 {
+    font-size: 16px; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase; color: #fff;
   }
-  .card .card-desc {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: -8px;
-  }
+  .card h3.flat { letter-spacing: 0; text-transform: none; font-size: 18px; }
+  .card .card-desc { font-size: 13px; color: var(--muted); }
 
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* Fields */
   .field { display: flex; flex-direction: column; gap: 8px; }
-  .field label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #e8eefc;
-  }
+  .field label { font-size: 13px; font-weight: 600; color: #e8eefc; }
   .field label .req { color: var(--required); margin-left: 2px; }
-  .field input,
-  .field textarea,
-  .field select {
-    width: 100%;
-    padding: 13px 14px;
-    border-radius: 10px;
-    background: var(--input);
-    border: 1px solid var(--input-border);
-    color: var(--fg);
-    font-size: 14px;
-    outline: none;
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 13px 14px; border-radius: 10px;
+    background: var(--input); border: 1px solid var(--input-border);
+    color: var(--fg); font-size: 14px; outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    appearance: none;
-    -webkit-appearance: none;
+    appearance: none; -webkit-appearance: none;
   }
   .field textarea { resize: vertical; min-height: 56px; }
-  .field input::placeholder,
-  .field textarea::placeholder { color: #5e6a8a; }
-  .field input:focus,
-  .field textarea:focus,
-  .field select:focus {
+  .field input::placeholder, .field textarea::placeholder { color: #5e6a8a; }
+  .field input:focus, .field textarea:focus, .field select:focus {
     border-color: var(--accent-2);
     box-shadow: 0 0 0 3px rgba(159, 231, 245, 0.15);
   }
   .select-wrap { position: relative; }
   .select-wrap::after {
-    content: "";
-    position: absolute;
-    right: 16px; top: 50%;
+    content: ""; position: absolute; right: 16px; top: 50%;
     width: 9px; height: 9px;
-    border-right: 2px solid var(--muted);
-    border-bottom: 2px solid var(--muted);
-    transform: translateY(-70%) rotate(45deg);
-    pointer-events: none;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: translateY(-70%) rotate(45deg); pointer-events: none;
   }
 
-  /* Primary cyan button (Generar Flyer) */
+  /* Buttons */
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 20px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 15px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 20px; border-radius: 12px;
+    font-weight: 700; font-size: 15px;
     transition: transform 0.1s ease, filter 0.15s ease, opacity 0.15s ease;
     text-align: center;
   }
   .btn:active { transform: translateY(1px); }
-  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .btn-primary {
-    background: linear-gradient(180deg, #b4ecf7 0%, #8fd9ee 100%);
-    color: #0b1224;
-  }
+  .btn-primary { background: linear-gradient(180deg, #b4ecf7 0%, #8fd9ee 100%); color: #0b1224; }
   .btn-primary:hover { filter: brightness(1.05); }
+  .btn-cyan {
+    background: linear-gradient(135deg, var(--cyan) 0%, #3b82f6 100%);
+    color: #fff; box-shadow: 0 8px 24px rgba(34,211,238,0.25);
+  }
+  .btn-cyan:hover { filter: brightness(1.08); }
   .btn-green {
     background: linear-gradient(180deg, #00e07d 0%, #00b964 100%);
-    color: #042713;
-    box-shadow: 0 8px 24px rgba(0, 215, 116, 0.25);
+    color: #042713; box-shadow: 0 8px 24px rgba(0, 215, 116, 0.25);
   }
   .btn-green:hover { filter: brightness(1.05); }
+  .btn-purple {
+    background: linear-gradient(135deg, rgba(108,92,231,0.18), rgba(34,211,238,0.15));
+    border: 1px solid rgba(108,92,231,0.6);
+    color: var(--accent);
+  }
+  .btn-purple:hover { background: linear-gradient(135deg, rgba(108,92,231,0.28), rgba(34,211,238,0.22)); }
+  .btn-ghost {
+    background: var(--card-2); border: 1px solid var(--input-border);
+    color: #fff;
+  }
+  .btn-ghost:hover { background: var(--card-3); }
+
+  /* Step list (for Setter IA / How to) */
+  .step-list { display: flex; flex-direction: column; gap: 12px; }
+  .step-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    background: var(--card-2);
+    border-radius: 12px;
+  }
+  .step-num {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--cyan); color: #0b1224;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 14px; flex-shrink: 0;
+  }
+  .step-text { font-size: 14px; color: #e8eefc; font-weight: 500; }
+
+  /* Tip */
+  .tip {
+    display: flex; gap: 12px;
+    padding: 14px 16px;
+    background: rgba(255, 197, 23, 0.05);
+    border: 1px solid rgba(255, 197, 23, 0.18);
+    border-radius: 12px;
+    font-size: 13px; color: #d8dff5; line-height: 1.55;
+  }
+  .tip .tip-ic { font-size: 18px; line-height: 1; }
+  .tip strong { color: #ffd84a; }
+
+  /* External tool card */
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .tool-card h4 { font-size: 18px; font-weight: 800; }
+  .tool-card .tool-sub { font-size: 13px; color: var(--muted); }
+  .tool-card .tool-desc { font-size: 13px; color: #d8dff5; line-height: 1.5; }
+  .tool-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; padding: 0; }
+  .tool-card ul li {
+    font-size: 13px; color: #d8dff5;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tool-card ul li::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan); flex-shrink: 0;
+  }
+
+  /* Big CTA */
+  .big-cta {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, var(--cyan) 0%, #3b82f6 100%);
+    color: #fff;
+    border-radius: 14px;
+    font-size: 17px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 12px 32px rgba(34,211,238,0.25);
+    transition: filter 0.15s ease, transform 0.1s ease;
+  }
+  .big-cta:hover { filter: brightness(1.08); }
+  .big-cta:active { transform: translateY(1px); }
+  .big-cta .ic-bolt { width: 22px; height: 22px; }
 
   /* Upload box */
   .upload-box {
     border: 1.5px dashed var(--input-border);
     border-radius: 12px;
     padding: 22px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
     color: var(--muted);
     background: rgba(255,255,255,0.015);
     cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: all 0.15s ease;
   }
-  .upload-box:hover {
-    border-color: var(--accent-2);
-    color: var(--fg);
-    background: rgba(159, 231, 245, 0.04);
-  }
-  .upload-box.dashed-cyan { border-color: rgba(159, 231, 245, 0.5); border-style: dashed; }
+  .upload-box:hover { border-color: var(--accent-2); color: var(--fg); background: rgba(159, 231, 245, 0.04); }
+  .upload-box.dashed-cyan { border-color: rgba(159, 231, 245, 0.5); }
   .upload-box svg { width: 22px; height: 22px; }
   .upload-box .upload-text { font-size: 13px; font-weight: 600; }
   .upload-input { display: none; }
-
-  .thumb-wrap {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    aspect-ratio: 16 / 9;
-    background: var(--input);
-  }
-  .thumb-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  .thumb-wrap { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--input); }
+  .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .thumb-remove {
-    position: absolute;
-    top: 8px; right: 8px;
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: var(--danger);
-    color: #fff;
+    position: absolute; top: 8px; right: 8px;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--danger); color: #fff;
     display: grid; place-items: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .thumb-remove:hover { filter: brightness(1.1); }
 
-  /* Result / Flyer generado */
+  /* Flyer Generado */
   .result-card {
-    margin-top: 22px;
-    background: var(--card);
-    border: 1px solid var(--input-border);
-    border-radius: 16px;
+    margin-top: 22px; background: var(--card);
+    border: 1px solid var(--input-border); border-radius: 16px;
     padding: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: flex; flex-direction: column; gap: 16px;
   }
-  .result-card h2 {
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--accent);
+  .result-card h3 {
+    font-size: 16px; font-weight: 800; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--accent);
   }
   .result-canvas {
-    width: 100%;
-    max-width: 420px;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
+    width: 100%; max-width: 420px; aspect-ratio: 1 / 1; margin: 0 auto;
     border-radius: 14px;
     background: linear-gradient(180deg, #e7ecf2 0%, #ffffff 60%);
     color: #111;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
     padding: 26px 22px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-    overflow: hidden;
-    position: relative;
+    overflow: hidden; position: relative;
   }
   .result-placeholder {
-    width: 100%;
-    max-width: 420px;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
+    width: 100%; max-width: 420px; aspect-ratio: 1 / 1; margin: 0 auto;
     border-radius: 14px;
-    background: var(--input);
-    border: 1.5px dashed var(--input-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 14px;
-    text-align: center;
-    padding: 20px;
+    background: var(--input); border: 1.5px dashed var(--input-border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 14px; text-align: center; padding: 20px;
   }
   .download-btn {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    background: linear-gradient(180deg, #6c5ce7 0%, #4d3fc8 100%);
-    color: #fff;
+    width: 100%; max-width: 420px; margin: 0 auto;
+    background: linear-gradient(180deg, #6c5ce7 0%, #4d3fc8 100%); color: #fff;
   }
   .download-btn:hover { filter: brightness(1.08); }
-
-  /* Demo flyer content */
-  .flyer-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    align-self: flex-start;
-    background: #5a3df0;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-  }
+  .flyer-brand { display: flex; align-items: center; gap: 8px; align-self: flex-start; background: #5a3df0; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
   .flyer-brand .dot { width: 12px; height: 12px; border-radius: 3px; background: #fff; }
-  .flyer-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    margin-top: 14px;
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0)),
-      linear-gradient(180deg, #c2b9a7 0%, #8f8470 60%, #4a5b3b 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  .flyer-image::after {
-    content: "";
-    position: absolute; inset: 0;
+  .flyer-image { width: 100%; aspect-ratio: 16 / 9; margin-top: 14px; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0)), linear-gradient(180deg, #c2b9a7 0%, #8f8470 60%, #4a5b3b 100%);
+    position: relative; overflow: hidden; }
+  .flyer-image::after { content: ""; position: absolute; inset: 0;
     background:
       repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0 2px, transparent 2px 14px),
       radial-gradient(circle at 30% 70%, rgba(40,80,40,0.55), transparent 35%),
-      radial-gradient(circle at 70% 75%, rgba(40,80,40,0.55), transparent 35%);
-  }
-  .flyer-title {
-    margin-top: 14px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 20px;
-    letter-spacing: 0.5px;
-    color: #1a1a1a;
-  }
-  .flyer-sub {
-    font-style: italic;
-    font-size: 14px;
-    color: #444;
-    margin-top: 4px;
-  }
-  .flyer-bullets {
-    margin-top: 10px;
-    text-align: left;
-    width: 100%;
-    border: 1px solid #1a1a1a;
-    padding: 10px 14px;
-    font-size: 11px;
-    line-height: 1.55;
-    color: #1a1a1a;
-    font-weight: 600;
-  }
-  .flyer-footer {
-    margin-top: auto;
-    width: 100%;
-    background: #0d2540;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 9px;
-    font-weight: 700;
-  }
-  .flyer-cta {
-    background: #ff8a3d;
-    color: #1a1a1a;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin-top: 6px;
-    font-size: 10px;
-    font-weight: 800;
-    align-self: flex-start;
-  }
+      radial-gradient(circle at 70% 75%, rgba(40,80,40,0.55), transparent 35%); }
+  .flyer-title { margin-top: 14px; font-weight: 800; font-size: 20px; color: #1a1a1a; }
+  .flyer-sub { font-style: italic; font-size: 14px; color: #444; margin-top: 4px; }
+  .flyer-bullets { margin-top: 10px; text-align: left; width: 100%;
+    border: 1px solid #1a1a1a; padding: 10px 14px;
+    font-size: 11px; line-height: 1.55; color: #1a1a1a; font-weight: 600; }
+  .flyer-cta { background: #ff8a3d; color: #1a1a1a; padding: 4px 8px; border-radius: 4px; margin-top: 6px; font-size: 10px; font-weight: 800; align-self: flex-start; }
+  .flyer-footer { margin-top: auto; width: 100%; background: #0d2540; color: #fff;
+    padding: 8px 10px; border-radius: 6px; display: flex; justify-content: space-between;
+    font-size: 9px; font-weight: 700; }
 
   /* Toast */
   .toast {
-    position: fixed;
-    bottom: 24px; left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: #1a2440;
-    border: 1px solid var(--input-border);
-    color: #fff;
-    padding: 12px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-    pointer-events: none;
-    z-index: 50;
+    background: #1a2440; border: 1px solid var(--input-border);
+    color: #fff; padding: 12px 18px; border-radius: 10px;
+    font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease;
+    pointer-events: none; z-index: 50;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  /* Mobile sidebar */
-  .mobile-topbar {
-    display: none;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--sidebar);
-    border-bottom: 1px solid var(--sidebar-border);
-    position: sticky;
-    top: 0;
-    z-index: 20;
-  }
-  .mobile-toggle {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--card);
-    border: 1px solid var(--input-border);
-    display: grid; place-items: center;
-  }
-
+  /* Mobile */
+  .mobile-topbar { display: none; align-items: center; gap: 12px; padding: 12px 16px;
+    background: var(--sidebar); border-bottom: 1px solid var(--sidebar-border);
+    position: sticky; top: 0; z-index: 20; }
+  .mobile-toggle { width: 38px; height: 38px; border-radius: 10px; background: var(--card); border: 1px solid var(--input-border); display: grid; place-items: center; }
   @media (max-width: 820px) {
     body { flex-direction: column; }
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      z-index: 30;
-      width: 260px;
-      height: 100vh;
-    }
+    .sidebar { position: fixed; top: 0; left: 0; transform: translateX(-100%);
+      transition: transform 0.25s ease; z-index: 30; width: 260px; height: 100vh; }
     .sidebar.open { transform: translateX(0); }
     .mobile-topbar { display: flex; }
     .main { padding: 20px 16px 50px; }
     .page-title { font-size: 24px; }
-    .backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-      z-index: 25;
-    }
+    .roadmap-header h1 { font-size: 22px; }
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0;
+      pointer-events: none; transition: opacity 0.2s ease; z-index: 25; }
     .backdrop.show { opacity: 1; pointer-events: auto; }
   }
+
+  /* Placeholder view */
+  .placeholder-view {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; text-align: center; color: var(--muted);
+    background: var(--card); border-radius: 16px; border: 1px solid var(--input-border);
+  }
+  .placeholder-view h2 { font-size: 22px; color: #fff; margin-bottom: 10px; }
+
+  /* Misc */
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .muted-note { font-size: 12px; color: var(--muted); text-align: center; }
+  .divider { height: 1px; background: var(--input-border); margin: 4px 0; }
+
+  /* ===== Dashboard ===== */
+  .dashboard-title { font-size: 26px; font-weight: 800; margin-bottom: 22px; letter-spacing: -0.3px; }
+  .resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 30px; }
+  @media (max-width: 820px) { .resource-grid { grid-template-columns: 1fr; } }
+
+  .resource-card {
+    position: relative;
+    border-radius: 18px;
+    background: radial-gradient(120% 90% at 50% 30%, rgba(108,92,231,0.35), rgba(11,18,36,0.95) 70%);
+    border: 1px solid rgba(108,92,231,0.25);
+    padding: 32px 24px 28px;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+  }
+  .resource-card:hover { transform: translateY(-3px); border-color: rgba(159,231,245,0.5); }
+  .resource-card.pink { background: radial-gradient(120% 90% at 50% 30%, rgba(255,77,141,0.3), rgba(11,18,36,0.95) 70%); border-color: rgba(255,77,141,0.25); }
+  .coin-badge {
+    width: 170px; height: 170px; margin: 0 auto 18px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #6c5ce7, #22d3ee, #ff4d8d, #6c5ce7);
+    display: grid; place-items: center;
+    position: relative;
+    box-shadow: 0 0 60px rgba(108,92,231,0.45), inset 0 0 30px rgba(0,0,0,0.5);
+  }
+  .coin-badge::before {
+    content: "";
+    position: absolute; inset: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #2a1f4a, #0b1224 70%);
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .coin-badge .coin-text {
+    position: relative; z-index: 2;
+    font-weight: 900; font-size: 22px;
+    background: linear-gradient(135deg, #6c5ce7, #ff4d8d, #22d3ee);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1; text-align: center;
+  }
+  .coin-badge .coin-text small { display: block; font-size: 9px; opacity: 0.85; margin-top: 4px; letter-spacing: 1px; }
+  .resource-card .arrow-fab {
+    position: absolute; right: 28%; top: 58%;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #6c5ce7, #22d3ee);
+    display: grid; place-items: center; color: #fff;
+    box-shadow: 0 6px 20px rgba(34,211,238,0.4);
+  }
+  .resource-card.pink .arrow-fab { background: linear-gradient(135deg, #ff4d8d, #ffb86b); box-shadow: 0 6px 20px rgba(255,77,141,0.4); }
+  .resource-card h3 { font-size: 22px; font-weight: 800; margin-top: 12px; }
+  .resource-card p { font-size: 14px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+  /* Step hero cards */
+  .step-cards { display: flex; flex-direction: column; gap: 18px; }
+  .step-hero {
+    position: relative;
+    border-radius: 18px; overflow: hidden;
+    padding: 0; min-height: 200px;
+    border: 1px solid rgba(108,92,231,0.25);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  .step-hero:hover { transform: translateY(-3px); }
+  .step-hero .bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(108,92,231,0.85), rgba(45,20,90,0.95)),
+                radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1), transparent 50%);
+  }
+  .step-hero .bg.dark { background: linear-gradient(135deg, #1a1340 0%, #0b1224 100%); }
+  .step-hero .bg.purple { background: radial-gradient(circle at 20% 50%, rgba(108,92,231,0.7), rgba(45,20,90,0.95)); }
+  .step-hero .content {
+    position: relative; z-index: 2;
+    padding: 20px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 200px;
+  }
+  .step-hero .brand-tag { font-size: 11px; font-weight: 800; color: #fff; opacity: 0.95; letter-spacing: 0.5px; }
+  .step-pill {
+    align-self: flex-start;
+    padding: 4px 10px; border-radius: 6px;
+    background: rgba(0,0,0,0.45);
+    font-size: 10px; font-weight: 800; letter-spacing: 1px;
+    color: #ff4d8d; text-transform: uppercase;
+  }
+  .step-hero h3 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.15; }
+
+  /* ===== Tab 1 — Marketing areas ===== */
+  .area-list { display: flex; flex-direction: column; gap: 12px; }
+  .area-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 20px;
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .area-card:hover { border-color: var(--cyan); background: var(--card-2); }
+  .area-card.selected { border-color: var(--cyan); background: rgba(34,211,238,0.06); box-shadow: 0 0 0 1px var(--cyan); }
+  .area-ic {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: grid; place-items: center; flex-shrink: 0;
+    color: var(--muted);
+  }
+  .area-card.selected .area-ic { color: var(--cyan); }
+  .area-ic svg { width: 22px; height: 22px; }
+  .area-meta h4 { font-size: 16px; font-weight: 700; color: #fff; }
+  .area-meta p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ===== Tab 2 — Solucionar el Problema ===== */
+  .empty-state {
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    background: var(--card);
+    padding: 60px 30px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty-state .empty-ic {
+    width: 56px; height: 56px; margin: 0 auto 16px;
+    color: var(--muted-2);
+  }
+  .empty-state .empty-ic svg { width: 56px; height: 56px; }
+  .empty-state p { font-size: 15px; line-height: 1.5; }
+
+  /* ===== Tab 3 — Seleccionar Nicho ===== */
+  .nicho-card { background: var(--card); border: 1px solid var(--input-border); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+  .nicho-header { display: flex; align-items: center; gap: 12px; }
+  .nicho-header svg { color: var(--cyan); width: 22px; height: 22px; }
+  .nicho-header h3 { font-size: 18px; font-weight: 800; color: #fff; }
+  .nicho-counter { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .nicho-add-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; }
+  @media (max-width: 600px) { .nicho-add-row { grid-template-columns: 1fr; } }
+  .nicho-add-row input {
+    padding: 12px 14px; border-radius: 10px;
+    background: var(--input); border: 1px solid var(--input-border);
+    color: var(--fg); font-size: 14px; outline: none;
+  }
+  .btn-outline-cyan {
+    background: transparent; border: 1px solid rgba(34,211,238,0.45);
+    color: var(--cyan); padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 14px;
+  }
+  .btn-outline-cyan:hover { background: rgba(34,211,238,0.08); }
+  .btn-solid-cyan {
+    background: linear-gradient(135deg, #0e7490, #0891b2);
+    color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 14px;
+  }
+  .btn-solid-cyan:hover { filter: brightness(1.1); }
+
+  .nicho-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.3);
+    color: var(--cyan); font-size: 13px; font-weight: 600;
+  }
+  .nicho-tag button { color: var(--cyan); }
+
+  .btn-purple-full {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(34,211,238,0.12));
+    border: 1px solid rgba(108,92,231,0.5);
+    color: var(--accent);
+    padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px;
+  }
+  .btn-purple-full:hover { background: linear-gradient(135deg, rgba(108,92,231,0.25), rgba(34,211,238,0.2)); }
+
+  /* ===== Anterior / Siguiente ===== */
+  .step-nav { display: flex; gap: 16px; margin-top: 22px; }
+  .step-nav button {
+    flex: 1; padding: 14px 20px;
+    background: #fff; color: #0b1224;
+    border-radius: 12px; font-weight: 700; font-size: 15px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+  }
+  .step-nav button:hover { filter: brightness(0.92); }
+  .step-nav button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .step-nav button.next-disabled { background: #c4c4c4; }
+
+  /* ===== Tab 6 — SignalCore (cyan banner version) ===== */
+  .signal-banner {
+    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex; align-items: center; gap: 18px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 40px rgba(34,211,238,0.25);
+  }
+  .signal-logo {
+    width: 72px; height: 72px; border-radius: 16px;
+    background: #0b1224;
+    display: grid; place-items: center; flex-shrink: 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  }
+  .signal-logo svg { width: 36px; height: 36px; }
+  .signal-banner h2 {
+    font-size: 28px; font-weight: 900; color: #0b1224;
+    letter-spacing: -0.3px; line-height: 1;
+  }
+  .signal-banner p { color: #0b1224; opacity: 0.85; font-size: 14px; margin-top: 4px; font-weight: 500; }
+
+  .signal-feature {
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .signal-feature .feat-ic {
+    width: 64px; height: 64px; margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--cyan);
+    display: grid; place-items: center;
+    color: #0b1224;
+  }
+  .signal-feature .feat-ic svg { width: 30px; height: 30px; }
+  .signal-feature h4 { font-size: 18px; font-weight: 800; color: #fff; }
+  .signal-feature p { font-size: 14px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+  /* Page sub-header for Claude tabs */
+  .claude-subheader {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 22px;
+  }
+  .claude-subheader .mini-badge {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 50%, #ffb86b 100%);
+    display: grid; place-items: center;
+    flex-shrink: 0; font-weight: 800; color: #fff;
+    font-size: 9px; line-height: 1; text-align: center;
+  }
+  .claude-subheader .mini-badge .l1 { font-size: 10px; }
+  .claude-subheader .mini-badge .l2 { font-size: 7px; margin-top: 2px; }
+  .claude-subheader h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.15; }
+  .claude-subheader .sub { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
 </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- ============== SIDEBAR ============== -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-logo" aria-hidden="true">
@@ -526,26 +691,26 @@
     </div>
 
     <nav class="nav" aria-label="Menú principal">
-      <a href="#" data-nav>
+      <button data-view="dashboard">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
-      </a>
-      <a href="#" data-nav>
+      </button>
+      <button data-view="mapa" class="active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>
         Mapa de Ruta
-      </a>
-      <a href="#" class="active" data-nav>
+      </button>
+      <button data-view="creador">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         Creador de contenido
-      </a>
-      <a href="#" data-nav>
+      </button>
+      <button data-view="proyectos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         Mis Proyectos
-      </a>
-      <a href="#" data-nav>
+      </button>
+      <button data-view="ajustes">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Ajustes
-      </a>
+      </button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -561,204 +726,811 @@
       </div>
     </div>
   </aside>
-
   <div class="backdrop" id="backdrop"></div>
 
-  <!-- Main -->
+  <!-- ============== MAIN ============== -->
   <main class="main">
     <div class="mobile-topbar">
       <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-      <strong style="font-size:14px;">Flyer Creator</strong>
+      <strong style="font-size:14px;">El Constructor</strong>
     </div>
 
-    <header class="page-header">
-      <button class="back-btn" aria-label="Volver" onclick="history.back()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      </button>
-      <div>
-        <h1 class="page-title">Crear Anuncios Tipo Flyers</h1>
-        <p class="page-subtitle">Genera flyers para captar clientes utilizando la inteligencia artificial</p>
+    <!-- ====== DASHBOARD ====== -->
+    <section class="view" data-view-content="dashboard">
+      <h1 class="dashboard-title">Recursos personalizados</h1>
+
+      <div class="resource-grid">
+        <div class="resource-card" onclick="switchView('mapa')">
+          <div class="coin-badge">
+            <div class="coin-text">MKT<small>HACKER</small><small style="margin-top:6px;">MAPA DE RUTA</small></div>
+          </div>
+          <div class="arrow-fab">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <h3>Mapa de ruta</h3>
+          <p>Planifica estrategia, define objetivos y crea tu hoja de ruta</p>
+        </div>
+
+        <div class="resource-card pink" onclick="switchView('creador')">
+          <div class="coin-badge" style="background: conic-gradient(from 0deg, #ff4d8d, #ffb86b, #22d3ee, #ff4d8d);">
+            <div class="coin-text">MKT<small>HACKER</small><small style="margin-top:6px;">CREACIÓN DE CONTENIDO</small></div>
+          </div>
+          <div class="arrow-fab">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <h3>Creación de contenido</h3>
+          <p>Genera flyers y contenido visual con IA</p>
+        </div>
       </div>
-    </header>
 
-    <form id="flyerForm" class="grid" onsubmit="return false;">
-      <!-- LEFT: CONFIGURACIÓN DEL FLYER -->
-      <section class="card">
-        <h2>Configuración del Flyer</h2>
-
-        <div class="field">
-          <label for="nicho">Nicho <span class="req">*</span></label>
-          <input id="nicho" name="nicho" type="text" placeholder="Ej: Inmobiliaria" required />
-        </div>
-
-        <div class="field">
-          <label for="cliente">Cliente Final <span class="req">*</span></label>
-          <div class="select-wrap">
-            <select id="cliente" name="cliente" required>
-              <option value="">Selecciona una opción</option>
-              <option value="B2C">B2C (Consumidor final)</option>
-              <option value="B2B">B2B (Empresas)</option>
-              <option value="B2G">B2G (Sector público)</option>
-              <option value="MIXTO">Mixto</option>
-            </select>
+      <div class="step-cards">
+        <div class="step-hero" onclick="switchView('mapa')">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill">PASO 2</span>
+            <h3>Accede a El Constructor</h3>
           </div>
         </div>
 
-        <div class="field">
-          <label for="problema">Problema o Deseo Principal <span class="req">*</span></label>
-          <textarea id="problema" name="problema" rows="3" placeholder="Ej: Captar clientes y atención 24/7 y colgar vídeos en Instagram y TikTok" required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="oferta">Oferta <span class="req">*</span></label>
-          <textarea id="oferta" name="oferta" rows="2" placeholder="Ej: Sistema de automatización de reservas con IA" required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="tono">Tono del Anuncio <span class="req">*</span></label>
-          <textarea id="tono" name="tono" rows="2" placeholder="Ej: Urgente, profesional, cercano, exclusivo…" required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="formato1">Formato de Imagen <span class="req">*</span></label>
-          <div class="select-wrap">
-            <select id="formato1" name="formato1" required>
-              <option value="1080x1080">Cuadrado (1080x1080) - Feed</option>
-              <option value="1080x1350">Vertical (1080x1350) - Feed</option>
-              <option value="1080x1920">Story (1080x1920)</option>
-              <option value="1200x628">Horizontal (1200x628) - Ads</option>
-            </select>
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill">PASO 3</span>
+            <h3>Accede al Fast Track<br/>Formación – Manual</h3>
           </div>
         </div>
 
-        <button type="button" class="btn btn-primary" id="btnGenerar">
-          Generar Flyer
-        </button>
-      </section>
+        <div class="step-hero">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#ffd84a;">BONUS</span>
+            <h3>Agencia de Clones</h3>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <!-- RIGHT COLUMN -->
-      <div style="display:flex; flex-direction:column; gap:22px;">
-        <!-- IMÁGENES DE REFERENCIA -->
-        <section class="card">
+    <!-- ====== MAPA DE RUTA ====== -->
+    <section class="view active" data-view-content="mapa">
+      <div class="roadmap-header">
+        <h1 id="tabTitle">Claude</h1>
+        <span class="roadmap-logo">MKT HACKER</span>
+      </div>
+
+      <div class="tabs-bar" id="tabsBar">
+        <button class="tab-btn" data-tab="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><span class="num">1</span></button>
+        <button class="tab-btn" data-tab="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="num">2</span></button>
+        <button class="tab-btn" data-tab="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="num">3</span></button>
+        <button class="tab-btn" data-tab="4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="num">4</span></button>
+        <button class="tab-btn" data-tab="5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="num">5</span></button>
+        <button class="tab-btn" data-tab="6"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="num">6</span></button>
+        <button class="tab-btn" data-tab="7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg><span class="num">7</span></button>
+        <button class="tab-btn active" data-tab="8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="num">8</span></button>
+        <button class="tab-btn" data-tab="9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg><span class="num">9</span></button>
+        <button class="tab-btn" data-tab="10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/></svg><span class="num">10</span></button>
+        <button class="tab-btn" data-tab="11"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="num">11</span></button>
+      </div>
+
+      <!-- ===== TAB 1 — Áreas de Marketing ===== -->
+      <div class="tab-panel" data-tab-content="1">
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
           <div>
-            <h2>Imágenes de Referencia</h2>
-            <p class="card-desc" style="margin-top:8px;">Sube imágenes de ejemplo para mejorar la calidad de generación</p>
+            <h2>Áreas de Marketing</h2>
+            <p class="sub">Selecciona los problemas/áreas que quieras trabajar en tu negocio</p>
+          </div>
+        </div>
+
+        <div class="area-list" id="areaList">
+          <button class="area-card" data-area="captacion">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <div class="area-meta"><h4>Captación de Leads</h4><p>Sin leads nuevos, el negocio muere</p></div>
+          </button>
+          <button class="area-card" data-area="atencion">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <div class="area-meta"><h4>Atención a Leads</h4><p>Lead frío = venta perdida</p></div>
+          </button>
+          <button class="area-card" data-area="seguimientos">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+            <div class="area-meta"><h4>Seguimientos y Recordatorios</h4><p>El dinero está en el seguimiento</p></div>
+          </button>
+          <button class="area-card" data-area="ltv">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
+            <div class="area-meta"><h4>Lifetime Value (LTV)</h4><p>Maximizar valor por cliente</p></div>
+          </button>
+          <button class="area-card" data-area="fidelizacion">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+            <div class="area-meta"><h4>Fidelización</h4><p>Cliente feliz = cliente que vuelve</p></div>
+          </button>
+          <button class="area-card" data-area="ofertas">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
+            <div class="area-meta"><h4>Ofertas y Comunicación</h4><p>Tu base de datos es oro</p></div>
+          </button>
+          <button class="area-card" data-area="upsells">
+            <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+            <div class="area-meta"><h4>Upsells / Cross-sells</h4><p>Más valor por cliente = más ingresos</p></div>
+          </button>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="2">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 2 — Solucionar el Problema ===== -->
+      <div class="tab-panel" data-tab-content="2">
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div>
+            <h2>Solucionar el Problema</h2>
+            <p class="sub">Convierte problemas en soluciones con IA</p>
+          </div>
+        </div>
+
+        <div class="empty-state" id="problemaEmpty">
+          <div class="empty-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M12 17v4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.8 1 1.5 1 2.5v1h6v-1c0-1 .3-1.7 1-2.5A6 6 0 0 0 12 3z"/></svg>
+          </div>
+          <p>Selecciona problemas en la sección anterior para ver las soluciones</p>
+        </div>
+
+        <div id="problemaSolutions" style="display:none; flex-direction:column; gap:14px;"></div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="3">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 3 — Seleccionar Nicho ===== -->
+      <div class="tab-panel" data-tab-content="3">
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div>
+            <h2>Seleccionar Nicho</h2>
+            <p class="sub">Elige 1 nicho específico para enfocar tu oferta</p>
+          </div>
+        </div>
+
+        <div class="nicho-card">
+          <div class="nicho-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <h3>Añadir Nichos</h3>
+            <span class="nicho-counter" id="nichoCounter">0/1 nicho</span>
           </div>
 
-          <div id="thumbList" style="display:flex; flex-direction:column; gap:12px;"></div>
-
-          <label class="upload-box dashed-cyan" for="refUpload" id="addRefBox">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <span class="upload-text">Añadir imagen de referencia</span>
-          </label>
-          <input type="file" id="refUpload" class="upload-input" accept="image/*" multiple />
-
-          <div class="field">
-            <label for="instrucciones">Instrucciones para el flyer</label>
-            <textarea id="instrucciones" name="instrucciones" rows="3" placeholder="Ej: Cambiar el texto por 'Nueva oferta especial', mantener el diseño pero corregir la palabra 'automático', usar misma paleta de colores…"></textarea>
+          <div class="nicho-add-row">
+            <input id="nichoInput" type="text" placeholder="Ej: Clínicas dentales en Madrid" />
+            <button class="btn-outline-cyan" id="btnAnalizarNicho">Analizar Nicho</button>
+            <button class="btn-solid-cyan" id="btnAnadirNicho">Añadir</button>
           </div>
 
+          <div id="nichoTags" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+        </div>
+
+        <button class="btn-purple-full" style="margin-top:18px;" id="btnGenerarOfertas">
+          Generar Ofertas y Propuesta de Valor
+        </button>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next next-disabled" data-next="4">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 4 ===== -->
+      <div class="tab-panel" data-tab-content="4">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div><h2>Paso 4</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        </div>
+        <div class="placeholder-view"><h2>Sección 4</h2><p>Aún sin material visual.</p></div>
+      </div>
+
+      <!-- ===== TAB 5 ===== -->
+      <div class="tab-panel" data-tab-content="5">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div><h2>Paso 5</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        </div>
+        <div class="placeholder-view"><h2>Sección 5</h2><p>Aún sin material visual.</p></div>
+      </div>
+
+      <!-- ===== TAB 6 — SignalCore ===== -->
+      <div class="tab-panel" data-tab-content="6">
+        <div class="signal-banner">
+          <div class="signal-logo">
+            <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="sgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4d8d"/><stop offset="1" stop-color="#ffb86b"/></linearGradient></defs><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="url(#sgGrad)"/></svg>
+          </div>
+          <div>
+            <h2>SIGNALCORE</h2>
+            <p>Tu appointment setter con IA</p>
+          </div>
+        </div>
+
+        <div class="signal-feature">
+          <div class="feat-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <h4>WhatsApp</h4>
+          <p>Conecta tu número y atiende automáticamente</p>
+        </div>
+
+        <div class="signal-feature">
+          <div class="feat-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+          </div>
+          <h4>IA 24/7</h4>
+          <p>Responde en segundos, cualquier hora</p>
+        </div>
+
+        <div class="signal-feature">
+          <div class="feat-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h4>Calendario</h4>
+          <p>Agenda reuniones automáticamente en tu calendar</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:18px;">
+          <button class="btn btn-purple">Generar Prompt para Setter IA</button>
+          <button class="big-cta">
+            <svg class="ic-bolt" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Acceder a SignalCore
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </button>
+        </div>
+
+        <div class="tip" style="margin-top:14px;">
+          <span class="tip-ic">💡</span>
+          <span><strong>Tip:</strong> Usa el mismo sistema que vendes. Tus propios leads serán atendidos al instante, dando el ejemplo de lo que ofreces.</span>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="7">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 7 — CRM ===== -->
+      <div class="tab-panel" data-tab-content="7">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
+          <div><h2>CRM</h2><div class="tab-panel-subtitle">Gestiona tus contactos y ventas de manera profesional</div></div>
+        </div>
+
+        <div class="card">
+          <h3 class="flat">Airtable</h3>
+          <p class="card-desc">Base de datos que puedes moldear a tu gusto.</p>
+          <button class="btn btn-purple">Generar Prompt para crear tu base de datos</button>
+          <div class="tip">
+            <span class="tip-ic">💡</span>
+            <span><strong>Tip:</strong> Utiliza el CRM para dar seguimiento a todos los leads generados desde tus landings y campañas.</span>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="8">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 8 — Analizador de Web (Claude) ===== -->
+      <div class="tab-panel active" data-tab-content="8">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div><h2>Analizador de Web</h2><div class="tab-panel-subtitle">Analiza cualquier web y genera un prompt para replicarla en Base44</div></div>
+        </div>
+
+        <div class="card">
+          <h3 class="flat">¿Qué hace esta herramienta?</h3>
+          <p class="card-desc" style="line-height:1.6;">
+            Pega la URL de cualquier página web y esta herramienta la analiza para generar un
+            <span style="color:var(--accent); font-weight:700;">prompt completo listo para Base44</span>.
+            El prompt incluirá colores exactos, tipografías, layout, componentes, efectos y copys mejorados para
+            que puedas replicarla en tu propia app.
+          </p>
+          <div class="divider"></div>
           <div class="field">
-            <label for="formato2">Formato de Imagen</label>
+            <label for="urlAnalizar">URL a analizar <span class="req">*</span></label>
+            <input id="urlAnalizar" type="url" placeholder="https://ejemplo.com" />
+          </div>
+          <div class="row">
+            <button class="btn btn-cyan" id="btnAnalizar" style="flex:1;">Analizar y generar prompt</button>
+            <button class="btn btn-ghost" id="btnCopiarPrompt" disabled>Copiar</button>
+          </div>
+          <div class="field" id="promptResultWrap" hidden>
+            <label>Prompt generado para Base44</label>
+            <textarea id="promptResult" rows="10" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="9">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 9 — Generador de Scripts ===== -->
+      <div class="tab-panel" data-tab-content="9">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><h2>Generador de Scripts</h2><div class="tab-panel-subtitle">Genera scripts personalizados para llamadas en frío</div></div>
+        </div>
+
+        <div class="card">
+          <h3 class="flat">Generador de Scripts</h3>
+          <p class="card-desc">Se generarán scripts para los nichos seleccionados:</p>
+          <p class="muted-note" style="text-align:left;" id="nichosInfo">No hay nichos seleccionados. Vuelve a la sección 3.</p>
+
+          <div class="field">
+            <label for="scrEmpresa">Nombre de empresa (ejemplo) <span class="req">*</span></label>
+            <input id="scrEmpresa" type="text" placeholder="Ej: Inmobiliaria García" />
+          </div>
+          <div class="field">
+            <label for="scrInvestigacion">Prueba de investigación</label>
+            <input id="scrInvestigacion" type="text" placeholder="Ej: Google Maps, Instagram, web sin reservas online…" />
+          </div>
+          <div class="field">
+            <label for="scrDolor">Dolor grande detectado <span class="req">*</span></label>
+            <textarea id="scrDolor" rows="3" placeholder="Ej: Leads sin responder, no-shows, pocas reservas"></textarea>
+          </div>
+          <div class="field">
+            <label for="scrCaballo">Caballo de Troya (asset) <span class="req">*</span></label>
+            <textarea id="scrCaballo" rows="3" placeholder="Ej: web, agente IA de WhatsApp, auditoría gratuita…"></textarea>
+          </div>
+          <button class="btn btn-primary" id="btnGenerarScript">Generar Script</button>
+
+          <div class="field" id="scriptResultWrap" hidden>
+            <label>Script generado</label>
+            <textarea id="scriptResult" rows="8" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="10">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 10 — Apollo / Apify ===== -->
+      <div class="tab-panel" data-tab-content="10">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/></svg></div>
+          <div><h2>Herramientas de Prospección</h2><div class="tab-panel-subtitle">Apollo + Apify para automatizar tu captación</div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="tool-card">
+            <h4>Apollo.io</h4>
+            <div class="tool-sub">Base de datos de empresas</div>
+            <p class="tool-desc">Datos de empresas. Automatiza secuencias de prospección por email y LinkedIn.</p>
+            <ul>
+              <li>+275M de contactos</li>
+              <li>Secuencias automatizadas</li>
+              <li>Integración con CRM</li>
+            </ul>
+            <button class="btn btn-cyan" onclick="window.open('https://apollo.io', '_blank', 'noopener')">Ir a Apollo.io</button>
+          </div>
+
+          <div class="tool-card">
+            <h4>Apify</h4>
+            <div class="tool-sub">Web scraping y automatización</div>
+            <p class="tool-desc">Extrae datos de LinkedIn, Google Maps, redes sociales y cualquier web. Automatiza tareas repetitivas.</p>
+            <ul>
+              <li>Scraping de LinkedIn</li>
+              <li>Extracción de Google Maps</li>
+              <li>Miles de actores disponibles</li>
+            </ul>
+            <button class="btn btn-cyan" onclick="window.open('https://apify.com', '_blank', 'noopener')">Ir a Apify</button>
+          </div>
+        </div>
+
+        <div class="tip" style="margin-top:16px;">
+          <span class="tip-ic">💡</span>
+          <span><strong>Tip:</strong> Combina Apollo para enriquecer contactos y Apify para extraer prospectos de Google Maps en tu nicho.</span>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="9"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="11">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ===== TAB 11 ===== -->
+      <div class="tab-panel" data-tab-content="11">
+        <div class="tab-panel-header"><div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div><h2>Métricas</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        </div>
+        <div class="placeholder-view"><h2>Sección 11</h2><p>Aún sin material visual.</p></div>
+      </div>
+    </section>
+
+    <!-- ====== CREADOR DE CONTENIDO (Flyer Creator) ====== -->
+    <section class="view" data-view-content="creador">
+      <header class="page-header">
+        <button class="back-btn" aria-label="Volver" onclick="switchView('mapa')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </button>
+        <div>
+          <h1 class="page-title">Crear Anuncios Tipo Flyers</h1>
+          <p class="page-subtitle">Genera flyers para captar clientes utilizando la inteligencia artificial</p>
+        </div>
+      </header>
+
+      <form id="flyerForm" class="grid-2" onsubmit="return false;">
+        <section class="card">
+          <h3>Configuración del Flyer</h3>
+          <div class="field">
+            <label for="nicho">Nicho <span class="req">*</span></label>
+            <input id="nicho" type="text" placeholder="Ej: Inmobiliaria" />
+          </div>
+          <div class="field">
+            <label for="cliente">Cliente Final <span class="req">*</span></label>
             <div class="select-wrap">
-              <select id="formato2" name="formato2">
-                <option value="1080x1080">Cuadrado (1080x1080)</option>
-                <option value="1080x1350">Vertical (1080x1350)</option>
-                <option value="1080x1920">Story (1080x1920)</option>
-                <option value="1200x628">Horizontal (1200x628)</option>
+              <select id="cliente">
+                <option value="">Selecciona una opción</option>
+                <option value="B2C">B2C (Consumidor final)</option>
+                <option value="B2B">B2B (Empresas)</option>
+                <option value="B2G">B2G (Sector público)</option>
+                <option value="MIXTO">Mixto</option>
               </select>
             </div>
           </div>
-
-          <button type="button" class="btn btn-primary" id="btnGenerarRef">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.39 6.95H22l-6.19 4.5L18.18 19 12 14.77 5.82 19l2.37-6.55L2 7.95h7.61z"/></svg>
-            Generar Flyer
-          </button>
-        </section>
-
-        <!-- GENERACIÓN DIRECTA CON PROMPT -->
-        <section class="card">
-          <div>
-            <h2>Generación Directa con Prompt</h2>
-            <p class="card-desc" style="margin-top:8px;">Genera un flyer directamente con tu propio prompt (sin formulario)</p>
+          <div class="field">
+            <label for="problema">Problema o Deseo Principal <span class="req">*</span></label>
+            <textarea id="problema" rows="3" placeholder="Ej: Captar clientes y atención 24/7 y colgar vídeos en Instagram y TikTok"></textarea>
           </div>
           <div class="field">
-            <textarea id="prompt" rows="4" placeholder="Escribe tu prompt aquí… Ej: Crea un flyer para un gimnasio con estilo moderno, colores neón, que promocione membresías mensuales…"></textarea>
+            <label for="oferta">Oferta <span class="req">*</span></label>
+            <textarea id="oferta" rows="2" placeholder="Ej: Sistema de automatización de reservas con IA"></textarea>
           </div>
-          <button type="button" class="btn btn-primary" id="btnGenerarPrompt">
-            Generar con Prompt
-          </button>
+          <div class="field">
+            <label for="tono">Tono del Anuncio <span class="req">*</span></label>
+            <textarea id="tono" rows="2" placeholder="Ej: Urgente, profesional, cercano, exclusivo…"></textarea>
+          </div>
+          <div class="field">
+            <label for="formato1">Formato de Imagen <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="formato1">
+                <option value="1080x1080">Cuadrado (1080x1080) - Feed</option>
+                <option value="1080x1350">Vertical (1080x1350) - Feed</option>
+                <option value="1080x1920">Story (1080x1920)</option>
+                <option value="1200x628">Horizontal (1200x628) - Ads</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnGenerar">Generar Flyer</button>
         </section>
 
-        <!-- GPT prompting -->
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button type="button" class="btn btn-green" id="btnGPT">
-            Ir a GPT Prompting de Flyers
-          </button>
-          <p style="text-align:center; font-size:12px; color:var(--muted);">Genera prompts optimizados con nuestro GPT especializado</p>
-        </div>
-      </div>
-    </form>
+        <div style="display:flex; flex-direction:column; gap:18px;">
+          <section class="card">
+            <div>
+              <h3>Imágenes de Referencia</h3>
+              <p class="card-desc" style="margin-top:8px;">Sube imágenes de ejemplo para mejorar la calidad de generación</p>
+            </div>
+            <div id="thumbList" style="display:flex; flex-direction:column; gap:12px;"></div>
+            <label class="upload-box dashed-cyan" for="refUpload">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span class="upload-text">Añadir imagen de referencia</span>
+            </label>
+            <input type="file" id="refUpload" class="upload-input" accept="image/*" multiple />
+            <div class="field">
+              <label for="instrucciones">Instrucciones para el flyer</label>
+              <textarea id="instrucciones" rows="3" placeholder="Ej: Cambiar el texto por 'Nueva oferta especial', mantener el diseño pero corregir la palabra 'automático', usar misma paleta de colores…"></textarea>
+            </div>
+            <div class="field">
+              <label for="formato2">Formato de Imagen</label>
+              <div class="select-wrap">
+                <select id="formato2">
+                  <option value="1080x1080">Cuadrado (1080x1080)</option>
+                  <option value="1080x1350">Vertical (1080x1350)</option>
+                  <option value="1080x1920">Story (1080x1920)</option>
+                  <option value="1200x628">Horizontal (1200x628)</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnGenerarRef">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.39 6.95H22l-6.19 4.5L18.18 19 12 14.77 5.82 19l2.37-6.55L2 7.95h7.61z"/></svg>
+              Generar Flyer
+            </button>
+          </section>
 
-    <!-- RESULTADO -->
-    <section class="result-card" id="resultCard" hidden>
-      <h2>Flyer Generado</h2>
-      <div id="resultArea">
-        <div class="result-placeholder" id="resultPlaceholder">
-          Aquí aparecerá tu flyer cuando lo generes.
+          <section class="card">
+            <div>
+              <h3>Generación Directa con Prompt</h3>
+              <p class="card-desc" style="margin-top:8px;">Genera un flyer directamente con tu propio prompt (sin formulario)</p>
+            </div>
+            <div class="field">
+              <textarea id="prompt" rows="4" placeholder="Escribe tu prompt aquí… Ej: Crea un flyer para un gimnasio con estilo moderno, colores neón, que promocione membresías mensuales…"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnGenerarPrompt">Generar con Prompt</button>
+          </section>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button type="button" class="btn btn-green" id="btnGPT">Ir a GPT Prompting de Flyers</button>
+            <p style="text-align:center; font-size:12px; color:var(--muted);">Genera prompts optimizados con nuestro GPT especializado</p>
+          </div>
         </div>
+      </form>
+
+      <section class="result-card" id="resultCard" hidden>
+        <h3>Flyer Generado</h3>
+        <div id="resultArea">
+          <div class="result-placeholder" id="resultPlaceholder">Aquí aparecerá tu flyer cuando lo generes.</div>
+        </div>
+        <button type="button" class="btn download-btn" id="btnDescargar" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar Flyer
+        </button>
+      </section>
+    </section>
+
+    <!-- ====== PROYECTOS ====== -->
+    <section class="view" data-view-content="proyectos">
+      <div class="placeholder-view">
+        <h2>Mis Proyectos</h2>
+        <p>Listado de proyectos guardados — mándame foto para replicarla.</p>
       </div>
-      <button type="button" class="btn download-btn" id="btnDescargar" hidden>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Descargar Flyer
-      </button>
+    </section>
+
+    <!-- ====== AJUSTES ====== -->
+    <section class="view" data-view-content="ajustes">
+      <div class="placeholder-view">
+        <h2>Ajustes</h2>
+        <p>Configuración de la cuenta — mándame foto para replicarla.</p>
+      </div>
     </section>
   </main>
 
   <div class="toast" id="toast"></div>
 
 <script>
-  // ---------- Mobile sidebar ----------
+  // ===== Sidebar mobile =====
   const sidebar = document.getElementById('sidebar');
   const backdrop = document.getElementById('backdrop');
   document.getElementById('mobileToggle')?.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    backdrop.classList.add('show');
+    sidebar.classList.add('open'); backdrop.classList.add('show');
   });
   backdrop.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    backdrop.classList.remove('show');
+    sidebar.classList.remove('open'); backdrop.classList.remove('show');
   });
 
-  // ---------- Toast ----------
+  // ===== Toast =====
   const toast = document.getElementById('toast');
   let toastTimer;
   function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
+    toast.textContent = msg; toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
   }
 
-  // ---------- Reference image upload (memory only) ----------
+  // ===== View switching =====
+  function switchView(view) {
+    document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    document.querySelectorAll('[data-view-content]').forEach(el => el.classList.toggle('active', el.dataset.viewContent === view));
+    sidebar.classList.remove('open'); backdrop.classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.addEventListener('click', () => switchView(b.dataset.view));
+  });
+
+  // ===== Roadmap tabs =====
+  const tabTitles = {
+    '1': 'Claude', '2': 'Claude', '3': 'Claude', '4': 'Claude',
+    '5': 'Claude', '6': 'Claude', '7': 'Claude',
+    '8': 'Claude', '9': 'Claude', '10': 'Claude', '11': 'Claude'
+  };
+  function gotoTab(t) {
+    document.querySelectorAll('.tab-btn').forEach(x => x.classList.toggle('active', x.dataset.tab === String(t)));
+    document.querySelectorAll('[data-tab-content]').forEach(x => x.classList.toggle('active', x.dataset.tabContent === String(t)));
+    document.getElementById('tabTitle').textContent = tabTitles[t] || 'Claude';
+    const activeBtn = document.querySelector(`.tab-btn[data-tab="${t}"]`);
+    activeBtn?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.addEventListener('click', () => gotoTab(b.dataset.tab));
+  });
+  // Anterior / Siguiente
+  document.addEventListener('click', (e) => {
+    const prev = e.target.closest('.step-nav .prev[data-prev]');
+    const next = e.target.closest('.step-nav .next[data-next]');
+    if (prev) gotoTab(prev.dataset.prev);
+    if (next) gotoTab(next.dataset.next);
+  });
+
+  // ===== Tab 1 — Marketing areas =====
+  const selectedAreas = new Set();
+  const AREA_DATA = {
+    captacion: {
+      title: 'Captación de Leads',
+      solutions: ['Crear landing page de captación', 'Configurar lead magnet', 'Automatizar Meta Ads + Google Ads']
+    },
+    atencion: {
+      title: 'Atención a Leads',
+      solutions: ['Agente IA en WhatsApp 24/7', 'Setter automatizado con SignalCore', 'Cualificación con IA en chat']
+    },
+    seguimientos: {
+      title: 'Seguimientos y Recordatorios',
+      solutions: ['Secuencias automáticas en CRM', 'Recordatorios SMS/WhatsApp', 'Reactivación de leads fríos']
+    },
+    ltv: {
+      title: 'Lifetime Value (LTV)',
+      solutions: ['Onboarding personalizado', 'Programa de fidelización', 'Upsell post-venta automatizado']
+    },
+    fidelizacion: {
+      title: 'Fidelización',
+      solutions: ['NPS automatizado', 'Programa de referidos', 'Newsletter exclusivo para clientes']
+    },
+    ofertas: {
+      title: 'Ofertas y Comunicación',
+      solutions: ['Campañas segmentadas en CRM', 'Email marketing con IA', 'WhatsApp broadcast personalizado']
+    },
+    upsells: {
+      title: 'Upsells / Cross-sells',
+      solutions: ['Order bumps en checkout', 'Bundles automáticos', 'Reactivación de carrito']
+    }
+  };
+  document.querySelectorAll('.area-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const a = card.dataset.area;
+      if (selectedAreas.has(a)) { selectedAreas.delete(a); card.classList.remove('selected'); }
+      else { selectedAreas.add(a); card.classList.add('selected'); }
+      renderProblemSolutions();
+    });
+  });
+  function renderProblemSolutions() {
+    const empty = document.getElementById('problemaEmpty');
+    const list = document.getElementById('problemaSolutions');
+    if (!empty || !list) return;
+    if (selectedAreas.size === 0) {
+      empty.style.display = ''; list.style.display = 'none'; list.innerHTML = '';
+      return;
+    }
+    empty.style.display = 'none'; list.style.display = 'flex';
+    list.innerHTML = [...selectedAreas].map(key => {
+      const a = AREA_DATA[key];
+      return `
+        <div class="card">
+          <h3 class="flat">${a.title}</h3>
+          <div class="step-list">
+            ${a.solutions.map((s, i) => `<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ===== Tab 3 — Nichos =====
+  const nichos = [];
+  const nichoInput = document.getElementById('nichoInput');
+  const nichoTags = document.getElementById('nichoTags');
+  const nichoCounter = document.getElementById('nichoCounter');
+  function renderNichos() {
+    nichoTags.innerHTML = nichos.map((n, i) => `
+      <span class="nicho-tag">
+        ${escapeHTML(n)}
+        <button data-i="${i}" aria-label="Eliminar">✕</button>
+      </span>
+    `).join('');
+    nichoCounter.textContent = `${nichos.length}/1 nicho`;
+    document.querySelectorAll('#nichoTags button').forEach(b => {
+      b.addEventListener('click', () => { nichos.splice(+b.dataset.i, 1); renderNichos(); });
+    });
+    // sync script generator info
+    const info = document.getElementById('nichosInfo');
+    if (info) info.textContent = nichos.length === 0
+      ? 'No hay nichos seleccionados. Vuelve a la sección 3.'
+      : `Nichos: ${nichos.join(', ')}`;
+  }
+  document.getElementById('btnAnadirNicho')?.addEventListener('click', () => {
+    const v = nichoInput.value.trim();
+    if (!v) return showToast('Escribe un nicho.');
+    if (nichos.length >= 1) return showToast('Solo puedes elegir 1 nicho.');
+    nichos.push(v); nichoInput.value = ''; renderNichos();
+  });
+  document.getElementById('btnAnalizarNicho')?.addEventListener('click', () => {
+    const v = nichoInput.value.trim();
+    if (!v) return showToast('Escribe un nicho para analizar.');
+    showToast(`Analizando "${v}"… (simulado)`);
+  });
+  document.getElementById('btnGenerarOfertas')?.addEventListener('click', () => {
+    if (nichos.length === 0) return showToast('Añade un nicho antes de generar ofertas.');
+    showToast('Generando ofertas y propuesta de valor…');
+  });
+
+  // ===== Tab 8: Analizador de Web =====
+  document.getElementById('btnAnalizar').addEventListener('click', () => {
+    const url = document.getElementById('urlAnalizar').value.trim();
+    if (!url) return showToast('Pega una URL para analizar.');
+    let host;
+    try { host = new URL(url).hostname; } catch { return showToast('URL inválida.'); }
+    const prompt = generateBase44Prompt(url, host);
+    document.getElementById('promptResult').value = prompt;
+    document.getElementById('promptResultWrap').hidden = false;
+    document.getElementById('btnCopiarPrompt').disabled = false;
+    showToast('Prompt generado.');
+  });
+  document.getElementById('btnCopiarPrompt').addEventListener('click', async () => {
+    const text = document.getElementById('promptResult').value;
+    try { await navigator.clipboard.writeText(text); showToast('Prompt copiado al portapapeles.'); }
+    catch { showToast('No se pudo copiar.'); }
+  });
+  function generateBase44Prompt(url, host) {
+    return `Replica en Base44 la página web ${url}.
+
+ANÁLISIS VISUAL DETECTADO:
+- Dominio: ${host}
+- Paleta de colores: extraer los 4-5 colores principales del sitio (fondo, primario, acento, texto, hover).
+- Tipografía: detectar familia principal (sans-serif/serif/display) y secundaria; pesos 400/600/800.
+- Layout: hero a pantalla completa + secciones de beneficios + testimonios + CTA final + footer.
+- Componentes: navbar sticky, hero con headline + CTA, cards con icono, formulario de contacto, modal/popup si lo hubiera.
+- Efectos: fade-in al scroll, hover con elevación, gradientes sutiles, sombras suaves.
+
+COPYS MEJORADOS:
+- Headline más directo, orientado a beneficio del cliente.
+- CTAs en imperativo ("Empieza ahora", "Reserva tu plaza").
+- Microcopys que reduzcan fricción.
+
+ENTREGA:
+- Página totalmente responsive (mobile-first).
+- Código limpio listo para pegar en Base44.
+- Mantén jerarquía visual y respiración entre secciones.
+
+Genera el sitio respetando estos puntos y optimiza para conversión.`;
+  }
+
+  // ===== Tab 9: Script generator =====
+  document.getElementById('btnGenerarScript').addEventListener('click', () => {
+    const empresa = document.getElementById('scrEmpresa').value.trim();
+    const investigacion = document.getElementById('scrInvestigacion').value.trim();
+    const dolor = document.getElementById('scrDolor').value.trim();
+    const caballo = document.getElementById('scrCaballo').value.trim();
+    if (!empresa || !dolor || !caballo) return showToast('Completa los campos obligatorios (*).');
+    const script =
+`SCRIPT DE LLAMADA EN FRÍO — ${empresa}
+
+[APERTURA]
+"Hola, ¿hablo con el responsable de ${empresa}? Soy [nombre]. Te llamo por algo muy concreto, ¿tienes 30 segundos?"
+
+[ROMPER PATRÓN]
+"Estuve mirando ${investigacion || 'tu presencia online'} y vi algo que probablemente te esté costando dinero sin que te des cuenta."
+
+[DOLOR]
+"La mayoría de empresas como la tuya tienen este problema: ${dolor}. ¿Te identificas?"
+
+[CABALLO DE TROYA]
+"Justamente tenemos un ${caballo} que ayuda exactamente con eso. No te vendo nada por teléfono — solo quiero enseñártelo en 15 minutos y que tú decidas."
+
+[CIERRE]
+"¿Te va mejor mañana a las 10 o el jueves a las 17?"`;
+    document.getElementById('scriptResult').value = script;
+    document.getElementById('scriptResultWrap').hidden = false;
+    showToast('Script generado.');
+  });
+
+  // ===== Flyer Creator =====
   const refUpload = document.getElementById('refUpload');
   const thumbList = document.getElementById('thumbList');
   const uploadedRefs = [];
-
-  refUpload.addEventListener('change', (e) => {
+  refUpload?.addEventListener('change', (e) => {
     [...e.target.files].forEach(file => addRefImage(file));
     refUpload.value = '';
   });
-
   function addRefImage(file) {
     if (!file.type.startsWith('image/')) return;
     const url = URL.createObjectURL(file);
     uploadedRefs.push({ file, url });
     renderThumbs();
   }
-
   function renderThumbs() {
     thumbList.innerHTML = '';
     uploadedRefs.forEach((ref, idx) => {
@@ -771,89 +1543,59 @@
         </button>
       `;
       wrap.querySelector('.thumb-remove').addEventListener('click', () => {
-        URL.revokeObjectURL(ref.url);
-        uploadedRefs.splice(idx, 1);
-        renderThumbs();
+        URL.revokeObjectURL(ref.url); uploadedRefs.splice(idx, 1); renderThumbs();
       });
       thumbList.appendChild(wrap);
     });
   }
 
-  // ---------- Flyer generation (simulated) ----------
   const resultCard = document.getElementById('resultCard');
   const resultArea = document.getElementById('resultArea');
   const btnDescargar = document.getElementById('btnDescargar');
-
   function escapeHTML(str) {
-    return String(str ?? '').replace(/[&<>"']/g, c => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
+    return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
-
   function buildFlyer({ nicho, oferta, problema, tono, brand }) {
     const title = oferta ? oferta.toUpperCase() : '¡TU NUEVA OPORTUNIDAD!';
     const subtitle = problema || 'Lo que necesitas, cuando lo necesitas.';
-    const bullets = (tono || 'Profesional · Cercano · Eficaz')
-      .split(/[,·]+/).map(s => s.trim()).filter(Boolean).slice(0, 4);
+    const bullets = (tono || 'Profesional · Cercano · Eficaz').split(/[,·]+/).map(s => s.trim()).filter(Boolean).slice(0, 4);
     return `
       <div class="result-canvas" id="flyerCanvas">
         <div class="flyer-brand"><span class="dot"></span> ${escapeHTML(brand || (nicho || 'TU MARCA').toUpperCase())}</div>
         <div class="flyer-image"></div>
         <div class="flyer-title">${escapeHTML(title)}</div>
         <div class="flyer-sub">${escapeHTML(subtitle)}</div>
-        <div class="flyer-bullets">
-          ${bullets.map(b => `• ${escapeHTML(b.toUpperCase())}`).join('<br/>')}
-        </div>
+        <div class="flyer-bullets">${bullets.map(b => `• ${escapeHTML(b.toUpperCase())}`).join('<br/>')}</div>
         <div class="flyer-cta">¡SOLICITA MÁS INFORMACIÓN!</div>
         <div class="flyer-footer">
           <span>${escapeHTML((nicho || 'tu-marca').toLowerCase().replace(/\s+/g, ''))}.com</span>
           <span>+34 600 000 000</span>
         </div>
-      </div>
-    `;
+      </div>`;
   }
-
-  function generateFromForm(showError = true) {
+  function generateFromForm() {
     const nicho = document.getElementById('nicho').value.trim();
     const cliente = document.getElementById('cliente').value;
     const problema = document.getElementById('problema').value.trim();
     const oferta = document.getElementById('oferta').value.trim();
     const tono = document.getElementById('tono').value.trim();
-
-    if (!nicho || !cliente || !problema || !oferta || !tono) {
-      if (showError) showToast('Completa los campos obligatorios (*) del formulario.');
-      return;
-    }
+    if (!nicho || !cliente || !problema || !oferta || !tono) return showToast('Completa los campos obligatorios (*) del formulario.');
     renderFlyer({ nicho, oferta, problema, tono });
   }
-
   function generateFromRef() {
     const instr = document.getElementById('instrucciones').value.trim();
-    if (uploadedRefs.length === 0 && !instr) {
-      showToast('Añade una imagen de referencia o instrucciones.');
-      return;
-    }
+    if (uploadedRefs.length === 0 && !instr) return showToast('Añade una imagen de referencia o instrucciones.');
     const nicho = document.getElementById('nicho').value.trim() || 'Tu marca';
     const oferta = document.getElementById('oferta').value.trim() || 'Nueva oferta especial';
     const problema = instr || document.getElementById('problema').value.trim() || 'Lo que tu cliente busca.';
     const tono = document.getElementById('tono').value.trim() || 'Moderno · Premium · Cercano';
     renderFlyer({ nicho, oferta, problema, tono });
   }
-
   function generateFromPrompt() {
-    const prompt = document.getElementById('prompt').value.trim();
-    if (!prompt) {
-      showToast('Escribe un prompt para generar el flyer.');
-      return;
-    }
-    renderFlyer({
-      nicho: 'Tu marca',
-      oferta: prompt.slice(0, 60),
-      problema: prompt,
-      tono: 'Generado con prompt directo'
-    });
+    const p = document.getElementById('prompt').value.trim();
+    if (!p) return showToast('Escribe un prompt para generar el flyer.');
+    renderFlyer({ nicho: 'Tu marca', oferta: p.slice(0, 60), problema: p, tono: 'Generado con prompt directo' });
   }
-
   function renderFlyer(data) {
     resultCard.hidden = false;
     resultArea.innerHTML = `<div class="result-placeholder">Generando flyer con IA…</div>`;
@@ -864,74 +1606,10 @@
       resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 700);
   }
-
-  document.getElementById('btnGenerar').addEventListener('click', () => generateFromForm());
-  document.getElementById('btnGenerarRef').addEventListener('click', generateFromRef);
-  document.getElementById('btnGenerarPrompt').addEventListener('click', generateFromPrompt);
-  document.getElementById('btnGPT').addEventListener('click', () => {
-    showToast('Aquí abriría el GPT especializado en un flujo real.');
-  });
-
-  // ---------- Download flyer as PNG (uses html-to-image via canvas trick) ----------
-  btnDescargar.addEventListener('click', async () => {
-    const canvas = document.getElementById('flyerCanvas');
-    if (!canvas) return;
-    try {
-      const svg = await nodeToSvg(canvas);
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        const c = document.createElement('canvas');
-        const scale = 2;
-        c.width = canvas.offsetWidth * scale;
-        c.height = canvas.offsetHeight * scale;
-        const ctx = c.getContext('2d');
-        ctx.scale(scale, scale);
-        ctx.drawImage(img, 0, 0);
-        c.toBlob((blob) => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'flyer.png';
-          a.click();
-          setTimeout(() => URL.revokeObjectURL(url), 1000);
-        });
-      };
-      img.onerror = () => showToast('No se pudo exportar la imagen.');
-      img.src = svg;
-    } catch (e) {
-      showToast('Exportación no disponible en este navegador.');
-    }
-  });
-
-  // Minimal DOM -> SVG (foreignObject) for download
-  async function nodeToSvg(node) {
-    const rect = node.getBoundingClientRect();
-    const clone = node.cloneNode(true);
-    const styles = await collectStyles(node);
-    const wrapper = document.createElement('div');
-    wrapper.appendChild(clone);
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${rect.width}" height="${rect.height}">
-        <foreignObject width="100%" height="100%">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Inter, sans-serif;">
-            <style>${styles}</style>
-            ${wrapper.innerHTML}
-          </div>
-        </foreignObject>
-      </svg>`;
-    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  }
-  async function collectStyles() {
-    const sheets = [...document.styleSheets];
-    let css = '';
-    for (const sheet of sheets) {
-      try {
-        for (const rule of sheet.cssRules) css += rule.cssText + '\n';
-      } catch (_) { /* cross-origin */ }
-    }
-    return css;
-  }
+  document.getElementById('btnGenerar')?.addEventListener('click', generateFromForm);
+  document.getElementById('btnGenerarRef')?.addEventListener('click', generateFromRef);
+  document.getElementById('btnGenerarPrompt')?.addEventListener('click', generateFromPrompt);
+  document.getElementById('btnGPT')?.addEventListener('click', () => showToast('Aquí abriría el GPT especializado en un flujo real.'));
 </script>
 </body>
 </html>
