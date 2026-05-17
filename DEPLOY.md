@@ -1,76 +1,112 @@
-# Cómo subir Ayuda de Negocios JPMR a jpaumoralejo.es (Hostinger)
+# Ayuda de Negocios JPMR — Cómo usarla
 
-Esta app es **un único archivo HTML** sin build, sin dependencias y sin servidor. Solo necesitas subirla.
+Tienes **3 formas** de tenerla online, ordenadas de más rápida a más permanente.
 
-## Opción A — File Manager (la más fácil, 2 minutos)
+---
 
-1. Entra en [hpanel.hostinger.com](https://hpanel.hostinger.com) con tu cuenta.
-2. Selecciona el dominio **jpaumoralejo.es** → **Administrar**.
-3. En el menú lateral pulsa **File Manager** (Administrador de archivos).
-4. Entra en la carpeta **`public_html/`**.
-5. Decide dónde quieres que viva la app:
-   - **Como página principal** (`jpaumoralejo.es` → abre la app):
-     - Sube **`app.html`** y renómbralo a **`index.html`** (sobreescribiendo el actual si lo hay).
-   - **Como subruta** (`jpaumoralejo.es/jpmr` → abre la app):
-     - Crea la carpeta `jpmr/` dentro de `public_html/`.
-     - Dentro de ella, sube `app.html` renombrado a `index.html`.
-6. Listo. Abre la URL en el navegador.
+## 🚀 Opción 1 — Preview instantáneo (sin hacer nada)
 
-> Hay dos archivos idénticos a propósito:
-> - `constructor.html` → versión de desarrollo (la que estamos editando).
-> - `app.html` → copia 1:1 lista para renombrar a `index.html` y subir.
+Una vez subidos los archivos al repo, **funciona ya** a través de servicios públicos de preview de GitHub:
 
-## Opción B — FTP (con FileZilla)
+**👉 https://raw.githack.com/jpau2569/urban-oviedo-links/claude/build-constructor-replica-gyOeO/app.html**
 
-1. En Hostinger → **Avanzado → Cuentas FTP**: crea o copia las credenciales.
-2. Abre FileZilla y conecta:
-   - Servidor: `ftp.jpaumoralejo.es` (o el que indique Hostinger)
-   - Usuario / contraseña: los de la cuenta FTP
-   - Puerto: 21
-3. Arrastra `app.html` a `/public_html/` y renómbralo a `index.html`.
+Alternativas equivalentes (por si una falla):
+- https://htmlpreview.github.io/?https://github.com/jpau2569/urban-oviedo-links/blob/claude/build-constructor-replica-gyOeO/app.html
+- https://cdn.statically.io/gh/jpau2569/urban-oviedo-links/claude/build-constructor-replica-gyOeO/app.html
 
-## Opción C — Git automático (Hostinger Git)
+**Limitaciones:** ese link cambiará si renombras la rama, y el archivo se sirve desde un CDN — no es para producción seria. Pero para enseñárselo a un cliente, va.
 
-Si activas Git en Hostinger:
-1. **Hostinger → Avanzado → Git**.
-2. Conecta el repo `jpau2569/urban-oviedo-links` y la rama `claude/build-constructor-replica-gyOeO`.
-3. Path de despliegue: `public_html/` · archivo de entrada: `app.html`.
-4. Cada `git push` desplegará automáticamente.
+---
 
-## Subdominios sugeridos (opcional)
+## 🌐 Opción 2 — GitHub Pages (link público permanente, gratis)
 
-En Hostinger → **Dominios → Subdominios → Crear**:
-- **`negocios.jpaumoralejo.es`** → la suite completa Ayuda de Negocios JPMR.
-- **`render.jpaumoralejo.es`** → para entregar Castresana Render AI por separado a clientes inmobiliarios.
+He dejado el archivo también en `docs/index.html` para que GitHub Pages lo sirva directamente.
 
-Apunta los subdominios a la misma carpeta donde dejaste `app.html` renombrado a `index.html`.
+1. Ve a https://github.com/jpau2569/urban-oviedo-links/settings/pages
+2. En **Source**, elige `Deploy from a branch`.
+3. En **Branch**, selecciona `claude/build-constructor-replica-gyOeO` (o `main` si ya lo has mergeado) y la carpeta **`/docs`**.
+4. **Save**.
+5. Espera 1-2 minutos. URL final:
+   - https://jpau2569.github.io/urban-oviedo-links/
 
-## Notas
+Si quieres que sea la raíz del dominio Pages: cambia la fuente a `/ (root)` y mueve el archivo a la raíz, pero entonces se perdería tu Urban Oviedo. Por eso uso `/docs` — no toca nada.
 
-- App **100% cliente** (JavaScript puro, sin backend). Todo se guarda en `localStorage` del navegador del usuario.
-- Funciona en HTTP y HTTPS. Hostinger da SSL gratis con Let's Encrypt — actívalo en **SSL → Instalar SSL**.
-- Es **PWA instalable**: tu cliente puede pulsar "Añadir a pantalla de inicio" en el móvil y la usa como app nativa con icono propio.
-- **Sin tracking**: no envía datos a ningún servidor externo. Las claves API (Anthropic / Google / OpenAI) si las configuras en Ajustes se guardan **solo en el navegador del usuario final**.
+---
 
-## Si quieres conectar IA real
+## 🏠 Opción 3 — Hostinger en jpaumoralejo.es (producción real)
 
+### A. File Manager (2 minutos)
+1. [hpanel.hostinger.com](https://hpanel.hostinger.com) → dominio **jpaumoralejo.es** → **File Manager**.
+2. Entra en `public_html/`.
+3. Sube `app.html` y renómbralo a `index.html` (sobreescribiendo el actual si lo hay).
+4. Abre `jpaumoralejo.es`.
+
+### B. Como subdominio dedicado (`render.jpaumoralejo.es`)
+1. Hostinger → **Dominios → Subdominios → Crear** → nombre `render` (o el que quieras).
+2. Apunta a una carpeta nueva, por ejemplo `public_html/render/`.
+3. Sube `app.html` ahí como `index.html`.
+4. Abre `render.jpaumoralejo.es`.
+
+### C. FTP con FileZilla
+- Servidor: `ftp.jpaumoralejo.es` (o el que indique Hostinger)
+- Usuario / contraseña: los de la cuenta FTP que crees en Hostinger
+- Puerto: 21
+- Arrastra `app.html` a `/public_html/` y renómbralo a `index.html`.
+
+### D. Auto-deploy con Git
+1. Hostinger → **Avanzado → Git** → conectar.
+2. Repo: `jpau2569/urban-oviedo-links`. Rama: `claude/build-constructor-replica-gyOeO`.
+3. Path: `public_html/`. Archivo de entrada: `app.html` (Hostinger lo servirá como index si lo configuras).
+4. Cada `git push` redespliega solo.
+
+---
+
+## 📋 Lista de archivos
+
+| Archivo | Para qué sirve |
+|---|---|
+| `constructor.html` | Versión de desarrollo (la que se va editando). |
+| `app.html` | Copia 1:1 lista para subir a Hostinger. |
+| `docs/index.html` | Copia para GitHub Pages (con `.nojekyll`). |
+| `index.html` (raíz) | Tu landing original de Urban Oviedo (intacta). |
+| `DEPLOY.md` | Este archivo. |
+
+---
+
+## ✨ Qué incluye (v1.2.0)
+
+### Plataforma JPMR Negocios
+- **Dashboard** con cards de paso 1-3 + 9 bonus (Higgsfield, Claude para Agencias IA, Meta Ads, Master IA, Automatizaciones, IA Redes, Cierre ventas, Webs IA, Paquetes).
+- **Mapa de Ruta** en 11 pestañas: Áreas de Marketing → Soluciones IA → Nicho (con propuesta de valor transformacional) → Ofertas (Front-end/Core/Premium) → Landings → SignalCore → CRM → Analizador Web → Scripts en frío → Apollo+Apify → Métricas (KPIs animados + gráfico SVG + timeline).
+- **Creador de contenido**: Flyer Creator con IA simulada o real.
+- **Castresana Render AI** integrada: renderizador 3D top-down de inmuebles con datos comerciales, marca de agua, descarga PNG 4K, envío directo por WhatsApp y brochure A4 imprimible.
+- **Mis Proyectos**: multi-proyecto con plantillas pre-cargadas (Inmobiliaria, Clínica, Restaurante, Gimnasio, Asesoría, En blanco).
+- **Apps externas hub**: registra Manus, Base44, Vercel, Lovable, Bolt, Netlify.
+- **Ayuda**: explicación + análisis técnico + herramientas gratuitas (Claude, Gemini, Codex).
+
+### UX / Producto
+- **Command Palette** (⌘K / Ctrl+K) con +25 acciones.
+- **Onboarding** la primera vez (con click fuera o ESC para cerrar).
+- **Atajos de teclado** (`?` para verlos todos).
+- **Autoguardado** con indicador en topbar.
+- **Tema claro / oscuro**.
+- **Bottom navigation** móvil con 5 secciones primarias y CTA central de Render.
+- **localStorage** con fallback en memoria si el navegador lo bloquea.
+- **PWA instalable** ("Añadir a pantalla de inicio").
+
+### IA real (opcional)
 En **Ajustes → Claves API** acepta:
-- `sk-ant-…` de Anthropic (Claude)
-- `AIza…` de Google (Gemini)
+- `sk-ant-…` de Anthropic (Claude Haiku 4.5)
+- `AIza…` de Google (Gemini 2.0 Flash)
 - `sk-…` de OpenAI
 
-Las llamadas se hacen directamente desde el navegador del cliente.
+Cuando hay clave, el Analizador de Web y el Generador de Scripts llaman a la IA de verdad. Sin clave usan plantillas locales. **Las claves se guardan solo en el navegador del usuario final.**
 
-## ¿Qué incluye esta versión?
+---
 
-- **Dashboard** con recursos personalizados y 12 cards de paso/bonus.
-- **Mapa de Ruta** con 11 pestañas guiadas: áreas de marketing → soluciones → nicho → ofertas → landings → SignalCore → CRM → Analizador Web → scripts → prospección → métricas.
-- **Creador de contenido**: Flyer Creator con IA simulada.
-- **Castresana Render AI** (integrada): renderiza fichas 3D top-down de inmuebles con formulario completo, marca de agua, descarga PNG 4K, brochure A4 imprimible, envío directo por WhatsApp.
-- **Mis Proyectos**: multi-proyecto con CRUD persistente.
-- **Ajustes**: tema claro/oscuro, idioma, API keys, export/import JSON, reset.
-- **Apps externas Hub**: registra y previsualiza Manus / Base44 / Vercel.
-- **Ayuda**: qué es la plataforma + análisis técnico + herramientas gratuitas (Claude, Gemini, Codex).
-- **Command Palette** (⌘K / Ctrl+K) con +25 acciones.
-- **Onboarding** la primera vez.
-- **Autoguardado** en localStorage con indicador visual.
+## 🔒 Seguridad y privacidad
+
+- 100% cliente, sin backend.
+- Sin tracking.
+- Sin envío de datos a terceros (excepto cuando el usuario invoca la IA con su propia clave).
+- localStorage cifrado por el navegador, aislado por dominio.

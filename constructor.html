@@ -2071,6 +2071,90 @@
     border-radius: 5px;
   }
   .cr-saved-item button:hover { background: rgba(239,68,68,0.1); }
+
+  /* ===== Bottom mobile nav ===== */
+  .bottom-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    border-top: 1px solid var(--input-border);
+    padding: 6px 4px 8px;
+    z-index: 35;
+    backdrop-filter: blur(10px);
+    background: rgba(20, 29, 54, 0.95);
+  }
+  body.theme-light .bottom-nav { background: rgba(255,255,255,0.95); }
+  .bottom-nav button {
+    flex: 1; padding: 8px 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: var(--muted); font-size: 10px; font-weight: 600;
+    border-radius: 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .bottom-nav button svg { width: 20px; height: 20px; }
+  .bottom-nav button.active { color: var(--cyan); }
+  .bottom-nav button.bn-primary {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #fff !important;
+    margin: -10px 2px 0;
+    padding: 12px 4px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(22,163,74,0.4);
+  }
+  @media (max-width: 820px) {
+    .bottom-nav { display: flex; }
+    .main { padding-bottom: 80px; }
+    .chat-bubble { bottom: 86px; }
+  }
+
+  /* ===== Shortcuts overlay ===== */
+  .sc-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+  .sc-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; padding: 8px 0;
+    font-size: 14px; color: var(--fg);
+  }
+  body.theme-light .sc-row { color: #0b1224; }
+  .sc-row kbd {
+    background: var(--input); border: 1px solid var(--input-border);
+    padding: 3px 8px; border-radius: 5px;
+    font-size: 11px; font-weight: 700; font-family: 'SF Mono', Monaco, monospace;
+    color: var(--fg);
+  }
+  .sc-row span:first-child { flex: 1; }
+
+  /* ===== Template picker ===== */
+  .template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 360px; overflow-y: auto; padding: 4px; }
+  @media (max-width: 540px) { .template-grid { grid-template-columns: 1fr; } }
+  .template-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px;
+    background: var(--card-2); border: 1px solid var(--input-border);
+    border-radius: 10px;
+    text-align: left;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+  .template-card:hover { border-color: var(--cyan); background: var(--card-3); transform: translateY(-1px); }
+  .tpl-ic {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .tpl-ic svg { width: 18px; height: 18px; }
+  .template-card strong { display: block; font-size: 14px; color: var(--fg); font-weight: 700; }
+  body.theme-light .template-card strong { color: #0b1224; }
+  .template-card span { font-size: 11px; color: var(--muted); }
+
+  /* AI indicator badge */
+  .ai-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 999px;
+    background: rgba(34,211,238,0.12);
+    color: var(--cyan);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
+    margin-left: 8px;
+  }
+  .ai-badge.live { background: rgba(0,215,116,0.15); color: var(--green); }
+  .ai-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .ai-badge.live .dot { animation: pulse 1.6s ease-in-out infinite; }
 </style>
 </head>
 <body>
@@ -2085,11 +2169,11 @@
     </div>
 
     <nav class="nav" aria-label="Menú principal">
-      <button data-view="dashboard">
+      <button data-view="dashboard" class="active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </button>
-      <button data-view="mapa" class="active">
+      <button data-view="mapa">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>
         Mapa de Ruta
       </button>
@@ -2161,7 +2245,7 @@
     </div>
 
     <!-- ====== DASHBOARD ====== -->
-    <section class="view" data-view-content="dashboard">
+    <section class="view active" data-view-content="dashboard">
       <h1 class="dashboard-title">Recursos personalizados</h1>
 
       <div class="resource-grid">
@@ -2358,7 +2442,7 @@
     </div>
 
     <!-- ====== MAPA DE RUTA ====== -->
-    <section class="view active" data-view-content="mapa">
+    <section class="view" data-view-content="mapa">
       <div class="roadmap-header">
         <h1 id="tabTitle">Mapa de Ruta</h1>
         <span class="roadmap-logo">JPMR NEGOCIOS</span>
@@ -3746,6 +3830,102 @@
     </div>
   </div>
 
+  <!-- ===== Shortcuts overlay ===== -->
+  <div class="onboard-overlay" id="shortcutsOverlay" role="dialog">
+    <div class="onboard-card" style="max-width:440px;">
+      <h2 style="margin-bottom:14px;">Atajos de teclado</h2>
+      <div class="sc-list">
+        <div class="sc-row"><span>Abrir buscador / Command Palette</span><kbd>⌘K</kbd><kbd>Ctrl+K</kbd></div>
+        <div class="sc-row"><span>Ver atajos</span><kbd>?</kbd></div>
+        <div class="sc-row"><span>Cerrar modal / palette</span><kbd>Esc</kbd></div>
+        <div class="sc-row"><span>Navegar en palette</span><kbd>↑</kbd><kbd>↓</kbd></div>
+        <div class="sc-row"><span>Ejecutar comando</span><kbd>↵</kbd></div>
+      </div>
+      <div class="onboard-actions" style="margin-top:18px;">
+        <button class="btn btn-cyan" style="flex:1; padding:10px 16px; font-size:14px;" onclick="document.getElementById('shortcutsOverlay').classList.remove('open')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Mobile bottom nav ===== -->
+  <nav class="bottom-nav" aria-label="Navegación móvil">
+    <button data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Inicio</span>
+    </button>
+    <button data-view="mapa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/></svg>
+      <span>Ruta</span>
+    </button>
+    <button data-view="castrender" class="bn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
+      <span>Render</span>
+    </button>
+    <button data-view="proyectos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span>Proyectos</span>
+    </button>
+    <button data-view="ajustes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Ajustes</span>
+    </button>
+  </nav>
+
+  <!-- ===== Project template picker ===== -->
+  <div class="onboard-overlay" id="templateOverlay" role="dialog">
+    <div class="onboard-card" style="max-width:540px;">
+      <h2 style="margin-bottom:6px;">Elige plantilla</h2>
+      <p style="margin-bottom:18px;">Empieza con datos pre-rellenados para tu sector o desde cero.</p>
+      <div class="template-grid">
+        <button class="template-card" data-tpl="blank">
+          <div class="tpl-ic" style="background:#374151;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <strong>En blanco</strong>
+          <span>Empieza desde cero</span>
+        </button>
+        <button class="template-card" data-tpl="inmobiliaria">
+          <div class="tpl-ic" style="background:#16a34a;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <strong>Inmobiliaria</strong>
+          <span>Captación + setter + render</span>
+        </button>
+        <button class="template-card" data-tpl="clinica">
+          <div class="tpl-ic" style="background:#0ea5e9;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 14V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v12l4-2 4 2 4-2 4 2v-4z"/></svg>
+          </div>
+          <strong>Clínica dental</strong>
+          <span>Citas + recordatorios</span>
+        </button>
+        <button class="template-card" data-tpl="restaurante">
+          <div class="tpl-ic" style="background:#f59e0b;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <strong>Restaurante</strong>
+          <span>Reservas + fidelización</span>
+        </button>
+        <button class="template-card" data-tpl="gimnasio">
+          <div class="tpl-ic" style="background:#ef4444;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M6 4v16M18 4v16M2 8h4M2 16h4M18 8h4M18 16h4M6 12h12"/></svg>
+          </div>
+          <strong>Gimnasio</strong>
+          <span>Membresías + leads</span>
+        </button>
+        <button class="template-card" data-tpl="asesoria">
+          <div class="tpl-ic" style="background:#6c5ce7;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 11H1v3h8v3l4-4-4-4v2z"/><circle cx="17" cy="12" r="9"/></svg>
+          </div>
+          <strong>Asesoría / Gestoría</strong>
+          <span>B2B + B2C profesional</span>
+        </button>
+      </div>
+      <div class="onboard-actions" style="margin-top:18px;">
+        <button class="topbar-btn" onclick="document.getElementById('templateOverlay').classList.remove('open')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <button class="chat-bubble" aria-label="Ayuda" title="¿Qué es El Constructor?" onclick="switchView('ayuda')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
   </button>
@@ -4163,8 +4343,23 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   // =====================================================================
   // ============ STATE MANAGEMENT + LOCALSTORAGE PERSISTENCE ============
   // =====================================================================
-  const STATE_KEY = 'mkthacker_constructor_state_v1';
-  const ONBOARD_KEY = 'mkthacker_onboarded_v1';
+  const STATE_KEY = 'jpmr_state_v1';
+  const ONBOARD_KEY = 'jpmr_onboarded_v1';
+
+  // localStorage with in-memory fallback (some browsers / private mode block it)
+  const safeStorage = (() => {
+    try {
+      const k = '__test__'; localStorage.setItem(k, '1'); localStorage.removeItem(k);
+      return localStorage;
+    } catch (e) {
+      const mem = {};
+      return {
+        getItem: (k) => k in mem ? mem[k] : null,
+        setItem: (k, v) => { mem[k] = String(v); },
+        removeItem: (k) => { delete mem[k]; }
+      };
+    }
+  })();
 
   const state = {
     version: 1,
@@ -4187,7 +4382,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
 
   function loadState() {
     try {
-      const raw = localStorage.getItem(STATE_KEY);
+      const raw = safeStorage.getItem(STATE_KEY);
       if (raw) Object.assign(state, JSON.parse(raw));
     } catch (e) { console.warn('Could not load state', e); }
   }
@@ -4197,7 +4392,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     setSavePill('saving');
     saveTimer = setTimeout(() => {
       try {
-        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        safeStorage.setItem(STATE_KEY, JSON.stringify(state));
         setSavePill('saved');
       } catch (e) {
         setSavePill('error');
@@ -4631,10 +4826,20 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   });
   document.getElementById('cmdOverlay')?.addEventListener('click', (e) => { if (e.target.id === 'cmdOverlay') closeCmd(); });
 
-  // Global shortcut
+  // Global shortcuts
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmd(); }
-    if (e.key === 'Escape') closeCmd();
+    if (e.key === 'Escape') {
+      closeCmd();
+      document.getElementById('onboardOverlay')?.classList.remove('open');
+      document.getElementById('appModal')?.classList.remove('open');
+      document.getElementById('cr2BrochureModal')?.classList.remove('open');
+      document.getElementById('shortcutsOverlay')?.classList.remove('open');
+    }
+    if (e.key === '?' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) {
+      e.preventDefault();
+      document.getElementById('shortcutsOverlay')?.classList.add('open');
+    }
   });
 
   // ===== Onboarding =====
@@ -4659,12 +4864,16 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   }
   function endOnboarding() {
     document.getElementById('onboardOverlay').classList.remove('open');
-    localStorage.setItem(ONBOARD_KEY, '1');
+    safeStorage.setItem(ONBOARD_KEY, '1');
   }
   document.getElementById('onboardSkip')?.addEventListener('click', endOnboarding);
   document.getElementById('onboardNext')?.addEventListener('click', () => {
     if (onboardStep < ONBOARD_STEPS.length - 1) { onboardStep++; renderOnboard(); }
     else endOnboarding();
+  });
+  // Click outside or ESC closes onboarding
+  document.getElementById('onboardOverlay')?.addEventListener('click', (e) => {
+    if (e.target.id === 'onboardOverlay') endOnboarding();
   });
 
   // ===== Toast types =====
@@ -5439,8 +5648,250 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   updateProgress();
 
   // First-time onboarding
-  if (!localStorage.getItem(ONBOARD_KEY)) {
+  if (!safeStorage.getItem(ONBOARD_KEY)) {
     setTimeout(startOnboarding, 600);
+  }
+
+  // =====================================================================
+  // ============ BOTTOM MOBILE NAV ======================================
+  // =====================================================================
+  function updateBottomNav() {
+    const current = document.querySelector('.view.active')?.dataset.viewContent;
+    document.querySelectorAll('.bottom-nav button').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === current);
+    });
+  }
+  document.querySelectorAll('.bottom-nav button').forEach(b => {
+    b.addEventListener('click', () => { switchView(b.dataset.view); updateBottomNav(); });
+  });
+  // Hook into existing switchView
+  const _origSwitchView = switchView;
+  switchView = function(v) { _origSwitchView(v); updateBottomNav(); };
+  updateBottomNav();
+
+  // =====================================================================
+  // ============ PROJECT TEMPLATES ======================================
+  // =====================================================================
+  const TEMPLATES = {
+    blank: { name: 'Proyecto en blanco', areas: [], nichos: [], agencia: '' },
+    inmobiliaria: {
+      name: 'Inmobiliaria',
+      areas: ['captacion', 'atencion', 'seguimientos', 'fidelizacion'],
+      nichos: ['Inmobiliaria'],
+      agencia: 'Asesoría Castresana'
+    },
+    clinica: {
+      name: 'Clínica dental',
+      areas: ['captacion', 'atencion', 'seguimientos', 'fidelizacion'],
+      nichos: ['Clínicas dentales'],
+      agencia: ''
+    },
+    restaurante: {
+      name: 'Restaurante',
+      areas: ['atencion', 'fidelizacion', 'ofertas'],
+      nichos: ['Restaurantes'],
+      agencia: ''
+    },
+    gimnasio: {
+      name: 'Gimnasio',
+      areas: ['captacion', 'atencion', 'fidelizacion', 'ltv'],
+      nichos: ['Gimnasios y centros deportivos'],
+      agencia: ''
+    },
+    asesoria: {
+      name: 'Asesoría / Gestoría',
+      areas: ['captacion', 'atencion', 'seguimientos', 'ofertas'],
+      nichos: ['Asesorías y gestorías'],
+      agencia: ''
+    }
+  };
+  function applyTemplate(key) {
+    const tpl = TEMPLATES[key];
+    if (!tpl) return;
+    // Build a fresh project from template
+    const id = uid();
+    const newP = {
+      id, createdAt: Date.now(),
+      areas: [...tpl.areas],
+      customAreas: [],
+      nichos: [...tpl.nichos],
+      agencia: tpl.agencia,
+      landingModalidad: 'tradicional',
+      landingIdioma: 'es',
+      templateName: tpl.name
+    };
+    state.projects.unshift(newP);
+    setActiveProject(id);
+    document.getElementById('templateOverlay').classList.remove('open');
+    showToast(`Plantilla "${tpl.name}" cargada.`, 'success');
+    switchView('mapa');
+  }
+  document.querySelectorAll('.template-card').forEach(c => {
+    c.addEventListener('click', () => applyTemplate(c.dataset.tpl));
+  });
+  document.getElementById('templateOverlay')?.addEventListener('click', (e) => {
+    if (e.target.id === 'templateOverlay') e.target.classList.remove('open');
+  });
+  // Hook "Nuevo proyecto" button to open template picker
+  const origNewProject = document.getElementById('btnNuevoProyecto');
+  if (origNewProject) {
+    const newBtn = origNewProject.cloneNode(true);
+    origNewProject.parentNode.replaceChild(newBtn, origNewProject);
+    newBtn.addEventListener('click', () => {
+      document.getElementById('templateOverlay').classList.add('open');
+    });
+  }
+
+  // =====================================================================
+  // ============ REAL AI INTEGRATION (Anthropic / Google) ===============
+  // =====================================================================
+  async function callAnthropic(prompt, system = '') {
+    const key = state.keys.anthropic;
+    if (!key) return null;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1024,
+          system: system || 'Eres un asistente experto en marketing digital y servicios IA para pymes españolas. Responde en español, conciso y accionable.',
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      if (!res.ok) {
+        const t = await res.text();
+        console.warn('Anthropic error:', t);
+        return null;
+      }
+      const data = await res.json();
+      return data.content?.[0]?.text || null;
+    } catch (e) {
+      console.warn('Anthropic fetch error', e);
+      return null;
+    }
+  }
+  async function callGemini(prompt) {
+    const key = state.keys.google;
+    if (!key) return null;
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+    } catch (e) {
+      return null;
+    }
+  }
+  async function callAI(prompt, system = '') {
+    if (state.keys.anthropic) {
+      const r = await callAnthropic(prompt, system);
+      if (r) return { text: r, provider: 'Claude' };
+    }
+    if (state.keys.google) {
+      const r = await callGemini((system ? system + '\n\n' : '') + prompt);
+      if (r) return { text: r, provider: 'Gemini' };
+    }
+    return null;
+  }
+  function hasAIKey() {
+    return !!(state.keys.anthropic || state.keys.google);
+  }
+
+  // Wrap the analizador button to use real AI when key is set
+  const _origBtnAnalizar = document.getElementById('btnAnalizar');
+  if (_origBtnAnalizar) {
+    const newBtn = _origBtnAnalizar.cloneNode(true);
+    _origBtnAnalizar.parentNode.replaceChild(newBtn, _origBtnAnalizar);
+    newBtn.addEventListener('click', async () => {
+      const url = document.getElementById('urlAnalizar').value.trim();
+      if (!url) return showToast('Pega una URL para analizar.', 'error');
+      let host;
+      try { host = new URL(url).hostname; } catch { return showToast('URL inválida.', 'error'); }
+
+      const wrap = document.getElementById('promptResultWrap');
+      const out = document.getElementById('promptResult');
+      wrap.hidden = false;
+      out.value = 'Generando…';
+      document.getElementById('btnCopiarPrompt').disabled = true;
+
+      if (hasAIKey()) {
+        const result = await callAI(
+          `Analiza la web ${url} y genera un prompt completo en español listo para pegarlo en Base44 que reproduzca esta web con: colores exactos, tipografía, layout, componentes principales, secciones, microinteracciones, copys optimizados para conversión y CTAs claros. Devuelve solo el prompt, sin introducciones.`,
+          'Eres experto en análisis de webs y redacción de prompts técnicos para Base44.'
+        );
+        if (result) {
+          out.value = result.text;
+          showToast(`Prompt generado con ${result.provider}.`, 'success');
+        } else {
+          out.value = generateBase44Prompt(url, host);
+          showToast('Clave API inválida — usando plantilla local.', 'error');
+        }
+      } else {
+        out.value = generateBase44Prompt(url, host);
+        showToast('Sin API key — plantilla local. Configúrala en Ajustes para IA real.', 'success');
+      }
+      document.getElementById('btnCopiarPrompt').disabled = false;
+    });
+  }
+
+  // Wrap script generator
+  const _origBtnScript = document.getElementById('btnGenerarScript');
+  if (_origBtnScript) {
+    const newBtn = _origBtnScript.cloneNode(true);
+    _origBtnScript.parentNode.replaceChild(newBtn, _origBtnScript);
+    newBtn.addEventListener('click', async () => {
+      const empresa = document.getElementById('scrEmpresa').value.trim();
+      const investigacion = document.getElementById('scrInvestigacion').value.trim();
+      const dolor = document.getElementById('scrDolor').value.trim();
+      const caballo = document.getElementById('scrCaballo').value.trim();
+      if (!empresa || !dolor || !caballo) return showToast('Completa los campos obligatorios (*).', 'error');
+
+      const wrap = document.getElementById('scriptResultWrap');
+      const out = document.getElementById('scriptResult');
+      wrap.hidden = false; out.value = 'Generando…';
+
+      if (hasAIKey()) {
+        const r = await callAI(
+          `Genera un script de llamada en frío en español para vender servicios a ${empresa}.
+Investigación previa: ${investigacion || 'web pública'}.
+Dolor detectado: ${dolor}.
+Asset / caballo de Troya: ${caballo}.
+Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre con dos opciones de horario. Tono directo, español de España, máximo 200 palabras.`,
+          'Eres experto en ventas B2B en frío y redacción de scripts comerciales en español.'
+        );
+        if (r) { out.value = r.text; showToast(`Script generado con ${r.provider}.`, 'success'); return; }
+      }
+      // Fallback to local template
+      out.value = `SCRIPT DE LLAMADA EN FRÍO — ${empresa}
+
+[APERTURA]
+"Hola, ¿hablo con el responsable de ${empresa}? Soy [nombre]. Te llamo por algo muy concreto, ¿tienes 30 segundos?"
+
+[ROMPER PATRÓN]
+"Estuve mirando ${investigacion || 'tu presencia online'} y vi algo que probablemente te esté costando dinero sin que te des cuenta."
+
+[DOLOR]
+"La mayoría de empresas como la tuya tienen este problema: ${dolor}. ¿Te identificas?"
+
+[CABALLO DE TROYA]
+"Justamente tenemos un ${caballo} que ayuda exactamente con eso. No te vendo nada por teléfono — solo quiero enseñártelo en 15 minutos y que tú decidas."
+
+[CIERRE]
+"¿Te va mejor mañana a las 10 o el jueves a las 17?"`;
+      showToast(hasAIKey() ? 'API falló — plantilla local.' : 'Sin API key — plantilla local.', 'success');
+    });
   }
 
   // Register service worker (PWA) — uses Blob URL so no extra file needed
