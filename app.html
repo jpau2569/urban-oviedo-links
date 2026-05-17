@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>El Constructor | MKT Hacker</title>
-<meta name="description" content="Plataforma de marketing con IA: mapa de ruta, scripts, CRM, automatización y creador de contenido." />
+<title>Ayuda de Negocios JPMR</title>
+<meta name="description" content="Plataforma JPMR — herramientas de IA y automatización para negocios: mapa de ruta, scripts, CRM, contenido y Castresana Render AI." />
 <meta name="theme-color" content="#0b1224" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"El Constructor","short_name":"Constructor","start_url":".","display":"standalone","background_color":"%230b1224","theme_color":"%236c5ce7","icons":[{"src":"data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 192 192\"%3E%3Crect width=\"192\" height=\"192\" rx=\"40\" fill=\"%236c5ce7\"/%3E%3Ctext x=\"96\" y=\"104\" font-family=\"Inter\" font-size=\"56\" font-weight=\"800\" fill=\"white\" text-anchor=\"middle\"%3EMKT%3C/text%3E%3Ctext x=\"96\" y=\"148\" font-family=\"Inter\" font-size=\"28\" font-weight=\"700\" fill=\"white\" text-anchor=\"middle\"%3EHACKER%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}' />
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Ayuda de Negocios JPMR","short_name":"JPMR","start_url":".","display":"standalone","background_color":"%230b1224","theme_color":"%2316a34a","icons":[{"src":"data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 192 192\"%3E%3Crect width=\"192\" height=\"192\" rx=\"40\" fill=\"%2316a34a\"/%3E%3Ctext x=\"96\" y=\"104\" font-family=\"Inter\" font-size=\"58\" font-weight=\"800\" fill=\"white\" text-anchor=\"middle\"%3EJPMR%3C/text%3E%3Ctext x=\"96\" y=\"148\" font-family=\"Inter\" font-size=\"24\" font-weight=\"700\" fill=\"white\" text-anchor=\"middle\"%3ENEGOCIOS%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}' />
 <style>
   :root {
     --bg: #0b1224;
@@ -1703,6 +1703,104 @@
     font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
     backdrop-filter: blur(4px);
   }
+  .cr2-render-watermark {
+    position: absolute; top: 12px; right: 12px;
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(22,163,74,0.92); color: #fff;
+    padding: 5px 10px; border-radius: 6px;
+    font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+  }
+  .cr2-render-watermark svg { width: 12px; height: 12px; }
+
+  .cr2-details { background: var(--cr-green-faint); border: 1px solid var(--cr-green-light); border-radius: 10px; padding: 0 14px; }
+  .cr2-details[open] { padding: 12px 14px; }
+  .cr2-details summary {
+    cursor: pointer; padding: 12px 0;
+    font-size: 13px; font-weight: 700; color: var(--cr-green-dark);
+    list-style: none; user-select: none;
+  }
+  .cr2-details summary::-webkit-details-marker { display: none; }
+  .cr2-details summary::before {
+    content: "+"; margin-right: 8px; font-weight: 800;
+    transition: transform 0.2s ease; display: inline-block;
+  }
+  .cr2-details[open] summary::before { transform: rotate(45deg); }
+  .cr2-details > .cr2-row, .cr2-details > .cr2-field { margin-bottom: 10px; }
+
+  /* Brochure modal */
+  .cr2-brochure-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+  }
+  .cr2-brochure-modal.open { display: flex; }
+  .cr2-brochure-paper {
+    width: min(640px, 100%);
+    aspect-ratio: 1 / 1.414;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .cr2-bro-header {
+    background: var(--cr-green); color: #fff;
+    padding: 18px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cr2-bro-header .left { display: flex; align-items: center; gap: 10px; }
+  .cr2-bro-header .logo {
+    width: 32px; height: 32px; background: #fff; border-radius: 8px;
+    display: grid; place-items: center; color: var(--cr-green);
+    font-weight: 900; font-size: 14px;
+  }
+  .cr2-bro-header h2 { font-size: 18px; font-weight: 900; margin: 0; }
+  .cr2-bro-header small { font-size: 11px; opacity: 0.9; }
+  .cr2-bro-status {
+    background: #ff8a3d; color: #1a1a1a;
+    padding: 6px 12px; border-radius: 6px;
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+  }
+  .cr2-bro-image { flex: 1.4; position: relative; overflow: hidden; }
+  .cr2-bro-image .cr2-render { width: 100%; height: 100%; }
+  .cr2-bro-body { padding: 18px 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .cr2-bro-title { font-size: 22px; font-weight: 900; line-height: 1.1; }
+  .cr2-bro-price { font-size: 26px; font-weight: 900; color: var(--cr-green); }
+  .cr2-bro-specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
+  .cr2-bro-spec {
+    background: var(--cr-green-faint); border: 1px solid var(--cr-green-light);
+    border-radius: 8px; padding: 8px 12px; text-align: center;
+  }
+  .cr2-bro-spec strong { display: block; font-size: 16px; color: var(--cr-green-dark); font-weight: 800; }
+  .cr2-bro-spec small { font-size: 10px; color: #6b7280; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+  .cr2-bro-footer {
+    background: #111; color: #fff;
+    padding: 14px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .cr2-bro-footer .brand { display: flex; align-items: center; gap: 8px; }
+  .cr2-bro-close {
+    position: absolute; top: -50px; right: 0;
+    background: rgba(255,255,255,0.1); color: #fff;
+    width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .cr2-bro-actions {
+    position: absolute; top: -50px; left: 0;
+    display: flex; gap: 8px;
+  }
+  .cr2-bro-actions button {
+    background: rgba(255,255,255,0.1); color: #fff;
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .cr2-bro-actions button:hover { background: rgba(255,255,255,0.18); }
   .cr2-render.dia { filter: brightness(1); }
   .cr2-render.atardecer { filter: brightness(0.92) sepia(0.3) hue-rotate(-10deg); }
   .cr2-render.noche { filter: brightness(0.55) sepia(0.2) hue-rotate(200deg); }
@@ -1981,8 +2079,8 @@
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-logo" aria-hidden="true">
-        <span class="l1">MKT</span>
-        <span class="l2">HACKER</span>
+        <span class="l1">JPMR</span>
+        <span class="l2">NEGOCIOS</span>
       </div>
     </div>
 
@@ -2038,7 +2136,7 @@
       <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-      <strong style="font-size:14px;">El Constructor</strong>
+      <strong style="font-size:14px;">Ayuda de Negocios JPMR</strong>
     </div>
 
     <!-- ===== Global top bar ===== -->
@@ -2094,7 +2192,7 @@
         <div class="step-hero" onclick="switchView('mapa')">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill">PASO 2</span>
             <h3>Accede a El Constructor</h3>
           </div>
@@ -2103,7 +2201,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill">PASO 3</span>
             <h3>Accede al Fast Track<br/>Formación – Manual</h3>
           </div>
@@ -2112,7 +2210,7 @@
         <div class="step-hero">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Agencia de Clones</h3>
           </div>
@@ -2122,7 +2220,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Higgsfield para<br/>contenido y ads</h3>
           </div>
@@ -2134,7 +2232,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>CLAUDE para<br/>Agencias IA</h3>
           </div>
@@ -2146,7 +2244,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Meta Ads<br/>con IA</h3>
           </div>
@@ -2158,7 +2256,7 @@
         <div class="step-hero">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS AVANZADO</span>
             <h3>MASTER IA</h3>
           </div>
@@ -2168,7 +2266,7 @@
         <div class="step-hero">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Automatizaciones<br/>y Agentes</h3>
           </div>
@@ -2177,7 +2275,7 @@
         <div class="step-hero">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>IA<br/>para Redes</h3>
           </div>
@@ -2186,7 +2284,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Cierre de ventas<br/>en primera llamada</h3>
           </div>
@@ -2196,7 +2294,7 @@
         <div class="step-hero">
           <div class="bg purple"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Páginas web<br/>profesionales con IA</h3>
           </div>
@@ -2205,7 +2303,7 @@
         <div class="step-hero">
           <div class="bg dark"></div>
           <div class="content">
-            <div class="brand-tag">MKT Hackers</div>
+            <div class="brand-tag">JPMR Negocios</div>
             <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Paquetes listos<br/>para usar</h3>
           </div>
@@ -2227,7 +2325,7 @@
       <div class="apps-grid" id="appsGrid"></div>
 
       <footer class="campus-footer">
-        MKT Hackers© 2026 | Todos los derechos reservados | <a href="#">Aviso Legal</a> | <a href="#">Privacidad</a> | <a href="#">Cookies</a>
+        JPMR Negocios © 2026 | Todos los derechos reservados | <a href="#">Aviso Legal</a> | <a href="#">Privacidad</a> | <a href="#">Cookies</a>
       </footer>
     </section>
 
@@ -2262,8 +2360,8 @@
     <!-- ====== MAPA DE RUTA ====== -->
     <section class="view active" data-view-content="mapa">
       <div class="roadmap-header">
-        <h1 id="tabTitle">Claude</h1>
-        <span class="roadmap-logo">MKT HACKER</span>
+        <h1 id="tabTitle">Mapa de Ruta</h1>
+        <span class="roadmap-logo">JPMR NEGOCIOS</span>
       </div>
 
       <div class="roadmap-progress">
@@ -2289,7 +2387,7 @@
       <!-- ===== TAB 1 — Áreas de Marketing ===== -->
       <div class="tab-panel" data-tab-content="1">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2>Áreas de Marketing</h2>
             <p class="sub">Selecciona los problemas/áreas que quieras trabajar en tu negocio</p>
@@ -2344,7 +2442,7 @@
       <!-- ===== TAB 2 — Solucionar el Problema ===== -->
       <div class="tab-panel" data-tab-content="2">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2>Solucionar el Problema</h2>
             <p class="sub">Convierte problemas en soluciones con IA</p>
@@ -2369,7 +2467,7 @@
       <!-- ===== TAB 3 — Seleccionar Nicho ===== -->
       <div class="tab-panel" data-tab-content="3">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2>Seleccionar Nicho</h2>
             <p class="sub">Elige 1 nicho específico para enfocar tu oferta</p>
@@ -2423,7 +2521,7 @@
       <!-- ===== TAB 4 — Ofertas y Propuesta de Valor ===== -->
       <div class="tab-panel" data-tab-content="4">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2>Ofertas y Propuesta de Valor</h2>
             <p class="sub">Tres niveles de oferta listos para vender al nicho seleccionado</p>
@@ -2456,7 +2554,7 @@
       <!-- ===== TAB 5 — Landing Pages ===== -->
       <div class="tab-panel" data-tab-content="5">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2 style="display:flex; align-items:center; gap:10px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -2729,7 +2827,7 @@
       <!-- ===== TAB 11 — Métricas ===== -->
       <div class="tab-panel" data-tab-content="11">
         <div class="claude-subheader">
-          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div class="mini-badge"><span class="l1">JPMR</span><span class="l2">NEGOCIOS</span></div>
           <div>
             <h2>Métricas</h2>
             <p class="sub">Resumen de actividad de tu sistema de captación e IA</p>
@@ -3062,8 +3160,8 @@
       <div class="settings-section">
         <h3>Sobre la app</h3>
         <div class="settings-row">
-          <div class="label">Versión<small>Réplica visual con foco UX.</small></div>
-          <span style="font-size:13px; color:var(--muted); font-family:'SF Mono', Monaco, monospace;">El Constructor · v1.0.0</span>
+          <div class="label">Versión<small>Plataforma personal de Pau Moralejo.</small></div>
+          <span style="font-size:13px; color:var(--muted); font-family:'SF Mono', Monaco, monospace;">Ayuda de Negocios JPMR · v1.1.0</span>
         </div>
         <div class="settings-row">
           <div class="label">Atajos de teclado<small>Combinaciones disponibles.</small></div>
@@ -3185,6 +3283,20 @@
               <textarea id="cr2Extra" rows="2" placeholder="Ej: Tonos claros, suelos de madera, plantas, sofá esquinero"></textarea>
             </div>
 
+            <details class="cr2-details">
+              <summary>Datos comerciales del inmueble <span style="color:var(--cr-muted); font-weight:500;">(para brochure / WhatsApp)</span></summary>
+              <div class="cr2-row" style="margin-top:10px;">
+                <div class="cr2-field"><label for="cr2Titulo">Título</label><input id="cr2Titulo" type="text" placeholder="Ej: Apartamentos Paraíso Urbano" /></div>
+                <div class="cr2-field"><label for="cr2Precio">Precio</label><input id="cr2Precio" type="text" placeholder="€ 295.000" /></div>
+              </div>
+              <div class="cr2-row">
+                <div class="cr2-field"><label for="cr2M2">m²</label><input id="cr2M2" type="number" placeholder="120" /></div>
+                <div class="cr2-field"><label for="cr2Hab">Habitaciones</label><input id="cr2Hab" type="number" placeholder="3" /></div>
+              </div>
+              <div class="cr2-field"><label for="cr2Ubic">Ubicación</label><input id="cr2Ubic" type="text" placeholder="Oviedo, Asturias" /></div>
+              <div class="cr2-field"><label for="cr2Contacto">Contacto</label><input id="cr2Contacto" type="text" placeholder="+34 696 000 000 · info@castresana.es" /></div>
+            </details>
+
             <button class="cr2-btn cr2-btn-primary" id="cr2Generar">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
               Generar render con IA
@@ -3210,9 +3322,13 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 Variar
               </button>
-              <button class="cr2-btn cr2-btn-ghost" id="cr2Compartir">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                Compartir
+              <button class="cr2-btn cr2-btn-ghost" id="cr2Wa" title="Enviar por WhatsApp">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.2-.7.2c-.2.3-.8.9-1 1.1-.2.2-.4.2-.6 0-.7-.3-1.6-.8-2.4-1.5-.8-.7-1.4-1.5-1.5-1.7-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.3 0-.5-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.1 3 .2.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+                WhatsApp
+              </button>
+              <button class="cr2-btn cr2-btn-ghost" id="cr2Brochure" title="Generar brochure A4">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+                Brochure
               </button>
               <button class="cr2-btn cr2-btn-primary" id="cr2Descargar">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -3232,8 +3348,28 @@
 
         <footer class="cr2-footer">
           <span>© Castresana Render AI · Asturias & Cantabria</span>
-          <span class="cr2-badge">Powered by IA</span>
+          <span class="cr2-badge">Powered by IA · JPMR Negocios</span>
         </footer>
+      </div>
+
+      <!-- Brochure A4 modal -->
+      <div class="cr2-brochure-modal" id="cr2BrochureModal" role="dialog" aria-modal="true">
+        <div class="cr2-brochure-paper" id="cr2BrochurePaper">
+          <button class="cr2-bro-close" onclick="document.getElementById('cr2BrochureModal').classList.remove('open')" aria-label="Cerrar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="cr2-bro-actions">
+            <button id="cr2BroDescargar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar brochure
+            </button>
+            <button id="cr2BroImprimir">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Imprimir / PDF
+            </button>
+          </div>
+          <!-- Content rendered dynamically -->
+        </div>
       </div>
     </section>
 
@@ -3241,19 +3377,25 @@
     <section class="view" data-view-content="ayuda">
       <div class="help-hero">
         <div class="help-hero-badge">
-          <span class="l1">MKT</span><span class="l2">HACKER</span>
+          <span class="l1">JPMR</span><span class="l2">NEGOCIOS</span>
         </div>
-        <h1>¿Qué es El Constructor?</h1>
+        <h1>Ayuda de Negocios JPMR</h1>
         <p class="help-lead">
-          La Academy de <strong>MKT Hackers</strong> es la formación principal para aprender a crear
-          y escalar una agencia de servicios de IA y automatización para empresas, con enfoque 100%
-          práctico y acompañado. <strong>El Constructor</strong> es la herramienta propia del curso
-          que te permite montar páginas, agentes y creatividades sin programar.
+          Plataforma personal de <strong>Pau Moralejo Rodríguez</strong> para empaquetar y entregar
+          servicios de IA y automatización para negocios reales: <strong>landings, agentes de WhatsApp 24/7,
+          CRM, generación de contenido y Castresana Render AI</strong> para inmobiliarias en Asturias y Cantabria.
+          Inspirada en la metodología de <a href="https://campus.mkthackers.com/academy/" target="_blank" rel="noopener" style="color:var(--cyan);">MKT Hackers Academy</a>.
         </p>
-        <a href="https://campus.mkthackers.com/academy/" target="_blank" rel="noopener" class="btn btn-cyan" style="align-self:flex-start; margin-top:6px;">
-          Ir al campus
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
+          <button class="btn btn-cyan" style="padding:10px 16px; font-size:14px;" onclick="switchView('castrender')">
+            Probar Castresana Render AI
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <a href="https://campus.mkthackers.com/academy/" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:10px 16px; font-size:14px;">
+            Ir al campus de MKT Hackers
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
       </div>
 
       <div class="help-grid">
@@ -3589,8 +3731,8 @@
       <div class="onboard-illust" id="onboardIllust">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       </div>
-      <h2 id="onboardTitle">Bienvenido a El Constructor</h2>
-      <p id="onboardText">Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para empresas. Te enseño en 4 pasos lo más importante.</p>
+      <h2 id="onboardTitle">Bienvenido a Ayuda de Negocios JPMR</h2>
+      <p id="onboardText">Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para tu negocio. Te enseño en 4 pasos lo más importante.</p>
       <div class="onboard-dots" id="onboardDots">
         <span class="onboard-dot active"></span>
         <span class="onboard-dot"></span>
@@ -3643,14 +3785,15 @@
 
   // ===== Roadmap tabs =====
   const tabTitles = {
-    '1': 'Claude', '2': 'Claude', '3': 'Claude', '4': 'Claude',
-    '5': 'Claude', '6': 'Claude', '7': 'Claude',
-    '8': 'Claude', '9': 'Claude', '10': 'Claude', '11': 'Claude'
+    '1': 'Áreas de Marketing', '2': 'Solucionar el Problema', '3': 'Seleccionar Nicho',
+    '4': 'Ofertas y Propuesta de Valor', '5': 'Landing Pages', '6': 'SignalCore',
+    '7': 'CRM', '8': 'Analizador de Web', '9': 'Generador de Scripts',
+    '10': 'Prospección', '11': 'Métricas'
   };
   function gotoTab(t) {
     document.querySelectorAll('.tab-btn').forEach(x => x.classList.toggle('active', x.dataset.tab === String(t)));
     document.querySelectorAll('[data-tab-content]').forEach(x => x.classList.toggle('active', x.dataset.tabContent === String(t)));
-    document.getElementById('tabTitle').textContent = tabTitles[t] || 'Claude';
+    document.getElementById('tabTitle').textContent = tabTitles[t] || 'Mapa de Ruta';
     const activeBtn = document.querySelector(`.tab-btn[data-tab="${t}"]`);
     activeBtn?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4496,7 +4639,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
 
   // ===== Onboarding =====
   const ONBOARD_STEPS = [
-    { title: 'Bienvenido a El Constructor', text: 'Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para empresas.', icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>' },
+    { title: 'Bienvenido a Ayuda de Negocios JPMR', text: 'Tu plataforma todo-en-uno para crear, vender y mantener servicios de IA para tu negocio o tus clientes. Incluye Castresana Render AI para inmobiliarias.', icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>' },
     { title: 'Mapa de Ruta en 11 pasos', text: 'Desde elegir nicho hasta atender leads con IA — todo guiado paso a paso en la sección Mapa de Ruta.', icon: '<polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/>' },
     { title: 'Tus proyectos siempre guardados', text: 'Cada cambio se autoguarda en tu navegador. Crea varios proyectos desde "Mis Proyectos".', icon: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>' },
     { title: 'Ctrl/⌘ + K para todo', text: 'Pulsa ⌘K o usa el botón Buscar para saltar a cualquier sección, herramienta o acción al instante.', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' }
@@ -4798,8 +4941,23 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
 
     return `<div class="cr2-render ${opts.luz}" style="background:linear-gradient(180deg, ${c.floor1} 0%, ${c.floor2} 100%);">
       ${roomsHTML}
+      <div class="cr2-render-watermark">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
+        CASTRESANA RENDER AI
+      </div>
       <div class="cr2-render-label">${opts.tipo.toUpperCase()} · ${opts.estilo.toUpperCase()} · ${opts.calidad.toUpperCase()}</div>
     </div>`;
+  }
+
+  function cr2CollectCommercial() {
+    return {
+      titulo: document.getElementById('cr2Titulo')?.value.trim() || '',
+      precio: document.getElementById('cr2Precio')?.value.trim() || '',
+      m2: document.getElementById('cr2M2')?.value.trim() || '',
+      hab: document.getElementById('cr2Hab')?.value.trim() || '',
+      ubic: document.getElementById('cr2Ubic')?.value.trim() || '',
+      contacto: document.getElementById('cr2Contacto')?.value.trim() || ''
+    };
   }
 
   function cr2CollectOpts() {
@@ -4915,16 +5073,137 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     }
   });
 
-  document.getElementById('cr2Compartir')?.addEventListener('click', async () => {
-    const url = location.href;
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Castresana Render AI', text: 'Mira este render', url }); }
-      catch { /* user cancelled */ }
-    } else {
-      try { await navigator.clipboard.writeText(url); showToast('Enlace copiado.', 'success'); }
-      catch { showToast('No se pudo compartir.', 'error'); }
-    }
+  document.getElementById('cr2Wa')?.addEventListener('click', () => {
+    const d = cr2CollectCommercial();
+    const opts = cr2CollectOpts();
+    const lines = [];
+    lines.push(`🏠 *${d.titulo || 'Nuevo inmueble disponible'}*`);
+    if (d.ubic) lines.push(`📍 ${d.ubic}`);
+    lines.push('');
+    lines.push(`✨ Render 3D generado con Castresana Render AI`);
+    lines.push(`   Estilo: ${opts.estilo} · Iluminación: ${opts.luz}`);
+    lines.push('');
+    const specs = [];
+    if (opts.tipo) specs.push(`✦ ${opts.tipo[0].toUpperCase() + opts.tipo.slice(1)}`);
+    if (d.m2) specs.push(`📐 ${d.m2} m²`);
+    if (d.hab) specs.push(`🛏️ ${d.hab} habs.`);
+    if (specs.length) { lines.push(specs.join(' · ')); lines.push(''); }
+    if (d.precio) { lines.push(`💰 *${d.precio}*`); lines.push(''); }
+    if (d.contacto) lines.push(`📞 ${d.contacto}`);
+    lines.push('');
+    lines.push('— Renderizado con Castresana Render AI');
+    const msg = encodeURIComponent(lines.join('\n'));
+    window.open(`https://wa.me/?text=${msg}`, '_blank', 'noopener');
   });
+
+  function cr2BuildBrochure() {
+    const opts = cr2CollectOpts();
+    const d = cr2CollectCommercial();
+    const renderHTML = buildCR2Render(opts).replace('class="cr2-render-watermark"', 'class="cr2-render-watermark" style="display:none;"');
+    return `
+      <div class="cr2-bro-header">
+        <div class="left">
+          <div class="logo">JR</div>
+          <div>
+            <h2>${escapeHTML(d.titulo || 'Inmueble destacado')}</h2>
+            <small>${escapeHTML(d.ubic || 'Asturias / Cantabria')}</small>
+          </div>
+        </div>
+        <span class="cr2-bro-status">En venta</span>
+      </div>
+      <div class="cr2-bro-image">${renderHTML}</div>
+      <div class="cr2-bro-body">
+        ${d.precio ? `<div class="cr2-bro-price">${escapeHTML(d.precio)}</div>` : ''}
+        <div style="font-size:14px; color:#555; line-height:1.55;">
+          ${escapeHTML(opts.tipo[0].toUpperCase() + opts.tipo.slice(1))} en estilo <strong>${escapeHTML(opts.estilo)}</strong>${opts.extra ? ` — ${escapeHTML(opts.extra)}` : ''}.
+        </div>
+        <div class="cr2-bro-specs">
+          ${d.m2 ? `<div class="cr2-bro-spec"><strong>${escapeHTML(d.m2)}</strong><small>metros²</small></div>` : ''}
+          ${d.hab ? `<div class="cr2-bro-spec"><strong>${escapeHTML(d.hab)}</strong><small>habs.</small></div>` : ''}
+          <div class="cr2-bro-spec"><strong>${opts.calidad === '4k' ? '4K' : opts.calidad === 'hd' ? 'HD' : 'STD'}</strong><small>render</small></div>
+        </div>
+      </div>
+      <div class="cr2-bro-footer">
+        <div class="brand">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
+          Castresana Render AI · JPMR Negocios
+        </div>
+        <span>${escapeHTML(d.contacto || 'castresana.es')}</span>
+      </div>`;
+  }
+
+  document.getElementById('cr2Brochure')?.addEventListener('click', () => {
+    const node = document.querySelector('#cr2Canvas .cr2-render');
+    if (!node) return showToast('Genera un render primero.', 'error');
+    document.getElementById('cr2BrochurePaper').innerHTML = cr2BuildBrochure();
+    // Re-attach close button and actions since innerHTML replaced them
+    const paper = document.getElementById('cr2BrochurePaper');
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'cr2-bro-close'; closeBtn.setAttribute('aria-label', 'Cerrar');
+    closeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    closeBtn.onclick = () => document.getElementById('cr2BrochureModal').classList.remove('open');
+    const actions = document.createElement('div');
+    actions.className = 'cr2-bro-actions';
+    actions.innerHTML = `
+      <button id="cr2BroDescargarDyn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar PNG</button>
+      <button id="cr2BroImprimirDyn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Imprimir / PDF</button>
+    `;
+    paper.appendChild(closeBtn);
+    paper.appendChild(actions);
+    document.getElementById('cr2BroDescargarDyn').onclick = cr2DownloadBrochure;
+    document.getElementById('cr2BroImprimirDyn').onclick = cr2PrintBrochure;
+    document.getElementById('cr2BrochureModal').classList.add('open');
+  });
+  document.getElementById('cr2BrochureModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'cr2BrochureModal') e.target.classList.remove('open');
+  });
+
+  async function cr2DownloadBrochure() {
+    const paper = document.getElementById('cr2BrochurePaper');
+    if (!paper) return;
+    const dataUrl = await cr2NodeToDataURL(paper, 1200);
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      const ratio = 1.414;
+      c.width = 1200; c.height = 1200 * ratio;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob((blob) => {
+        if (!blob) return showToast('No se pudo exportar.', 'error');
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `castresana-brochure-${Date.now()}.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+        showToast('Brochure descargado.', 'success');
+      }, 'image/png');
+    };
+    img.onerror = () => showToast('Exportación bloqueada. Usa "Imprimir / PDF".', 'error');
+    img.src = dataUrl;
+  }
+
+  function cr2PrintBrochure() {
+    const paper = document.getElementById('cr2BrochurePaper');
+    if (!paper) return;
+    const w = window.open('', '_blank');
+    if (!w) return showToast('Activa popups para imprimir.', 'error');
+    const css = [...document.styleSheets].map(s => {
+      try { return [...s.cssRules].map(r => r.cssText).join('\n'); } catch { return ''; }
+    }).join('\n');
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Brochure Castresana</title>
+      <style>${css}
+        @page { size: A4 portrait; margin: 0; }
+        body { margin: 0; background: #fff; }
+        .print-wrap { width: 210mm; height: 297mm; }
+        .cr2-brochure-paper { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+        .cr2-bro-close, .cr2-bro-actions { display: none !important; }
+      </style></head><body><div class="print-wrap">${paper.outerHTML.replace(/<button class="cr2-bro-close"[\s\S]*?<\/button>/, '').replace(/<div class="cr2-bro-actions">[\s\S]*?<\/div>/, '')}</div>
+      <script>setTimeout(() => { window.print(); }, 300);<\/script>
+      </body></html>`);
+    w.document.close();
+  }
 
   document.getElementById('cr2HistoryList')?.addEventListener('click', (e) => {
     const del = e.target.closest('[data-del]');
