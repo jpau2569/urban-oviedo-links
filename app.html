@@ -885,7 +885,9 @@
     gap: 14px;
     margin-top: 8px;
   }
-  @media (max-width: 900px) { .free-tools-grid { grid-template-columns: 1fr; } }
+  .free-tools-grid.four { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1100px) { .free-tools-grid.four { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 900px) { .free-tools-grid, .free-tools-grid.four { grid-template-columns: 1fr; } }
 
   .free-tool-card {
     display: flex; flex-direction: column; gap: 8px;
@@ -905,6 +907,7 @@
   .free-tool-card.claude:hover { border-color: #d97757; box-shadow: 0 12px 28px rgba(217,119,87,0.18); }
   .free-tool-card.gemini:hover { border-color: #9b72cb; box-shadow: 0 12px 28px rgba(155,114,203,0.18); }
   .free-tool-card.codex:hover { border-color: #10a37f; box-shadow: 0 12px 28px rgba(16,163,127,0.18); }
+  .free-tool-card.abacus:hover { border-color: #ff6b35; box-shadow: 0 12px 28px rgba(255,107,53,0.2); }
 
   .tool-logo {
     width: 48px; height: 48px; border-radius: 12px;
@@ -914,6 +917,7 @@
   .tool-logo.claude { background: #fff; color: #d97757; }
   .tool-logo.gemini { background: #fff; }
   .tool-logo.codex { background: #10a37f; color: #fff; }
+  .tool-logo.abacus { background: linear-gradient(135deg, #ff6b35, #f7931e); color: #fff; }
   .tool-logo svg { width: 28px; height: 28px; }
 
   .free-tool-card h4 { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.1; }
@@ -937,6 +941,7 @@
   .free-tool-card.claude ul li::before { background: #d97757; }
   .free-tool-card.gemini ul li::before { background: #9b72cb; }
   .free-tool-card.codex ul li::before { background: #10a37f; }
+  .free-tool-card.abacus ul li::before { background: #ff6b35; }
 
   .tool-cta {
     margin-top: auto;
@@ -948,6 +953,7 @@
   .free-tool-card.claude .tool-cta { color: #ff9d6c; }
   .free-tool-card.gemini .tool-cta { color: #b594d8; }
   .free-tool-card.codex .tool-cta { color: #2ec699; }
+  .free-tool-card.abacus .tool-cta { color: #ff8a4d; }
 
   /* ===================================================================== */
   /* ========================  PRO UPGRADES  ============================= */
@@ -1337,6 +1343,7 @@
   .api-provider-label.anthropic .dot { background: #d97757; }
   .api-provider-label.google .dot { background: #4285F4; }
   .api-provider-label.openai .dot { background: #10a37f; }
+  .api-provider-label.abacus .dot { background: linear-gradient(135deg, #ff6b35, #f7931e); }
 
   /* Onboarding modal */
   .onboard-overlay {
@@ -3220,6 +3227,51 @@
             <span class="status" id="statusOpenAI" aria-label="Estado"></span>
           </div>
         </div>
+
+        <div style="margin-top:14px;">
+          <span class="api-provider-label abacus"><span class="dot"></span> Abacus AI (ChatLLM)</span>
+          <div class="api-key-row">
+            <input id="keyAbacus" type="password" placeholder="s2_..." autocomplete="off" />
+            <span class="status" id="statusAbacus" aria-label="Estado"></span>
+          </div>
+          <small style="display:block; margin-top:6px; color:var(--muted); font-size:11px;">
+            Funciona con tu cuenta y suscripción personal de Abacus.AI · ChatLLM.
+            Consigue tu API key en <a href="https://abacus.ai/help/getting-started" target="_blank" rel="noopener" style="color:var(--cyan);">abacus.ai → Help → API</a>.
+          </small>
+          <div class="cr2-row" style="margin-top:10px;">
+            <div class="cr2-field">
+              <label for="abacusModel" style="color:var(--fg);">Modelo Abacus</label>
+              <select id="abacusModel" style="background:var(--input); color:var(--fg); border:1px solid var(--input-border);">
+                <option value="gpt-4o-mini">GPT-4o mini (rápido y barato)</option>
+                <option value="gpt-4o">GPT-4o</option>
+                <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
+                <option value="claude-3-5-haiku">Claude 3.5 Haiku</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                <option value="llama-3.3-70b">Llama 3.3 70B</option>
+                <option value="abacus-smaug-72b">Abacus Smaug 72B</option>
+              </select>
+            </div>
+            <div class="cr2-field">
+              <label for="preferredAI" style="color:var(--fg);">IA preferida</label>
+              <select id="preferredAI" style="background:var(--input); color:var(--fg); border:1px solid var(--input-border);">
+                <option value="auto">Auto (primera disponible)</option>
+                <option value="anthropic">Claude (Anthropic)</option>
+                <option value="abacus">Abacus AI</option>
+                <option value="google">Gemini (Google)</option>
+                <option value="openai">OpenAI</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="topbar-btn" id="btnTestAI" style="padding:10px 16px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Probar conexión
+          </button>
+          <span id="aiStatus" style="font-size:12px; color:var(--muted);"></span>
+        </div>
       </div>
 
       <div class="settings-section">
@@ -3704,7 +3756,7 @@
             (e incluso más), sin pagar suscripción y manteniendo control técnico total.
           </p>
 
-          <div class="free-tools-grid">
+          <div class="free-tools-grid four">
             <a href="https://claude.ai" target="_blank" rel="noopener" class="free-tool-card claude">
               <div class="tool-logo claude">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L13.5 9 L21 10 L13.5 11 L12 18 L10.5 11 L3 10 L10.5 9 Z"/><path d="M12 6 L12.7 9.3 L16 10 L12.7 10.7 L12 14 L11.3 10.7 L8 10 L11.3 9.3 Z" transform="rotate(45 12 10)"/></svg>
@@ -3758,11 +3810,29 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </span>
             </a>
+
+            <a href="https://abacus.ai/" target="_blank" rel="noopener" class="free-tool-card abacus">
+              <div class="tool-logo abacus">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm0 14h18v2H3v-2zM5 7h2v10H5V7zm4 0h2v10H9V7zm4 0h2v10h-2V7zm4 0h2v10h-2V7z"/><circle cx="6" cy="10" r="1.5" fill="white"/><circle cx="10" cy="13" r="1.5" fill="white"/><circle cx="14" cy="9" r="1.5" fill="white"/><circle cx="18" cy="14" r="1.5" fill="white"/></svg>
+              </div>
+              <h4>Abacus AI <span style="font-size:10px; background:#ff6b35; color:white; padding:1px 6px; border-radius:4px; margin-left:4px; vertical-align:middle;">SUSCRIPCIÓN</span></h4>
+              <p class="tool-sub">ChatLLM · abacus.ai</p>
+              <p class="tool-desc">Una suscripción te da acceso a GPT-4o, Claude 3.5 Sonnet, Gemini, Llama y modelos propios desde una sola API. Funciona con tu plan de pago — la app usa tu key.</p>
+              <ul>
+                <li>+10 modelos en una sola key</li>
+                <li>API OpenAI-compatible</li>
+                <li>Precio fijo mensual con tu suscripción</li>
+                <li>Ya integrado en Ajustes → Claves API</li>
+              </ul>
+              <span class="tool-cta">Ir a Abacus
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </a>
           </div>
 
           <div class="tip" style="margin-top:14px;">
             <span class="tip-ic">💡</span>
-            <span><strong>Combinación recomendada:</strong> Claude para conversación/agentes y copys, Google AI Studio para tu API de IA en producción (Gemini Flash es muy barato), y ChatGPT Codex para escribirte el código de las integraciones. Las 3 gratis cubren ~80% de lo que ofrece El Constructor.</span>
+            <span><strong>Combinación recomendada:</strong> Claude para conversación/agentes y copys, Google AI Studio para tu API en producción (Gemini Flash es muy barato), ChatGPT Codex para escribirte el código de integraciones, y <strong>Abacus AI</strong> si prefieres pagar una suscripción única y tener todos los modelos top en una sola key. Las claves se configuran en <em>Ajustes → Claves API</em>.</span>
           </div>
         </div>
 
@@ -4369,7 +4439,9 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     user: { name: 'PAU Rodríguez', email: 'appsmovilpau@gmail.com' },
     activeProjectId: null,
     projects: [],
-    keys: { anthropic: '', google: '', openai: '' },
+    keys: { anthropic: '', google: '', openai: '', abacus: '' },
+    preferredAI: 'auto',
+    abacusModel: 'gpt-4o-mini',
     currentProject: {
       areas: [],
       customAreas: [],
@@ -4461,7 +4533,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
       ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
       : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
   }
-  ['anthropic', 'google', 'openai'].forEach(p => {
+  ['anthropic', 'google', 'openai', 'abacus'].forEach(p => {
     const id = 'key' + p[0].toUpperCase() + p.slice(1);
     document.getElementById(id)?.addEventListener('input', (e) => {
       state.keys[p] = e.target.value.trim();
@@ -4778,7 +4850,9 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     { id: 'act-theme', section: 'Acciones', title: 'Cambiar tema', sub: 'Alternar claro / oscuro', action: () => applyTheme(state.theme === 'dark' ? 'light' : 'dark') },
     { id: 'act-new-project', section: 'Acciones', title: 'Crear nuevo proyecto', sub: 'Guarda el estado actual', action: () => document.getElementById('btnNuevoProyecto').click() },
     { id: 'act-export', section: 'Acciones', title: 'Exportar JSON', sub: 'Descargar backup', action: () => document.getElementById('btnExport').click() },
-    { id: 'act-onboarding', section: 'Acciones', title: 'Ver tour de bienvenida', sub: 'Volver a ver el onboarding', action: () => { localStorage.removeItem(ONBOARD_KEY); startOnboarding(); } }
+    { id: 'act-onboarding', section: 'Acciones', title: 'Ver tour de bienvenida', sub: 'Volver a ver el onboarding', action: () => { safeStorage.removeItem(ONBOARD_KEY); startOnboarding(); } },
+    { id: 'act-test-ai', section: 'IA', title: 'Probar conexión con IA', sub: 'Verifica que las claves API funcionan', action: () => { switchView('ajustes'); setTimeout(() => document.getElementById('btnTestAI')?.click(), 200); } },
+    { id: 'go-abacus', section: 'IA', title: 'Configurar Abacus AI', sub: 'Conecta tu suscripción de ChatLLM', action: () => { switchView('ajustes'); setTimeout(() => document.getElementById('keyAbacus')?.focus(), 200); } }
   ];
   let cmdFocus = 0; let cmdFiltered = COMMANDS;
   function renderCmdList() {
@@ -5627,7 +5701,10 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   applyTheme(state.theme || 'dark');
   applySidebarCollapsed(state.sidebarCollapsed);
   applyUser();
-  ['anthropic', 'google', 'openai'].forEach(applyApiKey);
+  ['anthropic', 'google', 'openai', 'abacus'].forEach(applyApiKey);
+  // Restore preferredAI and abacusModel selects
+  if (document.getElementById('preferredAI')) document.getElementById('preferredAI').value = state.preferredAI || 'auto';
+  if (document.getElementById('abacusModel')) document.getElementById('abacusModel').value = state.abacusModel || 'gpt-4o-mini';
   // Restore current project into UI
   if (state.currentProject) {
     (state.currentProject.areas || []).forEach(a => selectedAreas.add(a));
@@ -5794,20 +5871,127 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
       return null;
     }
   }
-  async function callAI(prompt, system = '') {
-    if (state.keys.anthropic) {
-      const r = await callAnthropic(prompt, system);
-      if (r) return { text: r, provider: 'Claude' };
+  async function callOpenAI(prompt, system = '') {
+    const key = state.keys.openai;
+    if (!key) return null;
+    try {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          max_tokens: 1024,
+          messages: [
+            ...(system ? [{ role: 'system', content: system }] : []),
+            { role: 'user', content: prompt }
+          ]
+        })
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.choices?.[0]?.message?.content || null;
+    } catch (e) {
+      return null;
     }
-    if (state.keys.google) {
-      const r = await callGemini((system ? system + '\n\n' : '') + prompt);
-      if (r) return { text: r, provider: 'Gemini' };
+  }
+
+  async function callAbacus(prompt, system = '') {
+    const key = state.keys.abacus;
+    if (!key) return null;
+    const model = state.abacusModel || 'gpt-4o-mini';
+    // Abacus exposes an OpenAI-compatible chat completions endpoint at this base
+    const endpoints = [
+      'https://routellm.abacus.ai/v1/chat/completions',
+      'https://api.abacus.ai/v1/chat/completions'
+    ];
+    for (const url of endpoints) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+          },
+          body: JSON.stringify({
+            model,
+            max_tokens: 1024,
+            messages: [
+              ...(system ? [{ role: 'system', content: system }] : []),
+              { role: 'user', content: prompt }
+            ]
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const text = data.choices?.[0]?.message?.content || data.result || null;
+          if (text) return text;
+        }
+      } catch (e) { /* try next endpoint */ }
     }
     return null;
   }
-  function hasAIKey() {
-    return !!(state.keys.anthropic || state.keys.google);
+
+  const PROVIDER_LABELS = {
+    anthropic: 'Claude (Anthropic)',
+    abacus: 'Abacus AI',
+    google: 'Gemini',
+    openai: 'OpenAI'
+  };
+
+  async function callAI(prompt, system = '') {
+    const order = state.preferredAI && state.preferredAI !== 'auto'
+      ? [state.preferredAI, 'anthropic', 'abacus', 'google', 'openai'].filter((v, i, a) => a.indexOf(v) === i)
+      : ['anthropic', 'abacus', 'google', 'openai'];
+
+    for (const p of order) {
+      if (!state.keys[p]) continue;
+      let text = null;
+      if (p === 'anthropic') text = await callAnthropic(prompt, system);
+      else if (p === 'abacus') text = await callAbacus(prompt, system);
+      else if (p === 'google') text = await callGemini((system ? system + '\n\n' : '') + prompt);
+      else if (p === 'openai') text = await callOpenAI(prompt, system);
+      if (text) return { text, provider: PROVIDER_LABELS[p] || p };
+    }
+    return null;
   }
+
+  function hasAIKey() {
+    return !!(state.keys.anthropic || state.keys.google || state.keys.openai || state.keys.abacus);
+  }
+
+  // Test connection button
+  document.getElementById('btnTestAI')?.addEventListener('click', async () => {
+    const statusEl = document.getElementById('aiStatus');
+    if (!hasAIKey()) {
+      statusEl.textContent = 'No hay ninguna clave configurada.';
+      statusEl.style.color = 'var(--danger)';
+      return;
+    }
+    statusEl.textContent = 'Probando…';
+    statusEl.style.color = 'var(--muted)';
+    const r = await callAI('Devuelve solamente la palabra OK en mayúsculas. Sin nada más.', 'Eres un asistente que responde de forma extremadamente breve.');
+    if (r) {
+      statusEl.textContent = `✓ Funciona con ${r.provider}`;
+      statusEl.style.color = 'var(--green)';
+      showToast(`IA activa: ${r.provider}`, 'success');
+    } else {
+      statusEl.textContent = '✗ Ninguna IA respondió. Revisa las claves.';
+      statusEl.style.color = 'var(--danger)';
+      showToast('Las claves no funcionaron — revisa que estén bien copiadas y que tengan saldo.', 'error');
+    }
+  });
+
+  // Listeners for preferredAI and abacusModel
+  document.getElementById('preferredAI')?.addEventListener('change', (e) => {
+    state.preferredAI = e.target.value; saveState();
+    showToast('IA preferida: ' + (PROVIDER_LABELS[e.target.value] || 'Auto'), 'success');
+  });
+  document.getElementById('abacusModel')?.addEventListener('change', (e) => {
+    state.abacusModel = e.target.value; saveState();
+  });
 
   // Wrap the analizador button to use real AI when key is set
   const _origBtnAnalizar = document.getElementById('btnAnalizar');
