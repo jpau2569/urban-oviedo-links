@@ -526,6 +526,45 @@
     color: #ff4d8d; text-transform: uppercase;
   }
   .step-hero h3 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.15; }
+  .step-hero .hero-icon {
+    position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%);
+    width: 86px; height: 86px; border-radius: 18px;
+    display: grid; place-items: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+    z-index: 2;
+  }
+  .step-hero .hero-icon svg { width: 56px; height: 56px; }
+  .step-hero .hero-emoji {
+    position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 64px; z-index: 2;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5));
+  }
+
+  /* Footer & chat bubble */
+  .campus-footer {
+    margin-top: 32px; padding: 20px 4px 80px;
+    font-size: 13px; color: var(--muted);
+    line-height: 1.6; text-align: left;
+    border-top: 1px solid var(--sidebar-border);
+  }
+  .campus-footer a { color: var(--muted); }
+  .campus-footer a:hover { color: var(--cyan); }
+
+  .chat-bubble {
+    position: fixed; bottom: 22px; right: 22px;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--purple);
+    display: grid; place-items: center;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(108,92,231,0.5);
+    z-index: 40;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .chat-bubble:hover { transform: scale(1.08); filter: brightness(1.1); }
+  .chat-bubble svg { width: 26px; height: 26px; }
 
   /* ===== Tab 1 — Marketing areas ===== */
   .area-list { display: flex; flex-direction: column; gap: 12px; }
@@ -788,11 +827,109 @@
           <div class="bg purple"></div>
           <div class="content">
             <div class="brand-tag">MKT Hackers</div>
-            <span class="step-pill" style="color:#ffd84a;">BONUS</span>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
             <h3>Agencia de Clones</h3>
           </div>
+          <div class="hero-emoji">👥</div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Higgsfield para<br/>contenido y ads</h3>
+          </div>
+          <div class="hero-icon" style="background:#c0ff5e; color:#000;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 8c4-4 8-4 12 0s4 8 0 12-8 4-12 0 0-8 0-12z"/></svg>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>CLAUDE para<br/>Agencias IA</h3>
+          </div>
+          <div class="hero-icon" style="background:#fff; color:#d97757;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L13.5 9 L21 10 L13.5 11 L12 18 L10.5 11 L3 10 L10.5 9 Z"/><path d="M12 6 L12.7 9.3 L16 10 L12.7 10.7 L12 14 L11.3 10.7 L8 10 L11.3 9.3 Z" transform="rotate(45 12 10)"/></svg>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Meta Ads<br/>con IA</h3>
+          </div>
+          <div class="hero-icon" style="background:transparent;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2.5" stroke-linecap="round"><path d="M6 12c0-3 2-5 4-5s4 2 6 5 4 5 6 5-2-5-6-5-4 2-6 5-2 5-4 5-4-2-4-5-2-5 0-5z"/></svg>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS AVANZADO</span>
+            <h3>MASTER IA</h3>
+          </div>
+          <div class="hero-emoji">🤖</div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Automatizaciones<br/>y Agentes</h3>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>IA<br/>para Redes</h3>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Cierre de ventas<br/>en primera llamada</h3>
+          </div>
+          <div class="hero-emoji">📱</div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg purple"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Páginas web<br/>profesionales con IA</h3>
+          </div>
+        </div>
+
+        <div class="step-hero">
+          <div class="bg dark"></div>
+          <div class="content">
+            <div class="brand-tag">MKT Hackers</div>
+            <span class="step-pill" style="color:#a78bfa;">BONUS</span>
+            <h3>Paquetes listos<br/>para usar</h3>
+          </div>
+          <div class="hero-emoji">🤖</div>
         </div>
       </div>
+
+      <footer class="campus-footer">
+        MKT Hackers© 2026 | Todos los derechos reservados | <a href="#">Aviso Legal</a> | <a href="#">Privacidad</a> | <a href="#">Cookies</a>
+      </footer>
     </section>
 
     <!-- ====== MAPA DE RUTA ====== -->
@@ -853,8 +990,16 @@
           </button>
           <button class="area-card" data-area="upsells">
             <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-            <div class="area-meta"><h4>Upsells / Cross-sells</h4><p>Más valor por cliente = más ingresos</p></div>
+            <div class="area-meta"><h4>Upsells / Cross-sells</h4><p>Más valor por cliente = más rentabilidad</p></div>
           </button>
+        </div>
+
+        <div style="margin-top:22px; padding-top:18px; border-top:1px solid var(--input-border);">
+          <p style="font-size:14px; color:var(--muted); margin-bottom:10px;">¿No encuentras tu problema? Añade uno personalizado:</p>
+          <div class="nicho-add-row" style="grid-template-columns: 1fr auto;">
+            <input id="customProblem" type="text" placeholder="Ej: Gestión de inventario, etc." />
+            <button class="btn btn-purple" id="btnAddCustomProblem" style="padding:12px 18px;">+ Añadir</button>
+          </div>
         </div>
 
         <div class="step-nav">
@@ -906,10 +1051,14 @@
           </div>
 
           <div class="nicho-add-row">
-            <input id="nichoInput" type="text" placeholder="Ej: Clínicas dentales en Madrid" />
+            <input id="nichoInput" type="text" placeholder="Ej: Asesorías gestorías" />
             <button class="btn-outline-cyan" id="btnAnalizarNicho">Analizar Nicho</button>
             <button class="btn-solid-cyan" id="btnAnadirNicho">Añadir</button>
           </div>
+
+          <p id="nichoLimitMsg" style="font-size:13px; color:var(--required); margin-top:-6px;" hidden>
+            Solo puedes elegir 1 nicho para mantener el enfoque
+          </p>
 
           <div id="nichoTags" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
         </div>
@@ -917,6 +1066,20 @@
         <button class="btn-purple-full" style="margin-top:18px;" id="btnGenerarOfertas">
           Generar Ofertas y Propuesta de Valor
         </button>
+
+        <div class="card" id="propuestaCard" style="margin-top:18px;" hidden>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
+            <h3 class="flat" style="display:flex; align-items:center; gap:8px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Propuesta de Valor Transformacional
+            </h3>
+            <button class="btn-outline-cyan" id="btnCopiarPropuesta" style="padding:8px 14px; font-size:13px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copiar
+            </button>
+          </div>
+          <p id="propuestaTexto" style="font-size:14px; line-height:1.7; color:#d8dff5; text-align:center;"></p>
+        </div>
 
         <div class="step-nav">
           <button class="prev" data-prev="2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
@@ -933,13 +1096,76 @@
         <div class="placeholder-view"><h2>Sección 4</h2><p>Aún sin material visual.</p></div>
       </div>
 
-      <!-- ===== TAB 5 ===== -->
+      <!-- ===== TAB 5 — Landing Pages ===== -->
       <div class="tab-panel" data-tab-content="5">
-        <div class="tab-panel-header"><div class="tab-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-          <div><h2>Paso 5</h2><div class="tab-panel-subtitle">Mándame foto para replicarlo</div></div>
+        <div class="claude-subheader">
+          <div class="mini-badge"><span class="l1">MKT</span><span class="l2">HACKER</span></div>
+          <div>
+            <h2 style="display:flex; align-items:center; gap:10px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Configuración de Landing Pages
+            </h2>
+          </div>
         </div>
-        <div class="placeholder-view"><h2>Sección 5</h2><p>Aún sin material visual.</p></div>
+
+        <div class="card">
+          <div class="field">
+            <label for="agenciaNombre">Nombre de tu Agencia</label>
+            <div style="display:grid; grid-template-columns: 1fr auto; gap:8px;">
+              <input id="agenciaNombre" type="text" placeholder="Ej: Asesoría castresana" />
+              <button class="btn-solid-cyan" id="btnGuardarAgencia" style="padding:0 16px;" aria-label="Guardar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+            <small style="color:var(--muted); font-size:12px;">Guarda el nombre para usarlo en landing pages y setter IA</small>
+          </div>
+
+          <p style="font-size:14px; color:#d8dff5; line-height:1.6;">
+            Genera un prompt completo para crear landing pages de alta conversión para cada nicho.
+            Incluye tu propuesta de valor, soluciones IA y está optimizado para vender tus servicios.
+          </p>
+
+          <div class="field">
+            <label for="landingModalidad">Modalidad de Landing</label>
+            <div class="select-wrap">
+              <select id="landingModalidad">
+                <option value="tradicional">Tradicional - Con formulario de contacto</option>
+                <option value="vsl">VSL - Con vídeo de venta</option>
+                <option value="quiz">Quiz - Con cualificación</option>
+                <option value="webinar">Webinar - Con registro</option>
+              </select>
+            </div>
+            <small style="color:var(--muted); font-size:12px;" id="modalidadHelp">Landing con formulario integrado para captar leads</small>
+          </div>
+
+          <div class="field">
+            <label for="landingIdioma">Idioma de la Landing</label>
+            <div class="select-wrap">
+              <select id="landingIdioma">
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇬🇧 Inglés</option>
+                <option value="pt">🇵🇹 Portugués</option>
+                <option value="fr">🇫🇷 Francés</option>
+              </select>
+            </div>
+            <small style="color:var(--muted); font-size:12px;" id="idiomaHelp">Todo el copy de la landing se generará en español</small>
+          </div>
+
+          <div id="landingNichos" style="display:flex; flex-direction:column; gap:8px;">
+            <div style="padding:14px 16px; background:var(--card-2); border:1px solid var(--input-border); border-radius:10px; display:flex; justify-content:space-between; align-items:center; color:var(--muted);">
+              <span>Sin nichos. Añade uno en la sección 3.</span>
+            </div>
+          </div>
+
+          <button class="btn-purple-full" id="btnGenerarLanding">
+            Generar Prompt para Landing Pages
+          </button>
+        </div>
+
+        <div class="step-nav">
+          <button class="prev" data-prev="4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <button class="next" data-next="6">Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
       </div>
 
       <!-- ===== TAB 6 — SignalCore ===== -->
@@ -974,8 +1200,8 @@
           <div class="feat-ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
-          <h4>Calendario</h4>
-          <p>Agenda reuniones automáticamente en tu calendar</p>
+          <h4>Agenda Citas</h4>
+          <p>Agenda citas automáticamente</p>
         </div>
 
         <div style="display:flex; flex-direction:column; gap:12px; margin-top:18px;">
@@ -1290,6 +1516,10 @@
     </section>
   </main>
 
+  <button class="chat-bubble" aria-label="Soporte" title="Soporte">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </button>
+
   <div class="toast" id="toast"></div>
 
 <script>
@@ -1417,25 +1647,53 @@
   function renderNichos() {
     nichoTags.innerHTML = nichos.map((n, i) => `
       <span class="nicho-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         ${escapeHTML(n)}
-        <button data-i="${i}" aria-label="Eliminar">✕</button>
+        <button data-i="${i}" aria-label="Eliminar" style="color:var(--danger);">✕</button>
       </span>
     `).join('');
     nichoCounter.textContent = `${nichos.length}/1 nicho`;
+    document.getElementById('nichoLimitMsg').hidden = nichos.length === 0;
     document.querySelectorAll('#nichoTags button').forEach(b => {
-      b.addEventListener('click', () => { nichos.splice(+b.dataset.i, 1); renderNichos(); });
+      b.addEventListener('click', () => {
+        nichos.splice(+b.dataset.i, 1);
+        renderNichos(); renderPropuesta(); renderLandingNichos();
+      });
     });
-    // sync script generator info
     const info = document.getElementById('nichosInfo');
     if (info) info.textContent = nichos.length === 0
       ? 'No hay nichos seleccionados. Vuelve a la sección 3.'
       : `Nichos: ${nichos.join(', ')}`;
   }
+  function renderPropuesta() {
+    const card = document.getElementById('propuestaCard');
+    if (!card) return;
+    if (nichos.length === 0) { card.hidden = true; return; }
+    card.hidden = false;
+    const n = nichos[0];
+    document.getElementById('propuestaTexto').textContent =
+      `Como empresario en el sector de ${n.toLowerCase()}, seguro que enfrentas el dolor de perder oportunidades valiosas debido a la falta de una presencia digital sólida, una atención lenta a los leads y un seguimiento manual que se cae al primer descuido. Con nuestra solución, automatizamos tu captación, tu atención 24/7 con IA y tus seguimientos — para que dediques tu tiempo a cerrar y no a perseguir.`;
+  }
+  function renderLandingNichos() {
+    const cont = document.getElementById('landingNichos');
+    if (!cont) return;
+    if (nichos.length === 0) {
+      cont.innerHTML = `<div style="padding:14px 16px; background:var(--card-2); border:1px solid var(--input-border); border-radius:10px; display:flex; justify-content:space-between; align-items:center; color:var(--muted);"><span>Sin nichos. Añade uno en la sección 3.</span></div>`;
+      return;
+    }
+    cont.innerHTML = nichos.map(n => `
+      <div style="padding:14px 16px; background:var(--card-2); border:1px solid var(--input-border); border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:600;">${escapeHTML(n)}</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    `).join('');
+  }
   document.getElementById('btnAnadirNicho')?.addEventListener('click', () => {
     const v = nichoInput.value.trim();
     if (!v) return showToast('Escribe un nicho.');
-    if (nichos.length >= 1) return showToast('Solo puedes elegir 1 nicho.');
-    nichos.push(v); nichoInput.value = ''; renderNichos();
+    if (nichos.length >= 1) return showToast('Solo puedes elegir 1 nicho para mantener el enfoque.');
+    nichos.push(v); nichoInput.value = '';
+    renderNichos(); renderLandingNichos();
   });
   document.getElementById('btnAnalizarNicho')?.addEventListener('click', () => {
     const v = nichoInput.value.trim();
@@ -1444,7 +1702,67 @@
   });
   document.getElementById('btnGenerarOfertas')?.addEventListener('click', () => {
     if (nichos.length === 0) return showToast('Añade un nicho antes de generar ofertas.');
-    showToast('Generando ofertas y propuesta de valor…');
+    renderPropuesta();
+    document.getElementById('propuestaCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.getElementById('btnCopiarPropuesta')?.addEventListener('click', async () => {
+    const t = document.getElementById('propuestaTexto').textContent;
+    try { await navigator.clipboard.writeText(t); showToast('Propuesta copiada al portapapeles.'); }
+    catch { showToast('No se pudo copiar.'); }
+  });
+
+  // ===== Tab 1 — custom problem =====
+  document.getElementById('btnAddCustomProblem')?.addEventListener('click', () => {
+    const v = document.getElementById('customProblem').value.trim();
+    if (!v) return showToast('Escribe un problema personalizado.');
+    const list = document.getElementById('areaList');
+    const key = 'custom_' + Date.now();
+    AREA_DATA[key] = { title: v, solutions: ['Solución personalizada generada con IA para este problema.'] };
+    const btn = document.createElement('button');
+    btn.className = 'area-card selected';
+    btn.dataset.area = key;
+    btn.innerHTML = `
+      <span class="area-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <div class="area-meta"><h4>${escapeHTML(v)}</h4><p>Problema personalizado</p></div>
+    `;
+    btn.addEventListener('click', () => {
+      if (selectedAreas.has(key)) { selectedAreas.delete(key); btn.classList.remove('selected'); }
+      else { selectedAreas.add(key); btn.classList.add('selected'); }
+      renderProblemSolutions();
+    });
+    list.appendChild(btn);
+    selectedAreas.add(key);
+    document.getElementById('customProblem').value = '';
+    renderProblemSolutions();
+  });
+
+  // ===== Tab 5 — Landing config =====
+  const MODALIDAD_HELP = {
+    tradicional: 'Landing con formulario integrado para captar leads',
+    vsl: 'Landing con vídeo de venta principal y CTA debajo',
+    quiz: 'Landing con cuestionario para cualificar leads',
+    webinar: 'Landing con registro a webinar en vivo o automático'
+  };
+  const IDIOMA_HELP = {
+    es: 'Todo el copy de la landing se generará en español',
+    en: 'All landing copy will be generated in English',
+    pt: 'Todo o copy da landing será gerado em português',
+    fr: 'Tous les textes de la landing seront générés en français'
+  };
+  document.getElementById('landingModalidad')?.addEventListener('change', (e) => {
+    document.getElementById('modalidadHelp').textContent = MODALIDAD_HELP[e.target.value] || '';
+  });
+  document.getElementById('landingIdioma')?.addEventListener('change', (e) => {
+    document.getElementById('idiomaHelp').textContent = IDIOMA_HELP[e.target.value] || '';
+  });
+  document.getElementById('btnGuardarAgencia')?.addEventListener('click', () => {
+    const v = document.getElementById('agenciaNombre').value.trim();
+    if (!v) return showToast('Escribe el nombre de tu agencia.');
+    showToast(`Agencia "${v}" guardada.`);
+  });
+  document.getElementById('btnGenerarLanding')?.addEventListener('click', () => {
+    if (nichos.length === 0) return showToast('Añade un nicho en la sección 3 antes de continuar.');
+    showToast('Generando prompt para landing page…');
   });
 
   // ===== Tab 8: Analizador de Web =====
