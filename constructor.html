@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Flyer Creator | MKT Hacker</title>
+<meta name="description" content="Genera flyers para captar clientes utilizando la inteligencia artificial." />
+<meta name="theme-color" content="#0f1729" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b1224;
+    --bg-2: #0f1729;
+    --sidebar: #0d1426;
+    --sidebar-border: #1b2540;
+    --card: #141d36;
+    --card-2: #182241;
+    --input: #0e1730;
+    --input-border: #243056;
+    --fg: #e8eefc;
+    --muted: #7d8aab;
+    --muted-2: #5b6480;
+    --accent: #9fe7f5;
+    --accent-2: #7dd3ee;
+    --green: #00d774;
+    --green-2: #00b964;
+    --danger: #ef4444;
+    --purple: #6c5ce7;
+    --required: #ff6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    display: flex;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, textarea, select { font-family: inherit; }
+
+  /* ===================== SIDEBAR ===================== */
+  .sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--sidebar);
+    border-right: 1px solid var(--sidebar-border);
+    display: flex;
+    flex-direction: column;
+    padding: 22px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 22px;
+  }
+  .brand-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 50%, #ffb86b 100%);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 11px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(108, 92, 231, 0.35);
+  }
+  .brand-logo span { display: block; }
+  .brand-logo .l1 { font-size: 13px; }
+  .brand-logo .l2 { font-size: 9px; margin-top: 2px; opacity: 0.95; }
+
+  .nav { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+  .nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    color: #c9d2eb;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav a:hover { background: rgba(255,255,255,0.04); color: #fff; }
+  .nav a.active { background: rgba(159, 231, 245, 0.08); color: #fff; }
+  .nav a svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
+
+  .sidebar-bottom { margin-top: auto; }
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--sidebar-border);
+    border-radius: 12px;
+  }
+  .user-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6c5ce7 0%, #ff4d8d 100%);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .user-meta { flex: 1; min-width: 0; }
+  .user-name { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.2; }
+  .user-email { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-logout {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    color: var(--muted);
+    border-radius: 6px;
+  }
+  .user-logout:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+  /* ===================== MAIN ===================== */
+  .main {
+    flex: 1;
+    padding: 28px 32px 60px;
+    min-width: 0;
+  }
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .back-btn {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    display: grid;
+    place-items: center;
+    color: var(--fg);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .back-btn:hover { background: var(--card-2); }
+  .page-title { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+  .page-subtitle { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 1024px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .card .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: -8px;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e8eefc;
+  }
+  .field label .req { color: var(--required); margin-left: 2px; }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 10px;
+    background: var(--input);
+    border: 1px solid var(--input-border);
+    color: var(--fg);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .field textarea { resize: vertical; min-height: 56px; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #5e6a8a; }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 0 3px rgba(159, 231, 245, 0.15);
+  }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 16px; top: 50%;
+    width: 9px; height: 9px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  /* Primary cyan button (Generar Flyer) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: transform 0.1s ease, filter 0.15s ease, opacity 0.15s ease;
+    text-align: center;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-primary {
+    background: linear-gradient(180deg, #b4ecf7 0%, #8fd9ee 100%);
+    color: #0b1224;
+  }
+  .btn-primary:hover { filter: brightness(1.05); }
+  .btn-green {
+    background: linear-gradient(180deg, #00e07d 0%, #00b964 100%);
+    color: #042713;
+    box-shadow: 0 8px 24px rgba(0, 215, 116, 0.25);
+  }
+  .btn-green:hover { filter: brightness(1.05); }
+
+  /* Upload box */
+  .upload-box {
+    border: 1.5px dashed var(--input-border);
+    border-radius: 12px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.015);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .upload-box:hover {
+    border-color: var(--accent-2);
+    color: var(--fg);
+    background: rgba(159, 231, 245, 0.04);
+  }
+  .upload-box.dashed-cyan { border-color: rgba(159, 231, 245, 0.5); border-style: dashed; }
+  .upload-box svg { width: 22px; height: 22px; }
+  .upload-box .upload-text { font-size: 13px; font-weight: 600; }
+  .upload-input { display: none; }
+
+  .thumb-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--input);
+  }
+  .thumb-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb-remove {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--danger);
+    color: #fff;
+    display: grid; place-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .thumb-remove:hover { filter: brightness(1.1); }
+
+  /* Result / Flyer generado */
+  .result-card {
+    margin-top: 22px;
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .result-card h2 {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .result-canvas {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #e7ecf2 0%, #ffffff 60%);
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 26px 22px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    overflow: hidden;
+    position: relative;
+  }
+  .result-placeholder {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    border-radius: 14px;
+    background: var(--input);
+    border: 1.5px dashed var(--input-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+  .download-btn {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #6c5ce7 0%, #4d3fc8 100%);
+    color: #fff;
+  }
+  .download-btn:hover { filter: brightness(1.08); }
+
+  /* Demo flyer content */
+  .flyer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    background: #5a3df0;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .flyer-brand .dot { width: 12px; height: 12px; border-radius: 3px; background: #fff; }
+  .flyer-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 14px;
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0)),
+      linear-gradient(180deg, #c2b9a7 0%, #8f8470 60%, #4a5b3b 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .flyer-image::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0 2px, transparent 2px 14px),
+      radial-gradient(circle at 30% 70%, rgba(40,80,40,0.55), transparent 35%),
+      radial-gradient(circle at 70% 75%, rgba(40,80,40,0.55), transparent 35%);
+  }
+  .flyer-title {
+    margin-top: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+  }
+  .flyer-sub {
+    font-style: italic;
+    font-size: 14px;
+    color: #444;
+    margin-top: 4px;
+  }
+  .flyer-bullets {
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+    border: 1px solid #1a1a1a;
+    padding: 10px 14px;
+    font-size: 11px;
+    line-height: 1.55;
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  .flyer-footer {
+    margin-top: auto;
+    width: 100%;
+    background: #0d2540;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 700;
+  }
+  .flyer-cta {
+    background: #ff8a3d;
+    color: #1a1a1a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    align-self: flex-start;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1a2440;
+    border: 1px solid var(--input-border);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 50;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Mobile sidebar */
+  .mobile-topbar {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--sidebar);
+    border-bottom: 1px solid var(--sidebar-border);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .mobile-toggle {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    display: grid; place-items: center;
+  }
+
+  @media (max-width: 820px) {
+    body { flex-direction: column; }
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 30;
+      width: 260px;
+      height: 100vh;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-topbar { display: flex; }
+    .main { padding: 20px 16px 50px; }
+    .page-title { font-size: 24px; }
+    .backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 25;
+    }
+    .backdrop.show { opacity: 1; pointer-events: auto; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">
+        <span class="l1">MKT</span>
+        <span class="l2">HACKER</span>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Menú principal">
+      <a href="#" data-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a href="#" data-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>
+        Mapa de Ruta
+      </a>
+      <a href="#" class="active" data-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        Creador de contenido
+      </a>
+      <a href="#" data-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Mis Proyectos
+      </a>
+      <a href="#" data-nav>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Ajustes
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="user-card">
+        <div class="user-avatar">P</div>
+        <div class="user-meta">
+          <div class="user-name">PAU Rodríguez</div>
+          <div class="user-email">appsmovilpau@gmail…</div>
+        </div>
+        <button class="user-logout" aria-label="Cerrar sesión" title="Cerrar sesión">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="mobile-topbar">
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <strong style="font-size:14px;">Flyer Creator</strong>
+    </div>
+
+    <header class="page-header">
+      <button class="back-btn" aria-label="Volver" onclick="history.back()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div>
+        <h1 class="page-title">Crear Anuncios Tipo Flyers</h1>
+        <p class="page-subtitle">Genera flyers para captar clientes utilizando la inteligencia artificial</p>
+      </div>
+    </header>
+
+    <form id="flyerForm" class="grid" onsubmit="return false;">
+      <!-- LEFT: CONFIGURACIÓN DEL FLYER -->
+      <section class="card">
+        <h2>Configuración del Flyer</h2>
+
+        <div class="field">
+          <label for="nicho">Nicho <span class="req">*</span></label>
+          <input id="nicho" name="nicho" type="text" placeholder="Ej: Inmobiliaria" required />
+        </div>
+
+        <div class="field">
+          <label for="cliente">Cliente Final <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="cliente" name="cliente" required>
+              <option value="">Selecciona una opción</option>
+              <option value="B2C">B2C (Consumidor final)</option>
+              <option value="B2B">B2B (Empresas)</option>
+              <option value="B2G">B2G (Sector público)</option>
+              <option value="MIXTO">Mixto</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="problema">Problema o Deseo Principal <span class="req">*</span></label>
+          <textarea id="problema" name="problema" rows="3" placeholder="Ej: Captar clientes y atención 24/7 y colgar vídeos en Instagram y TikTok" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="oferta">Oferta <span class="req">*</span></label>
+          <textarea id="oferta" name="oferta" rows="2" placeholder="Ej: Sistema de automatización de reservas con IA" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="tono">Tono del Anuncio <span class="req">*</span></label>
+          <textarea id="tono" name="tono" rows="2" placeholder="Ej: Urgente, profesional, cercano, exclusivo…" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="formato1">Formato de Imagen <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="formato1" name="formato1" required>
+              <option value="1080x1080">Cuadrado (1080x1080) - Feed</option>
+              <option value="1080x1350">Vertical (1080x1350) - Feed</option>
+              <option value="1080x1920">Story (1080x1920)</option>
+              <option value="1200x628">Horizontal (1200x628) - Ads</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="btnGenerar">
+          Generar Flyer
+        </button>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:22px;">
+        <!-- IMÁGENES DE REFERENCIA -->
+        <section class="card">
+          <div>
+            <h2>Imágenes de Referencia</h2>
+            <p class="card-desc" style="margin-top:8px;">Sube imágenes de ejemplo para mejorar la calidad de generación</p>
+          </div>
+
+          <div id="thumbList" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+          <label class="upload-box dashed-cyan" for="refUpload" id="addRefBox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="upload-text">Añadir imagen de referencia</span>
+          </label>
+          <input type="file" id="refUpload" class="upload-input" accept="image/*" multiple />
+
+          <div class="field">
+            <label for="instrucciones">Instrucciones para el flyer</label>
+            <textarea id="instrucciones" name="instrucciones" rows="3" placeholder="Ej: Cambiar el texto por 'Nueva oferta especial', mantener el diseño pero corregir la palabra 'automático', usar misma paleta de colores…"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="formato2">Formato de Imagen</label>
+            <div class="select-wrap">
+              <select id="formato2" name="formato2">
+                <option value="1080x1080">Cuadrado (1080x1080)</option>
+                <option value="1080x1350">Vertical (1080x1350)</option>
+                <option value="1080x1920">Story (1080x1920)</option>
+                <option value="1200x628">Horizontal (1200x628)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="btnGenerarRef">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.39 6.95H22l-6.19 4.5L18.18 19 12 14.77 5.82 19l2.37-6.55L2 7.95h7.61z"/></svg>
+            Generar Flyer
+          </button>
+        </section>
+
+        <!-- GENERACIÓN DIRECTA CON PROMPT -->
+        <section class="card">
+          <div>
+            <h2>Generación Directa con Prompt</h2>
+            <p class="card-desc" style="margin-top:8px;">Genera un flyer directamente con tu propio prompt (sin formulario)</p>
+          </div>
+          <div class="field">
+            <textarea id="prompt" rows="4" placeholder="Escribe tu prompt aquí… Ej: Crea un flyer para un gimnasio con estilo moderno, colores neón, que promocione membresías mensuales…"></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnGenerarPrompt">
+            Generar con Prompt
+          </button>
+        </section>
+
+        <!-- GPT prompting -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button type="button" class="btn btn-green" id="btnGPT">
+            Ir a GPT Prompting de Flyers
+          </button>
+          <p style="text-align:center; font-size:12px; color:var(--muted);">Genera prompts optimizados con nuestro GPT especializado</p>
+        </div>
+      </div>
+    </form>
+
+    <!-- RESULTADO -->
+    <section class="result-card" id="resultCard" hidden>
+      <h2>Flyer Generado</h2>
+      <div id="resultArea">
+        <div class="result-placeholder" id="resultPlaceholder">
+          Aquí aparecerá tu flyer cuando lo generes.
+        </div>
+      </div>
+      <button type="button" class="btn download-btn" id="btnDescargar" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar Flyer
+      </button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ---------- Mobile sidebar ----------
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('backdrop');
+  document.getElementById('mobileToggle')?.addEventListener('click', () => {
+    sidebar.classList.add('open');
+    backdrop.classList.add('show');
+  });
+  backdrop.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+  });
+
+  // ---------- Toast ----------
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  // ---------- Reference image upload (memory only) ----------
+  const refUpload = document.getElementById('refUpload');
+  const thumbList = document.getElementById('thumbList');
+  const uploadedRefs = [];
+
+  refUpload.addEventListener('change', (e) => {
+    [...e.target.files].forEach(file => addRefImage(file));
+    refUpload.value = '';
+  });
+
+  function addRefImage(file) {
+    if (!file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    uploadedRefs.push({ file, url });
+    renderThumbs();
+  }
+
+  function renderThumbs() {
+    thumbList.innerHTML = '';
+    uploadedRefs.forEach((ref, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb-wrap';
+      wrap.innerHTML = `
+        <img src="${ref.url}" alt="Referencia ${idx + 1}" />
+        <button class="thumb-remove" aria-label="Eliminar imagen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      `;
+      wrap.querySelector('.thumb-remove').addEventListener('click', () => {
+        URL.revokeObjectURL(ref.url);
+        uploadedRefs.splice(idx, 1);
+        renderThumbs();
+      });
+      thumbList.appendChild(wrap);
+    });
+  }
+
+  // ---------- Flyer generation (simulated) ----------
+  const resultCard = document.getElementById('resultCard');
+  const resultArea = document.getElementById('resultArea');
+  const btnDescargar = document.getElementById('btnDescargar');
+
+  function escapeHTML(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function buildFlyer({ nicho, oferta, problema, tono, brand }) {
+    const title = oferta ? oferta.toUpperCase() : '¡TU NUEVA OPORTUNIDAD!';
+    const subtitle = problema || 'Lo que necesitas, cuando lo necesitas.';
+    const bullets = (tono || 'Profesional · Cercano · Eficaz')
+      .split(/[,·]+/).map(s => s.trim()).filter(Boolean).slice(0, 4);
+    return `
+      <div class="result-canvas" id="flyerCanvas">
+        <div class="flyer-brand"><span class="dot"></span> ${escapeHTML(brand || (nicho || 'TU MARCA').toUpperCase())}</div>
+        <div class="flyer-image"></div>
+        <div class="flyer-title">${escapeHTML(title)}</div>
+        <div class="flyer-sub">${escapeHTML(subtitle)}</div>
+        <div class="flyer-bullets">
+          ${bullets.map(b => `• ${escapeHTML(b.toUpperCase())}`).join('<br/>')}
+        </div>
+        <div class="flyer-cta">¡SOLICITA MÁS INFORMACIÓN!</div>
+        <div class="flyer-footer">
+          <span>${escapeHTML((nicho || 'tu-marca').toLowerCase().replace(/\s+/g, ''))}.com</span>
+          <span>+34 600 000 000</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function generateFromForm(showError = true) {
+    const nicho = document.getElementById('nicho').value.trim();
+    const cliente = document.getElementById('cliente').value;
+    const problema = document.getElementById('problema').value.trim();
+    const oferta = document.getElementById('oferta').value.trim();
+    const tono = document.getElementById('tono').value.trim();
+
+    if (!nicho || !cliente || !problema || !oferta || !tono) {
+      if (showError) showToast('Completa los campos obligatorios (*) del formulario.');
+      return;
+    }
+    renderFlyer({ nicho, oferta, problema, tono });
+  }
+
+  function generateFromRef() {
+    const instr = document.getElementById('instrucciones').value.trim();
+    if (uploadedRefs.length === 0 && !instr) {
+      showToast('Añade una imagen de referencia o instrucciones.');
+      return;
+    }
+    const nicho = document.getElementById('nicho').value.trim() || 'Tu marca';
+    const oferta = document.getElementById('oferta').value.trim() || 'Nueva oferta especial';
+    const problema = instr || document.getElementById('problema').value.trim() || 'Lo que tu cliente busca.';
+    const tono = document.getElementById('tono').value.trim() || 'Moderno · Premium · Cercano';
+    renderFlyer({ nicho, oferta, problema, tono });
+  }
+
+  function generateFromPrompt() {
+    const prompt = document.getElementById('prompt').value.trim();
+    if (!prompt) {
+      showToast('Escribe un prompt para generar el flyer.');
+      return;
+    }
+    renderFlyer({
+      nicho: 'Tu marca',
+      oferta: prompt.slice(0, 60),
+      problema: prompt,
+      tono: 'Generado con prompt directo'
+    });
+  }
+
+  function renderFlyer(data) {
+    resultCard.hidden = false;
+    resultArea.innerHTML = `<div class="result-placeholder">Generando flyer con IA…</div>`;
+    btnDescargar.hidden = true;
+    setTimeout(() => {
+      resultArea.innerHTML = buildFlyer(data);
+      btnDescargar.hidden = false;
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 700);
+  }
+
+  document.getElementById('btnGenerar').addEventListener('click', () => generateFromForm());
+  document.getElementById('btnGenerarRef').addEventListener('click', generateFromRef);
+  document.getElementById('btnGenerarPrompt').addEventListener('click', generateFromPrompt);
+  document.getElementById('btnGPT').addEventListener('click', () => {
+    showToast('Aquí abriría el GPT especializado en un flujo real.');
+  });
+
+  // ---------- Download flyer as PNG (uses html-to-image via canvas trick) ----------
+  btnDescargar.addEventListener('click', async () => {
+    const canvas = document.getElementById('flyerCanvas');
+    if (!canvas) return;
+    try {
+      const svg = await nodeToSvg(canvas);
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        const scale = 2;
+        c.width = canvas.offsetWidth * scale;
+        c.height = canvas.offsetHeight * scale;
+        const ctx = c.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.drawImage(img, 0, 0);
+        c.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'flyer.png';
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+      };
+      img.onerror = () => showToast('No se pudo exportar la imagen.');
+      img.src = svg;
+    } catch (e) {
+      showToast('Exportación no disponible en este navegador.');
+    }
+  });
+
+  // Minimal DOM -> SVG (foreignObject) for download
+  async function nodeToSvg(node) {
+    const rect = node.getBoundingClientRect();
+    const clone = node.cloneNode(true);
+    const styles = await collectStyles(node);
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(clone);
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${rect.width}" height="${rect.height}">
+        <foreignObject width="100%" height="100%">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Inter, sans-serif;">
+            <style>${styles}</style>
+            ${wrapper.innerHTML}
+          </div>
+        </foreignObject>
+      </svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  async function collectStyles() {
+    const sheets = [...document.styleSheets];
+    let css = '';
+    for (const sheet of sheets) {
+      try {
+        for (const rule of sheet.cssRules) css += rule.cssText + '\n';
+      } catch (_) { /* cross-origin */ }
+    }
+    return css;
+  }
+</script>
+</body>
+</html>
