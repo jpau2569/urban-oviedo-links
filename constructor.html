@@ -1404,6 +1404,102 @@
     content: "▎"; color: var(--cyan); animation: blink 1s steps(2) infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
+
+  /* ===== Hub de Apps externas ===== */
+  .apps-hub-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    margin: 36px 0 18px;
+    padding-top: 22px;
+    border-top: 1px solid var(--input-border);
+  }
+  .apps-hub-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+  .apps-hub-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .app-card {
+    background: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .app-card:hover { transform: translateY(-3px); border-color: var(--cyan); box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
+  .app-preview {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #1a1340 0%, #0b1224 100%);
+    overflow: hidden;
+  }
+  .app-preview iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+    transform: scale(0.55);
+    transform-origin: top left;
+    width: 182%;
+    height: 182%;
+    pointer-events: none;
+    background: #fff;
+  }
+  .app-preview .blocked {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: var(--muted); font-size: 12px;
+    background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(34,211,238,0.08)), var(--card-2);
+  }
+  .app-preview .blocked svg { width: 26px; height: 26px; opacity: 0.6; }
+  .app-platform-badge {
+    position: absolute; top: 10px; left: 10px;
+    z-index: 2;
+    padding: 4px 10px; border-radius: 6px;
+    background: rgba(11,18,36,0.85);
+    color: #fff;
+    font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.7px;
+    backdrop-filter: blur(6px);
+  }
+  .app-platform-badge.manus { background: rgba(108,92,231,0.92); }
+  .app-platform-badge.base44 { background: rgba(34,211,238,0.92); color: #0b1224; }
+  .app-platform-badge.vercel { background: rgba(0,0,0,0.92); }
+  .app-platform-badge.lovable { background: rgba(255,77,141,0.92); }
+  .app-platform-badge.bolt { background: rgba(0,215,116,0.92); color: #0b1224; }
+  .app-platform-badge.netlify { background: rgba(0,173,181,0.92); color: #0b1224; }
+  .app-platform-badge.other { background: rgba(125,138,171,0.92); }
+
+  .app-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .app-body h4 { font-size: 16px; font-weight: 700; color: var(--fg); }
+  .app-body .app-url {
+    font-size: 11px; color: var(--muted);
+    font-family: 'SF Mono', Monaco, monospace;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .app-body .app-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .app-body .app-actions { display: flex; gap: 6px; margin-top: 6px; }
+  .app-body .app-actions button, .app-body .app-actions a {
+    flex: 1; padding: 8px 10px; border-radius: 7px;
+    background: var(--card-2); border: 1px solid var(--input-border);
+    color: var(--fg); font-size: 12px; font-weight: 600;
+    text-decoration: none; text-align: center;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    transition: background 0.15s ease;
+  }
+  .app-body .app-actions button:hover, .app-body .app-actions a:hover { background: var(--card-3); }
+  .app-body .app-actions .primary {
+    background: linear-gradient(135deg, var(--cyan), #3b82f6);
+    color: #fff; border-color: transparent;
+  }
+  .app-body .app-actions .primary:hover { filter: brightness(1.08); }
+  .app-body .app-actions .danger:hover { background: rgba(239,68,68,0.15); color: var(--danger); border-color: var(--danger); }
+
+  .apps-empty {
+    grid-column: 1 / -1;
+    padding: 40px 24px; text-align: center;
+    color: var(--muted);
+    background: var(--card); border: 1px dashed var(--input-border);
+    border-radius: 14px;
+  }
 </style>
 </head>
 <body>
@@ -1640,10 +1736,51 @@
         </div>
       </div>
 
+      <!-- ====== HUB DE APPS EXTERNAS ====== -->
+      <div class="apps-hub-header">
+        <div>
+          <h2>Tus apps externas</h2>
+          <p>Manus, Base44, Vercel, Lovable, Bolt… todo bajo un mismo techo.</p>
+        </div>
+        <button class="btn btn-cyan" id="btnAddApp" style="padding:10px 16px; font-size:13px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Añadir app
+        </button>
+      </div>
+      <div class="apps-grid" id="appsGrid"></div>
+
       <footer class="campus-footer">
         MKT Hackers© 2026 | Todos los derechos reservados | <a href="#">Aviso Legal</a> | <a href="#">Privacidad</a> | <a href="#">Cookies</a>
       </footer>
     </section>
+
+    <!-- ===== App modal (add/edit) ===== -->
+    <div class="onboard-overlay" id="appModal" role="dialog" aria-modal="true">
+      <div class="onboard-card" style="max-width:480px;">
+        <h2 id="appModalTitle" style="margin-bottom:8px;">Añadir app externa</h2>
+        <p style="margin-bottom:18px; text-align:left; font-size:13px;">Registra cualquier app que tengas desplegada (Manus, Base44, Vercel…). Se guardará en tu navegador.</p>
+        <div class="field"><label for="appName">Nombre</label><input id="appName" type="text" placeholder="Ej: Cast Render" /></div>
+        <div class="field"><label for="appUrl">URL</label><input id="appUrl" type="url" placeholder="https://mi-app.manus.space" /></div>
+        <div class="field"><label for="appDesc">Descripción</label><input id="appDesc" type="text" placeholder="Renderiza fichas de inmuebles con IA" /></div>
+        <div class="field"><label for="appPlatform">Plataforma</label>
+          <div class="select-wrap">
+            <select id="appPlatform">
+              <option value="manus">Manus</option>
+              <option value="base44">Base44</option>
+              <option value="vercel">Vercel</option>
+              <option value="lovable">Lovable</option>
+              <option value="bolt">Bolt</option>
+              <option value="netlify">Netlify</option>
+              <option value="other">Otra</option>
+            </select>
+          </div>
+        </div>
+        <div class="onboard-actions" style="margin-top:16px;">
+          <button class="topbar-btn" id="appCancel">Cancelar</button>
+          <button class="btn btn-cyan" id="appSave" style="padding:10px 16px; font-size:14px;">Guardar</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ====== MAPA DE RUTA ====== -->
     <section class="view active" data-view-content="mapa">
@@ -3771,6 +3908,142 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     setTimeout(() => { animateCounters(); renderChart(); }, 200);
   });
 
+  // =====================================================================
+  // ============ HUB DE APPS EXTERNAS (Manus, Base44, ...) ==============
+  // =====================================================================
+  const DEFAULT_APPS = [
+    {
+      id: 'app_castrender_default',
+      name: 'Cast Render',
+      url: 'https://cast-render-ukuxamze.manus.space/',
+      desc: 'App externa montada en Manus — vinculada a tu nicho (Asesoría Castresana).',
+      platform: 'manus',
+      pinned: true,
+      createdAt: Date.now()
+    },
+    {
+      id: 'app_castresanaflow_default',
+      name: 'Castresana Smart Flow',
+      url: 'https://castresana-smart-flow.base44.app/',
+      desc: 'Flujo inteligente desplegado en Base44 — landing + setter + agenda.',
+      platform: 'base44',
+      pinned: true,
+      createdAt: Date.now()
+    }
+  ];
+  if (!state.apps) state.apps = [];
+  // First-time seed if state has no apps yet
+  if (state.apps.length === 0 && !localStorage.getItem('mkthacker_apps_seeded_v1')) {
+    state.apps = [...DEFAULT_APPS];
+    localStorage.setItem('mkthacker_apps_seeded_v1', '1');
+  }
+
+  function platformLabel(p) {
+    return { manus: 'Manus', base44: 'Base44', vercel: 'Vercel', lovable: 'Lovable', bolt: 'Bolt', netlify: 'Netlify', other: 'Externa' }[p] || 'Externa';
+  }
+  function renderApps() {
+    const grid = document.getElementById('appsGrid');
+    if (!grid) return;
+    if (state.apps.length === 0) {
+      grid.innerHTML = `<div class="apps-empty">Sin apps registradas. Pulsa "Añadir app" para empezar.</div>`;
+      return;
+    }
+    grid.innerHTML = state.apps.map(a => `
+      <div class="app-card" data-id="${a.id}">
+        <div class="app-preview">
+          <span class="app-platform-badge ${a.platform}">${platformLabel(a.platform)}</span>
+          <div class="blocked">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span>Vista previa no disponible — abrir directamente</span>
+          </div>
+          <iframe src="${escapeHTML(a.url)}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"
+                  onload="this.parentElement.querySelector('.blocked').style.display='none';"
+                  onerror="this.style.display='none';"></iframe>
+        </div>
+        <div class="app-body">
+          <h4>${escapeHTML(a.name)}</h4>
+          <div class="app-url">${escapeHTML(a.url)}</div>
+          <div class="app-desc">${escapeHTML(a.desc || '')}</div>
+          <div class="app-actions">
+            <a class="primary" href="${escapeHTML(a.url)}" target="_blank" rel="noopener">
+              Abrir
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+            <button data-action="copy" data-url="${escapeHTML(a.url)}">Copiar URL</button>
+            <button data-action="edit" data-id="${a.id}">Editar</button>
+            <button data-action="delete" data-id="${a.id}" class="danger">Borrar</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  let editingAppId = null;
+  function openAppModal(app = null) {
+    editingAppId = app?.id || null;
+    document.getElementById('appModalTitle').textContent = app ? 'Editar app externa' : 'Añadir app externa';
+    document.getElementById('appName').value = app?.name || '';
+    document.getElementById('appUrl').value = app?.url || '';
+    document.getElementById('appDesc').value = app?.desc || '';
+    document.getElementById('appPlatform').value = app?.platform || 'manus';
+    document.getElementById('appModal').classList.add('open');
+    setTimeout(() => document.getElementById('appName').focus(), 50);
+  }
+  function closeAppModal() {
+    document.getElementById('appModal').classList.remove('open');
+    editingAppId = null;
+  }
+  document.getElementById('btnAddApp')?.addEventListener('click', () => openAppModal());
+  document.getElementById('appCancel')?.addEventListener('click', closeAppModal);
+  document.getElementById('appSave')?.addEventListener('click', () => {
+    const name = document.getElementById('appName').value.trim();
+    const url = document.getElementById('appUrl').value.trim();
+    const desc = document.getElementById('appDesc').value.trim();
+    const platform = document.getElementById('appPlatform').value;
+    if (!name || !url) return showToast('Pon al menos nombre y URL.', 'error');
+    try { new URL(url); } catch { return showToast('URL inválida.', 'error'); }
+    if (editingAppId) {
+      const app = state.apps.find(a => a.id === editingAppId);
+      if (app) Object.assign(app, { name, url, desc, platform });
+    } else {
+      state.apps.unshift({
+        id: 'app_' + Math.random().toString(36).slice(2, 10),
+        name, url, desc, platform,
+        createdAt: Date.now()
+      });
+    }
+    saveState(); renderApps(); closeAppModal();
+    showToast('App guardada.', 'success');
+  });
+
+  document.getElementById('appsGrid')?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+    if (action === 'copy') {
+      try { await navigator.clipboard.writeText(btn.dataset.url); showToast('URL copiada.', 'success'); }
+      catch { showToast('No se pudo copiar.', 'error'); }
+    } else if (action === 'edit') {
+      openAppModal(state.apps.find(a => a.id === id));
+    } else if (action === 'delete') {
+      if (!confirm('¿Borrar esta app de la lista? (no se desplegará nada externo)')) return;
+      state.apps = state.apps.filter(a => a.id !== id);
+      saveState(); renderApps();
+      showToast('App borrada.', 'success');
+    }
+  });
+  document.getElementById('appModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'appModal') closeAppModal();
+  });
+
+  // Add Cast Render command to palette
+  COMMANDS.push(
+    { id: 'go-castrender', section: 'Apps externas', title: 'Abrir Cast Render', sub: 'Manus · cast-render-ukuxamze.manus.space', action: () => window.open('https://cast-render-ukuxamze.manus.space/', '_blank', 'noopener') },
+    { id: 'go-smartflow', section: 'Apps externas', title: 'Abrir Castresana Smart Flow', sub: 'Base44 · castresana-smart-flow.base44.app', action: () => window.open('https://castresana-smart-flow.base44.app/', '_blank', 'noopener') },
+    { id: 'act-add-app', section: 'Apps externas', title: 'Añadir nueva app externa', sub: 'Registra una URL en el hub', action: () => { switchView('dashboard'); setTimeout(() => document.getElementById('btnAddApp').click(), 200); } }
+  );
+
   // ===== INIT =====
   loadState();
   applyTheme(state.theme || 'dark');
@@ -3792,6 +4065,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     if (p) document.getElementById('activeProjectName').textContent = projectName(p);
   }
   renderProjects();
+  renderApps();
   updateProgress();
 
   // First-time onboarding
