@@ -1501,7 +1501,270 @@
     border-radius: 14px;
   }
 
-  /* ===== Cast Render ===== */
+  /* ===== Castresana Render AI (replica) ===== */
+  .cr2-app {
+    --cr-green: #16a34a;
+    --cr-green-dark: #15803d;
+    --cr-green-light: #dcfce7;
+    --cr-green-faint: #f0fdf4;
+    --cr-bg: #0b1224;
+    --cr-card-bg: #ffffff;
+    --cr-card-border: #e5e7eb;
+    --cr-text: #111827;
+    --cr-muted: #6b7280;
+    background: var(--cr-bg);
+    border-radius: 18px;
+    padding: 20px;
+    margin: -4px 0;
+  }
+  body.theme-light .cr2-app { background: #f0f3f9; }
+
+  .cr2-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cr-card-bg);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .cr2-brand { display: flex; align-items: center; gap: 12px; }
+  .cr2-logo {
+    width: 42px; height: 42px;
+    background: var(--cr-green);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .cr2-logo svg { width: 24px; height: 24px; }
+  .cr2-brand h1 { font-size: 18px; font-weight: 800; color: var(--cr-text); letter-spacing: -0.3px; }
+  .cr2-login {
+    background: var(--cr-green); color: #fff;
+    padding: 9px 18px; border-radius: 9px;
+    font-weight: 700; font-size: 14px;
+    transition: background 0.15s ease;
+  }
+  .cr2-login:hover { background: var(--cr-green-dark); }
+
+  .cr2-hero { text-align: center; padding: 18px 14px 26px; color: #fff; }
+  body.theme-light .cr2-hero { color: var(--cr-text); }
+  .cr2-hero h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .cr2-hero p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.55; max-width: 540px; margin: 0 auto; }
+  body.theme-light .cr2-hero p { color: var(--cr-muted); }
+  .cr2-hero p strong { color: #fff; }
+  body.theme-light .cr2-hero p strong { color: var(--cr-text); }
+
+  .cr2-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-bottom: 26px;
+  }
+  @media (max-width: 820px) { .cr2-steps { grid-template-columns: 1fr; } }
+  .cr2-step {
+    background: var(--cr-card-bg);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .cr2-step-ic {
+    width: 52px; height: 52px;
+    margin: 0 auto 14px;
+    color: var(--cr-green);
+    display: grid; place-items: center;
+  }
+  .cr2-step-ic svg { width: 32px; height: 32px; }
+  .cr2-step h3 { font-size: 16px; font-weight: 800; color: var(--cr-text); margin-bottom: 6px; }
+  .cr2-step p { font-size: 13px; color: var(--cr-muted); line-height: 1.5; }
+
+  .cr2-workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 980px) { .cr2-workspace { grid-template-columns: 1fr; } }
+
+  .cr2-card {
+    background: var(--cr-card-bg);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .cr2-card-head { display: flex; align-items: center; gap: 10px; }
+  .cr2-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--cr-green); color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 13px; flex-shrink: 0;
+  }
+  .cr2-card h3 { font-size: 16px; font-weight: 800; color: var(--cr-text); }
+
+  .cr2-dropzone {
+    border: 2px dashed var(--cr-green);
+    background: var(--cr-green-faint);
+    border-radius: 12px;
+    min-height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cr2-dropzone:hover { background: var(--cr-green-light); }
+  .cr2-dropzone.dragging { background: var(--cr-green-light); border-color: var(--cr-green-dark); }
+  .cr2-dropzone.has-file { padding: 0; border-style: solid; background: #fff; }
+  .cr2-drop-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--cr-green);
+    text-align: center;
+  }
+  .cr2-drop-empty svg { width: 36px; height: 36px; margin-bottom: 6px; }
+  .cr2-drop-empty strong { font-size: 14px; font-weight: 700; color: var(--cr-text); }
+  .cr2-drop-empty span { font-size: 12px; color: var(--cr-muted); }
+  #cr2DropImg { width: 100%; max-height: 240px; object-fit: contain; display: none; border-radius: 10px; }
+  .cr2-dropzone.has-file #cr2DropImg { display: block; }
+  .cr2-dropzone.has-file .cr2-drop-empty { display: none; }
+
+  .cr2-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 540px) { .cr2-row { grid-template-columns: 1fr; } }
+  .cr2-field { display: flex; flex-direction: column; gap: 6px; }
+  .cr2-field label { font-size: 12px; font-weight: 700; color: var(--cr-text); }
+  .cr2-field select, .cr2-field textarea, .cr2-field input {
+    padding: 10px 12px; border-radius: 9px;
+    border: 1px solid var(--cr-card-border);
+    background: #fff;
+    color: var(--cr-text);
+    font-size: 13px; outline: none;
+    font-family: inherit;
+    appearance: none; -webkit-appearance: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cr2-field textarea { resize: vertical; min-height: 60px; }
+  .cr2-field select:focus, .cr2-field textarea:focus, .cr2-field input:focus {
+    border-color: var(--cr-green);
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.12);
+  }
+
+  .cr2-btn {
+    padding: 12px 18px; border-radius: 10px;
+    font-weight: 700; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: filter 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+  .cr2-btn:active { transform: translateY(1px); }
+  .cr2-btn-primary { background: var(--cr-green); color: #fff; }
+  .cr2-btn-primary:hover { background: var(--cr-green-dark); }
+  .cr2-btn-ghost { background: #fff; color: var(--cr-text); border: 1px solid var(--cr-card-border); }
+  .cr2-btn-ghost:hover { background: #f3f4f6; }
+
+  .cr2-canvas {
+    width: 100%; aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    background: #f3f4f6;
+    overflow: hidden;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cr2-canvas-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    color: #9ca3af;
+  }
+  .cr2-canvas-empty svg { width: 48px; height: 48px; }
+  .cr2-canvas-empty span { font-size: 13px; }
+
+  /* The actual rendered "3D top-down" mock */
+  .cr2-render {
+    width: 100%; height: 100%;
+    position: relative;
+    background: linear-gradient(180deg, #f5f0e6 0%, #e8d9b6 100%);
+    overflow: hidden;
+  }
+  .cr2-render::before {
+    content: ""; position: absolute; inset: 8%;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0 2px, transparent 2px 14px),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0 2px, transparent 2px 14px),
+                linear-gradient(180deg, #e8d9b6 0%, #d4bf95 100%);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 3px #8b7355, 0 8px 20px rgba(0,0,0,0.15);
+  }
+  /* rooms as colored rectangles */
+  .cr2-render-room {
+    position: absolute; border: 2px solid #8b7355;
+    border-radius: 2px;
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(0,0,0,0.55); font-size: 10px; font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+  .cr2-render-furniture {
+    position: absolute; background: rgba(40, 90, 60, 0.85);
+    border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .cr2-render-label {
+    position: absolute; bottom: 12px; left: 12px;
+    background: rgba(0,0,0,0.7); color: #fff;
+    padding: 5px 12px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+  }
+  .cr2-render.dia { filter: brightness(1); }
+  .cr2-render.atardecer { filter: brightness(0.92) sepia(0.3) hue-rotate(-10deg); }
+  .cr2-render.noche { filter: brightness(0.55) sepia(0.2) hue-rotate(200deg); }
+
+  .cr2-render-loading {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--cr-green-faint), #fff);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px;
+    color: var(--cr-green);
+  }
+  .cr2-render-loading svg { width: 36px; height: 36px; animation: spin 1.2s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .cr2-render-loading strong { font-size: 14px; color: var(--cr-text); }
+  .cr2-render-loading span { font-size: 12px; color: var(--cr-muted); }
+
+  .cr2-result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cr2-result-actions .cr2-btn { flex: 1; min-width: 100px; }
+
+  .cr2-history-block { margin-top: 6px; border-top: 1px solid var(--cr-card-border); padding-top: 14px; }
+  .cr2-history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .cr2-history-head strong { font-size: 13px; color: var(--cr-text); }
+  .cr2-history-head span { font-size: 12px; color: var(--cr-muted); }
+  .cr2-history-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cr2-history-thumb {
+    aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--cr-card-border);
+    cursor: pointer; position: relative;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .cr2-history-thumb:hover { transform: translateY(-2px); border-color: var(--cr-green); }
+  .cr2-history-thumb img, .cr2-history-thumb .cr2-render {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .cr2-history-thumb .cr2-history-del {
+    position: absolute; top: 4px; right: 4px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(0,0,0,0.6); color: #fff;
+    display: grid; place-items: center;
+    opacity: 0; transition: opacity 0.15s ease;
+  }
+  .cr2-history-thumb:hover .cr2-history-del { opacity: 1; }
+  .cr2-history-thumb .cr2-history-del svg { width: 11px; height: 11px; }
+  .cr2-history-empty {
+    grid-column: 1 / -1;
+    text-align: center; padding: 14px;
+    font-size: 12px; color: var(--cr-muted);
+  }
+
+  .cr2-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px; padding: 14px 4px;
+    font-size: 12px; color: rgba(255,255,255,0.6);
+  }
+  body.theme-light .cr2-footer { color: var(--cr-muted); }
+  .cr2-badge {
+    background: var(--cr-green); color: #fff;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.3px;
+  }
+
+  /* Legacy Cast Render placeholder (kept for compat) */
   .cr-hero {
     position: relative;
     display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: center;
@@ -2809,167 +3072,168 @@
       </div>
     </section>
 
-    <!-- ====== CAST RENDER — Renderizador de fichas inmobiliarias IA ====== -->
+    <!-- ====== CASTRESANA RENDER AI — Replica 1:1 ====== -->
     <section class="view" data-view-content="castrender">
-      <div class="cr-hero">
-        <div class="cr-hero-text">
-          <span class="cr-pill">CAST RENDER · IA</span>
-          <h1>Renderiza fichas de inmuebles con IA en segundos</h1>
-          <p>Pega los datos del inmueble, sube una foto si la tienes y genera al instante una <strong>ficha visual + copy comercial + brochure</strong> lista para enviar al cliente, publicar en Idealista o usar como Story.</p>
-          <div class="cr-stats">
-            <div><strong id="crStatProps">0</strong><span>fichas generadas</span></div>
-            <div><strong>4</strong><span>formatos de salida</span></div>
-            <div><strong>&lt;3s</strong><span>tiempo medio</span></div>
+      <div class="cr2-app">
+        <!-- Top brand bar -->
+        <header class="cr2-topbar">
+          <div class="cr2-brand">
+            <div class="cr2-logo">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z" fill="white"/><circle cx="18" cy="6" r="1.6" fill="white"/></svg>
+            </div>
+            <h1>Castresana Render AI</h1>
+          </div>
+          <button class="cr2-login" id="cr2Login">Iniciar Sesión</button>
+        </header>
+
+        <!-- Hero subtitle -->
+        <div class="cr2-hero">
+          <h2>Renders 3D top-down con IA</h2>
+          <p>Perfecto para presentar propiedades inmobiliarias en <strong>Asturias y Cantabria</strong>.</p>
+        </div>
+
+        <!-- 3 step cards -->
+        <div class="cr2-steps">
+          <div class="cr2-step">
+            <div class="cr2-step-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h3>Sube Planos</h3>
+            <p>Carga tus planos 2D o fotos de propiedades</p>
+          </div>
+          <div class="cr2-step">
+            <div class="cr2-step-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/><circle cx="18" cy="6" r="1.5"/><circle cx="6" cy="18" r="1.5"/></svg>
+            </div>
+            <h3>IA Genera Renders</h3>
+            <p>Crea visualizaciones 3D top-down en minutos</p>
+          </div>
+          <div class="cr2-step">
+            <div class="cr2-step-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><line x1="18" y1="3" x2="18" y2="7"/><line x1="16" y1="5" x2="20" y2="5"/></svg>
+            </div>
+            <h3>Descarga Resultados</h3>
+            <p>Exporta tus renders en alta resolución</p>
           </div>
         </div>
-        <div class="cr-hero-art">
-          <div class="cr-card-stack" aria-hidden="true">
-            <div class="cr-card-mini c1"></div>
-            <div class="cr-card-mini c2"></div>
-            <div class="cr-card-mini c3"></div>
-          </div>
-        </div>
-      </div>
 
-      <div class="cr-layout">
-        <!-- Form -->
-        <section class="card cr-form">
-          <h3 class="flat">Datos del inmueble</h3>
+        <!-- Main flow -->
+        <div class="cr2-workspace">
+          <!-- Step 1: Upload -->
+          <section class="cr2-card cr2-upload-card">
+            <div class="cr2-card-head">
+              <span class="cr2-num">1</span>
+              <h3>Sube tu plano o foto</h3>
+            </div>
 
-          <div class="cr-row">
-            <div class="field">
-              <label for="crTipo">Tipo <span class="req">*</span></label>
-              <div class="select-wrap">
-                <select id="crTipo">
+            <label class="cr2-dropzone" for="cr2File" id="cr2Drop">
+              <div class="cr2-drop-empty" id="cr2DropEmpty">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M42 30v8a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4v-8"/><polyline points="34 16 24 6 14 16"/><line x1="24" y1="6" x2="24" y2="30"/></svg>
+                <strong>Arrastra tu plano aquí</strong>
+                <span>o pulsa para seleccionar — PNG, JPG, PDF (máx. 20 MB)</span>
+              </div>
+              <img id="cr2DropImg" alt="Plano subido" />
+            </label>
+            <input id="cr2File" type="file" accept="image/*,application/pdf" style="display:none;" />
+
+            <div class="cr2-row" id="cr2OptsRow">
+              <div class="cr2-field">
+                <label for="cr2Tipo">Tipo de propiedad</label>
+                <select id="cr2Tipo">
                   <option value="piso">Piso</option>
                   <option value="atico">Ático</option>
                   <option value="chalet">Chalet</option>
                   <option value="duplex">Dúplex</option>
-                  <option value="estudio">Estudio</option>
                   <option value="local">Local comercial</option>
                   <option value="oficina">Oficina</option>
                 </select>
               </div>
-            </div>
-            <div class="field">
-              <label for="crEstilo">Estilo</label>
-              <div class="select-wrap">
-                <select id="crEstilo">
+              <div class="cr2-field">
+                <label for="cr2Estilo">Estilo de render</label>
+                <select id="cr2Estilo">
                   <option value="moderno">Moderno</option>
-                  <option value="lujo">Lujo / Premium</option>
+                  <option value="escandinavo">Escandinavo</option>
                   <option value="minimalista">Minimalista</option>
-                  <option value="clasico">Clásico</option>
+                  <option value="lujo">Lujo</option>
                   <option value="industrial">Industrial / Loft</option>
-                  <option value="mediterraneo">Mediterráneo</option>
+                  <option value="rustico">Rústico</option>
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="crTitulo">Título <span class="req">*</span></label>
-            <input id="crTitulo" type="text" placeholder="Ej: Apartamentos de lujo en Paraíso Urbano" />
-          </div>
-
-          <div class="field">
-            <label for="crSubtitulo">Subtítulo / lema</label>
-            <input id="crSubtitulo" type="text" placeholder="Ej: Tu nuevo hogar te espera · Vistas únicas, vida moderna" />
-          </div>
-
-          <div class="cr-row cr-row-3">
-            <div class="field"><label for="crUbic">Ubicación</label><input id="crUbic" type="text" placeholder="Oviedo, Asturias" /></div>
-            <div class="field"><label for="crM2">m²</label><input id="crM2" type="number" placeholder="120" min="1" /></div>
-            <div class="field"><label for="crHab">Habs.</label><input id="crHab" type="number" placeholder="3" min="0" /></div>
-          </div>
-
-          <div class="cr-row">
-            <div class="field"><label for="crPrecio">Precio</label><input id="crPrecio" type="text" placeholder="€ 295.000" /></div>
-            <div class="field"><label for="crEstado">Estado</label>
-              <div class="select-wrap">
-                <select id="crEstado">
-                  <option value="venta">En venta</option>
-                  <option value="alquiler">En alquiler</option>
-                  <option value="reserva">Reserva</option>
-                  <option value="vendido">Vendido</option>
-                  <option value="lanzamiento">Lanzamiento</option>
+            <div class="cr2-row">
+              <div class="cr2-field">
+                <label for="cr2Luz">Iluminación</label>
+                <select id="cr2Luz">
+                  <option value="dia">Diurna</option>
+                  <option value="atardecer">Atardecer</option>
+                  <option value="noche">Nocturna (cálida)</option>
+                </select>
+              </div>
+              <div class="cr2-field">
+                <label for="cr2Calidad">Calidad</label>
+                <select id="cr2Calidad">
+                  <option value="standard">Standard (1024×1024)</option>
+                  <option value="hd">HD (2048×2048)</option>
+                  <option value="4k">4K (4096×4096) · premium</option>
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="crCaract">Características destacadas</label>
-            <textarea id="crCaract" rows="3" placeholder="Ej: Diseño contemporáneo · Entorno natural y urbano · Ubicación privilegiada · Precios especiales de lanzamiento"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="crMarca">Marca / Inmobiliaria</label>
-            <input id="crMarca" type="text" placeholder="Ej: Paraíso Urbano · Promotora inmobiliaria" />
-          </div>
-
-          <div class="field">
-            <label for="crContacto">Contacto</label>
-            <input id="crContacto" type="text" placeholder="Ej: +34 696 000 000 · info@castresana.es" />
-          </div>
-
-          <div class="field">
-            <label>Foto del inmueble (opcional)</label>
-            <label class="upload-box dashed-cyan" for="crFoto">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span class="upload-text" id="crFotoLabel">Subir foto</span>
-            </label>
-            <input id="crFoto" type="file" class="upload-input" accept="image/*" />
-          </div>
-
-          <div class="field">
-            <label for="crFormato">Formato de salida</label>
-            <div class="select-wrap">
-              <select id="crFormato">
-                <option value="post">Post Instagram (1080×1080)</option>
-                <option value="story">Story (1080×1920)</option>
-                <option value="horizontal">Anuncio horizontal (1200×628)</option>
-                <option value="brochure">Brochure / Ficha A4</option>
-              </select>
+            <div class="cr2-field">
+              <label for="cr2Extra">Instrucciones adicionales (opcional)</label>
+              <textarea id="cr2Extra" rows="2" placeholder="Ej: Tonos claros, suelos de madera, plantas, sofá esquinero"></textarea>
             </div>
-          </div>
 
-          <button class="btn btn-cyan" id="crGenerar">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.39 6.95H22l-6.19 4.5L18.18 19 12 14.77 5.82 19l2.37-6.55L2 7.95h7.61z"/></svg>
-            Generar ficha con IA
-          </button>
-        </section>
+            <button class="cr2-btn cr2-btn-primary" id="cr2Generar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
+              Generar render con IA
+            </button>
+          </section>
 
-        <!-- Preview -->
-        <section class="cr-preview-col">
-          <div class="card cr-preview-card">
-            <div class="cr-preview-header">
-              <h3 class="flat">Vista previa</h3>
-              <span class="cr-format-label" id="crFormatLabel">Post 1080×1080</span>
+          <!-- Step 2: Result -->
+          <section class="cr2-card cr2-result-card">
+            <div class="cr2-card-head">
+              <span class="cr2-num">2</span>
+              <h3>Tu render 3D</h3>
             </div>
-            <div class="cr-canvas-wrap" id="crCanvasWrap">
-              <div class="cr-canvas-empty">Rellena el formulario y pulsa "Generar"</div>
+
+            <div class="cr2-canvas" id="cr2Canvas">
+              <div class="cr2-canvas-empty">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><circle cx="17" cy="17" r="3"/><polyline points="42 30 32 20 10 42"/></svg>
+                <span>El render aparecerá aquí</span>
+              </div>
             </div>
-            <div class="cr-actions" id="crActions" style="display:none;">
-              <button class="btn btn-ghost" id="crDescargar">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+
+            <div class="cr2-result-actions" id="cr2Actions" style="display:none;">
+              <button class="cr2-btn cr2-btn-ghost" id="cr2Regen">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Variar
+              </button>
+              <button class="cr2-btn cr2-btn-ghost" id="cr2Compartir">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Compartir
+              </button>
+              <button class="cr2-btn cr2-btn-primary" id="cr2Descargar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Descargar
               </button>
-              <button class="btn btn-ghost" id="crCopiarCopy">Copiar copy</button>
-              <button class="btn btn-purple" id="crRegenerar">Regenerar</button>
             </div>
-          </div>
 
-          <div class="card" style="margin-top:18px;">
-            <h3 class="flat" style="margin-bottom:10px;">Copy comercial generado</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:10px;">Listo para Instagram, Idealista o WhatsApp.</p>
-            <textarea id="crCopy" rows="6" placeholder="Aquí aparecerá el copy generado…" style="width:100%; padding:13px 14px; border-radius:10px; background:var(--input); border:1px solid var(--input-border); color:var(--fg); font-size:14px; font-family:inherit; line-height:1.6; resize:vertical;"></textarea>
-          </div>
+            <div class="cr2-history-block" id="cr2History">
+              <div class="cr2-history-head">
+                <strong>Historial</strong>
+                <span id="cr2HistoryCount">0 renders</span>
+              </div>
+              <div class="cr2-history-list" id="cr2HistoryList"></div>
+            </div>
+          </section>
+        </div>
 
-          <div class="card" style="margin-top:18px;">
-            <h3 class="flat" style="margin-bottom:10px;">Variantes guardadas</h3>
-            <div id="crSavedList" class="cr-saved-list"><div style="color:var(--muted); font-size:13px;">Aún no has guardado ninguna ficha.</div></div>
-          </div>
-        </section>
+        <footer class="cr2-footer">
+          <span>© Castresana Render AI · Asturias & Cantabria</span>
+          <span class="cr2-badge">Powered by IA</span>
+        </footer>
       </div>
     </section>
 
@@ -4424,7 +4688,276 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   );
 
   // =====================================================================
-  // ============ CAST RENDER — Property card renderer ===================
+  // ============ CASTRESANA RENDER AI (1:1 replica) =====================
+  // =====================================================================
+  if (!state.cr2) state.cr2 = { history: [], count: 0 };
+
+  let cr2FileUrl = null;
+  let cr2FileName = null;
+  const cr2Drop = document.getElementById('cr2Drop');
+  const cr2FileInput = document.getElementById('cr2File');
+  const cr2DropImg = document.getElementById('cr2DropImg');
+
+  function cr2HandleFile(file) {
+    if (!file) return;
+    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+      return showToast('Solo PNG, JPG o PDF.', 'error');
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      return showToast('Máximo 20 MB.', 'error');
+    }
+    if (cr2FileUrl) URL.revokeObjectURL(cr2FileUrl);
+    cr2FileUrl = URL.createObjectURL(file);
+    cr2FileName = file.name;
+    cr2DropImg.src = cr2FileUrl;
+    cr2Drop.classList.add('has-file');
+  }
+  cr2FileInput?.addEventListener('change', (e) => cr2HandleFile(e.target.files[0]));
+  ['dragover', 'dragenter'].forEach(ev => {
+    cr2Drop?.addEventListener(ev, (e) => { e.preventDefault(); cr2Drop.classList.add('dragging'); });
+  });
+  ['dragleave', 'drop'].forEach(ev => {
+    cr2Drop?.addEventListener(ev, (e) => { e.preventDefault(); cr2Drop.classList.remove('dragging'); });
+  });
+  cr2Drop?.addEventListener('drop', (e) => cr2HandleFile(e.dataTransfer.files[0]));
+
+  function buildCR2Render(opts) {
+    // Generates a mock 3D top-down: rectangle plot with rooms inside, furniture and a label
+    const rooms = {
+      piso: [
+        { x: 5, y: 5, w: 50, h: 38, label: 'SALÓN' },
+        { x: 57, y: 5, w: 38, h: 22, label: 'COCINA' },
+        { x: 57, y: 29, w: 38, h: 14, label: 'BAÑO' },
+        { x: 5, y: 45, w: 35, h: 50, label: 'DORM. PRINCIPAL' },
+        { x: 42, y: 45, w: 28, h: 25, label: 'DORM. 2' },
+        { x: 42, y: 72, w: 28, h: 23, label: 'PASILLO' },
+        { x: 72, y: 45, w: 23, h: 50, label: 'DORM. 3' }
+      ],
+      atico: [
+        { x: 5, y: 5, w: 70, h: 50, label: 'SALÓN-COMEDOR' },
+        { x: 77, y: 5, w: 18, h: 28, label: 'COCINA' },
+        { x: 77, y: 35, w: 18, h: 20, label: 'BAÑO' },
+        { x: 5, y: 57, w: 50, h: 38, label: 'DORM. PRINCIPAL' },
+        { x: 57, y: 57, w: 38, h: 38, label: 'TERRAZA' }
+      ],
+      chalet: [
+        { x: 5, y: 5, w: 42, h: 35, label: 'SALÓN' },
+        { x: 49, y: 5, w: 46, h: 35, label: 'COCINA-COMEDOR' },
+        { x: 5, y: 42, w: 28, h: 30, label: 'DORM. 1' },
+        { x: 35, y: 42, w: 28, h: 30, label: 'DORM. 2' },
+        { x: 65, y: 42, w: 30, h: 30, label: 'DORM. PRINC.' },
+        { x: 5, y: 74, w: 60, h: 21, label: 'JARDÍN' },
+        { x: 67, y: 74, w: 28, h: 21, label: 'BAÑO' }
+      ],
+      duplex: [
+        { x: 5, y: 5, w: 45, h: 45, label: 'SALÓN PB' },
+        { x: 52, y: 5, w: 43, h: 45, label: 'COCINA PB' },
+        { x: 5, y: 52, w: 30, h: 43, label: 'DORM. 1' },
+        { x: 37, y: 52, w: 30, h: 43, label: 'BAÑO' },
+        { x: 69, y: 52, w: 26, h: 43, label: 'DORM. 2' }
+      ],
+      local: [
+        { x: 5, y: 5, w: 60, h: 55, label: 'ZONA COMERCIAL' },
+        { x: 67, y: 5, w: 28, h: 28, label: 'ALMACÉN' },
+        { x: 67, y: 35, w: 28, h: 25, label: 'BAÑO' },
+        { x: 5, y: 62, w: 90, h: 33, label: 'ESCAPARATE / ENTRADA' }
+      ],
+      oficina: [
+        { x: 5, y: 5, w: 90, h: 30, label: 'OPEN SPACE' },
+        { x: 5, y: 37, w: 30, h: 30, label: 'SALA REUNIÓN' },
+        { x: 37, y: 37, w: 30, h: 30, label: 'DESPACHO' },
+        { x: 69, y: 37, w: 26, h: 30, label: 'COCINA' },
+        { x: 5, y: 69, w: 50, h: 26, label: 'COWORKING' },
+        { x: 57, y: 69, w: 38, h: 26, label: 'BAÑO' }
+      ]
+    };
+    const list = rooms[opts.tipo] || rooms.piso;
+    const styleColors = {
+      moderno: { wall: '#8b7355', floor1: '#f5f0e6', floor2: '#e8d9b6', furniture: 'rgba(40, 90, 60, 0.85)' },
+      escandinavo: { wall: '#bfbfbf', floor1: '#fbfaf7', floor2: '#ece6da', furniture: 'rgba(120, 90, 60, 0.65)' },
+      minimalista: { wall: '#999', floor1: '#fafafa', floor2: '#ededed', furniture: 'rgba(50, 50, 50, 0.7)' },
+      lujo: { wall: '#8a6f3b', floor1: '#e8dcb7', floor2: '#caa86c', furniture: 'rgba(60, 30, 30, 0.85)' },
+      industrial: { wall: '#4a4a4a', floor1: '#a39787', floor2: '#7a6f5e', furniture: 'rgba(30, 30, 30, 0.85)' },
+      rustico: { wall: '#6e4f2a', floor1: '#d6b481', floor2: '#a8814d', furniture: 'rgba(80, 50, 30, 0.9)' }
+    };
+    const c = styleColors[opts.estilo] || styleColors.moderno;
+
+    const roomsHTML = list.map((r, i) => {
+      const furniture = [];
+      // add 1-3 furniture rectangles per room
+      const fcount = (i + opts.tipo.length) % 3 + 1;
+      for (let j = 0; j < fcount; j++) {
+        const fx = r.x + 4 + (j * 6 + i * 3) % Math.max(r.w - 12, 8);
+        const fy = r.y + 6 + (j * 5 + i * 2) % Math.max(r.h - 12, 6);
+        const fw = 6 + (j + i) % 5;
+        const fh = 4 + (j + i) % 4;
+        furniture.push(`<div class="cr2-render-furniture" style="left:${fx}%;top:${fy}%;width:${fw}%;height:${fh}%;background:${c.furniture}"></div>`);
+      }
+      return `<div class="cr2-render-room" style="left:${r.x}%;top:${r.y}%;width:${r.w}%;height:${r.h}%;border-color:${c.wall}">${r.label}</div>${furniture.join('')}`;
+    }).join('');
+
+    return `<div class="cr2-render ${opts.luz}" style="background:linear-gradient(180deg, ${c.floor1} 0%, ${c.floor2} 100%);">
+      ${roomsHTML}
+      <div class="cr2-render-label">${opts.tipo.toUpperCase()} · ${opts.estilo.toUpperCase()} · ${opts.calidad.toUpperCase()}</div>
+    </div>`;
+  }
+
+  function cr2CollectOpts() {
+    return {
+      tipo: document.getElementById('cr2Tipo').value,
+      estilo: document.getElementById('cr2Estilo').value,
+      luz: document.getElementById('cr2Luz').value,
+      calidad: document.getElementById('cr2Calidad').value,
+      extra: document.getElementById('cr2Extra').value.trim()
+    };
+  }
+
+  async function cr2NodeToDataURL(node, size = 1024) {
+    const rect = node.getBoundingClientRect();
+    const clone = node.cloneNode(true);
+    clone.style.width = size + 'px';
+    clone.style.height = size + 'px';
+    const css = [...document.styleSheets].map(s => {
+      try { return [...s.cssRules].map(r => r.cssText).join('\n'); } catch { return ''; }
+    }).join('\n');
+    const wrap = document.createElement('div'); wrap.appendChild(clone);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+      <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Inter, sans-serif; width:${size}px; height:${size}px;">
+          <style>${css}</style>${wrap.innerHTML}
+        </div>
+      </foreignObject>
+    </svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+
+  function cr2RenderHistory() {
+    const list = document.getElementById('cr2HistoryList');
+    const count = document.getElementById('cr2HistoryCount');
+    if (!list) return;
+    const items = state.cr2.history || [];
+    count.textContent = `${items.length} render${items.length === 1 ? '' : 's'}`;
+    if (items.length === 0) {
+      list.innerHTML = '<div class="cr2-history-empty">Tus renders aparecerán aquí</div>';
+      return;
+    }
+    list.innerHTML = items.map(h => `
+      <div class="cr2-history-thumb" data-id="${h.id}" title="${escapeHTML(h.tipo + ' · ' + h.estilo)}">
+        ${h.html}
+        <button class="cr2-history-del" data-del="${h.id}" aria-label="Borrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('cr2Generar')?.addEventListener('click', () => {
+    const opts = cr2CollectOpts();
+    const canvas = document.getElementById('cr2Canvas');
+    canvas.innerHTML = `
+      <div class="cr2-render-loading">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>
+        <strong>Generando render 3D…</strong>
+        <span>Analizando plano y aplicando estilo ${opts.estilo}</span>
+      </div>`;
+    document.getElementById('cr2Actions').style.display = 'none';
+    setTimeout(() => {
+      const html = buildCR2Render(opts);
+      canvas.innerHTML = html;
+      document.getElementById('cr2Actions').style.display = 'flex';
+      state.cr2.count = (state.cr2.count || 0) + 1;
+      state.cr2.history = state.cr2.history || [];
+      state.cr2.history.unshift({
+        id: 'r_' + Date.now(),
+        tipo: opts.tipo, estilo: opts.estilo, luz: opts.luz, calidad: opts.calidad,
+        html, createdAt: Date.now()
+      });
+      state.cr2.history = state.cr2.history.slice(0, 12);
+      cr2RenderHistory();
+      saveState();
+      showToast('Render generado.', 'success');
+    }, 1400);
+  });
+
+  document.getElementById('cr2Regen')?.addEventListener('click', () => {
+    document.getElementById('cr2Generar').click();
+  });
+
+  document.getElementById('cr2Descargar')?.addEventListener('click', async () => {
+    const node = document.querySelector('#cr2Canvas .cr2-render');
+    if (!node) return showToast('Genera un render primero.', 'error');
+    const calidad = document.getElementById('cr2Calidad').value;
+    const size = calidad === '4k' ? 4096 : calidad === 'hd' ? 2048 : 1024;
+    try {
+      const dataUrl = await cr2NodeToDataURL(node, size);
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = size; c.height = size;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+        c.toBlob((blob) => {
+          if (!blob) return showToast('No se pudo exportar.', 'error');
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = `castresana-render-${Date.now()}.png`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1500);
+          showToast('Descargado en ' + size + '×' + size + '.', 'success');
+        }, 'image/png');
+      };
+      img.onerror = () => showToast('Tu navegador bloqueó la exportación. Haz captura.', 'error');
+      img.src = dataUrl;
+    } catch (e) {
+      showToast('Exportación no disponible.', 'error');
+    }
+  });
+
+  document.getElementById('cr2Compartir')?.addEventListener('click', async () => {
+    const url = location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Castresana Render AI', text: 'Mira este render', url }); }
+      catch { /* user cancelled */ }
+    } else {
+      try { await navigator.clipboard.writeText(url); showToast('Enlace copiado.', 'success'); }
+      catch { showToast('No se pudo compartir.', 'error'); }
+    }
+  });
+
+  document.getElementById('cr2HistoryList')?.addEventListener('click', (e) => {
+    const del = e.target.closest('[data-del]');
+    if (del) {
+      e.stopPropagation();
+      state.cr2.history = state.cr2.history.filter(h => h.id !== del.dataset.del);
+      cr2RenderHistory(); saveState();
+      return;
+    }
+    const thumb = e.target.closest('[data-id]');
+    if (thumb) {
+      const h = state.cr2.history.find(x => x.id === thumb.dataset.id);
+      if (!h) return;
+      document.getElementById('cr2Tipo').value = h.tipo;
+      document.getElementById('cr2Estilo').value = h.estilo;
+      document.getElementById('cr2Luz').value = h.luz;
+      document.getElementById('cr2Calidad').value = h.calidad;
+      document.getElementById('cr2Canvas').innerHTML = h.html;
+      document.getElementById('cr2Actions').style.display = 'flex';
+      document.getElementById('cr2Canvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  document.getElementById('cr2Login')?.addEventListener('click', () => {
+    showToast('Login simulado — todo se guarda en tu navegador.', 'success');
+  });
+
+  // Legacy old castRender — keep noop fallbacks (functions referenced in init)
+  function renderCRSaved() { /* deprecated: replaced by cr2RenderHistory */ }
+  function updateCRFormat() { /* deprecated */ }
+
+  // =====================================================================
+  // ============ LEGACY castRender state (kept for migration) ===========
   // =====================================================================
   if (!state.castRender) state.castRender = { saved: [], count: 0 };
 
@@ -4623,12 +5156,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   }
   renderProjects();
   renderApps();
-  renderCRSaved();
-  updateCRFormat();
-  if (state.castRender && state.castRender.count) {
-    const stat = document.getElementById('crStatProps');
-    if (stat) stat.textContent = state.castRender.count;
-  }
+  cr2RenderHistory();
   updateProgress();
 
   // First-time onboarding
