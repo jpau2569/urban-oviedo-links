@@ -766,6 +766,116 @@
     font-size: 14px; line-height: 1.6; color: #d8dff5;
   }
   .help-example strong { color: var(--accent); }
+
+  /* ===== Análisis técnico ===== */
+  .analysis-divider {
+    margin: 36px 0 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .analysis-divider::before, .analysis-divider::after {
+    content: ""; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--input-border), transparent);
+  }
+  .analysis-divider span {
+    font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); padding: 0 6px;
+  }
+  .analysis-intro { margin-bottom: 22px; }
+  .analysis-intro p { font-size: 14px; line-height: 1.7; color: #d8dff5; }
+  .analysis-intro strong { color: #fff; }
+  .analysis-intro em { color: var(--accent); font-style: italic; }
+
+  .badge-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 6px; }
+  .sector-badge {
+    padding: 12px 14px; border-radius: 10px;
+    font-size: 13px; line-height: 1.55;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .sector-badge strong { font-size: 13px; }
+  .sector-badge.good { background: rgba(0,215,116,0.08); border: 1px solid rgba(0,215,116,0.25); }
+  .sector-badge.good strong { color: var(--green); }
+  .sector-badge.bad { background: rgba(251,107,107,0.08); border: 1px solid rgba(251,107,107,0.25); }
+  .sector-badge.bad strong { color: #ff8a8a; }
+  .sector-badge span { color: #d8dff5; }
+
+  /* Comparison table */
+  .compare-table {
+    margin-top: 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-2);
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.1fr 1.2fr;
+    gap: 1px;
+    background: var(--input-border);
+  }
+  .compare-row > div {
+    padding: 12px 14px;
+    background: var(--card);
+    font-size: 13px; line-height: 1.5;
+    display: flex; align-items: center;
+  }
+  .compare-row.compare-head > div {
+    background: var(--card-2);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cell-good { color: #69e6a8; font-weight: 600; }
+  .cell-mid { color: #ffd084; font-weight: 600; }
+  .cell-bad { color: #ff8a8a; font-weight: 600; }
+  @media (max-width: 760px) {
+    .compare-row { grid-template-columns: 1fr; }
+    .compare-row > div { border-bottom: 1px solid var(--input-border); }
+    .compare-row.compare-head { display: none; }
+    .compare-row > div::before {
+      content: attr(data-label);
+      display: inline-block;
+      min-width: 130px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+  }
+
+  /* Diagnóstico */
+  .diag-card p { font-size: 14px; line-height: 1.7; color: #d8dff5; }
+  .diag-card strong { color: #fff; }
+  .diag-card em { color: var(--accent); font-style: italic; }
+
+  .recommendation-box {
+    margin-top: 14px;
+    padding: 18px 18px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(108,92,231,0.12), rgba(34,211,238,0.08));
+    border: 1px solid rgba(108,92,231,0.35);
+  }
+  .recommendation-box h4 {
+    font-size: 15px; font-weight: 800;
+    margin-bottom: 12px; color: #fff;
+    letter-spacing: 0.2px;
+  }
+  .rec-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rec-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; line-height: 1.55; color: #d8dff5;
+  }
+  .rec-item strong { color: #fff; }
+  .rec-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #fff; font-weight: 800; font-size: 13px;
+    display: grid; place-items: center;
+  }
 </style>
 </head>
 <body>
@@ -1662,6 +1772,171 @@
           Ir a campus.mkthackers.com/academy
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
+      </div>
+
+      <!-- ===== Análisis técnico ===== -->
+      <div class="analysis-divider">
+        <span>Análisis técnico</span>
+      </div>
+
+      <div class="card analysis-intro">
+        <h3 class="flat">Lectura técnica honesta</h3>
+        <p>
+          <strong>El Constructor</strong> se posiciona más como un <em>industrializador</em> de entregables
+          para agencias de IA que como una plataforma abierta de automatización empresarial. La información pública
+          habla de crear webs, agentes y creatividades "en pocos clics" con foco en captar clientes y vender servicios
+          sin programar — pero <strong>no hay documentación pública con APIs, arquitectura, límites de concurrencia,
+          logs, seguridad, versionado o SLA</strong>. Lo que sigue es análisis de capacidades declaradas, no auditoría.
+        </p>
+      </div>
+
+      <div class="help-grid">
+        <div class="card help-card">
+          <div class="help-ic" style="background:rgba(34,211,238,0.12); color:var(--cyan);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <h3 class="flat">Personalización por sector</h3>
+          <p style="font-size:14px; color:#d8dff5; line-height:1.6;">
+            Incorpora contexto de negocio y genera un prompt a medida + calendarios/flujos por nicho.
+            Es <strong>personalización de configuración</strong>, no de arquitectura profunda.
+          </p>
+          <div class="badge-grid">
+            <div class="sector-badge good">
+              <strong>Funciona bien</strong>
+              <span>Peluquerías · Clínicas pequeñas · Restaurantes · Gimnasios · Inmobiliarias con flujo simple de cita / lead / seguimiento</span>
+            </div>
+            <div class="sector-badge bad">
+              <strong>Se queda corto</strong>
+              <span>Sectores con CRM/ERP propio, facturación, inventario, compliance, histórico o reglas complejas — ahí hace falta API real, webhooks, BBDD y reglas de negocio</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card help-card">
+          <div class="help-ic" style="background:rgba(108,92,231,0.15); color:#a78bfa;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></svg>
+          </div>
+          <h3 class="flat">Caso inmobiliario</h3>
+          <ul class="help-list">
+            <li><strong>Útil para:</strong> responder leads de Idealista/web, filtrar comprador/vendedor, agendar visita, recordatorios, captura de datos del inmueble, seguimiento y reactivación de leads fríos.</li>
+            <li><strong>Insuficiente para:</strong> valoración automática seria conectada a CRM, histórico de operaciones, catastro, portales, scoring financiero, documentación, firma, pipeline comercial y reporting multiagente.</li>
+          </ul>
+        </div>
+
+        <div class="card help-card help-card-wide">
+          <div class="help-ic" style="background:rgba(251,107,107,0.12); color:#ff8a8a;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3 class="flat">Mantenimiento que requerirá el cliente final</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.6;">
+            Aunque se venda como no-code, cualquier agente instalado en un negocio necesita mantenimiento continuo.
+            Como mínimo:
+          </p>
+          <ul class="help-list">
+            <li><strong>Actualización del conocimiento:</strong> horarios, precios, servicios, stock, políticas, objeciones, promociones.</li>
+            <li><strong>Revisión de conversaciones:</strong> detectar respuestas incorrectas, leads mal cualificados, llamadas perdidas, alucinaciones, mala transferencia a humano.</li>
+            <li><strong>Mantenimiento de integraciones:</strong> calendarios, telefonía, WhatsApp, formularios, CRM, emails, permisos OAuth — fallan o caducan.</li>
+            <li><strong>Optimización comercial:</strong> scripts, tono, cualificación, criterios de lead caliente, secuencias de seguimiento.</li>
+            <li><strong>Control de costes:</strong> llamadas, tokens, voz, mensajes — crecen con el volumen.</li>
+            <li><strong>Cumplimiento legal:</strong> consentimiento, grabación, RGPD, trazabilidad, datos sensibles.</li>
+          </ul>
+          <p class="help-example">
+            <strong>Pregunta clave antes de venderlo como solución profesional:</strong> ¿hay modelo de mantenimiento,
+            SLA, monitorización, logs, testing, control de versiones y handoff técnico al cliente final? La doc
+            pública no lo detalla — no significa que no exista, pero hay que preguntarlo.
+          </p>
+        </div>
+
+        <div class="card help-card help-card-wide">
+          <div class="help-ic" style="background:rgba(0,215,116,0.12); color:var(--green);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11H1v3h8v3l4-4-4-4v2z"/><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12"/></svg>
+          </div>
+          <h3 class="flat">Limitaciones vs Make / Zapier / agentes avanzados</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:6px;">
+            El Constructor está optimizado para <strong>velocidad y empaquetado</strong>.
+            Make, Zapier, n8n, Vapi/Retell y APIs propias están optimizadas para
+            <strong>integración, orquestación y operación a escala</strong>.
+          </p>
+
+          <div class="compare-table">
+            <div class="compare-row compare-head">
+              <div>Capacidad</div>
+              <div>El Constructor</div>
+              <div>Make / Zapier / n8n</div>
+              <div>Custom (APIs / agente propio)</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Time-to-demo</div>
+              <div data-label="El Constructor" class="cell-good">Muy rápido</div>
+              <div data-label="Make/Zapier/n8n" class="cell-mid">Rápido</div>
+              <div data-label="Custom" class="cell-bad">Lento</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Integraciones a medida</div>
+              <div data-label="El Constructor" class="cell-bad">Limitadas</div>
+              <div data-label="Make/Zapier/n8n" class="cell-good">Amplias</div>
+              <div data-label="Custom" class="cell-good">Total</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Observabilidad / logs</div>
+              <div data-label="El Constructor" class="cell-bad">Opaca</div>
+              <div data-label="Make/Zapier/n8n" class="cell-mid">Básica</div>
+              <div data-label="Custom" class="cell-good">Total</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Control de errores y retries</div>
+              <div data-label="El Constructor" class="cell-bad">Limitado</div>
+              <div data-label="Make/Zapier/n8n" class="cell-good">Sí</div>
+              <div data-label="Custom" class="cell-good">Total</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Versionado / testing</div>
+              <div data-label="El Constructor" class="cell-bad">No documentado</div>
+              <div data-label="Make/Zapier/n8n" class="cell-mid">Parcial</div>
+              <div data-label="Custom" class="cell-good">Total (git, CI)</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Coste a escala</div>
+              <div data-label="El Constructor" class="cell-mid">Suscripción cerrada</div>
+              <div data-label="Make/Zapier/n8n" class="cell-mid">Por operación</div>
+              <div data-label="Custom" class="cell-good">Infra propia</div>
+            </div>
+            <div class="compare-row">
+              <div data-label="Capacidad">Compliance / RGPD avanzado</div>
+              <div data-label="El Constructor" class="cell-bad">Sin detalle público</div>
+              <div data-label="Make/Zapier/n8n" class="cell-mid">Configurable</div>
+              <div data-label="Custom" class="cell-good">Total</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card help-card help-card-wide diag-card">
+          <div class="help-ic" style="background:rgba(255,184,107,0.15); color:var(--orange);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="flat">Diagnóstico final</h3>
+          <p>
+            <strong>El Constructor es bueno para</strong> crear demos rápidas, MVPs comerciales y servicios
+            paquetizados de automatización para pymes. Su ventaja real es <em>reducir fricción</em>: alguien sin
+            gran perfil técnico puede montar una web, un agente, una demo de atención/captación y un flujo
+            comercial vendible en muy poco tiempo.
+          </p>
+          <p>
+            <strong>No lo trataría como sustituto de una integración a medida</strong> cuando el cliente
+            necesita procesos críticos, datos sensibles, CRM/ERP real, reporting, trazabilidad o automatización
+            compleja. Ahí: Make, Zapier, n8n, Vapi/Retell, APIs propias o app/agente custom — porque necesitas
+            control de errores, observabilidad, permisos, pruebas, escalabilidad y mantenimiento profesional.
+          </p>
+          <div class="recommendation-box">
+            <h4>Recomendación práctica: arquitectura híbrida</h4>
+            <div class="rec-grid">
+              <div class="rec-item"><span class="rec-num">1</span><div><strong>El Constructor</strong> como capa de prototipado y venta — demo y activos iniciales para cerrar al cliente.</div></div>
+              <div class="rec-item"><span class="rec-num">2</span><div><strong>Make / Zapier / n8n</strong> para flujos reales en producción.</div></div>
+              <div class="rec-item"><span class="rec-num">3</span><div><strong>CRM</strong> como fuente de verdad de los datos del cliente.</div></div>
+              <div class="rec-item"><span class="rec-num">4</span><div><strong>Vapi / Retell</strong> u otra plataforma especializada si hay llamadas importantes.</div></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
