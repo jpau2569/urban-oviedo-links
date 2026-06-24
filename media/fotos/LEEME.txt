@@ -1,0 +1,11 @@
+Sube aquí las fotos del escaparate (jpg o png).
+
+Después, abre el archivo escaparate.html y añade el nombre de cada foto
+en la lista FOTOS, por ejemplo:
+
+  const FOTOS = [
+    "media/fotos/foto1.jpg",
+    "media/fotos/foto2.jpg",
+  ];
+
+Si me pasas las fotos a mí, yo las añado por ti.

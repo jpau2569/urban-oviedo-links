@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>URBAN OVIEDO — Escaparate</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #000;
+    --fg: #f5f5f5;
+    --accent: #ff6a00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg); }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--fg);
+    cursor: none; /* oculta el cursor en el escaparate */
+  }
+
+  /* Escenario a pantalla completa, vertical */
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: #000;
+  }
+
+  /* Cada diapositiva ocupa todo y se funde */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    background: #000;
+  }
+  .slide.is-active { opacity: 1; }
+
+  /* Vídeo centrado SIN recortar (se ve completo) */
+  .slide video,
+  .slide img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Cabecera con marca sobre las bandas negras */
+  .brand {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 28px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+  .brand .badge {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: #fff; color: #000;
+    display: grid; place-items: center;
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.95; text-align: center;
+    font-size: 16px; letter-spacing: 1px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 30px rgba(255,106,0,0.35);
+  }
+  .brand h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 4px;
+    line-height: 1;
+  }
+
+  /* Pie con web y redes */
+  .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    padding: 26px 20px 34px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .footer .web { color: var(--accent); }
+  .footer .sep { opacity: 0.4; }
+  .footer .handle { color: #fff; }
+
+  /* Mensaje cuando aún no hay fotos (solo visible si el carrusel está vacío) */
+  .hint {
+    position: fixed;
+    inset: 0;
+    display: none;
+    place-items: center;
+    text-align: center;
+    padding: 40px;
+    color: #777;
+    font-size: 18px;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <!-- Diapositiva del vídeo (siempre la primera) -->
+    <div class="slide is-active" data-type="video">
+      <video id="video" muted playsinline preload="auto" src="media/video-escaparate.mp4"></video>
+    </div>
+    <!-- Las diapositivas de fotos se generan automáticamente desde el array FOTOS -->
+  </div>
+
+  <header class="brand">
+    <div class="badge">URBAN<br>OVIEDO</div>
+    <h1>URBAN OVIEDO STORE</h1>
+  </header>
+
+  <footer class="footer">
+    <span class="web">urbanoviedostore.es</span>
+    <span class="sep">·</span>
+    <span class="handle">@urbanstoreoviedo</span>
+  </footer>
+
+  <script>
+    /* =========================================================
+       FOTOS DEL ESCAPARATE
+       Añade aquí las fotos. Súbelas a la carpeta  media/fotos/
+       y escribe su nombre en la lista, por ejemplo:
+
+         const FOTOS = [
+           "media/fotos/foto1.jpg",
+           "media/fotos/foto2.jpg",
+           "media/fotos/escaparate.jpg",
+         ];
+
+       Mientras la lista esté vacía, solo se reproduce el vídeo en bucle.
+       ========================================================= */
+    const FOTOS = [
+      // "media/fotos/foto1.jpg",
+    ];
+
+    // Segundos que se muestra cada foto
+    const SEGUNDOS_POR_FOTO = 6;
+
+    const stage = document.getElementById('stage');
+    const video = document.getElementById('video');
+
+    // Construye las diapositivas de fotos a partir del array
+    FOTOS.forEach((src) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.dataset.type = 'photo';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      slide.appendChild(img);
+      stage.appendChild(slide);
+    });
+
+    const slides = Array.from(stage.querySelectorAll('.slide'));
+    let index = 0;
+    let photoTimer = null;
+
+    function show(i) {
+      slides[index].classList.remove('is-active');
+      index = (i + slides.length) % slides.length;
+      const slide = slides[index];
+      slide.classList.add('is-active');
+
+      clearTimeout(photoTimer);
+
+      if (slide.dataset.type === 'video') {
+        // Reinicia y reproduce el vídeo; al terminar pasa a la siguiente
+        try { video.currentTime = 0; } catch (e) {}
+        const p = video.play();
+        if (p && p.catch) p.catch(() => {});
+      } else {
+        // Foto: avanza tras unos segundos
+        photoTimer = setTimeout(() => show(index + 1), SEGUNDOS_POR_FOTO * 1000);
+      }
+    }
+
+    // Cuando el vídeo termina, pasa a la siguiente diapositiva.
+    // Si solo está el vídeo (sin fotos), vuelve a empezar él mismo.
+    video.addEventListener('ended', () => show(index + 1));
+
+    // Por seguridad: si el vídeo no puede cargar, no bloquea el carrusel
+    video.addEventListener('error', () => { if (slides.length > 1) show(index + 1); });
+
+    // Arranca
+    show(0);
+
+    // Reintenta la reproducción si el navegador la bloquea hasta una interacción
+    document.addEventListener('click', () => {
+      if (slides[index].dataset.type === 'video') video.play().catch(() => {});
+    });
+
+    // Evita que la pantalla se apague (si el navegador lo permite)
+    if ('wakeLock' in navigator) {
+      const keepAwake = () => navigator.wakeLock.request('screen').catch(() => {});
+      keepAwake();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') keepAwake();
+      });
+    }
+  </script>
+</body>
+</html>
