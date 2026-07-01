@@ -2,7 +2,7 @@
    Estrategia: cache-first para la shell (carga instantánea y offline),
    con actualización en segundo plano (stale-while-revalidate). */
 
-const CACHE = "urban-oviedo-v2";
+const CACHE = "urban-oviedo-v3";
 const SHELL = [
   "./",
   "./index.html",
