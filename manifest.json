@@ -1,0 +1,36 @@
+{
+  "name": "Urban Oviedo Store",
+  "short_name": "Urban Oviedo",
+  "description": "Ropa urbana en Oviedo. Tienda online, redes, WhatsApp, cómo llegar y reseñas reales.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./?utm_source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tienda online",
+      "short_name": "Tienda",
+      "url": "https://urbanoviedostore.es/",
+      "description": "Comprar en la tienda online"
+    },
+    {
+      "name": "WhatsApp",
+      "short_name": "WhatsApp",
+      "url": "https://wa.me/34696641381",
+      "description": "Escribir por WhatsApp"
+    }
+  ]
+}
