@@ -107,6 +107,14 @@
         <input type="file" id="file" accept="image/*" multiple hidden>
         <div class="thumbs" id="thumbs"></div>
         <button class="btn btn-ghost" id="btnFixAll" style="width:100%;margin-top:12px;display:none">🪄 Mejorar todas las fotos (luz · color · nitidez)</button>
+        <div style="margin-top:14px">
+          <label>🍌 Nano Banana · IA de fotos de Google (opcional)</label>
+          <div class="row2" style="margin-top:5px">
+            <input type="password" id="f_gkey" placeholder="Pega aquí tu clave API" autocomplete="off">
+            <select id="f_gmodel"><option value="gemini-3-pro-image-preview" selected>Nano Banana 2</option><option value="gemini-2.5-flash-image">Nano Banana 1 (más barato)</option></select>
+          </div>
+          <div class="hint" style="margin-top:8px">La clave se guarda <b>solo en tu navegador</b>, nunca dentro del archivo. Con la clave puesta, abre ✨ en una foto y pulsa «Mejorar con IA». ⚠ La IA funciona en el <b>archivo descargado</b>; la versión web de claude.ai bloquea conexiones externas.</div>
+        </div>
       </div>
 
       <div class="card" style="margin-bottom:18px">
@@ -277,6 +285,7 @@
       <label><span>Nitidez</span><input type="range" id="ed_sharp" min="0" max="60" value="18"></label>
       <label><button class="btn btn-ghost on" id="ed_auto" style="width:100%">🪄 Niveles automáticos</button></label>
     </div>
+    <button class="btn btn-ghost" id="ed_ai" style="width:100%;margin-top:12px;border-color:var(--gold)">🍌 Mejorar con IA (Nano Banana)</button>
     <div class="actions">
       <button class="btn btn-ghost" id="ed_reset">Restablecer</button>
       <button class="btn btn-ghost" id="ed_revert">↩ Quitar mejoras</button>
@@ -3122,7 +3131,7 @@ function processPhoto(img,params,maxDim){
   return c;
 }
 /* --- editor modal --- */
-let edIdx=-1,edBase=null,edEnh=null,edDiv=0.55,edPend=false;
+let edIdx=-1,edBase=null,edEnh=null,edDiv=0.55,edPend=false,edAI=null;
 function edParams(){
   return {auto:$('ed_auto').classList.contains('on'),
     bri:+$('ed_bri').value,con:+$('ed_con').value,sat:+$('ed_sat').value,
@@ -3139,11 +3148,19 @@ function openEditor(i){
   $('ed_auto').classList.add('on');
   $('ed_bri').value=0;$('ed_con').value=8;$('ed_sat').value=108;$('ed_warm').value=6;$('ed_sharp').value=18;
   edDiv=0.55;
+  edAI=null;
+  $('ed_ai').textContent='🍌 Mejorar con IA (Nano Banana)';$('ed_ai').disabled=false;
   $('editor').classList.add('open');
   edRecalc();
 }
 function edRecalc(){
   if(edIdx<0)return;
+  if(edAI){
+    const c=document.createElement('canvas');c.width=edBase.width;c.height=edBase.height;
+    const x=c.getContext('2d');x.imageSmoothingQuality='high';
+    x.drawImage(edAI,0,0,c.width,c.height);
+    edEnh=c;edDraw();return;
+  }
   const src=photos[edIdx].origImg||photos[edIdx].img;
   edEnh=processPhoto(src,edParams(),900);
   edDraw();
@@ -3160,7 +3177,7 @@ function edDraw(){
   x.fillStyle='#111';x.font='bold 16px sans-serif';x.textAlign='center';x.fillText('⇄',dx,c.height/2+6);
   x.font='bold 15px sans-serif';x.fillStyle='rgba(255,255,255,.92)';
   x.textAlign='left';x.fillText('ANTES',14,28);
-  x.textAlign='right';x.fillText('DESPUÉS',c.width-14,28);
+  x.textAlign='right';x.fillText(edAI?'DESPUÉS · IA 🍌':'DESPUÉS',c.width-14,28);
 }
 (function(){
   const cv2=$('edCv');
@@ -3170,7 +3187,7 @@ function edDraw(){
 })();
 ['ed_bri','ed_con','ed_sat','ed_warm','ed_sharp'].forEach(id=>$(id).addEventListener('input',edUpdate));
 $('ed_auto').onclick=()=>{$('ed_auto').classList.toggle('on');edUpdate();};
-$('ed_reset').onclick=()=>{$('ed_auto').classList.remove('on');$('ed_bri').value=0;$('ed_con').value=0;$('ed_sat').value=100;$('ed_warm').value=0;$('ed_sharp').value=0;edUpdate();};
+$('ed_reset').onclick=()=>{edAI=null;$('ed_ai').textContent='🍌 Mejorar con IA (Nano Banana)';$('ed_auto').classList.remove('on');$('ed_bri').value=0;$('ed_con').value=0;$('ed_sat').value=100;$('ed_warm').value=0;$('ed_sharp').value=0;edUpdate();};
 $('ed_cancel').onclick=()=>{$('editor').classList.remove('open');edIdx=-1;};
 $('ed_revert').onclick=()=>{
   const ph=photos[edIdx];
@@ -3184,8 +3201,19 @@ $('ed_apply').onclick=async()=>{
   $('ed_apply').textContent='⏳ Aplicando…';
   await new Promise(r=>setTimeout(r,30));
   ph.origImg=ph.origImg||ph.img; ph.origUrl=ph.origUrl||ph.url;
-  const c=processPhoto(ph.origImg,edParams(),1920);
-  const durl=c.toDataURL('image/jpeg',0.92);
+  let durl;
+  if(edAI){
+    const scl=Math.min(1,1920/Math.max(edAI.naturalWidth||1,edAI.naturalHeight||1));
+    const c=document.createElement('canvas');
+    c.width=Math.max(2,Math.round((edAI.naturalWidth||2)*scl));
+    c.height=Math.max(2,Math.round((edAI.naturalHeight||2)*scl));
+    const x=c.getContext('2d');x.imageSmoothingQuality='high';
+    x.drawImage(edAI,0,0,c.width,c.height);
+    durl=c.toDataURL('image/jpeg',0.92);
+  }else{
+    const c=processPhoto(ph.origImg,edParams(),1920);
+    durl=c.toDataURL('image/jpeg',0.92);
+  }
   await new Promise(res=>{const im=new Image();im.onload=()=>{ph.img=im;res();};im.src=durl;});
   ph.url=durl;
   $('ed_apply').textContent='✔ Aplicar';
@@ -3255,6 +3283,66 @@ $('btnSpell').onclick=()=>{
   renderThumbs();draw(previewT());
   setStatus(total?('🔤 Ortografía revisada: '+(total===1?'1 corrección aplicada':total+' correcciones aplicadas')+'.'):'🔤 Ortografía revisada: todo correcto ✔');
 };
+
+/* ---------- Nano Banana (Google Gemini imagen) ---------- */
+function gkey(){return ($('f_gkey').value||'').trim();}
+$('f_gkey').value=localStorage.getItem('vt_gkey')||'';
+$('f_gkey').addEventListener('input',()=>{try{localStorage.setItem('vt_gkey',$('f_gkey').value.trim());}catch(e){}});
+$('f_gmodel').value=localStorage.getItem('vt_gmodel')||'gemini-3-pro-image-preview';
+$('f_gmodel').addEventListener('change',()=>{try{localStorage.setItem('vt_gmodel',$('f_gmodel').value);}catch(e){}});
+async function aiEnhance(){
+  const key=gkey();
+  if(!key){
+    $('ed_ai').textContent='⚠ Pega tu clave API en «1 · Fotos» y vuelve';
+    setTimeout(()=>$('ed_ai').textContent='🍌 Mejorar con IA (Nano Banana)',3000);
+    return;
+  }
+  const ph=photos[edIdx];if(!ph)return;
+  const src=ph.origImg||ph.img;
+  const mx=1536,scl=Math.min(1,mx/Math.max(src.naturalWidth||1,src.naturalHeight||1));
+  const c=document.createElement('canvas');
+  c.width=Math.max(2,Math.round((src.naturalWidth||2)*scl));
+  c.height=Math.max(2,Math.round((src.naturalHeight||2)*scl));
+  c.getContext('2d').drawImage(src,0,0,c.width,c.height);
+  const b64=c.toDataURL('image/jpeg',0.92).split(',')[1];
+  $('ed_ai').textContent='⏳ Procesando con Nano Banana…';$('ed_ai').disabled=true;
+  try{
+    const model=$('f_gmodel').value;
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-goog-api-key':key},
+      body:JSON.stringify({contents:[{parts:[
+        {text:'Mejora esta fotografía inmobiliaria de interior: sube la iluminación de forma natural, corrige el balance de blancos y la verticalidad, aumenta la nitidez y dale un acabado profesional y luminoso de revista. MUY IMPORTANTE: no añadas, elimines ni cambies ningún objeto, mueble ni elemento estructural; la estancia debe quedar exactamente igual, solo mejor fotografiada. Devuelve únicamente la imagen mejorada.'},
+        {inline_data:{mime_type:'image/jpeg',data:b64}}
+      ]}]})
+    });
+    if(!r.ok){const t=await r.text();throw new Error('HTTP '+r.status+' · '+t.slice(0,200));}
+    const j=await r.json();
+    const parts=(((j.candidates||[])[0]||{}).content||{}).parts||[];
+    const imgPart=parts.find(q=>(q.inlineData&&q.inlineData.data)||(q.inline_data&&q.inline_data.data));
+    if(!imgPart){
+      const txt=(parts.find(q=>q.text)||{}).text||'';
+      throw new Error('la respuesta no trae imagen'+(txt?(' — '+txt.slice(0,140)):''));
+    }
+    const dat=imgPart.inlineData||imgPart.inline_data;
+    await new Promise((res,rej)=>{
+      const im=new Image();
+      im.onload=()=>{edAI=im;res();};
+      im.onerror=()=>rej(new Error('imagen IA ilegible'));
+      im.src='data:'+(dat.mimeType||dat.mime_type||'image/png')+';base64,'+dat.data;
+    });
+    edRecalc();
+    $('ed_ai').textContent='✅ IA lista — compara y pulsa Aplicar';
+  }catch(e){
+    const msg=String(e.message||e);
+    $('ed_ai').textContent='🍌 Mejorar con IA (Nano Banana)';
+    setStatus('🍌 Error de la IA: '+(msg.includes('Failed to fetch')
+      ?'conexión bloqueada. Abre el ARCHIVO descargado en Chrome (la versión web de claude.ai bloquea APIs externas) y comprueba tu internet.'
+      :msg));
+  }
+  $('ed_ai').disabled=false;
+}
+$('ed_ai').onclick=aiEnhance;
 </script>
 </body>
 </html>
