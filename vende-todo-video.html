@@ -66,6 +66,8 @@
   .status.rec{color:var(--danger);font-weight:700}
   .pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);margin-left:8px}
   #adTexts{display:none;width:100%;margin-top:12px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--fg);padding:12px;font-size:13px;line-height:1.55;font-family:inherit;resize:vertical;min-height:280px}
+  #result{display:none}
+  #outVideo{width:100%;max-height:440px;border-radius:12px;margin-top:12px;background:#000}
   .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:34px;letter-spacing:.5px}
 </style>
 </head>
@@ -190,6 +192,15 @@
         <textarea id="adTexts" spellcheck="false"></textarea>
         <button class="btn btn-gold" id="btnCopy" style="display:none;width:100%;margin-top:10px">📋 Copiar todo</button>
       </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>5 · Llévate la herramienta</h2>
+        <div class="actions" style="margin-top:0">
+          <button class="btn btn-ghost" id="saveTool">💾 Descargar (HTML)</button>
+          <button class="btn btn-ghost" id="copyTool">📋 Copiar código</button>
+        </div>
+        <div class="hint">Guárdala en tu PC y ábrela con doble clic: funciona sin internet y las descargas nunca se bloquean. Si aquí no te deja descargar, pulsa «Copiar código», pégalo en el Bloc de notas y guárdalo como <code>vende-todo.html</code>.</div>
+      </div>
     </div>
 
     <!-- ================= PREVIEW ================= -->
@@ -202,6 +213,14 @@
           <button class="btn btn-gold" id="btnRec">⬇ Generar vídeo</button>
         </div>
         <div class="status" id="status">Añade fotos para empezar.</div>
+        <div id="result">
+          <video id="outVideo" controls playsinline preload="metadata"></video>
+          <div class="actions">
+            <a class="btn btn-gold" id="dlLink" href="#" style="text-align:center;text-decoration:none">⬇ Guardar en mi equipo</a>
+            <button class="btn btn-ghost" id="shareBtn" style="display:none">📲 WhatsApp / Compartir</button>
+          </div>
+          <div class="hint">¿No se descarga con el botón? <b>Mantén pulsado el vídeo</b> (móvil) o <b>clic derecho → «Guardar vídeo como…»</b> (PC) — eso funciona siempre. En el móvil, «Compartir» lo manda directo a WhatsApp.</div>
+        </div>
         <div class="hint">
           En <b>Chrome de escritorio</b> se exporta <code>.mp4</code> (H.264) de máxima calidad,
           <b>listo para WhatsApp, Reels, TikTok e Idealista</b> sin convertir nada — el render es
@@ -2696,11 +2715,7 @@ async function exportMp4(data){
   muxer.finalize();
   const blob=new Blob([muxer.target.buffer],{type:'video/mp4'});
   if(blob.size<1000)throw new Error('MP4 vacío');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`vende-todo-${(val('f_zone')||'inmueble').toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi,'-')}.mp4`;
-  a.click();
-  setStatus(`✅ MP4 descargado (${(blob.size/1048576).toFixed(1)} MB · ${data.total.toFixed(0)} s · ${sel.name==='avc'?'H.264':'VP9'}${audio?' + música':''}). Listo para WhatsApp, Reels, TikTok e Idealista.`);
+  deliverVideo(blob,'mp4',`✅ MP4 generado (${(blob.size/1048576).toFixed(1)} MB · ${data.total.toFixed(0)} s · ${sel.name==='avc'?'H.264':'VP9'}${audio?' + música':''}). Guárdalo o compártelo aquí debajo.`);
 }
 async function recordRealtime(data){
   const mime=pickMime();
@@ -2737,11 +2752,7 @@ async function recordRealtime(data){
       const ext=(mime.includes('mp4'))?'mp4':'webm';
       const blob=new Blob(chunks,{type:mime||'video/webm'});
       if(blob.size<1000)return reject(new Error('La grabación salió vacía. Recarga la página y prueba con Chrome de escritorio.'));
-      const a=document.createElement('a');
-      a.href=URL.createObjectURL(blob);
-      a.download=`vende-todo-${(val('f_zone')||'inmueble').toLowerCase().replace(/\s+/g,'-')}.${ext}`;
-      a.click();
-      setStatus(`✅ Vídeo descargado (.${ext}, ${(blob.size/1048576).toFixed(1)} MB, ≈ ${data.total.toFixed(0)} s).`);
+      deliverVideo(blob,ext,`✅ Vídeo generado (.${ext}, ${(blob.size/1048576).toFixed(1)} MB, ≈ ${data.total.toFixed(0)} s). Guárdalo o compártelo aquí debajo.`);
       resolve();
     };
     setStatus('⏺ Grabando… no cambies de pestaña',true);
@@ -2838,6 +2849,53 @@ $('btnCopy').onclick=async()=>{
   catch(e){ta.select();document.execCommand('copy');}
   $('btnCopy').textContent='✅ Copiado';
   setTimeout(()=>$('btnCopy').textContent='📋 Copiar todo',1600);
+};
+
+/* ---------- entrega del vídeo: reproductor + descargar + compartir ---------- */
+function videoFileName(ext){return 'vende-todo-'+(val('f_zone')||'inmueble').toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi,'-')+'.'+ext;}
+let lastBlob=null,lastExt='mp4';
+function deliverVideo(blob,ext,msg){
+  lastBlob=blob;lastExt=ext;
+  const url=URL.createObjectURL(blob);
+  try{const a=document.createElement('a');a.href=url;a.download=videoFileName(ext);a.click();}catch(e){}
+  const v=$('outVideo'); v.src=url; v.load();
+  const dl=$('dlLink'); dl.href=url; dl.setAttribute('download',videoFileName(ext));
+  let canShare=false;
+  try{canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],videoFileName(ext),{type:blob.type||'video/mp4'})]}));}catch(e){}
+  $('shareBtn').style.display=canShare?'':'none';
+  $('result').style.display='block';
+  $('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+  setStatus(msg);
+}
+$('shareBtn').onclick=async()=>{
+  if(!lastBlob)return;
+  try{
+    const f=new File([lastBlob],videoFileName(lastExt),{type:lastBlob.type||'video/mp4'});
+    const isRent=$('f_op').value==='alquiler';
+    const txt=val('f_title')+(val('f_price')?' · '+fmtNum(val('f_price'))+(isRent?' €/mes':' €'):'')+(val('f_phone')?' · '+val('f_phone'):'');
+    await navigator.share({files:[f],title:val('f_title'),text:txt});
+  }catch(e){}
+};
+/* ---------- llévate la herramienta ---------- */
+function toolHTML(){return '<!doctype html>\n'+document.documentElement.outerHTML;}
+$('saveTool').onclick=()=>{
+  try{
+    const blob=new Blob([toolHTML()],{type:'text/html'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);a.download='vende-todo.html';a.click();
+    $('saveTool').textContent='✅ Descargada';
+    setTimeout(()=>$('saveTool').textContent='💾 Descargar (HTML)',1800);
+  }catch(e){}
+};
+$('copyTool').onclick=async()=>{
+  const code=toolHTML();
+  try{await navigator.clipboard.writeText(code);}
+  catch(e){
+    const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');}catch(e2){}document.body.removeChild(ta);
+  }
+  $('copyTool').textContent='✅ Copiado ('+Math.round(code.length/1024)+' KB)';
+  setTimeout(()=>$('copyTool').textContent='📋 Copiar código',2200);
 };
 </script>
 </body>
