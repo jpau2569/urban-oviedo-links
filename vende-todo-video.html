@@ -91,31 +91,35 @@
 
       <div class="card" style="margin-bottom:18px">
         <h2>2 · Datos del anuncio</h2>
-        <div class="field">
-          <label>Titular principal</label>
-          <input type="text" id="f_title" value="Apartamento en venta en Oviedo">
-        </div>
         <div class="row2">
           <div class="field">
-            <label>Precio (€)</label>
-            <input type="text" id="f_price" placeholder="Ej: 149.000">
+            <label>Operación</label>
+            <select id="f_op"><option value="alquiler" selected>En alquiler</option><option value="venta">En venta</option></select>
           </div>
           <div class="field">
-            <label>Zona / barrio</label>
-            <input type="text" id="f_zone" value="Oviedo">
+            <label>Precio</label>
+            <input type="text" id="f_price" value="850" placeholder="Ej: 850">
           </div>
         </div>
-        <div class="row3">
-          <div class="field"><label>Superficie (m²)</label><input type="text" id="f_m2" placeholder="Ej: 75"></div>
-          <div class="field"><label>Habitaciones</label><input type="text" id="f_rooms" placeholder="Ej: 2"></div>
-          <div class="field"><label>Baños</label><input type="text" id="f_baths" placeholder="Ej: 1"></div>
+        <div class="field">
+          <label>Titular principal</label>
+          <input type="text" id="f_title" value="Apartamento en alquiler en Gascona">
+        </div>
+        <div class="field">
+          <label>Zona / barrio</label>
+          <input type="text" id="f_zone" value="Gascona · Centro, Oviedo">
         </div>
         <div class="row3">
-          <div class="field"><label>Planta</label><input type="text" id="f_floor" placeholder="Ej: 3ª"></div>
+          <div class="field"><label>Superficie (m²)</label><input type="text" id="f_m2" placeholder="Ej: 45"></div>
+          <div class="field"><label>Habitaciones</label><input type="text" id="f_rooms" value="1"></div>
+          <div class="field"><label>Baños</label><input type="text" id="f_baths" value="1"></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label>Planta</label><input type="text" id="f_floor" value="4ª"></div>
           <div class="field"><label>Ascensor</label>
-            <select id="f_lift"><option value="">—</option><option>Sí</option><option>No</option></select>
+            <select id="f_lift"><option value="">—</option><option selected>Sí</option><option>No</option></select>
           </div>
-          <div class="field"><label>Extra</label><input type="text" id="f_extra" placeholder="Ej: Amueblado"></div>
+          <div class="field"><label>Extra</label><input type="text" id="f_extra" value="Garaje opcional"></div>
         </div>
       </div>
 
@@ -200,7 +204,7 @@ drop.ondragleave=()=>drop.classList.remove('hot');
 drop.ondrop=e=>{e.preventDefault();drop.classList.remove('hot');addFiles(e.dataTransfer.files)};
 file.onchange=e=>addFiles(e.target.files);
 
-const defaultCaps=['Salón luminoso','Recibidor','Baño completo','Cocina equipada','Cocina equipada','Dormitorio principal','Segundo dormitorio'];
+const defaultCaps=['Salón luminoso','Cocina independiente','Baño completo','Dormitorio principal','Recibidor','A un paso de todo','Edificio con ascensor'];
 
 function addFiles(list){
   const arr=[...list].filter(f=>f.type.startsWith('image/'));
@@ -258,7 +262,7 @@ function setRatio(){
   else {cv.width=1920;cv.height=1080;}
 }
 $('f_ratio').onchange=()=>{setRatio();draw(previewT())};
-['f_title','f_price','f_zone','f_m2','f_rooms','f_baths','f_floor','f_lift','f_extra','f_agency','f_phone','f_web']
+['f_op','f_title','f_price','f_zone','f_m2','f_rooms','f_baths','f_floor','f_lift','f_extra','f_agency','f_phone','f_web']
   .forEach(id=>$(id).addEventListener('input',()=>draw(previewT())));
 setRatio();
 
@@ -341,11 +345,13 @@ function drawSeg(seg,p){
   if(seg.type==='intro'){
     ctx.fillStyle=GOLD;ctx.font=`700 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;
     ctx.fillText(val('f_agency').toUpperCase(),W/2,H*0.30);
-    // pill EN VENTA
-    const pw=W*0.34, ph=H*0.055, px=(W-pw)/2, py=H*0.34;
+    // pill EN VENTA / EN ALQUILER
+    const isRent=$('f_op').value==='alquiler';
+    const pillTxt=isRent?'EN ALQUILER':'EN VENTA';
+    const pw=W*0.44, ph=H*0.055, px=(W-pw)/2, py=H*0.34;
     ctx.fillStyle=GOLD;rr(px,py,pw,ph,ph/2);ctx.fill();
     ctx.fillStyle=INK;ctx.font=`800 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
-    ctx.fillText('EN VENTA',W/2,py+ph*0.68);
+    ctx.fillText(pillTxt,W/2,py+ph*0.68);
     // titular
     ctx.fillStyle='#fff';
     const sz=Math.round(W*0.06);ctx.font=`800 ${sz}px 'Segoe UI',sans-serif`;
@@ -353,8 +359,9 @@ function drawSeg(seg,p){
     // precio
     const price=val('f_price');
     if(price){
-      ctx.fillStyle=GOLDS;ctx.font=`900 ${Math.round(W*0.09)}px 'Segoe UI',sans-serif`;
-      ctx.fillText(price.replace(/€/g,'').trim()+' €',W/2,H*0.66);
+      const suf=isRent?' €/mes':' €';
+      ctx.fillStyle=GOLDS;ctx.font=`900 ${Math.round(W*0.088)}px 'Segoe UI',sans-serif`;
+      ctx.fillText(price.replace(/€/g,'').replace(/\/?mes/i,'').trim()+suf,W/2,H*0.66);
     }
     ctx.fillStyle='var(--muted)';ctx.fillStyle='#9a9aa6';
     ctx.font=`600 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;
