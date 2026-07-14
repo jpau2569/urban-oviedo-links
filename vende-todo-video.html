@@ -67,7 +67,7 @@
   .pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);margin-left:8px}
   #adTexts{display:none;width:100%;margin-top:12px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--fg);padding:12px;font-size:13px;line-height:1.55;font-family:inherit;resize:vertical;min-height:280px}
   #result{display:none}
-  #outVideo{width:100%;max-height:440px;border-radius:12px;margin-top:12px;background:#000}
+  #outVideo,#outVideo2{width:100%;max-height:440px;border-radius:12px;margin-top:12px;background:#000}
   .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:34px;letter-spacing:.5px}
 </style>
 </head>
@@ -176,6 +176,16 @@
         </div>
         <div class="row2">
           <div class="field">
+            <label>Rótulos de foto</label>
+            <select id="f_capstyle"><option value="elegante" selected>Elegante (clásico)</option><option value="tiktok">TikTok · palabra a palabra</option></select>
+          </div>
+          <div class="field">
+            <label>Pack cuadrado 1:1</label>
+            <select id="f_square"><option value="no" selected>Solo formato elegido</option><option value="si">Sí, generar también 1:1</option></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
             <label>Logo agencia (opcional · png/jpg)</label>
             <input type="file" id="f_logo" accept="image/*">
           </div>
@@ -220,6 +230,12 @@
             <button class="btn btn-ghost" id="shareBtn" style="display:none">📲 WhatsApp / Compartir</button>
           </div>
           <div class="hint">¿No se descarga con el botón? <b>Mantén pulsado el vídeo</b> (móvil) o <b>clic derecho → «Guardar vídeo como…»</b> (PC) — eso funciona siempre. En el móvil, «Compartir» lo manda directo a WhatsApp.</div>
+          <div id="result2" style="display:none">
+            <video id="outVideo2" controls playsinline preload="metadata"></video>
+            <div class="actions">
+              <a class="btn btn-gold" id="dlLink2" href="#" style="text-align:center;text-decoration:none">⬇ Guardar versión cuadrada 1:1</a>
+            </div>
+          </div>
         </div>
         <div class="hint">
           En <b>Chrome de escritorio</b> se exporta <code>.mp4</code> (H.264) de máxima calidad,
@@ -2272,7 +2288,7 @@ function setRatio(){
   ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
 }
 $('f_ratio').onchange=()=>{setRatio();draw(previewT())};
-['f_op','f_hook','f_title','f_price','f_zone','f_m2','f_rooms','f_baths','f_floor','f_lift','f_extra','f_highlights','f_agency','f_phone','f_web','f_note']
+['f_op','f_hook','f_title','f_price','f_zone','f_m2','f_rooms','f_baths','f_floor','f_lift','f_extra','f_highlights','f_agency','f_phone','f_web','f_note','f_capstyle']
   .forEach(id=>$(id).addEventListener('input',()=>draw(previewT())));
 setRatio();
 
@@ -2336,6 +2352,55 @@ function buildSegs(){
   return {segs,total:t};
 }
 
+/* ---------- rótulos estilo TikTok: palabra a palabra con rebote ---------- */
+function easeOutBack(p){p=clamp01(p);const c=1.70158;return 1+(c+1)*Math.pow(p-1,3)+c*Math.pow(p-1,2);}
+function drawTikTokCaption(cap,p,W,H){
+  const words=cap.toUpperCase().split(/\s+/).filter(Boolean);
+  if(!words.length)return;
+  const N=words.length;
+  const size=Math.round(W*0.078);
+  ctx.font="900 "+size+"px 'Segoe UI',sans-serif";
+  const maxW=W*0.84;const lines=[];let line=[];
+  words.forEach(w=>{const t=line.concat(w).join(' ');if(ctx.measureText(t).width>maxW&&line.length){lines.push(line);line=[w];}else line.push(w);});
+  if(line.length)lines.push(line);
+  const lh=size*1.24;
+  let y=H*0.74-(lines.length-1)*lh/2;
+  const spaceW=ctx.measureText(' ').width;
+  const lastIdx=Math.min(N-1,Math.floor((p-0.06)/(0.55/N)));
+  let wi=0;
+  lines.forEach(ln=>{
+    const lw=ctx.measureText(ln.join(' ')).width;
+    let x=(W-lw)/2;
+    ln.forEach(word=>{
+      const start=0.06+wi*(0.55/N);
+      const rev=clamp01((p-start)/0.12);
+      const ww=ctx.measureText(word).width;
+      if(rev>0){
+        const sc=0.7+0.3*easeOutBack(rev);
+        ctx.save();
+        ctx.translate(x+ww/2,y);ctx.scale(sc,sc);
+        ctx.globalAlpha=Math.min(1,rev*1.4);
+        ctx.textAlign='center';
+        if(wi===lastIdx&&p<0.8){
+          ctx.fillStyle=GOLD;
+          rr(-ww/2-size*0.18,-size*0.82,ww+size*0.36,size*1.12,size*0.22);ctx.fill();
+          ctx.fillStyle=INK;
+          ctx.fillText(word,0,0);
+        }else{
+          ctx.lineWidth=size*0.16;ctx.lineJoin='round';ctx.strokeStyle='rgba(0,0,0,.85)';
+          ctx.strokeText(word,0,0);
+          ctx.fillStyle='#fff';
+          ctx.fillText(word,0,0);
+        }
+        ctx.restore();
+      }
+      x+=ww+spaceW;
+      wi++;
+    });
+    y+=lh;
+  });
+  ctx.textAlign='left';
+}
 function drawSeg(seg,p){
   const W=cv.width,H=cv.height;
 
@@ -2365,15 +2430,19 @@ function drawSeg(seg,p){
     ctx.font=`600 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;ctx.textAlign='right';
     const n=String(seg.idx+1).padStart(2,'0'), tot=String(photos.length).padStart(2,'0');
     ctx.fillText(`${n} / ${tot}`,W*0.94,H*0.062);
-    // rótulo con entrada animada
+    // rótulo: elegante o TikTok palabra a palabra
     const cap=seg.photo.caption.trim();
     if(cap){
-      const rev=easeOut(p/0.35), by=H-H*0.075, bx=W*0.06;
-      ctx.save();ctx.globalAlpha=rev;ctx.translate(0,(1-rev)*34);
-      ctx.fillStyle=GOLD;ctx.fillRect(bx,by-H*0.055,W*0.10,7);
-      const sz=fitText(cap,W*0.82,Math.round(W*0.06),'800');
-      ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(cap,bx,by);
-      ctx.restore();
+      if($('f_capstyle')&&$('f_capstyle').value==='tiktok'){
+        drawTikTokCaption(cap,p,W,H);
+      }else{
+        const rev=easeOut(p/0.35), by=H-H*0.075, bx=W*0.06;
+        ctx.save();ctx.globalAlpha=rev;ctx.translate(0,(1-rev)*34);
+        ctx.fillStyle=GOLD;ctx.fillRect(bx,by-H*0.055,W*0.10,7);
+        const sz=fitText(cap,W*0.82,Math.round(W*0.06),'800');
+        ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(cap,bx,by);
+        ctx.restore();
+      }
     }
     return;
   }
@@ -2666,7 +2735,8 @@ async function prepareAudio(dur){
     return {rate:48000,L:buf.getChannelData(0),R:buf.getChannelData(1),len:buf.length};
   }catch(e){return null;}
 }
-async function exportMp4(data){
+async function exportMp4(data,opts){
+  opts=opts||{};
   const FPS=30,W=cv.width,H=cv.height,BR=14_000_000;
   const sel=await pickMp4Codec(W,H,BR);
   if(!sel||!window.Mp4Muxer)throw new Error('MP4 no soportado en este navegador');
@@ -2715,7 +2785,7 @@ async function exportMp4(data){
   muxer.finalize();
   const blob=new Blob([muxer.target.buffer],{type:'video/mp4'});
   if(blob.size<1000)throw new Error('MP4 vacío');
-  deliverVideo(blob,'mp4',`✅ MP4 generado (${(blob.size/1048576).toFixed(1)} MB · ${data.total.toFixed(0)} s · ${sel.name==='avc'?'H.264':'VP9'}${audio?' + música':''}). Guárdalo o compártelo aquí debajo.`);
+  deliverVideo(blob,'mp4',opts.slot===2?'✅ Pack completo: versión vertical y cuadrada 1:1 listas aquí debajo.':`✅ MP4 generado (${(blob.size/1048576).toFixed(1)} MB · ${data.total.toFixed(0)} s · ${sel.name==='avc'?'H.264':'VP9'}${audio?' + música':''}). Guárdalo o compártelo aquí debajo.`,opts);
 }
 async function recordRealtime(data){
   const mime=pickMime();
@@ -2774,7 +2844,15 @@ $('btnRec').onclick=async()=>{
   const data=buildSegs();
   recording=true;$('btnPlay').disabled=true;$('btnRec').disabled=true;
   try{
-    await exportMp4(data);           // vía rápida: MP4 H.264 perfecto, fotograma a fotograma
+    await exportMp4(data,{slot:1}); // vía rápida: MP4 H.264 perfecto, fotograma a fotograma
+    if($('f_square').value==='si'&&$('f_ratio').value!=='1:1'){
+      setStatus('⚙ Generando también la versión cuadrada 1:1…');
+      cv.width=1080;cv.height=1080;
+      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+      try{ await exportMp4(data,{slot:2,suffix:'-1x1'}); }
+      catch(e){ console.warn('1:1 no disponible:',e); }
+      setRatio();
+    }
   }catch(err){
     console.warn('Export MP4 no disponible, uso grabación en tiempo real:',err);
     try{await recordRealtime(data);} // plan B universal
@@ -2852,25 +2930,34 @@ $('btnCopy').onclick=async()=>{
 };
 
 /* ---------- entrega del vídeo: reproductor + descargar + compartir ---------- */
-function videoFileName(ext){return 'vende-todo-'+(val('f_zone')||'inmueble').toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi,'-')+'.'+ext;}
-let lastBlob=null,lastExt='mp4';
-function deliverVideo(blob,ext,msg){
-  lastBlob=blob;lastExt=ext;
+function videoFileName(ext,suffix){return 'vende-todo-'+(val('f_zone')||'inmueble').toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi,'-')+(suffix||'')+'.'+ext;}
+let lastBlob=null,lastExt='mp4',lastSuffix='';
+function deliverVideo(blob,ext,msg,opts){
+  opts=opts||{};
+  const suffix=opts.suffix||'';
   const url=URL.createObjectURL(blob);
-  try{const a=document.createElement('a');a.href=url;a.download=videoFileName(ext);a.click();}catch(e){}
-  const v=$('outVideo'); v.src=url; v.load();
-  const dl=$('dlLink'); dl.href=url; dl.setAttribute('download',videoFileName(ext));
-  let canShare=false;
-  try{canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],videoFileName(ext),{type:blob.type||'video/mp4'})]}));}catch(e){}
-  $('shareBtn').style.display=canShare?'':'none';
-  $('result').style.display='block';
-  $('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+  try{const a=document.createElement('a');a.href=url;a.download=videoFileName(ext,suffix);a.click();}catch(e){}
+  if(opts.slot===2){
+    const v2=$('outVideo2'); v2.src=url; v2.load();
+    const dl2=$('dlLink2'); dl2.href=url; dl2.setAttribute('download',videoFileName(ext,suffix));
+    $('result2').style.display='block';
+  }else{
+    lastBlob=blob;lastExt=ext;lastSuffix=suffix;
+    const v=$('outVideo'); v.src=url; v.load();
+    const dl=$('dlLink'); dl.href=url; dl.setAttribute('download',videoFileName(ext,suffix));
+    let canShare=false;
+    try{canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],videoFileName(ext,suffix),{type:blob.type||'video/mp4'})]}));}catch(e){}
+    $('shareBtn').style.display=canShare?'':'none';
+    $('result2').style.display='none';
+    $('result').style.display='block';
+    $('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
   setStatus(msg);
 }
 $('shareBtn').onclick=async()=>{
   if(!lastBlob)return;
   try{
-    const f=new File([lastBlob],videoFileName(lastExt),{type:lastBlob.type||'video/mp4'});
+    const f=new File([lastBlob],videoFileName(lastExt,lastSuffix),{type:lastBlob.type||'video/mp4'});
     const isRent=$('f_op').value==='alquiler';
     const txt=val('f_title')+(val('f_price')?' · '+fmtNum(val('f_price'))+(isRent?' €/mes':' €'):'')+(val('f_phone')?' · '+val('f_phone'):'');
     await navigator.share({files:[f],title:val('f_title'),text:txt});
