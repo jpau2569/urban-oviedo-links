@@ -56,6 +56,18 @@
   .mini:hover{border-color:var(--gold)}
   .mini.del{color:var(--danger)}
   .mini.star{color:#8a8a94;font-size:15px}
+  .mini.fx{color:var(--gold-soft)}
+  #editor{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;z-index:60;padding:18px;overflow:auto}
+  #editor.open{display:flex;align-items:flex-start;justify-content:center}
+  .ed-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:780px;width:100%;padding:18px;margin:auto}
+  .ed-box h2{font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:12px;font-weight:700}
+  #edCv{width:100%;border-radius:12px;cursor:ew-resize;touch-action:none;background:#000;display:block}
+  .ed-sliders{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:14px}
+  .ed-sliders label{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+  .ed-sliders label span{width:74px;flex-shrink:0}
+  .ed-sliders input[type=range]{flex:1;accent-color:var(--gold)}
+  #ed_auto{border:1px solid var(--border)}
+  #ed_auto.on{border-color:var(--gold);color:var(--gold)}
   .mini.star.on{color:var(--gold);border-color:var(--gold)}
   @keyframes glowPulse{0%,100%{box-shadow:0 0 0 rgba(216,177,99,0)}50%{box-shadow:0 0 26px rgba(216,177,99,.5)}}
   .btn-dl{display:block;width:100%;margin-top:12px;padding:16px;font-size:16px;letter-spacing:.6px;text-align:center;text-decoration:none;animation:glowPulse 2.2s ease-in-out infinite}
@@ -94,6 +106,7 @@
         </div>
         <input type="file" id="file" accept="image/*" multiple hidden>
         <div class="thumbs" id="thumbs"></div>
+        <button class="btn btn-ghost" id="btnFixAll" style="width:100%;margin-top:12px;display:none">🪄 Mejorar todas las fotos (luz · color · nitidez)</button>
       </div>
 
       <div class="card" style="margin-bottom:18px">
@@ -136,6 +149,7 @@
           <label>Puntos fuertes (separa con <b>;</b> · salen con ✓)</label>
           <input type="text" id="f_highlights" value="En pleno centro; A un paso de todo; Edificio con ascensor; Plaza de garaje opcional">
         </div>
+        <button class="btn btn-ghost" id="btnSpell" style="width:100%">🔤 Corregir ortografía (títulos, datos y rótulos)</button>
       </div>
 
       <div class="card">
@@ -171,7 +185,7 @@
         <div class="row2">
           <div class="field">
             <label>Estilo visual</label>
-            <select id="f_theme"><option value="lujo" selected>Lujo dorado</option><option value="moderno">Moderno claro</option><option value="urbano">Urbano neón</option></select>
+            <select id="f_theme"><option value="lujo" selected>Lujo dorado</option><option value="moderno">Moderno claro</option><option value="urbano">Urbano neón</option><option value="marino">Azul marino</option><option value="esmeralda">Esmeralda</option><option value="burdeos">Burdeos</option></select>
           </div>
           <div class="field">
             <label>Música</label>
@@ -249,6 +263,27 @@
     </div>
   </div>
   <div class="foot">VENDE TODO · Generador de vídeo · funciona 100% en tu dispositivo, tus fotos no se suben a ningún sitio.</div>
+</div>
+
+<div id="editor">
+  <div class="ed-box">
+    <h2>✨ Mejorar foto · arrastra la línea para comparar antes / después</h2>
+    <canvas id="edCv"></canvas>
+    <div class="ed-sliders">
+      <label><span>Brillo</span><input type="range" id="ed_bri" min="-60" max="60" value="0"></label>
+      <label><span>Contraste</span><input type="range" id="ed_con" min="-50" max="80" value="8"></label>
+      <label><span>Saturación</span><input type="range" id="ed_sat" min="60" max="170" value="108"></label>
+      <label><span>Calidez</span><input type="range" id="ed_warm" min="-40" max="60" value="6"></label>
+      <label><span>Nitidez</span><input type="range" id="ed_sharp" min="0" max="60" value="18"></label>
+      <label><button class="btn btn-ghost on" id="ed_auto" style="width:100%">🪄 Niveles automáticos</button></label>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost" id="ed_reset">Restablecer</button>
+      <button class="btn btn-ghost" id="ed_revert">↩ Quitar mejoras</button>
+      <button class="btn btn-ghost" id="ed_cancel">Cancelar</button>
+      <button class="btn btn-gold" id="ed_apply">✔ Aplicar</button>
+    </div>
+  </div>
 </div>
 
 <datalist id="caps">
@@ -2207,6 +2242,7 @@ function renderThumbs(){
       <div class="cap">
         <input type="text" list="caps" placeholder="Rótulo (opcional)" value="${p.caption.replace(/"/g,'&quot;')}">
       </div>
+      <button class="mini fx" title="Mejorar foto (antes/después)">✨</button>
       <button class="mini star${isCover?' on':''}" title="Usar como PORTADA del vídeo">${isCover?'★':'☆'}</button>
       <div class="ord">
         <button class="mini" title="Subir">▲</button>
@@ -2215,6 +2251,7 @@ function renderThumbs(){
       <button class="mini del" title="Eliminar">✕</button>`;
     if(isCover)row.style.borderColor='var(--gold)';
     row.querySelector('.star').onclick=()=>{photos.forEach(q=>q.cover=false);p.cover=true;renderThumbs();draw(previewT());};
+    row.querySelector('.fx').onclick=()=>openEditor(i);
     const [capInput]=row.querySelectorAll('input');
     capInput.oninput=e=>{p.caption=e.target.value};
     const [up,down]=row.querySelectorAll('.ord .mini');
@@ -2223,6 +2260,7 @@ function renderThumbs(){
     row.querySelector('.del').onclick=()=>{photos.splice(i,1);renderThumbs();updateStatus();draw(0)};
     box.appendChild(row);
   });
+  $('btnFixAll').style.display=photos.length?'':'none';
 }
 function updateStatus(){
   const s=$('status');
@@ -2304,7 +2342,10 @@ setRatio();
 const THEMES={
   lujo:   {gold:'#d8b163',golds:'#f0d9a3',ink:'#0b0b0d',bg1:'#161219',bg2:'#0e0d12',bg3:'#08080a',txt:'#ffffff',sub:'#9a9aa6',line:'rgba(255,255,255,.10)',frame:'rgba(216,177,99,.30)',glow:'rgba(216,177,99,.10)',prog:'rgba(255,255,255,.15)'},
   moderno:{gold:'#0f766e',golds:'#0b5d56',ink:'#f6f5f1',bg1:'#f7f5f0',bg2:'#efece5',bg3:'#e6e2d8',txt:'#20242a',sub:'#5d646e',line:'rgba(0,0,0,.12)',frame:'rgba(15,118,110,.40)',glow:'rgba(15,118,110,.08)',prog:'rgba(0,0,0,.12)'},
-  urbano: {gold:'#ff6a00',golds:'#ffa25e',ink:'#0a0a0a',bg1:'#121216',bg2:'#0b0b0f',bg3:'#050507',txt:'#ffffff',sub:'#8f939c',line:'rgba(255,255,255,.10)',frame:'rgba(255,106,0,.35)',glow:'rgba(255,106,0,.10)',prog:'rgba(255,255,255,.15)'}
+  urbano: {gold:'#ff6a00',golds:'#ffa25e',ink:'#0a0a0a',bg1:'#121216',bg2:'#0b0b0f',bg3:'#050507',txt:'#ffffff',sub:'#8f939c',line:'rgba(255,255,255,.10)',frame:'rgba(255,106,0,.35)',glow:'rgba(255,106,0,.10)',prog:'rgba(255,255,255,.15)'},
+  marino: {gold:'#e3c27d',golds:'#f2dba6',ink:'#0a1220',bg1:'#122238',bg2:'#0b1727',bg3:'#060d18',txt:'#f2f6fc',sub:'#93a4bd',line:'rgba(255,255,255,.10)',frame:'rgba(227,194,125,.32)',glow:'rgba(94,146,214,.12)',prog:'rgba(255,255,255,.15)'},
+  esmeralda:{gold:'#46c98f',golds:'#8fe7bd',ink:'#04130c',bg1:'#0e241a',bg2:'#081810',bg3:'#040d08',txt:'#f0fbf5',sub:'#8fae9e',line:'rgba(255,255,255,.10)',frame:'rgba(70,201,143,.32)',glow:'rgba(70,201,143,.10)',prog:'rgba(255,255,255,.15)'},
+  burdeos:{gold:'#e08f6f',golds:'#f2c1a4',ink:'#190a0e',bg1:'#2a1118',bg2:'#1b0a10',bg3:'#0d0508',txt:'#fdf3f0',sub:'#b3939c',line:'rgba(255,255,255,.10)',frame:'rgba(224,143,111,.32)',glow:'rgba(224,143,111,.10)',prog:'rgba(255,255,255,.15)'}
 };
 let T=THEMES.lujo;
 let GOLD=T.gold, GOLDS=T.golds, INK=T.ink;
@@ -3010,6 +3051,209 @@ $('copyTool').onclick=async()=>{
   }
   $('copyTool').textContent='✅ Copiado ('+Math.round(code.length/1024)+' KB)';
   setTimeout(()=>$('copyTool').textContent='📋 Copiar código',2200);
+};
+
+/* ---------- mejorador de fotos con comparador antes/después ---------- */
+function autoLevels(d){
+  const px=d.data,hist=new Array(256).fill(0);let sum=0;
+  for(let i=0;i<px.length;i+=4){const l=Math.round(0.299*px[i]+0.587*px[i+1]+0.114*px[i+2]);hist[l]++;sum+=l;}
+  const tot=px.length/4,mean=sum/tot;let acc=0,lo=0,hi=255;
+  for(let v=0;v<256;v++){acc+=hist[v];if(acc>tot*0.005){lo=v;break;}}
+  acc=0;
+  for(let v=255;v>=0;v--){acc+=hist[v];if(acc>tot*0.005){hi=v;break;}}
+  lo=Math.min(lo,70);hi=Math.max(hi,190);
+  if(hi-lo<40){lo=0;hi=255;}
+  // gamma: levanta los medios tonos de estancias oscuras sin quemar las claras
+  const meanS=Math.max(8,Math.min(247,(mean-lo)*255/Math.max(1,hi-lo)));
+  let gamma=Math.log(0.52)/Math.log(meanS/255);
+  gamma=Math.max(0.68,Math.min(1.05,gamma));
+  return [lo,hi,gamma];
+}
+function enhancePixels(d,o){
+  const px=d.data;
+  const c=(259*(o.con+255))/(255*(259-o.con));
+  const lo=o.lo!==undefined?o.lo:0, hi=o.hi!==undefined?o.hi:255, gamma=o.gamma||1;
+  const sc=255/Math.max(1,hi-lo);
+  const LUT=new Uint8ClampedArray(256);
+  for(let v=0;v<256;v++){
+    let t=(v-lo)*sc;
+    t=t<0?0:t>255?255:t;
+    if(gamma!==1)t=255*Math.pow(t/255,gamma);
+    t+=o.bri;
+    t=c*(t-128)+128;
+    LUT[v]=t;
+  }
+  const wr=o.warm*0.35;
+  for(let i=0;i<px.length;i+=4){
+    let r=LUT[px[i]]+wr,g=LUT[px[i+1]],b=LUT[px[i+2]]-wr;
+    const l=0.299*r+0.587*g+0.114*b,s=o.sat/100;
+    r=l+(r-l)*s;g=l+(g-l)*s;b=l+(b-l)*s;
+    px[i]=r<0?0:r>255?255:r;px[i+1]=g<0?0:g>255?255:g;px[i+2]=b<0?0:b>255?255:b;
+  }
+}
+function sharpenCanvas(x,w,hh,amt){
+  if(amt<=0)return;
+  const src=x.getImageData(0,0,w,hh),out=x.createImageData(w,hh);
+  const s=src.data,o=out.data,k=amt/100*0.55;
+  for(let y=0;y<hh;y++)for(let xx=0;xx<w;xx++){
+    const i=(y*w+xx)*4;
+    for(let ch=0;ch<3;ch++){
+      const cc=s[i+ch];
+      const up=y>0?s[i-w*4+ch]:cc, dn=y<hh-1?s[i+w*4+ch]:cc;
+      const lf=xx>0?s[i-4+ch]:cc, rt=xx<w-1?s[i+4+ch]:cc;
+      let v=cc+(4*cc-up-dn-lf-rt)*k;
+      o[i+ch]=v<0?0:v>255?255:v;
+    }
+    o[i+3]=255;
+  }
+  x.putImageData(out,0,0);
+}
+function processPhoto(img,params,maxDim){
+  const scl=Math.min(1,maxDim/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+  const w=Math.max(2,Math.round((img.naturalWidth||2)*scl)),hh=Math.max(2,Math.round((img.naturalHeight||2)*scl));
+  const c=document.createElement('canvas');c.width=w;c.height=hh;
+  const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,hh);
+  const d=x.getImageData(0,0,w,hh);
+  let lo,hi,gamma=1;
+  if(params.auto){const lv=autoLevels(d);lo=lv[0];hi=lv[1];gamma=lv[2];}
+  enhancePixels(d,{bri:params.bri,con:params.con,sat:params.sat,warm:params.warm,lo,hi,gamma});
+  x.putImageData(d,0,0);
+  if(params.sharp>0)sharpenCanvas(x,w,hh,params.sharp);
+  return c;
+}
+/* --- editor modal --- */
+let edIdx=-1,edBase=null,edEnh=null,edDiv=0.55,edPend=false;
+function edParams(){
+  return {auto:$('ed_auto').classList.contains('on'),
+    bri:+$('ed_bri').value,con:+$('ed_con').value,sat:+$('ed_sat').value,
+    warm:+$('ed_warm').value,sharp:+$('ed_sharp').value};
+}
+function openEditor(i){
+  edIdx=i;
+  const ph=photos[i];
+  const src=ph.origImg||ph.img;
+  const scl=Math.min(1,900/Math.max(src.naturalWidth||1,src.naturalHeight||1));
+  edBase=document.createElement('canvas');
+  edBase.width=Math.round((src.naturalWidth||2)*scl);edBase.height=Math.round((src.naturalHeight||2)*scl);
+  edBase.getContext('2d').drawImage(src,0,0,edBase.width,edBase.height);
+  $('ed_auto').classList.add('on');
+  $('ed_bri').value=0;$('ed_con').value=8;$('ed_sat').value=108;$('ed_warm').value=6;$('ed_sharp').value=18;
+  edDiv=0.55;
+  $('editor').classList.add('open');
+  edRecalc();
+}
+function edRecalc(){
+  if(edIdx<0)return;
+  const src=photos[edIdx].origImg||photos[edIdx].img;
+  edEnh=processPhoto(src,edParams(),900);
+  edDraw();
+}
+function edUpdate(){if(edPend)return;edPend=true;requestAnimationFrame(()=>{edPend=false;edRecalc();});}
+function edDraw(){
+  const c=$('edCv'),x=c.getContext('2d');
+  c.width=edBase.width;c.height=edBase.height;
+  x.drawImage(edEnh,0,0,c.width,c.height);
+  const dx=Math.round(c.width*edDiv);
+  x.save();x.beginPath();x.rect(0,0,dx,c.height);x.clip();x.drawImage(edBase,0,0);x.restore();
+  x.fillStyle='#fff';x.fillRect(dx-2,0,4,c.height);
+  x.beginPath();x.arc(dx,c.height/2,18,0,7);x.fill();
+  x.fillStyle='#111';x.font='bold 16px sans-serif';x.textAlign='center';x.fillText('⇄',dx,c.height/2+6);
+  x.font='bold 15px sans-serif';x.fillStyle='rgba(255,255,255,.92)';
+  x.textAlign='left';x.fillText('ANTES',14,28);
+  x.textAlign='right';x.fillText('DESPUÉS',c.width-14,28);
+}
+(function(){
+  const cv2=$('edCv');
+  const move=e=>{const r=cv2.getBoundingClientRect();edDiv=Math.max(0.03,Math.min(0.97,(e.clientX-r.left)/r.width));edDraw();};
+  cv2.addEventListener('pointerdown',e=>{cv2.setPointerCapture(e.pointerId);move(e);cv2.onpointermove=move;});
+  cv2.addEventListener('pointerup',()=>{cv2.onpointermove=null;});
+})();
+['ed_bri','ed_con','ed_sat','ed_warm','ed_sharp'].forEach(id=>$(id).addEventListener('input',edUpdate));
+$('ed_auto').onclick=()=>{$('ed_auto').classList.toggle('on');edUpdate();};
+$('ed_reset').onclick=()=>{$('ed_auto').classList.remove('on');$('ed_bri').value=0;$('ed_con').value=0;$('ed_sat').value=100;$('ed_warm').value=0;$('ed_sharp').value=0;edUpdate();};
+$('ed_cancel').onclick=()=>{$('editor').classList.remove('open');edIdx=-1;};
+$('ed_revert').onclick=()=>{
+  const ph=photos[edIdx];
+  if(ph&&ph.origImg){ph.img=ph.origImg;ph.url=ph.origUrl||ph.url;delete ph.origImg;delete ph.origUrl;}
+  $('editor').classList.remove('open');edIdx=-1;
+  renderThumbs();draw(previewT());
+  setStatus('↩ Foto restaurada al original.');
+};
+$('ed_apply').onclick=async()=>{
+  const ph=photos[edIdx];if(!ph)return;
+  $('ed_apply').textContent='⏳ Aplicando…';
+  await new Promise(r=>setTimeout(r,30));
+  ph.origImg=ph.origImg||ph.img; ph.origUrl=ph.origUrl||ph.url;
+  const c=processPhoto(ph.origImg,edParams(),1920);
+  const durl=c.toDataURL('image/jpeg',0.92);
+  await new Promise(res=>{const im=new Image();im.onload=()=>{ph.img=im;res();};im.src=durl;});
+  ph.url=durl;
+  $('ed_apply').textContent='✔ Aplicar';
+  $('editor').classList.remove('open');edIdx=-1;
+  renderThumbs();draw(previewT());
+  setStatus('✨ Foto mejorada. Pulsa ✨ de nuevo para reajustar o restaurar.');
+};
+$('btnFixAll').onclick=async()=>{
+  if(!photos.length)return;
+  const P={auto:true,bri:0,con:8,sat:108,warm:6,sharp:16};
+  for(let i=0;i<photos.length;i++){
+    setStatus('🪄 Mejorando foto '+(i+1)+' de '+photos.length+'…');
+    await new Promise(r=>setTimeout(r,15));
+    const ph=photos[i];
+    ph.origImg=ph.origImg||ph.img; ph.origUrl=ph.origUrl||ph.url;
+    const c=processPhoto(ph.origImg,P,1920);
+    const durl=c.toDataURL('image/jpeg',0.92);
+    await new Promise(res=>{const im=new Image();im.onload=()=>{ph.img=im;res();};im.src=durl;});
+    ph.url=durl;
+  }
+  renderThumbs();draw(previewT());
+  setStatus('✨ '+photos.length+' fotos mejoradas (luz, color y nitidez). Pulsa ✨ en cualquiera para comparar antes/después.');
+};
+/* ---------- corrector de ortografía (inmobiliario, es-ES) ---------- */
+const SPELL=[
+  [/\bsalon\b/gi,'salón'],[/\bbano\b/gi,'baño'],[/\bbanos\b/gi,'baños'],
+  [/\bhabitacion\b/gi,'habitación'],[/\bubicacion\b/gi,'ubicación'],[/\bsituacion\b/gi,'situación'],
+  [/\batico\b/gi,'ático'],[/\bgarage\b/gi,'garaje'],[/\benergia\b/gi,'energía'],
+  [/\benergetica\b/gi,'energética'],[/\bcalefaccion\b/gi,'calefacción'],[/\bcertificacion\b/gi,'certificación'],
+  [/\basensor\b/gi,'ascensor'],[/\bacensor\b/gi,'ascensor'],[/\bedifico\b/gi,'edificio'],
+  [/\bteraza\b/gi,'terraza'],[/\belectrodomesticos\b/gi,'electrodomésticos'],[/\bvestibulo\b/gi,'vestíbulo'],
+  [/\bdormitiorio\b/gi,'dormitorio'],[/\bjardin\b/gi,'jardín'],[/\bpequeno\b/gi,'pequeño'],
+  [/\bpequena\b/gi,'pequeña'],[/\bano\b/g,'año'],[/\banos\b/g,'años'],
+  [/\btambien\b/gi,'también'],[/\bademas\b/gi,'además'],[/\btelefono\b/gi,'teléfono'],
+  [/\bnumero\b/gi,'número'],[/\bfacil\b/gi,'fácil'],[/\bcomodo\b/gi,'cómodo'],[/\bcomoda\b/gi,'cómoda'],
+  [/\brapido\b/gi,'rápido'],[/\bproximo\b/gi,'próximo'],[/\bproxima\b/gi,'próxima'],
+  [/\bultimo\b/gi,'último'],[/\bultima\b/gi,'última'],[/\bunico\b/gi,'único'],[/\bunica\b/gi,'única'],
+  [/\bcentrico\b/gi,'céntrico'],[/\bcentrica\b/gi,'céntrica'],[/\bpractico\b/gi,'práctico'],[/\bpractica\b/gi,'práctica'],
+  [/\bpublico\b/gi,'público'],[/\bpublica\b/gi,'pública'],[/\bvivenda\b/gi,'vivienda'],
+  [/\bexcelnte\b/gi,'excelente'],[/\boportunidat\b/gi,'oportunidad'],[/\binmejorabel\b/gi,'inmejorable'],
+  [/\bm2\b/gi,'m²'],[/\bwc\b/gi,'aseo'],[/\bgarantia\b/gi,'garantía'],[/\brecien\b/gi,'recién'],
+  [/\bexterio\b/gi,'exterior'],[/\bamplisimo\b/gi,'amplísimo'],[/\bamplisima\b/gi,'amplísima'],
+  [/\bluminosidad\b/gi,'luminosidad'],[/\borientacion\b/gi,'orientación'],[/\brehabilitacion\b/gi,'rehabilitación'],
+  [/\bcomunicacion\b/gi,'comunicación'],[/\bdistribucion\b/gi,'distribución'],[/\brecepcion\b/gi,'recepción']
+];
+function fixSpelling(s){
+  let n=0,out=s;
+  SPELL.forEach(pair=>{
+    out=out.replace(pair[0],m=>{
+      const rep=pair[1];
+      const fixed=(m[0]===m[0].toUpperCase()&&m[0]!==m[0].toLowerCase())?rep[0].toUpperCase()+rep.slice(1):rep;
+      if(fixed!==m)n++;
+      return fixed;
+    });
+  });
+  const clean=out.replace(/\s{2,}/g,' ').replace(/\s+([,.;:!?])/g,'$1');
+  if(clean!==out)n++;
+  return {out:clean,n};
+}
+$('btnSpell').onclick=()=>{
+  let total=0;
+  ['f_hook','f_title','f_zone','f_extra','f_highlights','f_note','f_agency'].forEach(id=>{
+    const r=fixSpelling($(id).value);
+    if(r.n){$(id).value=r.out;total+=r.n;}
+  });
+  photos.forEach(p=>{const r=fixSpelling(p.caption);if(r.n){p.caption=r.out;total+=r.n;}});
+  renderThumbs();draw(previewT());
+  setStatus(total?('🔤 Ortografía revisada: '+(total===1?'1 corrección aplicada':total+' correcciones aplicadas')+'.'):'🔤 Ortografía revisada: todo correcto ✔');
 };
 </script>
 </body>
