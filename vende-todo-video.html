@@ -65,6 +65,7 @@
   .status{font-size:13px;margin-top:10px;min-height:18px;color:var(--gold-soft)}
   .status.rec{color:var(--danger);font-weight:700}
   .pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);margin-left:8px}
+  #adTexts{display:none;width:100%;margin-top:12px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--fg);padding:12px;font-size:13px;line-height:1.55;font-family:inherit;resize:vertical;min-height:280px}
   .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:34px;letter-spacing:.5px}
 </style>
 </head>
@@ -163,14 +164,31 @@
         </div>
         <div class="row2">
           <div class="field">
+            <label>Estilo visual</label>
+            <select id="f_theme"><option value="lujo" selected>Lujo dorado</option><option value="moderno">Moderno claro</option><option value="urbano">Urbano neón</option></select>
+          </div>
+          <div class="field">
+            <label>Música</label>
+            <select id="f_musicmode"><option value="auto" selected>Elegante (incluida)</option><option value="none">Sin música</option><option value="file">Mi archivo…</option></select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
             <label>Logo agencia (opcional · png/jpg)</label>
             <input type="file" id="f_logo" accept="image/*">
           </div>
-          <div class="field">
-            <label>Música de fondo (opcional · mp3)</label>
+          <div class="field" id="wrap_musicfile" style="display:none">
+            <label>Tu archivo (mp3)</label>
             <input type="file" id="f_music" accept="audio/*">
           </div>
         </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>4 · Textos del anuncio</h2>
+        <button class="btn btn-ghost" id="btnTexts" style="width:100%">📝 Generar textos (portal · Instagram · WhatsApp)</button>
+        <textarea id="adTexts" spellcheck="false"></textarea>
+        <button class="btn btn-gold" id="btnCopy" style="display:none;width:100%;margin-top:10px">📋 Copiar todo</button>
       </div>
     </div>
 
@@ -2182,15 +2200,48 @@ $('f_logo').onchange=e=>{
   const f=e.target.files[0]; if(!f)return;
   const i=new Image(); i.onload=()=>{logoImg=i;draw(previewT());}; i.src=URL.createObjectURL(f);
 };
+/* logo por defecto: skyline futurista + llave (vectorial, nítido a cualquier tamaño) */
+function drawKeyBuildingMark(x,y,s,color){
+  const u=s/30;
+  ctx.save();ctx.translate(x,y+u*5);
+  ctx.fillStyle=color;ctx.strokeStyle=color;
+  ctx.lineJoin='round';ctx.lineCap='round';
+  // torre izquierda
+  ctx.beginPath();ctx.moveTo(-11*u,3*u);ctx.lineTo(-11*u,-6*u);ctx.lineTo(-6.5*u,-9*u);ctx.lineTo(-6.5*u,3*u);ctx.closePath();ctx.fill();
+  // torre central (la alta, top en diagonal)
+  ctx.beginPath();ctx.moveTo(-4.5*u,3*u);ctx.lineTo(-4.5*u,-13*u);ctx.lineTo(0.5*u,-16*u);ctx.lineTo(0.5*u,3*u);ctx.closePath();ctx.fill();
+  // torre derecha
+  ctx.beginPath();ctx.moveTo(2.5*u,3*u);ctx.lineTo(2.5*u,-10*u);ctx.lineTo(7*u,-7.5*u);ctx.lineTo(7*u,3*u);ctx.closePath();ctx.fill();
+  // antena
+  ctx.lineWidth=u*0.9;
+  ctx.beginPath();ctx.moveTo(-2*u,-16*u);ctx.lineTo(-2*u,-20*u);ctx.stroke();
+  // línea de suelo
+  ctx.lineWidth=u*0.8;
+  ctx.beginPath();ctx.moveTo(-12*u,3*u);ctx.lineTo(9*u,3*u);ctx.stroke();
+  // llave horizontal bajo el skyline
+  const ky=7.5*u;
+  ctx.lineWidth=u*1.7;
+  ctx.beginPath();ctx.arc(-7.6*u,ky,2.4*u,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-5.2*u,ky);ctx.lineTo(9*u,ky);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(5.6*u,ky);ctx.lineTo(5.6*u,ky+2.4*u);ctx.moveTo(8.6*u,ky);ctx.lineTo(8.6*u,ky+3.2*u);ctx.stroke();
+  ctx.restore();
+}
 function drawBrand(x,y,hpx,align){
   if(logoImg&&logoImg.naturalWidth){
     const w=hpx*logoImg.naturalWidth/logoImg.naturalHeight;
     ctx.drawImage(logoImg,align==='right'?x-w:x,y-hpx*0.82,w,hpx);
     return;
   }
-  ctx.font=`700 ${Math.round(hpx*0.62)}px 'Segoe UI',sans-serif`;
-  ctx.textAlign=align||'left';
-  ctx.fillText(val('f_agency').toUpperCase(),x,y);
+  const prevFill=ctx.fillStyle;
+  ctx.font="700 "+Math.round(hpx*0.62)+"px 'Segoe UI',sans-serif";
+  const name=val('f_agency').toUpperCase();
+  const tw=ctx.measureText(name).width;
+  const ih=hpx*1.5, gap=hpx*0.4, total=ih*0.7+gap+tw;
+  const sx=align==='right'?x-total:x;
+  drawKeyBuildingMark(sx+ih*0.35,y-hpx*0.30,ih,GOLD);
+  ctx.fillStyle=prevFill;
+  ctx.textAlign='left';
+  ctx.fillText(name,sx+ih*0.7+gap,y);
 }
 
 /* ---------- geometría según formato ---------- */
@@ -2207,7 +2258,15 @@ $('f_ratio').onchange=()=>{setRatio();draw(previewT())};
 setRatio();
 
 /* ---------- helpers de dibujo ---------- */
-const GOLD='#d8b163', GOLDS='#f0d9a3', INK='#0b0b0d';
+/* ---------- estilos visuales ---------- */
+const THEMES={
+  lujo:   {gold:'#d8b163',golds:'#f0d9a3',ink:'#0b0b0d',bg1:'#161219',bg2:'#0e0d12',bg3:'#08080a',txt:'#ffffff',sub:'#9a9aa6',line:'rgba(255,255,255,.10)',frame:'rgba(216,177,99,.30)',glow:'rgba(216,177,99,.10)',prog:'rgba(255,255,255,.15)'},
+  moderno:{gold:'#0f766e',golds:'#0b5d56',ink:'#f6f5f1',bg1:'#f7f5f0',bg2:'#efece5',bg3:'#e6e2d8',txt:'#20242a',sub:'#5d646e',line:'rgba(0,0,0,.12)',frame:'rgba(15,118,110,.40)',glow:'rgba(15,118,110,.08)',prog:'rgba(0,0,0,.12)'},
+  urbano: {gold:'#ff6a00',golds:'#ffa25e',ink:'#0a0a0a',bg1:'#121216',bg2:'#0b0b0f',bg3:'#050507',txt:'#ffffff',sub:'#8f939c',line:'rgba(255,255,255,.10)',frame:'rgba(255,106,0,.35)',glow:'rgba(255,106,0,.10)',prog:'rgba(255,255,255,.15)'}
+};
+let T=THEMES.lujo;
+let GOLD=T.gold, GOLDS=T.golds, INK=T.ink;
+function setTheme(name){T=THEMES[name]||THEMES.lujo;GOLD=T.gold;GOLDS=T.golds;INK=T.ink;draw(previewT());}
 function val(id){return $(id).value.trim();}
 function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
 function drawCover(img,s,offx,offy){
@@ -2235,12 +2294,12 @@ function fmtNum(s){const n=(s||'').replace(/[^\d]/g,'');if(!n)return (s||'').tri
 function cardBg(){
   const W=cv.width,H=cv.height;
   const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#161219');bg.addColorStop(.55,'#0e0d12');bg.addColorStop(1,'#08080a');
+  bg.addColorStop(0,T.bg1);bg.addColorStop(.55,T.bg2);bg.addColorStop(1,T.bg3);
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   const glow=ctx.createRadialGradient(W*0.5,H*0.28,0,W*0.5,H*0.28,H*0.5);
-  glow.addColorStop(0,'rgba(216,177,99,.10)');glow.addColorStop(1,'rgba(216,177,99,0)');
+  glow.addColorStop(0,T.glow);glow.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
-  ctx.strokeStyle='rgba(216,177,99,.30)';ctx.lineWidth=3;
+  ctx.strokeStyle=T.frame;ctx.lineWidth=3;
   ctx.strokeRect(W*0.055,H*0.055,W*0.89,H*0.89);
 }
 
@@ -2309,7 +2368,7 @@ function drawSeg(seg,p){
     ctx.save();ctx.globalAlpha=rev;
     ctx.fillStyle=GOLD;ctx.font=`700 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
     ctx.fillText(((isRent?'EN ALQUILER':'EN VENTA')+'  ·  '+val('f_zone')).toUpperCase(),W/2,H*0.34);
-    ctx.fillStyle='#fff';
+    ctx.fillStyle=T.txt;
     const sz=Math.round(W*0.085);ctx.font=`900 ${sz}px 'Segoe UI',sans-serif`;
     const lines=wrap(val('f_hook'),W*0.80), startY=H*0.5-(lines.length-1)*sz*0.6;
     lines.forEach((l,i)=>{ctx.save();ctx.globalAlpha=easeOut((p-0.1-i*0.08)*2.2);ctx.fillText(l,W/2,startY+i*sz*1.12);ctx.restore();});
@@ -2321,6 +2380,8 @@ function drawSeg(seg,p){
 
   if(seg.type==='intro'){
     ctx.save();ctx.globalAlpha=easeOut(p*3);
+    if(logoImg&&logoImg.naturalWidth){const lh=H*0.05,lw=lh*logoImg.naturalWidth/logoImg.naturalHeight;ctx.drawImage(logoImg,W/2-lw/2,H*0.185,lw,lh);}
+    else drawKeyBuildingMark(W/2,H*0.208,H*0.05,GOLD);
     ctx.fillStyle=GOLD;ctx.font=`700 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;
     ctx.fillText(val('f_agency').toUpperCase(),W/2,H*0.28);ctx.restore();
     const ps=easeOut((p-0.08)*3);
@@ -2332,7 +2393,7 @@ function drawSeg(seg,p){
       ctx.fillText(isRent?'EN ALQUILER':'EN VENTA',W/2,py+ph*0.68);ctx.restore();
     }
     ctx.save();ctx.globalAlpha=easeOut((p-0.18)*3);
-    ctx.fillStyle='#fff';const sz=Math.round(W*0.062);ctx.font=`800 ${sz}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
+    ctx.fillStyle=T.txt;const sz=Math.round(W*0.062);ctx.font=`800 ${sz}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
     wrap(val('f_title'),W*0.82).forEach((l,i)=>ctx.fillText(l,W/2,H*0.45+i*sz*1.12));ctx.restore();
     const price=val('f_price');
     if(price){
@@ -2342,7 +2403,7 @@ function drawSeg(seg,p){
       ctx.fillText((target?fmtNum(String(cur)):price)+suf,W/2,H*0.67);
     }
     ctx.save();ctx.globalAlpha=easeOut((p-0.5)*3);
-    ctx.fillStyle='#9a9aa6';ctx.font=`600 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
+    ctx.fillStyle=T.sub;ctx.font=`600 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
     ctx.fillText(val('f_zone'),W/2,H*0.73);ctx.restore();
     return;
   }
@@ -2361,7 +2422,7 @@ function drawSeg(seg,p){
       ctx.strokeStyle=INK;ctx.lineWidth=6;ctx.lineJoin='round';ctx.lineCap='round';
       ctx.beginPath();ctx.moveTo(cx-rad*0.42,cyc+rad*0.02);ctx.lineTo(cx-rad*0.06,cyc+rad*0.4);ctx.lineTo(cx+rad*0.5,cyc-rad*0.42);ctx.stroke();
       const fs=fitText(it,W*0.66,Math.round(W*0.046),'700');
-      ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(it,W*0.24,cyc+fs*0.35);
+      ctx.fillStyle=T.txt;ctx.textAlign='left';ctx.fillText(it,W*0.24,cyc+fs*0.35);
       ctx.restore();
       y+=gap;
     });
@@ -2386,12 +2447,12 @@ function drawSeg(seg,p){
       const rev=easeOut((p-i*0.08)*3);
       if(rev<=0){y+=rowh;return;}
       ctx.save();ctx.globalAlpha=rev;
-      ctx.textAlign='left';ctx.fillStyle='#fff';
+      ctx.textAlign='left';ctx.fillStyle=T.txt;
       ctx.font=`600 ${Math.round(W*0.04)}px 'Segoe UI',sans-serif`;ctx.fillText(r[0],W*0.12,y);
       ctx.textAlign='right';ctx.fillStyle=GOLDS;
       const vs=fitText(r[1],W*0.5,Math.round(W*0.044),'800');ctx.font=`800 ${vs}px 'Segoe UI',sans-serif`;
       ctx.fillText(r[1],W*0.88,y);
-      ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=2;
+      ctx.strokeStyle=T.line;ctx.lineWidth=2;
       ctx.beginPath();ctx.moveTo(W*0.12,y+rowh*0.30);ctx.lineTo(W*0.88,y+rowh*0.30);ctx.stroke();
       ctx.restore();
       y+=rowh;
@@ -2402,9 +2463,11 @@ function drawSeg(seg,p){
 
   if(seg.type==='cta'){
     ctx.save();ctx.globalAlpha=easeOut(p*2.4);
-    ctx.fillStyle='#fff';ctx.font=`800 ${Math.round(W*0.072)}px 'Segoe UI',sans-serif`;
+    if(logoImg&&logoImg.naturalWidth){const lh=H*0.045,lw=lh*logoImg.naturalWidth/logoImg.naturalHeight;ctx.drawImage(logoImg,W/2-lw/2,H*0.155,lw,lh);}
+    else drawKeyBuildingMark(W/2,H*0.176,H*0.046,GOLD);
+    ctx.fillStyle=T.txt;ctx.font=`800 ${Math.round(W*0.072)}px 'Segoe UI',sans-serif`;
     ctx.fillText('¿Quieres verlo?',W/2,H*0.32);
-    ctx.fillStyle='#9a9aa6';ctx.font=`500 ${Math.round(W*0.036)}px 'Segoe UI',sans-serif`;
+    ctx.fillStyle=T.sub;ctx.font=`500 ${Math.round(W*0.036)}px 'Segoe UI',sans-serif`;
     ctx.fillText('Concierta tu visita sin compromiso',W/2,H*0.38);ctx.restore();
     const phone=val('f_phone');
     if(phone){
@@ -2414,11 +2477,11 @@ function drawSeg(seg,p){
       ctx.fillText(phone,0,0);ctx.restore();
     }
     ctx.save();ctx.globalAlpha=easeOut((p-0.35)*3);ctx.textAlign='center';
-    ctx.fillStyle='#fff';ctx.font=`700 ${Math.round(W*0.042)}px 'Segoe UI',sans-serif`;ctx.fillText(val('f_agency'),W/2,H*0.60);
+    ctx.fillStyle=T.txt;ctx.font=`700 ${Math.round(W*0.042)}px 'Segoe UI',sans-serif`;ctx.fillText(val('f_agency'),W/2,H*0.60);
     ctx.fillStyle=GOLD;ctx.font=`600 ${Math.round(W*0.034)}px 'Segoe UI',sans-serif`;ctx.fillText(val('f_web'),W/2,H*0.655);
     const note=val('f_note');
     if(note){
-      ctx.fillStyle='#8a8a94';ctx.font=`italic 500 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
+      ctx.fillStyle=T.sub;ctx.font=`italic 500 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
       wrap(note,W*0.8).forEach((l,i)=>ctx.fillText(l,W/2,H*0.73+i*W*0.04));
     }
     ctx.restore();
@@ -2428,7 +2491,7 @@ function drawSeg(seg,p){
 
 function drawProgress(f){
   const W=cv.width;
-  ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillRect(0,0,W,7);
+  ctx.fillStyle=T.prog;ctx.fillRect(0,0,W,7);
   ctx.fillStyle=GOLD;ctx.fillRect(0,0,W*Math.max(0,Math.min(1,f)),7);
 }
 
@@ -2456,7 +2519,81 @@ draw(0.01);
 
 /* ---------- reproducción ---------- */
 let raf=null, audioEl=null, audioCtx=null;
-function stopAudio(){if(audioEl){audioEl.pause();audioEl=null;}}
+function stopAudio(){
+  if(audioEl){audioEl.pause();audioEl=null;}
+  if(previewSrc){try{previewSrc.stop()}catch(e){} previewSrc=null;}
+}
+/* ---------- música elegante incluida (sintetizada, sin archivos) ---------- */
+function synthMusic(dur){
+  const rate=48000;
+  const oac=new OfflineAudioContext(2,Math.ceil(dur*rate),rate);
+  const master=oac.createGain();master.gain.setValueAtTime(0.16,0);
+  const lp=oac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;
+  master.connect(lp);lp.connect(oac.destination);
+  // pads: Cmaj7 · Am7 · Fmaj7 · G6
+  const chords=[[130.81,196.00,246.94,329.63],[110.00,164.81,261.63,329.63],[87.31,174.61,220.00,261.63],[98.00,146.83,246.94,293.66]];
+  const seg=8;
+  for(let t=0,ci=0;t<dur;t+=seg,ci++){
+    const notes=chords[ci%4], end=Math.min(t+seg+0.6,dur);
+    notes.forEach((f,ni)=>{
+      const o=oac.createOscillator();o.type=ni===0?'sine':'triangle';o.frequency.value=f;
+      const g=oac.createGain();
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.linearRampToValueAtTime(ni===0?0.5:0.20,Math.min(t+1.8,end));
+      g.gain.setValueAtTime(ni===0?0.5:0.20,Math.max(t,end-1.2));
+      g.gain.linearRampToValueAtTime(0.0001,end);
+      o.connect(g);g.connect(master);o.start(t);o.stop(end+0.1);
+    });
+  }
+  // campanitas suaves (patrón fijo, sin azar)
+  const scale=[523.25,659.25,587.33,783.99,659.25,880.00,783.99,523.25];
+  let step=0;
+  for(let t=1.2;t<dur-2.5;t+=2){
+    const f=scale[step++%scale.length];
+    const o=oac.createOscillator();o.type='sine';o.frequency.value=f*2;
+    const g=oac.createGain();
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.10,t+0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+1.4);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+1.5);
+  }
+  // fundido final
+  master.gain.setValueAtTime(0.16,Math.max(0,dur-2));
+  master.gain.linearRampToValueAtTime(0.0001,dur);
+  return oac.startRendering();
+}
+async function getMusicBuffer(dur){
+  const mode=$('f_musicmode')?$('f_musicmode').value:'none';
+  if(mode==='none')return null;
+  if(mode==='auto')return synthMusic(dur);
+  if(!audioURL)return null;
+  const ab=await (await fetch(audioURL)).arrayBuffer();
+  const AC=window.AudioContext||window.webkitAudioContext;
+  const tmp=new AC({sampleRate:48000});
+  const dec=await tmp.decodeAudioData(ab); tmp.close();
+  const oac=new OfflineAudioContext(2,Math.ceil(dur*48000),48000);
+  const src=oac.createBufferSource(); src.buffer=dec; src.loop=true;
+  const g=oac.createGain();
+  g.gain.setValueAtTime(0.85,0);
+  g.gain.setValueAtTime(0.85,Math.max(0,dur-1.8));
+  g.gain.linearRampToValueAtTime(0.0001,dur);
+  src.connect(g); g.connect(oac.destination); src.start(0);
+  return oac.startRendering();
+}
+let previewSrc=null;
+async function startPreviewMusic(dur){
+  const mode=$('f_musicmode')?$('f_musicmode').value:'none';
+  try{
+    if(mode==='file'&&audioURL){audioEl=new Audio(audioURL);audioEl.currentTime=0;audioEl.volume=0.7;audioEl.play().catch(()=>{});return;}
+    if(mode==='auto'){
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      const buf=await synthMusic(Math.min(dur,120));
+      if(!playing)return;
+      previewSrc=audioCtx.createBufferSource();previewSrc.buffer=buf;
+      previewSrc.connect(audioCtx.destination);previewSrc.start();
+    }
+  }catch(e){}
+}
 function play(record){
   if(playing||recording)return;
   if(!photos.length){setStatus('Añade al menos una foto.');return;}
@@ -2470,7 +2607,7 @@ function play(record){
     else finish(record);
   };
   playing=true;$('btnPlay').disabled=true;$('btnRec').disabled=true;
-  if(audioURL){audioEl=new Audio(audioURL);audioEl.currentTime=0;audioEl.volume=0.7;audioEl.play().catch(()=>{});}
+  startPreviewMusic(data.total);
   raf=requestAnimationFrame(loop);
   return data;
 }
@@ -2501,24 +2638,13 @@ async function pickMp4Codec(w,hh,br){
   return null;
 }
 async function prepareAudio(dur){
-  if(!window.AudioEncoder||!audioURL)return null;
+  if(!window.AudioEncoder)return null;
   try{
     const sup=await AudioEncoder.isConfigSupported({codec:'mp4a.40.2',sampleRate:48000,numberOfChannels:2,bitrate:192000});
     if(!sup.supported)return null;
-    const ab=await (await fetch(audioURL)).arrayBuffer();
-    const AC=window.AudioContext||window.webkitAudioContext;
-    const tmp=new AC({sampleRate:48000});
-    const dec=await tmp.decodeAudioData(ab); tmp.close();
-    const rate=48000;
-    const oac=new OfflineAudioContext(2,Math.ceil(dur*rate),rate);
-    const src=oac.createBufferSource(); src.buffer=dec; src.loop=true;
-    const g=oac.createGain();
-    g.gain.setValueAtTime(0.85,0);
-    g.gain.setValueAtTime(0.85,Math.max(0,dur-1.8));
-    g.gain.linearRampToValueAtTime(0.0001,dur);
-    src.connect(g); g.connect(oac.destination); src.start(0);
-    const buf=await oac.startRendering();
-    return {rate,L:buf.getChannelData(0),R:buf.getChannelData(1),len:buf.length};
+    const buf=await getMusicBuffer(dur);
+    if(!buf)return null;
+    return {rate:48000,L:buf.getChannelData(0),R:buf.getChannelData(1),len:buf.length};
   }catch(e){return null;}
 }
 async function exportMp4(data){
@@ -2576,27 +2702,38 @@ async function exportMp4(data){
   a.click();
   setStatus(`✅ MP4 descargado (${(blob.size/1048576).toFixed(1)} MB · ${data.total.toFixed(0)} s · ${sel.name==='avc'?'H.264':'VP9'}${audio?' + música':''}). Listo para WhatsApp, Reels, TikTok e Idealista.`);
 }
-function recordRealtime(data){
-  return new Promise((resolve,reject)=>{
-    const mime=pickMime();
-    const stream=cv.captureStream(30);
-    if(audioURL){
-      try{
-        audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+async function recordRealtime(data){
+  const mime=pickMime();
+  const stream=cv.captureStream(30);
+  let stopMusic=()=>{};
+  const mmode=$('f_musicmode')?$('f_musicmode').value:'none';
+  if(mmode!=='none'){
+    try{
+      audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+      const dest=audioCtx.createMediaStreamDestination();
+      if(mmode==='file'&&audioURL){
         audioEl=new Audio(audioURL);audioEl.crossOrigin='anonymous';audioEl.volume=0.8;
         const src=audioCtx.createMediaElementSource(audioEl);
-        const dest=audioCtx.createMediaStreamDestination();
         src.connect(dest);src.connect(audioCtx.destination);
-        dest.stream.getAudioTracks().forEach(tr=>stream.addTrack(tr));
-      }catch(e){}
-    }
+        audioEl.currentTime=0;audioEl.play().catch(()=>{});
+        stopMusic=()=>stopAudio();
+      }else if(mmode==='auto'){
+        const buf=await synthMusic(data.total);
+        const s=audioCtx.createBufferSource();s.buffer=buf;
+        s.connect(dest);s.connect(audioCtx.destination);s.start();
+        stopMusic=()=>{try{s.stop()}catch(e){}};
+      }
+      dest.stream.getAudioTracks().forEach(tr=>stream.addTrack(tr));
+    }catch(e){}
+  }
+  return new Promise((resolve,reject)=>{
     let rec;
     try{rec=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:16_000_000,audioBitsPerSecond:192_000}:undefined);}
     catch(e){return reject(new Error('Tu navegador no permite grabar. Prueba con Chrome.'));}
     const chunks=[];
     rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
     rec.onstop=()=>{
-      stopAudio();
+      stopMusic();stopAudio();
       const ext=(mime.includes('mp4'))?'mp4':'webm';
       const blob=new Blob(chunks,{type:mime||'video/webm'});
       if(blob.size<1000)return reject(new Error('La grabación salió vacía. Recarga la página y prueba con Chrome de escritorio.'));
@@ -2609,7 +2746,6 @@ function recordRealtime(data){
     };
     setStatus('⏺ Grabando… no cambies de pestaña',true);
     const t0=performance.now();
-    if(audioEl){audioEl.currentTime=0;audioEl.play().catch(()=>{});}
     rec.start(250);
     const loop=()=>{
       const t=(performance.now()-t0)/1000;
@@ -2635,6 +2771,73 @@ $('btnRec').onclick=async()=>{
   }
   recording=false;$('btnPlay').disabled=false;$('btnRec').disabled=false;
   draw(0.01);
+};
+
+/* ---------- generador de textos del anuncio ---------- */
+function genTexts(){
+  const isRent=$('f_op').value==='alquiler';
+  const price=val('f_price')?fmtNum(val('f_price'))+(isRent?' €/mes':' €'):'';
+  const zone=val('f_zone'),m2=val('f_m2'),rooms=val('f_rooms'),baths=val('f_baths'),
+        floor=val('f_floor'),lift=val('f_lift'),extra=val('f_extra');
+  const hls=val('f_highlights').split(';').map(s=>s.trim()).filter(Boolean);
+  const note=val('f_note'),phone=val('f_phone'),web=val('f_web'),
+        agency=val('f_agency'),title=val('f_title'),hook=val('f_hook');
+  const featList=[
+    m2?m2+' m²':'',
+    rooms?rooms+(rooms==='1'?' dormitorio':' dormitorios'):'',
+    baths?baths+(baths==='1'?' baño completo':' baños'):'',
+    floor?floor+' planta'+(lift==='Sí'?' con ascensor':''):'',
+    (!floor&&lift==='Sí')?'ascensor':'',
+    extra
+  ].filter(Boolean);
+  const op=isRent?'Se alquila':'Se vende';
+
+  const portal=
+    title.toUpperCase()+(price?' — '+price:'')+'\n\n'+
+    op+' '+(hook?hook.charAt(0).toUpperCase()+hook.slice(1).toLowerCase()+'. ':'')+
+    (zone?'Ubicación inmejorable en '+zone+', con todo tipo de servicios, comercio y ocio a un paso.':'')+'\n\n'+
+    'La vivienda cuenta con '+(featList.join(', ')||'una distribución muy aprovechada')+'.'+
+    (hls.length?'\n\nPuntos fuertes:\n'+hls.map(h=>'• '+h).join('\n'):'')+
+    (note?'\n\n'+note+'.':'')+'\n\n'+
+    agency+(phone?' · '+phone:'')+(web?' · '+web:'')+' — Contacta y reserva tu visita.';
+
+  const tags=isRent?'#alquiler #pisoenalquiler #alquileroviedo':'#venta #pisoenventa #ventaoviedo';
+  const insta=
+    '✨ '+(hook||title)+' ✨\n\n'+
+    '🏠 '+title+'\n'+
+    (zone?'📍 '+zone+'\n':'')+
+    (m2?'📐 '+m2+' m²\n':'')+
+    (rooms?'🛏 '+rooms+(rooms==='1'?' dormitorio':' dormitorios')+'\n':'')+
+    (baths?'🛁 '+baths+(baths==='1'?' baño':' baños')+'\n':'')+
+    (price?'💶 '+price+'\n':'')+
+    hls.map(h=>'✅ '+h).join('\n')+'\n\n'+
+    '📲 Escríbenos o llama al '+(phone||'nuestro teléfono')+' y ven a verlo.\n'+
+    (note?'ℹ️ '+note+'.\n':'')+'\n'+
+    '#oviedo #asturias #inmobiliaria #hogar #realestate '+tags+' #idealista #pisosoviedo';
+
+  const wa=
+    '🔑 '+title+' · '+(price||'consultar precio')+'\n'+
+    '📍 '+zone+(featList.length?' · '+featList.join(' · '):'')+'\n'+
+    hls.slice(0,3).map(h=>'✅ '+h).join('\n')+'\n'+
+    '¿Te encaja? Escríbeme y te lo enseño 👉 '+(phone||'')+' · '+agency;
+
+  return '━━━ 📋 PORTAL (Idealista / Fotocasa) ━━━\n\n'+portal+
+         '\n\n\n━━━ 📸 INSTAGRAM / TIKTOK ━━━\n\n'+insta+
+         '\n\n\n━━━ 💬 WHATSAPP / ESTADO ━━━\n\n'+wa;
+}
+$('f_theme').onchange=e=>setTheme(e.target.value);
+$('f_musicmode').onchange=e=>{$('wrap_musicfile').style.display=e.target.value==='file'?'':'none';};
+$('btnTexts').onclick=()=>{
+  const ta=$('adTexts');ta.value=genTexts();
+  ta.style.display='block';$('btnCopy').style.display='block';
+  ta.style.height='auto';ta.style.height=Math.min(560,ta.scrollHeight+8)+'px';
+};
+$('btnCopy').onclick=async()=>{
+  const ta=$('adTexts');
+  try{await navigator.clipboard.writeText(ta.value);}
+  catch(e){ta.select();document.execCommand('copy');}
+  $('btnCopy').textContent='✅ Copiado';
+  setTimeout(()=>$('btnCopy').textContent='📋 Copiar todo',1600);
 };
 </script>
 </body>
