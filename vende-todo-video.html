@@ -55,6 +55,10 @@
   .mini{background:var(--panel);border:1px solid var(--border);color:var(--fg);border-radius:7px;width:30px;height:24px;cursor:pointer;font-size:13px;line-height:1}
   .mini:hover{border-color:var(--gold)}
   .mini.del{color:var(--danger)}
+  .mini.star{color:#8a8a94;font-size:15px}
+  .mini.star.on{color:var(--gold);border-color:var(--gold)}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 0 rgba(216,177,99,0)}50%{box-shadow:0 0 26px rgba(216,177,99,.5)}}
+  .btn-dl{display:block;width:100%;margin-top:12px;padding:16px;font-size:16px;letter-spacing:.6px;text-align:center;text-decoration:none;animation:glowPulse 2.2s ease-in-out infinite}
   .stagewrap{position:sticky;top:16px}
   .stage{position:relative;background:#000;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;justify-content:center}
   canvas{display:block;width:100%;height:auto;background:#000}
@@ -225,16 +229,14 @@
         <div class="status" id="status">Añade fotos para empezar.</div>
         <div id="result">
           <video id="outVideo" controls playsinline preload="metadata"></video>
+          <a class="btn btn-gold btn-dl" id="dlLink" href="#">⬇ DESCARGAR VÍDEO</a>
           <div class="actions">
-            <a class="btn btn-gold" id="dlLink" href="#" style="text-align:center;text-decoration:none">⬇ Guardar en mi equipo</a>
-            <button class="btn btn-ghost" id="shareBtn" style="display:none">📲 WhatsApp / Compartir</button>
+            <button class="btn btn-ghost" id="shareBtn" style="display:none;flex:1">📲 WhatsApp / Compartir</button>
           </div>
           <div class="hint">¿No se descarga con el botón? <b>Mantén pulsado el vídeo</b> (móvil) o <b>clic derecho → «Guardar vídeo como…»</b> (PC) — eso funciona siempre. En el móvil, «Compartir» lo manda directo a WhatsApp.</div>
           <div id="result2" style="display:none">
             <video id="outVideo2" controls playsinline preload="metadata"></video>
-            <div class="actions">
-              <a class="btn btn-gold" id="dlLink2" href="#" style="text-align:center;text-decoration:none">⬇ Guardar versión cuadrada 1:1</a>
-            </div>
+            <a class="btn btn-gold btn-dl" id="dlLink2" href="#">⬇ DESCARGAR CUADRADO 1:1</a>
           </div>
         </div>
         <div class="hint">
@@ -2199,15 +2201,20 @@ function renderThumbs(){
   const box=$('thumbs'); box.innerHTML='';
   photos.forEach((p,i)=>{
     const row=document.createElement('div'); row.className='thumb';
+    const hasCover=photos.some(q=>q.cover);
+    const isCover=p.cover||(!hasCover&&i===0);
     row.innerHTML=`<img src="${p.url}">
       <div class="cap">
         <input type="text" list="caps" placeholder="Rótulo (opcional)" value="${p.caption.replace(/"/g,'&quot;')}">
       </div>
+      <button class="mini star${isCover?' on':''}" title="Usar como PORTADA del vídeo">${isCover?'★':'☆'}</button>
       <div class="ord">
         <button class="mini" title="Subir">▲</button>
         <button class="mini" title="Bajar">▼</button>
       </div>
       <button class="mini del" title="Eliminar">✕</button>`;
+    if(isCover)row.style.borderColor='var(--gold)';
+    row.querySelector('.star').onclick=()=>{photos.forEach(q=>q.cover=false);p.cover=true;renderThumbs();draw(previewT());};
     const [capInput]=row.querySelectorAll('input');
     capInput.oninput=e=>{p.caption=e.target.value};
     const [up,down]=row.querySelectorAll('.ord .mini');
@@ -2447,20 +2454,33 @@ function drawSeg(seg,p){
     return;
   }
 
-  cardBg();
+  const cover=(seg.type==='hook'||seg.type==='intro')?(photos.find(q=>q.cover)||photos[0]):null;
+  if(cover&&cover.img.complete&&cover.img.naturalWidth){
+    drawCover(cover.img,1.03+(seg.type==='hook'?0.04*easeInOut(p):0.02*easeInOut(p)),0,0);
+    const ov=ctx.createLinearGradient(0,0,0,H);
+    ov.addColorStop(0,'rgba(6,6,9,.72)');ov.addColorStop(.5,'rgba(6,6,9,.55)');ov.addColorStop(1,'rgba(6,6,9,.80)');
+    ctx.fillStyle=ov;ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle=T.frame;ctx.lineWidth=3;
+    ctx.strokeRect(W*0.055,H*0.055,W*0.89,H*0.89);
+  }else cardBg();
+  const TXT=cover?'#ffffff':T.txt;
+  const SUB=cover?'rgba(255,255,255,.78)':T.sub;
+  const LGOLD=(T===THEMES.moderno)?'#8fe3da':GOLDS;
+  const ACC=cover?LGOLD:GOLD;
+  const ACCP=cover?LGOLD:GOLDS;
   ctx.textAlign='center';
   const isRent=$('f_op').value==='alquiler';
 
   if(seg.type==='hook'){
     const rev=easeOut(p*1.5);
     ctx.save();ctx.globalAlpha=rev;
-    ctx.fillStyle=GOLD;ctx.font=`700 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
+    ctx.fillStyle=ACC;ctx.font=`700 ${Math.round(W*0.03)}px 'Segoe UI',sans-serif`;
     ctx.fillText(((isRent?'EN ALQUILER':'EN VENTA')+'  ·  '+val('f_zone')).toUpperCase(),W/2,H*0.34);
-    ctx.fillStyle=T.txt;
+    ctx.fillStyle=TXT;
     const sz=Math.round(W*0.085);ctx.font=`900 ${sz}px 'Segoe UI',sans-serif`;
     const lines=wrap(val('f_hook'),W*0.80), startY=H*0.5-(lines.length-1)*sz*0.6;
     lines.forEach((l,i)=>{ctx.save();ctx.globalAlpha=easeOut((p-0.1-i*0.08)*2.2);ctx.fillText(l,W/2,startY+i*sz*1.12);ctx.restore();});
-    ctx.strokeStyle=GOLD;ctx.lineWidth=5;const lw=W*0.16*rev;
+    ctx.strokeStyle=ACC;ctx.lineWidth=5;const lw=W*0.16*rev;
     ctx.beginPath();ctx.moveTo(W/2-lw,H*0.6);ctx.lineTo(W/2+lw,H*0.6);ctx.stroke();
     ctx.restore();
     return;
@@ -2470,7 +2490,7 @@ function drawSeg(seg,p){
     ctx.save();ctx.globalAlpha=easeOut(p*3);
     if(logoImg&&logoImg.naturalWidth){const lh=H*0.05,lw=lh*logoImg.naturalWidth/logoImg.naturalHeight;ctx.drawImage(logoImg,W/2-lw/2,H*0.185,lw,lh);}
     else drawKeyBuildingMark(W/2,H*0.208,H*0.05,GOLD);
-    ctx.fillStyle=GOLD;ctx.font=`700 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;
+    ctx.fillStyle=ACC;ctx.font=`700 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;
     ctx.fillText(val('f_agency').toUpperCase(),W/2,H*0.28);ctx.restore();
     const ps=easeOut((p-0.08)*3);
     if(ps>0){
@@ -2481,17 +2501,17 @@ function drawSeg(seg,p){
       ctx.fillText(isRent?'EN ALQUILER':'EN VENTA',W/2,py+ph*0.68);ctx.restore();
     }
     ctx.save();ctx.globalAlpha=easeOut((p-0.18)*3);
-    ctx.fillStyle=T.txt;const sz=Math.round(W*0.062);ctx.font=`800 ${sz}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
+    ctx.fillStyle=TXT;const sz=Math.round(W*0.062);ctx.font=`800 ${sz}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
     wrap(val('f_title'),W*0.82).forEach((l,i)=>ctx.fillText(l,W/2,H*0.45+i*sz*1.12));ctx.restore();
     const price=val('f_price');
     if(price){
       const suf=isRent?' €/mes':' €', target=parseInt(price.replace(/[^\d]/g,''))||0;
       const cur=Math.round(target*easeOut(p*1.5));
-      ctx.fillStyle=GOLDS;ctx.font=`900 ${Math.round(W*0.092)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
+      ctx.fillStyle=ACCP;ctx.font=`900 ${Math.round(W*0.092)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
       ctx.fillText((target?fmtNum(String(cur)):price)+suf,W/2,H*0.67);
     }
     ctx.save();ctx.globalAlpha=easeOut((p-0.5)*3);
-    ctx.fillStyle=T.sub;ctx.font=`600 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
+    ctx.fillStyle=SUB;ctx.font=`600 ${Math.round(W*0.032)}px 'Segoe UI',sans-serif`;ctx.textAlign='center';
     ctx.fillText(val('f_zone'),W/2,H*0.73);ctx.restore();
     return;
   }
@@ -2937,14 +2957,21 @@ function deliverVideo(blob,ext,msg,opts){
   const suffix=opts.suffix||'';
   const url=URL.createObjectURL(blob);
   try{const a=document.createElement('a');a.href=url;a.download=videoFileName(ext,suffix);a.click();}catch(e){}
+  const mb=(blob.size/1048576).toFixed(1);
   if(opts.slot===2){
     const v2=$('outVideo2'); v2.src=url; v2.load();
     const dl2=$('dlLink2'); dl2.href=url; dl2.setAttribute('download',videoFileName(ext,suffix));
+    const lbl2='⬇ DESCARGAR CUADRADO 1:1 · '+mb+' MB · '+ext.toUpperCase();
+    dl2.textContent=lbl2;
+    dl2.onclick=()=>{dl2.textContent='✅ Guardado — mira tu carpeta de Descargas';setTimeout(()=>{dl2.textContent=lbl2;},2600);};
     $('result2').style.display='block';
   }else{
     lastBlob=blob;lastExt=ext;lastSuffix=suffix;
     const v=$('outVideo'); v.src=url; v.load();
     const dl=$('dlLink'); dl.href=url; dl.setAttribute('download',videoFileName(ext,suffix));
+    const lbl='⬇ DESCARGAR VÍDEO · '+mb+' MB · '+ext.toUpperCase();
+    dl.textContent=lbl;
+    dl.onclick=()=>{dl.textContent='✅ Guardado — mira tu carpeta de Descargas';setTimeout(()=>{dl.textContent=lbl;},2600);};
     let canShare=false;
     try{canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],videoFileName(ext,suffix),{type:blob.type||'video/mp4'})]}));}catch(e){}
     $('shareBtn').style.display=canShare?'':'none';
