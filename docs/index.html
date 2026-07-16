@@ -2430,6 +2430,114 @@
   }
   .fx-processing svg { width:36px; height:36px; animation:spin 1s linear infinite; color:var(--cyan); }
 
+  /* ===== LimpiaFotos hero + CLARA ===== */
+  .fx-hero {
+    display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(108,92,231,0.25), transparent 55%),
+      radial-gradient(90% 90% at 0% 100%, rgba(34,211,238,0.18), transparent 60%),
+      linear-gradient(180deg, var(--card-2) 0%, var(--card) 100%);
+    border:1px solid var(--input-border); border-radius:20px;
+    padding:22px 24px; margin-bottom:20px;
+  }
+  .fx-hero-main { display:flex; align-items:center; gap:16px; flex:1; min-width:260px; }
+  .fx-hero .fx-badge { width:52px; height:52px; }
+  .fx-hero h1 { font-size:26px; font-weight:900; letter-spacing:-0.5px; line-height:1.1; }
+  body.theme-light .fx-hero h1 { color:#0b1224; }
+  .fx-hero p { font-size:14px; color:var(--muted); margin-top:5px; line-height:1.5; max-width:520px; }
+
+  .fx-clara-cta {
+    display:flex; align-items:center; gap:12px;
+    padding:14px 18px; border-radius:16px;
+    background:linear-gradient(135deg,#6c5ce7,#22d3ee);
+    color:#fff; border:none; cursor:pointer;
+    box-shadow:0 10px 30px rgba(108,92,231,0.4);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+    text-align:left;
+  }
+  .fx-clara-cta:hover { transform:translateY(-2px); box-shadow:0 14px 38px rgba(108,92,231,0.5); }
+  .fx-clara-cta .clara-face {
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(255,255,255,0.2); display:grid; place-items:center; flex-shrink:0;
+    animation:claraFloat 3s ease-in-out infinite;
+  }
+  @keyframes claraFloat { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-4px); } }
+  .fx-clara-cta .clara-face svg { width:26px; height:26px; }
+  .fx-clara-cta .clara-txt { font-size:15px; font-weight:800; line-height:1.2; }
+  .fx-clara-cta .clara-txt small { font-weight:500; font-size:11px; opacity:0.9; }
+  .fx-clara-cta .clara-arrow { width:18px; height:18px; flex-shrink:0; }
+
+  /* CLARA chat panel */
+  .clara-panel {
+    position:fixed; bottom:0; right:0; z-index:95;
+    width:min(400px, 100vw); height:min(600px, 100vh);
+    background:var(--card); border:1px solid var(--input-border);
+    border-radius:18px 18px 0 0;
+    display:flex; flex-direction:column;
+    box-shadow:0 -10px 50px rgba(0,0,0,0.4);
+    transform:translateY(105%); transition:transform 0.3s cubic-bezier(0.2,0.9,0.3,1);
+    margin:0 16px;
+  }
+  @media (max-width:520px){ .clara-panel { margin:0; width:100vw; height:88vh; border-radius:18px 18px 0 0; } }
+  .clara-panel.open { transform:translateY(0); }
+  .clara-head {
+    display:flex; align-items:center; gap:12px; padding:16px 18px;
+    background:linear-gradient(135deg,#6c5ce7,#22d3ee); color:#fff;
+    border-radius:18px 18px 0 0;
+  }
+  .clara-avatar {
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,0.22); display:grid; place-items:center; flex-shrink:0;
+    position:relative;
+  }
+  .clara-avatar svg { width:26px; height:26px; }
+  .clara-avatar::after {
+    content:''; position:absolute; bottom:1px; right:1px;
+    width:10px; height:10px; border-radius:50%; background:#22c55e; border:2px solid #fff;
+  }
+  .clara-head-info { flex:1; }
+  .clara-head-info strong { font-size:16px; font-weight:800; display:block; }
+  .clara-head-info span { font-size:11px; opacity:0.9; }
+  .clara-close { background:rgba(255,255,255,0.2); border:none; color:#fff; width:32px; height:32px; border-radius:50%; display:grid; place-items:center; cursor:pointer; }
+  .clara-close:hover { background:rgba(255,255,255,0.32); }
+  .clara-close svg { width:16px; height:16px; }
+
+  .clara-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .clara-msg { max-width:85%; padding:11px 14px; border-radius:14px; font-size:14px; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; }
+  .clara-msg.bot { align-self:flex-start; background:var(--card-2); color:var(--fg); border-bottom-left-radius:4px; }
+  body.theme-light .clara-msg.bot { color:#0b1224; }
+  .clara-msg.user { align-self:flex-end; background:linear-gradient(135deg,#6c5ce7,#5b4fd6); color:#fff; border-bottom-right-radius:4px; }
+  .clara-typing { align-self:flex-start; display:flex; gap:4px; padding:12px 16px; background:var(--card-2); border-radius:14px; }
+  .clara-typing span { width:7px; height:7px; border-radius:50%; background:var(--muted); animation:claraDot 1.2s infinite; }
+  .clara-typing span:nth-child(2){ animation-delay:0.2s; } .clara-typing span:nth-child(3){ animation-delay:0.4s; }
+  @keyframes claraDot { 0%,60%,100%{ opacity:0.3; transform:translateY(0); } 30%{ opacity:1; transform:translateY(-4px); } }
+
+  .clara-quick { padding:0 16px 8px; display:flex; gap:6px; flex-wrap:wrap; }
+  .clara-quick button {
+    padding:7px 11px; border-radius:999px; font-size:12px; font-weight:600;
+    background:var(--card-2); border:1px solid var(--input-border); color:var(--fg);
+    cursor:pointer; transition:all 0.15s ease;
+  }
+  .clara-quick button:hover { border-color:var(--cyan); background:var(--card-3); }
+
+  .clara-input-row { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--input-border); }
+  .clara-input-row input {
+    flex:1; padding:12px 14px; border-radius:12px;
+    background:var(--input); border:1px solid var(--input-border); color:var(--fg);
+    font-size:14px; outline:none; font-family:inherit;
+  }
+  .clara-input-row input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(34,211,238,0.15); }
+  .clara-send {
+    width:44px; height:44px; border-radius:12px; flex-shrink:0;
+    background:linear-gradient(135deg,#6c5ce7,#22d3ee); color:#fff; border:none; cursor:pointer;
+    display:grid; place-items:center;
+  }
+  .clara-send:hover { filter:brightness(1.08); }
+  .clara-send:disabled { opacity:0.5; cursor:not-allowed; }
+  .clara-send svg { width:20px; height:20px; }
+  .clara-nokey { padding:10px 16px; font-size:12px; color:var(--muted); text-align:center; border-top:1px solid var(--input-border); }
+  .clara-nokey a { color:var(--cyan); cursor:pointer; }
+
   /* ===== CRM Contactos ===== */
   .crm-header { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
   .crm-header h1 { font-size:26px; font-weight:900; letter-spacing:-0.4px; }
@@ -3973,14 +4081,23 @@
 
     <!-- ====== EDITOR DE FOTOS (100% en el navegador, sin servidor) ====== -->
     <section class="view" data-view-content="editor">
-      <div class="fx-header">
-        <div class="fx-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+      <div class="fx-hero">
+        <div class="fx-hero-main">
+          <div class="fx-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+          </div>
+          <div>
+            <h1>LimpiaFotos con IA</h1>
+            <p>Quita el fondo, borra texto o mejora la resolución de tus fotos en segundos — y descárgalas directas a tu ordenador o móvil.</p>
+          </div>
         </div>
-        <div>
-          <h1>Editor de Fotos</h1>
-          <p>Quita fondo, borra texto, mejora resolución y ajusta — todo en tu navegador, sin subir nada a ningún servidor.</p>
-        </div>
+        <button class="fx-clara-cta" id="claraOpenBtn">
+          <span class="clara-face">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/><circle cx="9" cy="8" r="0.6" fill="currentColor"/><circle cx="15" cy="8" r="0.6" fill="currentColor"/></svg>
+        </span>
+          <span class="clara-txt">💬 Habla con CLARA<br><small>tu asistente IA avatar</small></span>
+          <svg class="clara-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
       </div>
 
       <div class="fx-layout">
@@ -4653,6 +4770,38 @@
         <li>Pulsa <strong>Añadir</strong> arriba a la derecha</li>
       </ol>
       <button class="topbar-btn" onclick="document.getElementById('iosInstallModal').classList.remove('open')" style="margin-top:8px; width:100%; padding:12px;">Entendido</button>
+    </div>
+  </div>
+
+  <!-- ===== CLARA — Asistente IA ===== -->
+  <div class="clara-panel" id="claraPanel" role="dialog" aria-label="CLARA asistente">
+    <div class="clara-head">
+      <div class="clara-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/><circle cx="9.5" cy="8" r="0.6" fill="currentColor"/><circle cx="14.5" cy="8" r="0.6" fill="currentColor"/></svg>
+      </div>
+      <div class="clara-head-info">
+        <strong>CLARA</strong>
+        <span>Tu asistente IA · en línea</span>
+      </div>
+      <button class="clara-close" id="claraClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="clara-messages" id="claraMessages"></div>
+    <div class="clara-quick" id="claraQuick">
+      <button data-q="¿Cómo quito el fondo de una foto?">Quitar fondo</button>
+      <button data-q="Dame ideas para captar clientes de inmobiliaria">Captar clientes</button>
+      <button data-q="Escríbeme un mensaje de WhatsApp para un lead frío">Mensaje WhatsApp</button>
+      <button data-q="¿Qué hago hoy para vender más?">¿Qué hago hoy?</button>
+    </div>
+    <div class="clara-input-row">
+      <input id="claraInput" type="text" placeholder="Escribe a CLARA…" autocomplete="off">
+      <button class="clara-send" id="claraSend" aria-label="Enviar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="clara-nokey" id="claraNoKey" style="display:none;">
+      Para respuestas reales conecta una IA en <a onclick="switchView('ajustes');document.getElementById('claraPanel').classList.remove('open');">Ajustes → Claves API</a>. Mientras, CLARA te guía con respuestas básicas.
     </div>
   </div>
 
@@ -7373,7 +7522,104 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
 
   // Command palette entry para el editor
   COMMANDS.push(
-    { id: 'go-editor', section: 'Navegación', title: 'Ir a Editor de Fotos', sub: 'Quitar fondo, texto, mejorar resolución', action: () => switchView('editor') }
+    { id: 'go-editor', section: 'Navegación', title: 'Ir a LimpiaFotos con IA', sub: 'Quitar fondo, texto, mejorar resolución', action: () => switchView('editor') }
+  );
+
+  // =====================================================================
+  // ============ CLARA — Asistente IA (chat) ============================
+  // =====================================================================
+  (function(){
+    var panel = document.getElementById('claraPanel');
+    if (!panel) return;
+    var msgsEl = document.getElementById('claraMessages');
+    var inputEl = document.getElementById('claraInput');
+    var sendBtn = document.getElementById('claraSend');
+    var history = [];   // {role, content}
+    var opened = false;
+
+    var SYSTEM = 'Eres CLARA, la asistente IA de "Ayuda de Negocios JPMR", la app personal de Pau. '+
+      'Ayudas con: edición de fotos (quitar fondo, borrar texto, mejorar resolución en la sección LimpiaFotos), '+
+      'captación de clientes, marketing, ventas, mensajes de WhatsApp, y organización del día. '+
+      'Responde SIEMPRE en español de España, con tono cercano y práctico, respuestas breves y accionables. '+
+      'Si te preguntan cómo usar la app, guía paso a paso. No inventes datos del usuario.';
+
+    function addMsg(role, text){
+      var el = document.createElement('div');
+      el.className = 'clara-msg ' + (role==='user'?'user':'bot');
+      el.textContent = text;
+      msgsEl.appendChild(el);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+      return el;
+    }
+    function showTyping(){
+      var t = document.createElement('div');
+      t.className = 'clara-typing'; t.id = 'claraTyping';
+      t.innerHTML = '<span></span><span></span><span></span>';
+      msgsEl.appendChild(t); msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+    function hideTyping(){ var t=document.getElementById('claraTyping'); if(t) t.remove(); }
+
+    // Respuestas de reserva sin clave IA (por palabra clave)
+    function fallbackReply(q){
+      var s = q.toLowerCase();
+      if (/fondo/.test(s)) return 'Para quitar el fondo:\n1. Entra en LimpiaFotos con IA.\n2. Sube tu foto.\n3. Pulsa "Quitar fondo" y ajusta la sensibilidad.\n4. Pulsa "Aplicar" y descarga en PNG (mantiene la transparencia). ✅';
+      if (/texto/.test(s)) return 'Para borrar texto:\n1. Sube la foto en LimpiaFotos.\n2. Pulsa "Quitar texto (pincel)".\n3. Pinta encima del texto.\n4. Pulsa "Borrar zonas pintadas". Rellena copiando los píxeles de alrededor. ✍️';
+      if (/resoluci|calidad|nitid/.test(s)) return 'Para mejorar resolución:\n1. Sube la foto.\n2. Pulsa "Mejorar resolución 2×".\nTe duplica el tamaño y aplica enfoque. También tienes el deslizador de "Nitidez" en Ajustes. 🔍';
+      if (/whatsapp|mensaje|lead/.test(s)) return 'Ejemplo de mensaje para un lead frío:\n\n"Hola [nombre] 👋 Te escribo de [tu marca]. Vi que te interesó [tema]. ¿Te viene bien que te mande info sin compromiso? Cuéntame y te ayudo enseguida."\n\n💡 Conecta una IA en Ajustes y te lo personalizo al 100%.';
+      if (/hoy|vender|clientes|captar/.test(s)) return 'Plan rápido para vender más hoy:\n1. Revisa Contactos (CRM) y escribe a los que están en rojo (+7 días).\n2. Genera un flyer nuevo en Creador de contenido.\n3. Publica una foto limpia con LimpiaFotos.\n4. Registra cada ingreso en el panel HOY para ver tu meta. 🚀';
+      return 'Estoy para ayudarte con fotos, captación de clientes, WhatsApp y organización.\n\n💡 Conecta tu IA (Claude, Gemini, Abacus u OpenAI) en Ajustes → Claves API y te doy respuestas completas y personalizadas.';
+    }
+
+    async function send(text){
+      text = (text||inputEl.value).trim();
+      if (!text) return;
+      inputEl.value=''; sendBtn.disabled=true;
+      addMsg('user', text);
+      history.push({ role:'user', content:text });
+      showTyping();
+
+      if (typeof hasAIKey==='function' && hasAIKey()){
+        // construye prompt con contexto de conversación
+        var convo = history.slice(-8).map(function(m){ return (m.role==='user'?'Usuario: ':'CLARA: ')+m.content; }).join('\n');
+        var r = await callAI(convo + '\n\nCLARA:', SYSTEM);
+        hideTyping();
+        if (r){ addMsg('bot', r.text); history.push({ role:'assistant', content:r.text }); }
+        else { var fb=fallbackReply(text); addMsg('bot', fb); history.push({role:'assistant',content:fb}); }
+      } else {
+        setTimeout(function(){
+          hideTyping();
+          var fb = fallbackReply(text);
+          addMsg('bot', fb); history.push({ role:'assistant', content:fb });
+        }, 500);
+      }
+      sendBtn.disabled=false; inputEl.focus();
+    }
+
+    function openClara(){
+      panel.classList.add('open'); opened=true;
+      document.getElementById('claraNoKey').style.display = (typeof hasAIKey==='function' && hasAIKey()) ? 'none':'block';
+      if (msgsEl.children.length===0){
+        addMsg('bot', '¡Hola! Soy CLARA 👋 Tu asistente para limpiar fotos, captar clientes y organizar tu día. ¿En qué te ayudo?');
+      }
+      setTimeout(function(){ inputEl.focus(); }, 300);
+    }
+    function closeClara(){ panel.classList.remove('open'); }
+
+    document.getElementById('claraOpenBtn')?.addEventListener('click', openClara);
+    document.getElementById('claraClose')?.addEventListener('click', closeClara);
+    sendBtn.addEventListener('click', function(){ send(); });
+    inputEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
+    document.getElementById('claraQuick').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-q]'); if(b) send(b.dataset.q);
+    });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && opened) closeClara(); });
+
+    // expón para command palette
+    window.openClara = openClara;
+  })();
+
+  COMMANDS.push(
+    { id:'clara-open', section:'IA', title:'Hablar con CLARA', sub:'Tu asistente IA', action:()=>{ if(window.openClara) window.openClara(); } }
   );
 
   // =====================================================================
