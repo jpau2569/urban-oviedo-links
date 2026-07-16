@@ -2502,6 +2502,26 @@
   .clara-close:hover { background:rgba(255,255,255,0.32); }
   .clara-close svg { width:16px; height:16px; }
 
+  .clara-modes {
+    display:flex; gap:6px; padding:10px 12px; overflow-x:auto;
+    border-bottom:1px solid var(--input-border);
+    scrollbar-width:thin;
+  }
+  .clara-modes::-webkit-scrollbar { height:4px; }
+  .clara-modes::-webkit-scrollbar-thumb { background:var(--input-border); border-radius:4px; }
+  .clara-mode {
+    flex-shrink:0; padding:8px 12px; border-radius:999px;
+    background:var(--card-2); border:1px solid var(--input-border); color:var(--fg);
+    font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:5px;
+    transition:all 0.15s ease;
+  }
+  .clara-mode span { font-size:14px; }
+  .clara-mode:hover { border-color:#6c5ce7; }
+  .clara-mode.active {
+    background:linear-gradient(135deg,#6c5ce7,#8b5cf6); color:#fff; border-color:transparent;
+    box-shadow:0 4px 12px rgba(108,92,231,0.35);
+  }
   .clara-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
   .clara-msg { max-width:85%; padding:11px 14px; border-radius:14px; font-size:14px; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; }
   .clara-msg.bot { align-self:flex-start; background:var(--card-2); color:var(--fg); border-bottom-left-radius:4px; }
@@ -4773,27 +4793,29 @@
     </div>
   </div>
 
-  <!-- ===== CLARA — Asistente IA ===== -->
+  <!-- ===== CLARA — Asistente IA multi-modo ===== -->
   <div class="clara-panel" id="claraPanel" role="dialog" aria-label="CLARA asistente">
     <div class="clara-head">
       <div class="clara-avatar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/><circle cx="9.5" cy="8" r="0.6" fill="currentColor"/><circle cx="14.5" cy="8" r="0.6" fill="currentColor"/></svg>
       </div>
       <div class="clara-head-info">
-        <strong>CLARA</strong>
-        <span>Tu asistente IA · en línea</span>
+        <strong>💬 CLARA IA</strong>
+        <span id="claraModeLabel">Asesora · Profesora · Psicóloga · Ingeniera · Investigadora</span>
       </div>
       <button class="clara-close" id="claraClose" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="clara-messages" id="claraMessages"></div>
-    <div class="clara-quick" id="claraQuick">
-      <button data-q="¿Cómo quito el fondo de una foto?">Quitar fondo</button>
-      <button data-q="Dame ideas para captar clientes de inmobiliaria">Captar clientes</button>
-      <button data-q="Escríbeme un mensaje de WhatsApp para un lead frío">Mensaje WhatsApp</button>
-      <button data-q="¿Qué hago hoy para vender más?">¿Qué hago hoy?</button>
+    <div class="clara-modes" id="claraModes">
+      <button class="clara-mode" data-mode="trabajo"><span>💼</span> Trabajo y empleo</button>
+      <button class="clara-mode" data-mode="estudios"><span>📚</span> Estudios y profesor</button>
+      <button class="clara-mode" data-mode="psicologa"><span>🌱</span> Psicóloga y crecimiento</button>
+      <button class="clara-mode" data-mode="software"><span>💻</span> Ingeniera de software</button>
+      <button class="clara-mode" data-mode="noticias"><span>📰</span> Noticias e investigación</button>
     </div>
+    <div class="clara-messages" id="claraMessages"></div>
+    <div class="clara-quick" id="claraQuick"></div>
     <div class="clara-input-row">
       <input id="claraInput" type="text" placeholder="Escribe a CLARA…" autocomplete="off">
       <button class="clara-send" id="claraSend" aria-label="Enviar">
@@ -7534,63 +7556,109 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
     var msgsEl = document.getElementById('claraMessages');
     var inputEl = document.getElementById('claraInput');
     var sendBtn = document.getElementById('claraSend');
-    var history = [];   // {role, content}
+    var quickEl = document.getElementById('claraQuick');
     var opened = false;
+    var currentMode = null;
+    var history = [];   // {role, content}
 
-    var SYSTEM = 'Eres CLARA, la asistente IA de "Ayuda de Negocios JPMR", la app personal de Pau. '+
-      'Ayudas con: edición de fotos (quitar fondo, borrar texto, mejorar resolución en la sección LimpiaFotos), '+
-      'captación de clientes, marketing, ventas, mensajes de WhatsApp, y organización del día. '+
-      'Responde SIEMPRE en español de España, con tono cercano y práctico, respuestas breves y accionables. '+
-      'Si te preguntan cómo usar la app, guía paso a paso. No inventes datos del usuario.';
+    var BASE = 'Eres CLARA, la asistente IA avatar de Pau, dentro de la app "Ayuda de Negocios JPMR". '+
+      'Responde SIEMPRE en español de España, con tono cercano, cálido y práctico. Respuestas claras y accionables. '+
+      'Usas algún emoji con naturalidad (💜 es tu firma). No inventes datos personales del usuario. '+
+      'Además de tu especialidad, conoces la app: LimpiaFotos (quitar fondo/texto, mejorar resolución), '+
+      'Creador de flyers, CRM de contactos, panel HOY con metas e ingresos.';
+
+    var MODES = {
+      trabajo: {
+        icon:'💼', label:'Trabajo y empleo',
+        head:'Asesora laboral y de empleo',
+        system:BASE+' MODO ACTUAL: Asesora laboral y de empleo. Ayudas con CV, cartas de presentación, '+
+          'preparación de entrevistas, derechos laborales en España, nóminas, contratos, búsqueda de empleo, '+
+          'LinkedIn, negociación salarial y montar un negocio propio.',
+        quicks:['Mejora mi CV','Prepárame una entrevista','¿Qué derechos tengo si me despiden?','Ideas de negocio para empezar']
+      },
+      estudios: {
+        icon:'📚', label:'Estudios y profesor',
+        head:'Profesora particular',
+        system:BASE+' MODO ACTUAL: Profesora particular. Explicas cualquier materia paso a paso y con ejemplos, '+
+          'creas resúmenes, esquemas, técnicas de estudio, planes de repaso y ejercicios. Adaptas el nivel.',
+        quicks:['Explícame un tema difícil','Hazme un resumen','Técnicas para memorizar','Plan de estudio semanal']
+      },
+      psicologa: {
+        icon:'🌱', label:'Psicóloga y crecimiento',
+        head:'Acompañamiento y crecimiento personal',
+        system:BASE+' MODO ACTUAL: Acompañamiento emocional y crecimiento personal (no eres médica ni das '+
+          'diagnósticos clínicos). Escuchas con empatía, ayudas con gestión del estrés, motivación, hábitos, '+
+          'autoestima y organización mental. Si detectas una crisis grave, recomiendas ayuda profesional o el 024 (España).',
+        quicks:['Estoy agobiado, ayúdame','Cómo crear un buen hábito','Ejercicio para relajarme','Recuperar la motivación']
+      },
+      software: {
+        icon:'💻', label:'Ingeniera de software',
+        head:'Ingeniera de software',
+        system:BASE+' MODO ACTUAL: Ingeniera de software senior. Ayudas con código (JS, Python, HTML/CSS, etc.), '+
+          'depuración, arquitectura, APIs, automatizaciones, y explicas conceptos técnicos claro. Das ejemplos de código.',
+        quicks:['Explícame un error','Escríbeme una función','¿Cómo automatizo esto?','Revisa mi código']
+      },
+      noticias: {
+        icon:'📰', label:'Noticias e investigación',
+        head:'Investigadora y analista',
+        system:BASE+' MODO ACTUAL: Investigadora y analista. Ayudas a investigar temas, resumir, comparar fuentes, '+
+          'estructurar información y sacar conclusiones. Aclaras que no navegas en tiempo real: trabajas con lo que sabes '+
+          'y con lo que el usuario te aporte. Sé rigurosa y señala incertidumbre.',
+        quicks:['Investiga un tema','Resume esto que te pego','Pros y contras de…','Explícame cómo funciona…']
+      }
+    };
 
     function addMsg(role, text){
       var el = document.createElement('div');
       el.className = 'clara-msg ' + (role==='user'?'user':'bot');
       el.textContent = text;
-      msgsEl.appendChild(el);
-      msgsEl.scrollTop = msgsEl.scrollHeight;
+      msgsEl.appendChild(el); msgsEl.scrollTop = msgsEl.scrollHeight;
       return el;
     }
     function showTyping(){
-      var t = document.createElement('div');
-      t.className = 'clara-typing'; t.id = 'claraTyping';
-      t.innerHTML = '<span></span><span></span><span></span>';
-      msgsEl.appendChild(t); msgsEl.scrollTop = msgsEl.scrollHeight;
+      var t=document.createElement('div'); t.className='clara-typing'; t.id='claraTyping';
+      t.innerHTML='<span></span><span></span><span></span>';
+      msgsEl.appendChild(t); msgsEl.scrollTop=msgsEl.scrollHeight;
     }
     function hideTyping(){ var t=document.getElementById('claraTyping'); if(t) t.remove(); }
 
-    // Respuestas de reserva sin clave IA (por palabra clave)
+    function renderQuicks(){
+      var qs = currentMode ? MODES[currentMode].quicks : ['💼 Trabajo','📚 Estudios','🌱 Crecimiento','💻 Software','📰 Investigación'];
+      if (!currentMode){ quickEl.innerHTML=''; return; }
+      quickEl.innerHTML = qs.map(function(q){ return '<button data-q="'+q.replace(/"/g,'&quot;')+'">'+q+'</button>'; }).join('');
+    }
+    function setMode(mode){
+      currentMode = mode;
+      document.querySelectorAll('.clara-mode').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===mode); });
+      document.getElementById('claraModeLabel').textContent = MODES[mode].head;
+      renderQuicks();
+      addMsg('bot', 'Modo '+MODES[mode].icon+' '+MODES[mode].label+' activado. ¿Qué necesitas? 💜');
+    }
+
     function fallbackReply(q){
-      var s = q.toLowerCase();
-      if (/fondo/.test(s)) return 'Para quitar el fondo:\n1. Entra en LimpiaFotos con IA.\n2. Sube tu foto.\n3. Pulsa "Quitar fondo" y ajusta la sensibilidad.\n4. Pulsa "Aplicar" y descarga en PNG (mantiene la transparencia). ✅';
-      if (/texto/.test(s)) return 'Para borrar texto:\n1. Sube la foto en LimpiaFotos.\n2. Pulsa "Quitar texto (pincel)".\n3. Pinta encima del texto.\n4. Pulsa "Borrar zonas pintadas". Rellena copiando los píxeles de alrededor. ✍️';
-      if (/resoluci|calidad|nitid/.test(s)) return 'Para mejorar resolución:\n1. Sube la foto.\n2. Pulsa "Mejorar resolución 2×".\nTe duplica el tamaño y aplica enfoque. También tienes el deslizador de "Nitidez" en Ajustes. 🔍';
-      if (/whatsapp|mensaje|lead/.test(s)) return 'Ejemplo de mensaje para un lead frío:\n\n"Hola [nombre] 👋 Te escribo de [tu marca]. Vi que te interesó [tema]. ¿Te viene bien que te mande info sin compromiso? Cuéntame y te ayudo enseguida."\n\n💡 Conecta una IA en Ajustes y te lo personalizo al 100%.';
-      if (/hoy|vender|clientes|captar/.test(s)) return 'Plan rápido para vender más hoy:\n1. Revisa Contactos (CRM) y escribe a los que están en rojo (+7 días).\n2. Genera un flyer nuevo en Creador de contenido.\n3. Publica una foto limpia con LimpiaFotos.\n4. Registra cada ingreso en el panel HOY para ver tu meta. 🚀';
-      return 'Estoy para ayudarte con fotos, captación de clientes, WhatsApp y organización.\n\n💡 Conecta tu IA (Claude, Gemini, Abacus u OpenAI) en Ajustes → Claves API y te doy respuestas completas y personalizadas.';
+      var s=q.toLowerCase();
+      if (/fondo|texto|resoluci|foto/.test(s)) return 'En LimpiaFotos: sube tu foto y pulsa "Quitar fondo", "Quitar texto" o "Mejorar resolución 2×". Luego descarga en PNG o JPG. 💜\n\n(Conecta tu IA en Ajustes y te doy respuestas completas en cualquier modo).';
+      if (currentMode==='trabajo') return 'Para tu CV/empleo te ayudo mejor con la IA conectada. Consejo rápido: destaca logros con números y adapta el CV a cada oferta. 💼';
+      if (currentMode==='estudios') return 'Dime el tema y te hago un resumen o esquema. Técnica top: repaso espaciado (repasa a las 24h, 7 días y 30 días). 📚';
+      if (currentMode==='psicologa') return 'Te escucho 🌱. Respira hondo: 4 seg inhala, 4 mantén, 6 exhala, 3 veces. Cuéntame qué te preocupa y lo vemos juntos. (Si es algo grave, en España tienes el 024).';
+      if (currentMode==='software') return 'Pégame el código o el error y te ayudo. 💻 (Con la IA conectada te doy la solución completa con ejemplos).';
+      if (currentMode==='noticias') return 'Dime el tema y lo investigamos/estructuramos juntos. 📰 No navego en tiempo real, pero organizo y analizo lo que sepamos.';
+      return 'Elige un modo arriba (💼📚🌱💻📰) o escríbeme directamente. 💜\n\nPara respuestas completas conecta tu IA en Ajustes → Claves API.';
     }
 
     async function send(text){
-      text = (text||inputEl.value).trim();
-      if (!text) return;
+      text=(text||inputEl.value).trim(); if(!text) return;
       inputEl.value=''; sendBtn.disabled=true;
-      addMsg('user', text);
-      history.push({ role:'user', content:text });
-      showTyping();
-
+      addMsg('user', text); history.push({role:'user',content:text}); showTyping();
+      var system = currentMode ? MODES[currentMode].system : BASE;
       if (typeof hasAIKey==='function' && hasAIKey()){
-        // construye prompt con contexto de conversación
         var convo = history.slice(-8).map(function(m){ return (m.role==='user'?'Usuario: ':'CLARA: ')+m.content; }).join('\n');
-        var r = await callAI(convo + '\n\nCLARA:', SYSTEM);
+        var r = await callAI(convo+'\n\nCLARA:', system);
         hideTyping();
-        if (r){ addMsg('bot', r.text); history.push({ role:'assistant', content:r.text }); }
+        if (r){ addMsg('bot', r.text); history.push({role:'assistant',content:r.text}); }
         else { var fb=fallbackReply(text); addMsg('bot', fb); history.push({role:'assistant',content:fb}); }
       } else {
-        setTimeout(function(){
-          hideTyping();
-          var fb = fallbackReply(text);
-          addMsg('bot', fb); history.push({ role:'assistant', content:fb });
-        }, 500);
+        setTimeout(function(){ hideTyping(); var fb=fallbackReply(text); addMsg('bot', fb); history.push({role:'assistant',content:fb}); }, 450);
       }
       sendBtn.disabled=false; inputEl.focus();
     }
@@ -7599,7 +7667,7 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
       panel.classList.add('open'); opened=true;
       document.getElementById('claraNoKey').style.display = (typeof hasAIKey==='function' && hasAIKey()) ? 'none':'block';
       if (msgsEl.children.length===0){
-        addMsg('bot', '¡Hola! Soy CLARA 👋 Tu asistente para limpiar fotos, captar clientes y organizar tu día. ¿En qué te ayudo?');
+        addMsg('bot', 'Hola, Pau, soy Clara, tu asistente IA avatar. 💜\n\n¿Qué modo quieres usar hoy?\n\n• 💼 Modo trabajo y empleo\n• 📚 Modo estudios y profesor\n• 🌱 Modo psicóloga y crecimiento personal\n• 💻 Modo ingeniera de software\n• 📰 Modo noticias e investigación\n\nPulsa un botón arriba o escríbeme directamente lo que necesitas y me adapto.');
       }
       setTimeout(function(){ inputEl.focus(); }, 300);
     }
@@ -7609,13 +7677,12 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
     document.getElementById('claraClose')?.addEventListener('click', closeClara);
     sendBtn.addEventListener('click', function(){ send(); });
     inputEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
-    document.getElementById('claraQuick').addEventListener('click', function(e){
-      var b = e.target.closest('button[data-q]'); if(b) send(b.dataset.q);
-    });
+    quickEl.addEventListener('click', function(e){ var b=e.target.closest('button[data-q]'); if(b) send(b.dataset.q); });
+    document.getElementById('claraModes').addEventListener('click', function(e){ var b=e.target.closest('.clara-mode'); if(b) setMode(b.dataset.mode); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape' && opened) closeClara(); });
 
-    // expón para command palette
     window.openClara = openClara;
+    window.openClaraMode = function(m){ openClara(); setTimeout(function(){ setMode(m); }, 100); };
   })();
 
   COMMANDS.push(
