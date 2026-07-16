@@ -4221,7 +4221,7 @@
             </button>
           </div>
 
-          <div class="fx-hint" id="fxHint" style="display:none;">Pinta encima del texto que quieras borrar y luego pulsa "Borrar zonas pintadas".</div>
+          <div class="fx-hint" id="fxHint" style="display:none;">Pinta por <b>encima de todo el texto</b> (mejor pasarse un poco que quedarse corto) y pulsa "Borrar zonas pintadas". Funciona mejor sobre fondos lisos o degradados. Si queda algún resto, píntalo otra vez y repite.</div>
 
           <div class="fx-stage" id="fxStage">
             <label class="fx-empty" for="fxFile" id="fxEmpty">
@@ -7442,20 +7442,87 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
         showToast('Zonas borradas.', 'success');
       }, 30);
     });
-    function inpaint(m){
+    // Dilata la máscara para cubrir el "halo"/antialias del texto
+    function dilateMask(m, w, h, radius){
+      var out = new Uint8Array(m);
+      for (var pass=0; pass<radius; pass++){
+        var src = new Uint8Array(out);
+        for (var y=0;y<h;y++){
+          for (var x=0;x<w;x++){
+            var i=y*w+x;
+            if (src[i]) continue;
+            if ((x>0&&src[i-1])||(x<w-1&&src[i+1])||(y>0&&src[i-w])||(y<h-1&&src[i+w])) out[i]=1;
+          }
+        }
+      }
+      return out;
+    }
+
+    // Relleno tipo Telea (onion-peel): rellena desde el borde hacia dentro
+    // copiando el color de los vecinos ya conocidos, ponderado por distancia.
+    function inpaint(rawMask){
       var w=fxBase.width, h=fxBase.height, d=fxBase.data;
-      // recoge píxeles enmascarados
-      var idxs=[]; for (var i=0;i<m.length;i++) if(m[i]) idxs.push(i);
-      // iteración de difusión: cada píxel = media de vecinos no enmascarados / ya rellenados
-      for (var it=0; it<80; it++){
-        for (var k=0;k<idxs.length;k++){
-          var idx=idxs[k], x=idx%w, y=(idx/w)|0, o=idx*4;
-          var r=0,g=0,b=0,n=0;
-          if (x>0){ var oo=o-4; r+=d[oo];g+=d[oo+1];b+=d[oo+2];n++; }
-          if (x<w-1){ var o1=o+4; r+=d[o1];g+=d[o1+1];b+=d[o1+2];n++; }
-          if (y>0){ var o2=o-w*4; r+=d[o2];g+=d[o2+1];b+=d[o2+2];n++; }
-          if (y<h-1){ var o3=o+w*4; r+=d[o3];g+=d[o3+1];b+=d[o3+2];n++; }
-          if (n){ d[o]=r/n; d[o+1]=g/n; d[o+2]=b/n; d[o+3]=255; }
+      var R = +($('fxBrush')?.value || 30);
+      var dil = Math.max(2, Math.round(R*0.12));   // dilatación proporcional al pincel
+      var m = dilateMask(rawMask, w, h, dil);
+
+      // known[i]=1 si el píxel es conocido (no hay que rellenar)
+      var known = new Uint8Array(w*h);
+      var toFill = [];
+      for (var i=0;i<m.length;i++){ if(m[i]) toFill.push(i); else known[i]=1; }
+      if (!toFill.length) return;
+
+      // Onion peel: en cada ronda, rellena los píxeles del borde (con >=1 vecino conocido)
+      var win = 3;                 // radio de muestreo alrededor de cada píxel
+      var remaining = toFill.length;
+      var guard = 0, maxRounds = w+h+50;
+      while (remaining>0 && guard++<maxRounds){
+        var ready = [];
+        for (var t=0;t<toFill.length;t++){
+          var idx=toFill[t]; if(idx<0) continue;
+          var x=idx%w, y=(idx/w)|0;
+          if ((x>0&&known[idx-1])||(x<w-1&&known[idx+1])||(y>0&&known[idx-w])||(y<h-1&&known[idx+w])) ready.push(t);
+        }
+        if (!ready.length) break;
+        // calcula colores primero (usando 'known' de esta ronda), luego los marca
+        var writes = [];
+        for (var q=0;q<ready.length;q++){
+          var ti=ready[q], id=toFill[ti], cx=id%w, cy=(id/w)|0;
+          var rr=0,gg=0,bb=0,wsum=0;
+          for (var dy=-win;dy<=win;dy++){
+            var ny=cy+dy; if(ny<0||ny>=h) continue;
+            for (var dx=-win;dx<=win;dx++){
+              var nx=cx+dx; if(nx<0||nx>=w) continue;
+              var ni=ny*w+nx; if(!known[ni]) continue;
+              var dist2=dx*dx+dy*dy; if(dist2===0) continue;
+              var wgt=1/dist2;                 // más cerca = más peso
+              var no=ni*4;
+              rr+=d[no]*wgt; gg+=d[no+1]*wgt; bb+=d[no+2]*wgt; wsum+=wgt;
+            }
+          }
+          if (wsum>0){ writes.push([id, rr/wsum, gg/wsum, bb/wsum]); }
+        }
+        for (var wq=0;wq<writes.length;wq++){
+          var W=writes[wq], o=W[0]*4;
+          d[o]=W[1]; d[o+1]=W[2]; d[o+2]=W[3]; d[o+3]=255;
+          known[W[0]]=1;
+        }
+        // saca los rellenados de la lista pendiente
+        for (var rq=0;rq<ready.length;rq++){ toFill[ready[rq]]=-1; remaining--; }
+      }
+
+      // Suavizado final SOLO dentro de la zona rellenada, para fundir uniones
+      var passes=2;
+      for (var p=0;p<passes;p++){
+        var snap = new Uint8ClampedArray(d);
+        for (var k=0;k<m.length;k++){
+          if(!m[k]) continue;
+          var x2=k%w, y2=(k/w)|0, o2=k*4, r2=0,g2=0,b2=0,n2=0;
+          for (var ddy=-1;ddy<=1;ddy++) for (var ddx=-1;ddx<=1;ddx++){
+            var mx=x2+ddx,my=y2+ddy; if(mx<0||my<0||mx>=w||my>=h) continue;
+            var mo=(my*w+mx)*4; r2+=snap[mo];g2+=snap[mo+1];b2+=snap[mo+2];n2++;
+          }
+          if(n2){ d[o2]=r2/n2; d[o2+1]=g2/n2; d[o2+2]=b2/n2; }
         }
       }
     }
