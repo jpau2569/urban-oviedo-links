@@ -6666,6 +6666,18 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   // =====================================================================
   // ============ REAL AI INTEGRATION (Anthropic / Google) ===============
   // =====================================================================
+  // Guarda el motivo del último fallo para poder mostrarlo al usuario
+  window.__lastAIError = '';
+  function aiErr(msg){ window.__lastAIError = msg; console.warn('[IA]', msg); }
+  function explainStatus(status, body){
+    if (status===401 || status===403) return 'clave inválida o sin permisos (401/403). Revisa que la copiaste entera.';
+    if (status===402) return 'sin saldo/créditos (402). Añade crédito en el panel del proveedor.';
+    if (status===404) return 'modelo no encontrado (404). Puede que ese modelo no esté disponible en tu cuenta.';
+    if (status===429) return 'límite de uso alcanzado (429). Espera un momento o revisa tu plan.';
+    if (status>=500) return 'error del servidor del proveedor ('+status+'). Reinténtalo en un minuto.';
+    return 'error '+status+(body?': '+String(body).slice(0,120):'');
+  }
+
   async function callAnthropic(prompt, system = '') {
     const key = state.keys.anthropic;
     if (!key) return null;
@@ -6679,23 +6691,38 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
           'anthropic-dangerous-direct-browser-access': 'true'
         },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
+          model: state.anthropicModel || 'claude-haiku-4-5-20251001',
           max_tokens: 1024,
           system: system || 'Eres un asistente experto en marketing digital y servicios IA para pymes españolas. Responde en español, conciso y accionable.',
           messages: [{ role: 'user', content: prompt }]
         })
       });
       if (!res.ok) {
-        const t = await res.text();
-        console.warn('Anthropic error:', t);
+        let body=''; try{ body=await res.text(); }catch(e){}
+        // Si el modelo no existe, reintenta con uno estándar
+        if (res.status===404 && (state.anthropicModel||'').indexOf('haiku-4-5')>=0){
+          return await callAnthropicModel(key, system, prompt, 'claude-3-5-haiku-latest');
+        }
+        aiErr('Claude: '+explainStatus(res.status, body));
         return null;
       }
       const data = await res.json();
       return data.content?.[0]?.text || null;
     } catch (e) {
-      console.warn('Anthropic fetch error', e);
+      aiErr('Claude: no se pudo conectar (posible CORS o red). '+(e.message||''));
       return null;
     }
+  }
+  async function callAnthropicModel(key, system, prompt, model){
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({ model, max_tokens:1024, system:system||'Responde en español, útil y conciso.', messages:[{role:'user',content:prompt}] })
+      });
+      if (!res.ok){ let b=''; try{b=await res.text();}catch(e){} aiErr('Claude: '+explainStatus(res.status,b)); return null; }
+      const data = await res.json(); return data.content?.[0]?.text || null;
+    } catch(e){ aiErr('Claude: '+(e.message||'error de red')); return null; }
   }
   async function callGemini(prompt) {
     const key = state.keys.google;
@@ -6704,16 +6731,12 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
       });
-      if (!res.ok) return null;
+      if (!res.ok) { let b=''; try{b=await res.text();}catch(e){} aiErr('Gemini: '+explainStatus(res.status,b)); return null; }
       const data = await res.json();
       return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { aiErr('Gemini: '+(e.message||'error de red')); return null; }
   }
   async function callOpenAI(prompt, system = '') {
     const key = state.keys.openai;
@@ -6721,60 +6744,47 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     try {
       const res = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + key
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: state.openaiModel || 'gpt-4o-mini',
           max_tokens: 1024,
-          messages: [
-            ...(system ? [{ role: 'system', content: system }] : []),
-            { role: 'user', content: prompt }
-          ]
+          messages: [ ...(system ? [{ role: 'system', content: system }] : []), { role: 'user', content: prompt } ]
         })
       });
-      if (!res.ok) return null;
+      if (!res.ok) { let b=''; try{b=await res.text();}catch(e){} aiErr('OpenAI: '+explainStatus(res.status,b)); return null; }
       const data = await res.json();
       return data.choices?.[0]?.message?.content || null;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { aiErr('OpenAI: '+(e.message||'error de red')); return null; }
   }
 
   async function callAbacus(prompt, system = '') {
     const key = state.keys.abacus;
     if (!key) return null;
     const model = state.abacusModel || 'gpt-4o-mini';
-    // Abacus exposes an OpenAI-compatible chat completions endpoint at this base
     const endpoints = [
       'https://routellm.abacus.ai/v1/chat/completions',
       'https://api.abacus.ai/v1/chat/completions'
     ];
+    let lastMsg = '';
     for (const url of endpoints) {
       try {
         const res = await fetch(url, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + key
-          },
-          body: JSON.stringify({
-            model,
-            max_tokens: 1024,
-            messages: [
-              ...(system ? [{ role: 'system', content: system }] : []),
-              { role: 'user', content: prompt }
-            ]
-          })
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+          body: JSON.stringify({ model, max_tokens: 1024, messages: [ ...(system ? [{ role: 'system', content: system }] : []), { role: 'user', content: prompt } ] })
         });
         if (res.ok) {
           const data = await res.json();
           const text = data.choices?.[0]?.message?.content || data.result || null;
           if (text) return text;
+          lastMsg = 'respuesta vacía del servidor';
+        } else {
+          let b=''; try{b=await res.text();}catch(e){}
+          lastMsg = explainStatus(res.status, b);
         }
-      } catch (e) { /* try next endpoint */ }
+      } catch (e) { lastMsg = (e.message||'error de red (posible CORS)'); }
     }
+    aiErr('Abacus: '+lastMsg);
     return null;
   }
 
@@ -6786,6 +6796,7 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   };
 
   async function callAI(prompt, system = '') {
+    window.__lastAIError = '';
     const order = state.preferredAI && state.preferredAI !== 'auto'
       ? [state.preferredAI, 'anthropic', 'abacus', 'google', 'openai'].filter((v, i, a) => a.indexOf(v) === i)
       : ['anthropic', 'abacus', 'google', 'openai'];
@@ -6822,9 +6833,10 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
       statusEl.style.color = 'var(--green)';
       showToast(`IA activa: ${r.provider}`, 'success');
     } else {
-      statusEl.textContent = '✗ Ninguna IA respondió. Revisa las claves.';
+      var why = window.__lastAIError || 'ninguna IA respondió';
+      statusEl.textContent = '✗ ' + why;
       statusEl.style.color = 'var(--danger)';
-      showToast('Las claves no funcionaron — revisa que estén bien copiadas y que tengan saldo.', 'error');
+      showToast('IA no conectó: ' + why, 'error');
     }
   });
 
@@ -7656,7 +7668,13 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
         var r = await callAI(convo+'\n\nCLARA:', system);
         hideTyping();
         if (r){ addMsg('bot', r.text); history.push({role:'assistant',content:r.text}); }
-        else { var fb=fallbackReply(text); addMsg('bot', fb); history.push({role:'assistant',content:fb}); }
+        else {
+          // Hay clave pero falló: muestra el motivo REAL, no una respuesta genérica
+          var why = window.__lastAIError || 'no se pudo conectar con la IA';
+          var m = addMsg('bot', '⚠️ No pude usar tu IA: '+why+'\n\nRevisa tu clave en Ajustes → Claves API y pulsa "Probar conexión". Si usas Claude directo y da error de red, prueba tu clave de Abacus AI (evita el bloqueo CORS del navegador).');
+          m.style.background='rgba(239,68,68,0.12)'; m.style.color='var(--fg)';
+          history.push({role:'assistant',content:why});
+        }
       } else {
         setTimeout(function(){ hideTyping(); var fb=fallbackReply(text); addMsg('bot', fb); history.push({role:'assistant',content:fb}); }, 450);
       }
