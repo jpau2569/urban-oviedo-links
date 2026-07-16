@@ -2331,6 +2331,104 @@
   .ios-install-card ol { text-align: left; margin: 14px 0; padding-left: 20px; }
   .ios-install-card ol li { font-size: 13px; padding: 5px 0; color: var(--fg); }
   body.theme-light .ios-install-card ol li { color: #0b1224; }
+
+  /* ===== Editor de Fotos ===== */
+  .fx-header { display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+  .fx-header .fx-badge {
+    width:44px; height:44px; border-radius:12px;
+    background:linear-gradient(135deg,#6c5ce7,#22d3ee); color:#fff;
+    display:grid; place-items:center; flex-shrink:0;
+  }
+  .fx-header .fx-badge svg { width:24px; height:24px; }
+  .fx-header h1 { font-size:26px; font-weight:900; letter-spacing:-0.4px; line-height:1.1; }
+  .fx-header p { font-size:13px; color:var(--muted); margin-top:3px; }
+
+  .fx-layout { display:grid; grid-template-columns: 300px 1fr; gap:18px; }
+  @media (max-width: 960px){ .fx-layout { grid-template-columns:1fr; } }
+
+  .fx-tools { display:flex; flex-direction:column; gap:14px; }
+  .fx-tool-group {
+    background:var(--card); border:1px solid var(--input-border);
+    border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px;
+  }
+  .fx-tool-group h3 { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:var(--muted); }
+  .fx-btn {
+    width:100%; padding:12px 14px; border-radius:10px;
+    background:var(--card-2); border:1px solid var(--input-border);
+    color:var(--fg); font-size:14px; font-weight:600; text-align:left;
+    display:flex; align-items:center; gap:10px;
+    transition:all 0.15s ease;
+  }
+  .fx-btn:hover:not(:disabled) { border-color:var(--cyan); background:var(--card-3); }
+  .fx-btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .fx-btn.active { border-color:var(--cyan); background:rgba(34,211,238,0.1); color:var(--cyan); }
+  .fx-btn svg { width:18px; height:18px; flex-shrink:0; }
+  .fx-btn.primary { background:linear-gradient(135deg,#16a34a,#15803d); color:#fff; border:none; justify-content:center; }
+  .fx-btn.primary:hover:not(:disabled) { filter:brightness(1.08); }
+
+  .fx-slider-row { display:flex; flex-direction:column; gap:6px; }
+  .fx-slider-row label { font-size:12px; color:var(--fg); font-weight:600; display:flex; justify-content:space-between; }
+  .fx-slider-row label span { color:var(--cyan); font-variant-numeric:tabular-nums; }
+  .fx-slider-row input[type=range] {
+    width:100%; -webkit-appearance:none; appearance:none;
+    height:6px; border-radius:999px; background:var(--input); outline:none;
+  }
+  .fx-slider-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none; appearance:none;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--cyan); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+  .fx-slider-row input[type=range]::-moz-range-thumb {
+    width:18px; height:18px; border-radius:50%; border:none;
+    background:var(--cyan); cursor:pointer;
+  }
+
+  .fx-canvas-wrap {
+    background:var(--card); border:1px solid var(--input-border);
+    border-radius:14px; padding:16px;
+    display:flex; flex-direction:column; gap:14px; min-height:400px;
+  }
+  .fx-stage {
+    flex:1; border-radius:12px; overflow:auto;
+    background:
+      linear-gradient(45deg, #2a3350 25%, transparent 25%),
+      linear-gradient(-45deg, #2a3350 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #2a3350 75%),
+      linear-gradient(-45deg, transparent 75%, #2a3350 75%);
+    background-size:20px 20px;
+    background-position:0 0, 0 10px, 10px -10px, -10px 0px;
+    background-color:#1a2138;
+    display:flex; align-items:center; justify-content:center;
+    min-height:320px; position:relative;
+  }
+  body.theme-light .fx-stage { background-color:#e8ecf5; }
+  #fxCanvas { max-width:100%; max-height:60vh; display:block; cursor:crosshair; touch-action:none; }
+  #fxCanvas.pan { cursor:grab; }
+  .fx-empty {
+    text-align:center; color:var(--muted); padding:40px; cursor:pointer;
+  }
+  .fx-empty svg { width:48px; height:48px; margin-bottom:12px; }
+  .fx-empty strong { display:block; font-size:16px; color:var(--fg); margin-bottom:4px; }
+  body.theme-light .fx-empty strong { color:#0b1224; }
+  .fx-empty span { font-size:13px; }
+
+  .fx-topbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .fx-topbar .fx-mini {
+    padding:8px 12px; border-radius:9px; background:var(--card-2);
+    border:1px solid var(--input-border); color:var(--fg);
+    font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:6px;
+  }
+  .fx-topbar .fx-mini:hover:not(:disabled) { background:var(--card-3); }
+  .fx-topbar .fx-mini:disabled { opacity:0.4; cursor:not-allowed; }
+  .fx-topbar .fx-mini svg { width:15px; height:15px; }
+  .fx-spacer { flex:1; }
+  .fx-hint { font-size:12px; color:var(--muted); padding:8px 12px; background:rgba(34,211,238,0.06); border-radius:8px; border:1px solid rgba(34,211,238,0.2); }
+  .fx-processing {
+    position:absolute; inset:0; background:rgba(11,18,36,0.7);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:12px; color:#fff; border-radius:12px; backdrop-filter:blur(3px);
+  }
+  .fx-processing svg { width:36px; height:36px; animation:spin 1s linear infinite; color:var(--cyan); }
 </style>
 </head>
 <body>
@@ -2368,6 +2466,10 @@
       <button data-view="castrender">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Cast Render
+      </button>
+      <button data-view="editor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+        Editor de Fotos
       </button>
       <button data-view="ayuda">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -3734,6 +3836,137 @@
             </button>
           </div>
           <!-- Content rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== EDITOR DE FOTOS (100% en el navegador, sin servidor) ====== -->
+    <section class="view" data-view-content="editor">
+      <div class="fx-header">
+        <div class="fx-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+        </div>
+        <div>
+          <h1>Editor de Fotos</h1>
+          <p>Quita fondo, borra texto, mejora resolución y ajusta — todo en tu navegador, sin subir nada a ningún servidor.</p>
+        </div>
+      </div>
+
+      <div class="fx-layout">
+        <!-- Herramientas -->
+        <div class="fx-tools">
+          <div class="fx-tool-group">
+            <h3>Imagen</h3>
+            <label class="fx-btn" for="fxFile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Subir foto
+            </label>
+            <input id="fxFile" type="file" accept="image/*" style="display:none;">
+          </div>
+
+          <div class="fx-tool-group">
+            <h3>Un clic</h3>
+            <button class="fx-btn" id="fxBgBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/></svg>
+              Quitar fondo
+            </button>
+            <div class="fx-slider-row" id="fxBgTolRow" style="display:none;">
+              <label>Sensibilidad <span id="fxBgTolVal">32</span></label>
+              <input type="range" id="fxBgTol" min="8" max="120" value="32">
+              <button class="fx-btn primary" id="fxBgApply" style="margin-top:6px;">Aplicar quitar fondo</button>
+            </div>
+
+            <button class="fx-btn" id="fxTextBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+              Quitar texto (pincel)
+            </button>
+            <div class="fx-slider-row" id="fxBrushRow" style="display:none;">
+              <label>Tamaño pincel <span id="fxBrushVal">30</span> px</label>
+              <input type="range" id="fxBrush" min="8" max="90" value="30">
+              <button class="fx-btn primary" id="fxTextApply" style="margin-top:6px;">Borrar zonas pintadas</button>
+            </div>
+
+            <button class="fx-btn" id="fxUpscaleBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              Mejorar resolución 2×
+            </button>
+          </div>
+
+          <div class="fx-tool-group">
+            <h3>Ajustes</h3>
+            <div class="fx-slider-row">
+              <label>Brillo <span id="fxBrightVal">0</span></label>
+              <input type="range" id="fxBright" min="-100" max="100" value="0" disabled>
+            </div>
+            <div class="fx-slider-row">
+              <label>Contraste <span id="fxContrastVal">0</span></label>
+              <input type="range" id="fxContrast" min="-100" max="100" value="0" disabled>
+            </div>
+            <div class="fx-slider-row">
+              <label>Saturación <span id="fxSatVal">0</span></label>
+              <input type="range" id="fxSat" min="-100" max="100" value="0" disabled>
+            </div>
+            <div class="fx-slider-row">
+              <label>Nitidez <span id="fxSharpVal">0</span></label>
+              <input type="range" id="fxSharp" min="0" max="100" value="0" disabled>
+            </div>
+            <button class="fx-btn" id="fxResetAdjust" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Restablecer ajustes
+            </button>
+          </div>
+
+          <div class="fx-tool-group">
+            <h3>Con IA (opcional)</h3>
+            <button class="fx-btn" id="fxAiBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.7 4.6L18 8l-4.3 1.4L12 14l-1.7-4.6L6 8l4.3-1.4L12 2z"/></svg>
+              Analizar y sugerir mejoras
+            </button>
+            <p style="font-size:11px; color:var(--muted);">Usa tu clave IA de Ajustes. Describe la foto y propone mejoras (no reescribe píxeles).</p>
+          </div>
+        </div>
+
+        <!-- Lienzo -->
+        <div class="fx-canvas-wrap">
+          <div class="fx-topbar">
+            <button class="fx-mini" id="fxUndo" disabled title="Deshacer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+              Deshacer
+            </button>
+            <button class="fx-mini" id="fxRedo" disabled title="Rehacer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+              Rehacer
+            </button>
+            <button class="fx-mini" id="fxRotate" disabled title="Rotar 90°">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Rotar
+            </button>
+            <div class="fx-spacer"></div>
+            <span class="fx-mini" id="fxDims" style="pointer-events:none;">—</span>
+            <button class="fx-mini" id="fxDownloadPng" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PNG
+            </button>
+            <button class="fx-mini" id="fxDownloadJpg" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              JPG
+            </button>
+          </div>
+
+          <div class="fx-hint" id="fxHint" style="display:none;">Pinta encima del texto que quieras borrar y luego pulsa "Borrar zonas pintadas".</div>
+
+          <div class="fx-stage" id="fxStage">
+            <label class="fx-empty" for="fxFile" id="fxEmpty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></svg>
+              <strong>Sube o arrastra una foto</strong>
+              <span>PNG o JPG · Se procesa 100% en tu dispositivo</span>
+            </label>
+            <canvas id="fxCanvas" style="display:none;"></canvas>
+            <div class="fx-processing" id="fxProcessing" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>
+              <strong id="fxProcessingText">Procesando…</strong>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -6643,6 +6876,373 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
   document.getElementById('iosInstallModal')?.addEventListener('click', (e) => {
     if (e.target.id === 'iosInstallModal') e.target.classList.remove('open');
   });
+
+  // =====================================================================
+  // ============ EDITOR DE FOTOS (100% cliente, sin servidor) ===========
+  // =====================================================================
+  (function(){
+    var canvas = document.getElementById('fxCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d', { willReadFrequently: true });
+    var MAXDIM = 2000;           // límite para mantenerlo fluido
+    var fxBase = null;           // ImageData comprometida (fuente de verdad)
+    var history = [];            // pila de ImageData para deshacer
+    var histIdx = -1;
+    var adjust = { bright:0, contrast:0, sat:0, sharp:0 };
+    var textMode = false;
+    var mask = null;             // Uint8Array del pincel de "quitar texto"
+    var painting = false;
+    var rafPending = false;
+
+    function $(id){ return document.getElementById(id); }
+    function setProcessing(on, txt){
+      $('fxProcessing').style.display = on ? 'flex' : 'none';
+      if (txt) $('fxProcessingText').textContent = txt;
+    }
+    function enableTools(on){
+      ['fxBgBtn','fxTextBtn','fxUpscaleBtn','fxResetAdjust','fxAiBtn','fxRotate','fxDownloadPng','fxDownloadJpg',
+       'fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){ if($(id)) $(id).disabled = !on; });
+    }
+    function updateDims(){ if (fxBase) $('fxDims').textContent = fxBase.width + ' × ' + fxBase.height + ' px'; }
+    function updateUndoRedo(){
+      $('fxUndo').disabled = histIdx <= 0;
+      $('fxRedo').disabled = histIdx >= history.length - 1;
+    }
+
+    function pushHistory(){
+      // recorta la rama de rehacer
+      history = history.slice(0, histIdx + 1);
+      // clona fxBase
+      var copy = new ImageData(new Uint8ClampedArray(fxBase.data), fxBase.width, fxBase.height);
+      history.push(copy);
+      if (history.length > 20) history.shift();
+      histIdx = history.length - 1;
+      updateUndoRedo();
+    }
+
+    function loadImage(file){
+      if (!file || !/^image\//.test(file.type)) { showToast('Sube una imagen (PNG o JPG).', 'error'); return; }
+      var img = new Image();
+      img.onload = function(){
+        var w = img.width, h = img.height;
+        var scale = Math.min(1, MAXDIM / Math.max(w, h));
+        w = Math.round(w * scale); h = Math.round(h * scale);
+        canvas.width = w; canvas.height = h;
+        ctx.clearRect(0,0,w,h);
+        ctx.drawImage(img, 0, 0, w, h);
+        fxBase = ctx.getImageData(0,0,w,h);
+        adjust = { bright:0, contrast:0, sat:0, sharp:0 };
+        ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){ $(id).value = id==='fxSharp'?0:0; });
+        syncAdjustLabels();
+        mask = null;
+        history = []; histIdx = -1; pushHistory();
+        $('fxEmpty').style.display = 'none';
+        canvas.style.display = 'block';
+        enableTools(true);
+        updateDims();
+        render();
+        showToast('Foto cargada.', 'success');
+      };
+      img.onerror = function(){ showToast('No se pudo abrir la imagen.', 'error'); };
+      img.src = URL.createObjectURL(file);
+    }
+
+    // ---- Ajustes en vivo (brillo/contraste/saturación/nitidez) ----
+    function syncAdjustLabels(){
+      $('fxBrightVal').textContent = adjust.bright;
+      $('fxContrastVal').textContent = adjust.contrast;
+      $('fxSatVal').textContent = adjust.sat;
+      $('fxSharpVal').textContent = adjust.sharp;
+    }
+    function getFlattened(){
+      // aplica ajustes sobre fxBase → devuelve ImageData nueva
+      var w = fxBase.width, h = fxBase.height;
+      var out = new Uint8ClampedArray(fxBase.data);      // copia
+      var b = adjust.bright, c = adjust.contrast, s = adjust.sat;
+      if (b || c || s){
+        var cf = (259*(c+255))/(255*(259-c));            // factor de contraste
+        var sf = 1 + s/100;                              // factor de saturación
+        for (var i=0;i<out.length;i+=4){
+          var r=out[i], g=out[i+1], bl=out[i+2];
+          // brillo
+          r+=b; g+=b; bl+=b;
+          // contraste
+          r=cf*(r-128)+128; g=cf*(g-128)+128; bl=cf*(bl-128)+128;
+          // saturación
+          if (s){ var lum=0.3*r+0.59*g+0.11*bl; r=lum+(r-lum)*sf; g=lum+(g-lum)*sf; bl=lum+(bl-lum)*sf; }
+          out[i]=r<0?0:r>255?255:r; out[i+1]=g<0?0:g>255?255:g; out[i+2]=bl<0?0:bl>255?255:bl;
+        }
+      }
+      var id = new ImageData(out, w, h);
+      if (adjust.sharp>0) id = unsharp(id, adjust.sharp/100);
+      return id;
+    }
+    function unsharp(imageData, amount){
+      var w=imageData.width, h=imageData.height, src=imageData.data;
+      var dst=new Uint8ClampedArray(src);
+      var k=amount; // fuerza
+      for (var y=1;y<h-1;y++){
+        for (var x=1;x<w-1;x++){
+          var o=(y*w+x)*4;
+          for (var ch=0; ch<3; ch++){
+            var c=o+ch;
+            var lap = 5*src[c] - src[c-4] - src[c+4] - src[c-w*4] - src[c+w*4];
+            // mezcla: original + k*(original - blur) aproximado con laplaciano
+            var v = src[c] + k*(lap - src[c]);
+            dst[c] = v<0?0:v>255?255:v;
+          }
+        }
+      }
+      return new ImageData(dst, w, h);
+    }
+    function render(){
+      if (!fxBase) return;
+      var id = getFlattened();
+      if (canvas.width!==id.width || canvas.height!==id.height){ canvas.width=id.width; canvas.height=id.height; }
+      ctx.putImageData(id, 0, 0);
+    }
+    function scheduleRender(){
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(function(){ rafPending=false; render(); });
+    }
+    // commit: hornea los ajustes actuales dentro de fxBase
+    function commitAdjustments(){
+      if (adjust.bright||adjust.contrast||adjust.sat||adjust.sharp){
+        fxBase = getFlattened();
+        adjust = { bright:0, contrast:0, sat:0, sharp:0 };
+        ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){ $(id).value=0; });
+        syncAdjustLabels();
+      }
+    }
+
+    ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){
+      var key = { fxBright:'bright', fxContrast:'contrast', fxSat:'sat', fxSharp:'sharp' }[id];
+      $(id).addEventListener('input', function(e){
+        adjust[key] = +e.target.value; syncAdjustLabels(); scheduleRender();
+      });
+    });
+    $('fxResetAdjust').addEventListener('click', function(){
+      adjust = { bright:0, contrast:0, sat:0, sharp:0 };
+      ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){ $(id).value=0; });
+      syncAdjustLabels(); render();
+    });
+
+    // ---- Quitar fondo (flood fill desde las 4 esquinas) ----
+    $('fxBgBtn').addEventListener('click', function(){
+      var open = $('fxBgTolRow').style.display !== 'none';
+      $('fxBgTolRow').style.display = open ? 'none':'flex';
+      this.classList.toggle('active', !open);
+    });
+    $('fxBgTol').addEventListener('input', function(e){ $('fxBgTolVal').textContent = e.target.value; });
+    $('fxBgApply').addEventListener('click', function(){
+      setProcessing(true, 'Quitando fondo…');
+      setTimeout(function(){
+        commitAdjustments();
+        removeBackground(+$('fxBgTol').value);
+        pushHistory(); render(); setProcessing(false);
+        $('fxBgTolRow').style.display='none'; $('fxBgBtn').classList.remove('active');
+        showToast('Fondo eliminado. Descarga en PNG para conservar transparencia.', 'success');
+      }, 30);
+    });
+    function removeBackground(tol){
+      var w=fxBase.width, h=fxBase.height, d=fxBase.data;
+      var visited = new Uint8Array(w*h);
+      var stack = [];
+      var corners = [[0,0],[w-1,0],[0,h-1],[w-1,h-1]];
+      // color de referencia = media de las esquinas
+      var rr=0,gg=0,bb=0;
+      corners.forEach(function(p){ var o=(p[1]*w+p[0])*4; rr+=d[o]; gg+=d[o+1]; bb+=d[o+2]; });
+      rr/=4; gg/=4; bb/=4;
+      corners.forEach(function(p){ stack.push(p[1]*w+p[0]); });
+      var tol2 = tol*tol*3;
+      while (stack.length){
+        var idx = stack.pop();
+        if (visited[idx]) continue;
+        visited[idx]=1;
+        var o=idx*4;
+        var dr=d[o]-rr, dg=d[o+1]-gg, db=d[o+2]-bb;
+        if (dr*dr+dg*dg+db*db > tol2) continue;
+        d[o+3]=0; // transparente
+        var x=idx%w, y=(idx/w)|0;
+        if (x>0) stack.push(idx-1);
+        if (x<w-1) stack.push(idx+1);
+        if (y>0) stack.push(idx-w);
+        if (y<h-1) stack.push(idx+w);
+      }
+    }
+
+    // ---- Quitar texto (pincel + relleno por difusión) ----
+    $('fxTextBtn').addEventListener('click', function(){
+      textMode = !textMode;
+      this.classList.toggle('active', textMode);
+      $('fxBrushRow').style.display = textMode ? 'flex':'none';
+      $('fxHint').style.display = textMode ? 'block':'none';
+      canvas.style.cursor = textMode ? 'crosshair':'default';
+      if (textMode && (!mask || mask.length !== fxBase.width*fxBase.height)){
+        mask = new Uint8Array(fxBase.width*fxBase.height);
+      }
+    });
+    $('fxBrush').addEventListener('input', function(e){ $('fxBrushVal').textContent = e.target.value; });
+
+    function clientToCanvas(e){
+      var r = canvas.getBoundingClientRect();
+      var cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+      var cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+      return { x: Math.round(cx * canvas.width / r.width), y: Math.round(cy * canvas.height / r.height) };
+    }
+    function paintAt(x,y){
+      var rad = +$('fxBrush').value;
+      var w=canvas.width, h=canvas.height;
+      // marca máscara + dibuja feedback rojo
+      ctx.save(); ctx.fillStyle='rgba(255,40,40,0.45)'; ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill(); ctx.restore();
+      var r2=rad*rad;
+      for (var yy=Math.max(0,y-rad); yy<Math.min(h,y+rad); yy++){
+        for (var xx=Math.max(0,x-rad); xx<Math.min(w,x+rad); xx++){
+          var dx=xx-x, dy=yy-y;
+          if (dx*dx+dy*dy<=r2) mask[yy*w+xx]=1;
+        }
+      }
+    }
+    function startPaint(e){ if(!textMode||!fxBase) return; e.preventDefault(); painting=true; var p=clientToCanvas(e); paintAt(p.x,p.y); }
+    function movePaint(e){ if(!painting) return; e.preventDefault(); var p=clientToCanvas(e); paintAt(p.x,p.y); }
+    function endPaint(){ painting=false; }
+    canvas.addEventListener('mousedown', startPaint);
+    canvas.addEventListener('mousemove', movePaint);
+    window.addEventListener('mouseup', endPaint);
+    canvas.addEventListener('touchstart', startPaint, {passive:false});
+    canvas.addEventListener('touchmove', movePaint, {passive:false});
+    canvas.addEventListener('touchend', endPaint);
+
+    $('fxTextApply').addEventListener('click', function(){
+      if (!mask) return;
+      var any=false; for (var i=0;i<mask.length;i++){ if(mask[i]){any=true;break;} }
+      if (!any){ showToast('Pinta primero encima del texto.', 'error'); return; }
+      setProcessing(true, 'Borrando texto…');
+      setTimeout(function(){
+        commitAdjustments();
+        inpaint(mask);
+        mask = new Uint8Array(fxBase.width*fxBase.height);
+        pushHistory(); render(); setProcessing(false);
+        showToast('Zonas borradas.', 'success');
+      }, 30);
+    });
+    function inpaint(m){
+      var w=fxBase.width, h=fxBase.height, d=fxBase.data;
+      // recoge píxeles enmascarados
+      var idxs=[]; for (var i=0;i<m.length;i++) if(m[i]) idxs.push(i);
+      // iteración de difusión: cada píxel = media de vecinos no enmascarados / ya rellenados
+      for (var it=0; it<80; it++){
+        for (var k=0;k<idxs.length;k++){
+          var idx=idxs[k], x=idx%w, y=(idx/w)|0, o=idx*4;
+          var r=0,g=0,b=0,n=0;
+          if (x>0){ var oo=o-4; r+=d[oo];g+=d[oo+1];b+=d[oo+2];n++; }
+          if (x<w-1){ var o1=o+4; r+=d[o1];g+=d[o1+1];b+=d[o1+2];n++; }
+          if (y>0){ var o2=o-w*4; r+=d[o2];g+=d[o2+1];b+=d[o2+2];n++; }
+          if (y<h-1){ var o3=o+w*4; r+=d[o3];g+=d[o3+1];b+=d[o3+2];n++; }
+          if (n){ d[o]=r/n; d[o+1]=g/n; d[o+2]=b/n; d[o+3]=255; }
+        }
+      }
+    }
+
+    // ---- Mejorar resolución 2× ----
+    $('fxUpscaleBtn').addEventListener('click', function(){
+      var newW = fxBase.width*2, newH = fxBase.height*2;
+      if (Math.max(newW,newH) > 4096){ showToast('Ya está al máximo (límite 4096 px).', 'error'); return; }
+      setProcessing(true, 'Mejorando resolución…');
+      setTimeout(function(){
+        commitAdjustments();
+        var tmp=document.createElement('canvas'); tmp.width=fxBase.width; tmp.height=fxBase.height;
+        tmp.getContext('2d').putImageData(fxBase,0,0);
+        var big=document.createElement('canvas'); big.width=newW; big.height=newH;
+        var bctx=big.getContext('2d'); bctx.imageSmoothingEnabled=true; bctx.imageSmoothingQuality='high';
+        bctx.drawImage(tmp,0,0,newW,newH);
+        fxBase = bctx.getImageData(0,0,newW,newH);
+        fxBase = unsharp(fxBase, 0.35); // nitidez para compensar el escalado
+        mask = null;
+        canvas.width=newW; canvas.height=newH;
+        pushHistory(); updateDims(); render(); setProcessing(false);
+        showToast('Resolución duplicada a '+newW+'×'+newH+'.', 'success');
+      }, 30);
+    });
+
+    // ---- Rotar 90° ----
+    $('fxRotate').addEventListener('click', function(){
+      commitAdjustments();
+      var w=fxBase.width, h=fxBase.height;
+      var tmp=document.createElement('canvas'); tmp.width=w; tmp.height=h;
+      tmp.getContext('2d').putImageData(fxBase,0,0);
+      var rc=document.createElement('canvas'); rc.width=h; rc.height=w;
+      var rctx=rc.getContext('2d'); rctx.translate(h/2,w/2); rctx.rotate(Math.PI/2); rctx.drawImage(tmp,-w/2,-h/2);
+      fxBase=rctx.getImageData(0,0,h,w);
+      canvas.width=h; canvas.height=w;
+      mask=null; pushHistory(); updateDims(); render();
+    });
+
+    // ---- Deshacer / Rehacer ----
+    $('fxUndo').addEventListener('click', function(){
+      if (histIdx<=0) return; histIdx--;
+      fxBase = new ImageData(new Uint8ClampedArray(history[histIdx].data), history[histIdx].width, history[histIdx].height);
+      canvas.width=fxBase.width; canvas.height=fxBase.height;
+      adjust={bright:0,contrast:0,sat:0,sharp:0}; ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){$(id).value=0;}); syncAdjustLabels();
+      updateDims(); render(); updateUndoRedo();
+    });
+    $('fxRedo').addEventListener('click', function(){
+      if (histIdx>=history.length-1) return; histIdx++;
+      fxBase = new ImageData(new Uint8ClampedArray(history[histIdx].data), history[histIdx].width, history[histIdx].height);
+      canvas.width=fxBase.width; canvas.height=fxBase.height;
+      adjust={bright:0,contrast:0,sat:0,sharp:0}; ['fxBright','fxContrast','fxSat','fxSharp'].forEach(function(id){$(id).value=0;}); syncAdjustLabels();
+      updateDims(); render(); updateUndoRedo();
+    });
+
+    // ---- Descargar (canvas.toBlob → NUNCA toca ningún servidor) ----
+    function download(type){
+      if (!fxBase){ showToast('Sube una foto primero.', 'error'); return; }
+      commitAdjustments(); render();
+      var mime = type==='jpg' ? 'image/jpeg' : 'image/png';
+      // JPG no tiene transparencia → fondo blanco
+      var exportCanvas = canvas;
+      if (type==='jpg'){
+        var jc=document.createElement('canvas'); jc.width=canvas.width; jc.height=canvas.height;
+        var jx=jc.getContext('2d'); jx.fillStyle='#fff'; jx.fillRect(0,0,jc.width,jc.height); jx.drawImage(canvas,0,0);
+        exportCanvas=jc;
+      }
+      try {
+        exportCanvas.toBlob(function(blob){
+          if (!blob){ showToast('No se pudo generar la imagen.', 'error'); return; }
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement('a'); a.href=url; a.download='foto-editada-'+Date.now()+'.'+type;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+          showToast('Descargado en '+type.toUpperCase()+'.', 'success');
+        }, mime, type==='jpg'?0.92:undefined);
+      } catch(err){ showToast('Descarga bloqueada por el navegador.', 'error'); }
+    }
+    $('fxDownloadPng').addEventListener('click', function(){ download('png'); });
+    $('fxDownloadJpg').addEventListener('click', function(){ download('jpg'); });
+
+    // ---- Analizar con IA (opcional; usa tu clave) ----
+    $('fxAiBtn').addEventListener('click', async function(){
+      if (!hasAIKey()){ showToast('Configura una clave IA en Ajustes para usar esto.', 'error'); switchView('ajustes'); return; }
+      setProcessing(true, 'Analizando con IA…');
+      var r = await callAI('Eres un retocador fotográfico. Da 4 sugerencias concretas y breves (una línea cada una) para mejorar una foto de producto/inmueble antes de publicarla en redes o portales. Responde en español, en lista.', 'Eres experto en fotografía comercial.');
+      setProcessing(false);
+      if (r){ alert('Sugerencias IA ('+r.provider+'):\n\n'+r.text); }
+      else showToast('La IA no respondió. Revisa tu clave en Ajustes.', 'error');
+    });
+
+    // ---- Subida de archivo + arrastrar ----
+    $('fxFile').addEventListener('change', function(e){ if(e.target.files[0]) loadImage(e.target.files[0]); e.target.value=''; });
+    var stage = $('fxStage');
+    ['dragover','dragenter'].forEach(function(ev){ stage.addEventListener(ev, function(e){ e.preventDefault(); stage.style.outline='2px dashed var(--cyan)'; }); });
+    ['dragleave','drop'].forEach(function(ev){ stage.addEventListener(ev, function(e){ e.preventDefault(); stage.style.outline='none'; }); });
+    stage.addEventListener('drop', function(e){ e.preventDefault(); if(e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]); });
+  })();
+
+  // Command palette entry para el editor
+  COMMANDS.push(
+    { id: 'go-editor', section: 'Navegación', title: 'Ir a Editor de Fotos', sub: 'Quitar fondo, texto, mejorar resolución', action: () => switchView('editor') }
+  );
 
   // Register service worker (PWA) — uses Blob URL so no extra file needed
   if ('serviceWorker' in navigator) {
