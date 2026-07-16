@@ -1,906 +1,1019 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Asesoría Castresana — Gestión de Propiedades</title>
-<meta name="description" content="Panel profesional de gestión de inmuebles en Oviedo: alta de propiedades con fotos, filtros, estadísticas y compartir por WhatsApp." />
-<meta name="theme-color" content="#0f766e" />
-<meta name="color-scheme" content="light dark" />
+<title>Castresana Suite — Gestión Inmobiliaria Pro</title>
+<meta name="description" content="Suite profesional de gestión inmobiliaria: propiedades, clientes con matching, agenda de visitas, calculadoras y estadísticas." />
+<meta name="theme-color" content="#050810" />
+<meta name="color-scheme" content="dark light" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>" />
 <style>
-  /* ==================== DESIGN TOKENS ==================== */
+  /* ═══════════════ TOKENS ═══════════════ */
   :root {
-    --brand: #0f766e;          /* teal 700 */
-    --brand-600: #0d9488;
-    --brand-500: #14b8a6;
-    --brand-soft: #ccfbf1;
-    --gold: #d97706;           /* precios / destacados */
-    --gold-soft: #fef3c7;
-
-    --bg: #f1f5f9;
-    --bg-grad-a: #e2e8f0;
-    --surface: #ffffff;
-    --surface-2: #f8fafc;
-    --surface-3: #f1f5f9;
-    --border: #e2e8f0;
-    --border-strong: #cbd5e1;
-    --fg: #0f172a;
-    --fg-soft: #475569;
-    --fg-muted: #94a3b8;
-
-    --ok: #16a34a; --ok-soft:#dcfce7;
-    --warn: #d97706; --warn-soft:#fef3c7;
-    --danger: #dc2626; --danger-soft:#fee2e2;
-    --info: #2563eb; --info-soft:#dbeafe;
-
-    --shadow-sm: 0 1px 2px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.08);
-    --shadow-md: 0 4px 12px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.06);
-    --shadow-lg: 0 18px 40px rgba(15,23,42,.14);
-    --radius: 16px;
-    --radius-sm: 10px;
-    --radius-lg: 22px;
-    --ring: 0 0 0 3px rgba(20,184,166,.35);
+    --teal:#2dd4bf; --teal-d:#0d9488; --violet:#8b5cf6; --gold:#f59e0b; --rose:#fb7185; --blue:#60a5fa;
+    --wa:#25d366;
+    --bg:#050810;
+    --glass:rgba(255,255,255,.045);
+    --glass-2:rgba(255,255,255,.07);
+    --glass-3:rgba(255,255,255,.10);
+    --line:rgba(255,255,255,.09);
+    --line-2:rgba(255,255,255,.16);
+    --fg:#eef2f8; --fg-soft:#a8b3c7; --fg-mut:#5d6b82;
+    --ok:#34d399; --warn:#fbbf24; --danger:#f87171;
+    --sh-glow:0 0 0 1px rgba(45,212,191,.25), 0 10px 40px -8px rgba(45,212,191,.35);
+    --sh-lg:0 30px 60px -15px rgba(0,0,0,.7);
+    --sh-md:0 12px 30px -8px rgba(0,0,0,.55);
+    --r:18px; --r-sm:12px; --r-lg:24px;
+    --ring:0 0 0 3px rgba(45,212,191,.35);
   }
-  [data-theme="dark"] {
-    --brand: #2dd4bf;
-    --brand-600: #14b8a6;
-    --brand-500: #2dd4bf;
-    --brand-soft: #134e4a;
-    --gold: #fbbf24;
-    --gold-soft: #422006;
-
-    --bg: #0b1120;
-    --bg-grad-a: #0f172a;
-    --surface: #111827;
-    --surface-2: #0f172a;
-    --surface-3: #1e293b;
-    --border: #1f2937;
-    --border-strong: #334155;
-    --fg: #f1f5f9;
-    --fg-soft: #cbd5e1;
-    --fg-muted: #64748b;
-
-    --ok-soft:#052e16; --warn-soft:#422006; --danger-soft:#450a0a; --info-soft:#172554;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-    --shadow-md: 0 6px 18px rgba(0,0,0,.45);
-    --shadow-lg: 0 24px 50px rgba(0,0,0,.6);
-    --ring: 0 0 0 3px rgba(45,212,191,.4);
+  [data-theme="light"] {
+    --bg:#eef1f7;
+    --glass:rgba(255,255,255,.72);
+    --glass-2:rgba(255,255,255,.9);
+    --glass-3:rgba(15,23,42,.05);
+    --line:rgba(15,23,42,.1);
+    --line-2:rgba(15,23,42,.18);
+    --fg:#0f172a; --fg-soft:#46536b; --fg-mut:#8a96ab;
+    --sh-lg:0 30px 60px -20px rgba(15,23,42,.25);
+    --sh-md:0 12px 30px -10px rgba(15,23,42,.18);
+    --teal:#0d9488; --violet:#7c3aed; --gold:#d97706; --blue:#2563eb; --rose:#e11d48;
+    --sh-glow:0 0 0 1px rgba(13,148,136,.28), 0 10px 36px -10px rgba(13,148,136,.4);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
-    font-family:'Inter', system-ui, -apple-system, sans-serif;
-    color:var(--fg);
-    background:
-      radial-gradient(900px 500px at 100% -5%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 60%),
-      radial-gradient(900px 500px at 0% 105%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 60%),
-      linear-gradient(180deg, var(--bg), var(--bg-grad-a));
-    background-attachment:fixed;
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    transition:background .4s ease, color .3s ease;
+    font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--fg);
+    min-height:100vh; -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
-  h1,h2,h3,.brand-name,.price { font-family:'Plus Jakarta Sans', sans-serif; }
-  ::selection { background:var(--brand-500); color:#fff; }
+  h1,h2,h3,.num { font-family:'Plus Jakarta Sans',sans-serif; }
+  ::selection { background:var(--teal); color:#04211d; }
+  #fx { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .app { position:relative; z-index:1; }
 
-  .wrap { max-width:1240px; margin:0 auto; padding:0 20px 80px; }
-
-  /* ==================== HEADER ==================== */
+  /* ═══════════════ HEADER + NAV ═══════════════ */
   header.top {
-    position:sticky; top:0; z-index:40;
-    backdrop-filter:saturate(180%) blur(14px);
-    background:color-mix(in srgb, var(--surface) 78%, transparent);
-    border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 55%, transparent);
+    backdrop-filter:blur(20px) saturate(160%);
+    border-bottom:1px solid var(--line);
   }
-  .top-inner { max-width:1240px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px; }
-  .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+  .top-in { max-width:1340px; margin:0 auto; padding:12px 22px; display:flex; align-items:center; gap:18px; }
+  .brand { display:flex; align-items:center; gap:12px; }
   .brand-logo {
-    width:44px; height:44px; border-radius:13px; flex-shrink:0;
-    display:grid; place-items:center; font-size:22px;
-    background:linear-gradient(135deg, var(--brand), var(--brand-500));
-    box-shadow:0 6px 18px color-mix(in srgb, var(--brand) 45%, transparent);
+    width:44px; height:44px; border-radius:14px; display:grid; place-items:center; font-size:22px; flex-shrink:0;
+    background:linear-gradient(135deg,var(--teal-d),var(--teal) 55%,var(--violet));
+    box-shadow:0 0 24px rgba(45,212,191,.45), inset 0 1px 0 rgba(255,255,255,.35);
   }
-  .brand-text { min-width:0; }
-  .brand-name { font-size:18px; font-weight:800; letter-spacing:-.3px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .brand-sub { font-size:12px; color:var(--fg-muted); font-weight:500; }
-  .top-actions { margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .brand b { font-family:'Plus Jakarta Sans'; font-size:17px; letter-spacing:-.3px; display:block; line-height:1.1; white-space:nowrap; }
+  .brand small { color:var(--fg-mut); font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; }
 
+  nav.tabs { display:flex; gap:4px; margin:0 auto; background:var(--glass); border:1px solid var(--line); border-radius:16px; padding:5px; }
+  nav.tabs button {
+    border:none; background:transparent; color:var(--fg-soft); font-family:inherit; font-weight:600; font-size:13.5px;
+    padding:9px 16px; border-radius:12px; cursor:pointer; display:flex; align-items:center; gap:7px; transition:.22s; position:relative; white-space:nowrap;
+  }
+  nav.tabs button:hover { color:var(--fg); }
+  nav.tabs button.on { background:linear-gradient(135deg,var(--teal-d),var(--teal)); color:#04211d; box-shadow:0 4px 18px rgba(45,212,191,.4); }
+  nav.tabs button .nb { font-size:10px; font-weight:800; background:var(--violet); color:#fff; min-width:17px; height:17px; padding:0 4px; border-radius:9px; display:grid; place-items:center; }
+  nav.tabs button.on .nb { background:rgba(0,0,0,.25); color:#eafffa; }
+
+  .top-actions { display:flex; gap:8px; }
   .icon-btn {
-    width:42px; height:42px; border-radius:12px; border:1px solid var(--border);
-    background:var(--surface); color:var(--fg-soft); cursor:pointer;
-    display:grid; place-items:center; font-size:18px;
-    transition:.2s ease;
+    width:41px; height:41px; border-radius:13px; border:1px solid var(--line); background:var(--glass);
+    color:var(--fg-soft); cursor:pointer; display:grid; place-items:center; transition:.2s; backdrop-filter:blur(8px);
   }
-  .icon-btn:hover { background:var(--surface-3); color:var(--fg); transform:translateY(-1px); box-shadow:var(--shadow-sm); }
-  .icon-btn svg { width:20px; height:20px; }
+  .icon-btn:hover { border-color:var(--line-2); color:var(--fg); transform:translateY(-2px); box-shadow:var(--sh-md); }
+  .icon-btn svg { width:19px; height:19px; }
 
+  .wrap { max-width:1340px; margin:0 auto; padding:26px 22px 110px; }
+  .tab-page { display:none; animation:pageIn .4s cubic-bezier(.2,.8,.25,1); }
+  .tab-page.on { display:block; }
+  @keyframes pageIn { from { opacity:0; transform:translateY(14px); } }
+
+  /* ═══════════════ GLASS PANELS ═══════════════ */
+  .panel {
+    background:var(--glass); border:1px solid var(--line); border-radius:var(--r-lg);
+    backdrop-filter:blur(18px); box-shadow:var(--sh-md); position:relative;
+  }
+  .panel::before { content:''; position:absolute; inset:0 0 auto; height:1px; border-radius:inherit; background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent); pointer-events:none; }
+  .p-head { padding:18px 22px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .p-head h2 { font-size:17px; font-weight:700; letter-spacing:-.2px; display:flex; align-items:center; gap:9px; }
+  .p-body { padding:20px 22px; }
+  .badge-n { margin-left:auto; background:var(--glass-2); border:1px solid var(--line); color:var(--fg-soft); font-size:12.5px; font-weight:700; padding:4px 12px; border-radius:999px; }
+
+  /* ═══════════════ BOTONES / INPUTS ═══════════════ */
   .btn {
-    border:none; cursor:pointer; font-family:inherit; font-weight:600;
-    border-radius:12px; padding:12px 20px; font-size:14.5px;
-    display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    transition:.2s ease; white-space:nowrap;
+    border:none; cursor:pointer; font-family:inherit; font-weight:700; border-radius:13px; padding:12px 20px; font-size:14px;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:.2s; white-space:nowrap; letter-spacing:.1px;
   }
-  .btn:active { transform:translateY(1px); }
-  .btn-primary { background:linear-gradient(135deg, var(--brand-600), var(--brand)); color:#fff; box-shadow:0 8px 20px color-mix(in srgb, var(--brand) 40%, transparent); }
-  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 26px color-mix(in srgb, var(--brand) 50%, transparent); }
-  .btn-ghost { background:var(--surface-3); color:var(--fg); border:1px solid var(--border); }
-  .btn-ghost:hover { background:var(--border); }
-  .btn-wa { background:linear-gradient(135deg,#25d366,#128c7e); color:#fff; }
-  .btn-wa:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(37,211,102,.4); }
-  .btn-danger { background:var(--danger-soft); color:var(--danger); }
-  .btn-danger:hover { background:var(--danger); color:#fff; }
-  .btn-sm { padding:9px 14px; font-size:13px; border-radius:10px; }
-  .btn:disabled { opacity:.55; cursor:not-allowed; transform:none !important; }
+  .btn:active { transform:scale(.98); }
+  .btn-pri { background:linear-gradient(135deg,var(--teal-d),var(--teal)); color:#04211d; box-shadow:0 8px 24px -6px rgba(45,212,191,.55); }
+  .btn-pri:hover { transform:translateY(-2px); box-shadow:0 14px 30px -6px rgba(45,212,191,.65); }
+  .btn-vio { background:linear-gradient(135deg,#6d28d9,var(--violet)); color:#fff; box-shadow:0 8px 24px -6px rgba(139,92,246,.55); }
+  .btn-vio:hover { transform:translateY(-2px); }
+  .btn-gh { background:var(--glass-2); color:var(--fg); border:1px solid var(--line); backdrop-filter:blur(6px); }
+  .btn-gh:hover { border-color:var(--line-2); background:var(--glass-3); }
+  .btn-wa { background:linear-gradient(135deg,#128c7e,var(--wa)); color:#fff; }
+  .btn-wa:hover { transform:translateY(-2px); box-shadow:0 12px 26px -6px rgba(37,211,102,.5); }
+  .btn-dg { background:rgba(248,113,113,.12); color:var(--danger); border:1px solid rgba(248,113,113,.3); }
+  .btn-dg:hover { background:var(--danger); color:#2b0505; }
+  .btn-sm { padding:9px 14px; font-size:12.5px; border-radius:11px; }
 
-  /* ==================== HERO STATS ==================== */
-  .hero { padding:34px 0 8px; }
-  .hero h1 { font-size:clamp(26px, 4vw, 38px); font-weight:800; letter-spacing:-1px; }
-  .hero p { color:var(--fg-soft); margin-top:6px; font-size:15px; }
-
-  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px; }
-  .stat {
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-    padding:18px 18px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
-    transition:.25s ease;
+  label.lbl { display:block; margin-bottom:7px; font-size:12.5px; font-weight:700; color:var(--fg-soft); letter-spacing:.3px; }
+  .req::after { content:' *'; color:var(--rose); }
+  input,select,textarea {
+    width:100%; padding:12px 14px; font-family:inherit; font-size:14px; color:var(--fg);
+    background:var(--glass-2); border:1.5px solid var(--line); border-radius:var(--r-sm); transition:.18s; backdrop-filter:blur(4px);
   }
-  .stat:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
-  .stat .s-icon { position:absolute; right:14px; top:14px; font-size:22px; opacity:.9; }
-  .stat .s-label { font-size:12.5px; color:var(--fg-muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
-  .stat .s-value { font-family:'Plus Jakarta Sans'; font-size:26px; font-weight:800; margin-top:6px; letter-spacing:-.5px; }
-  .stat .s-foot { font-size:12px; color:var(--fg-soft); margin-top:2px; }
-  .stat.accent { background:linear-gradient(135deg, var(--brand-600), var(--brand)); border:none; color:#fff; }
-  .stat.accent .s-label, .stat.accent .s-foot { color:rgba(255,255,255,.85); }
+  input::placeholder,textarea::placeholder { color:var(--fg-mut); }
+  input:focus,select:focus,textarea:focus { outline:none; border-color:var(--teal); box-shadow:var(--ring); }
+  textarea { min-height:96px; resize:vertical; line-height:1.55; }
+  select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235d6b82' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:38px; }
+  select option { background:#0d1420; color:#eef2f8; }
+  [data-theme="light"] select option { background:#fff; color:#0f172a; }
+  .field { margin-bottom:15px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
 
-  /* ==================== LAYOUT ==================== */
-  .grid-2 { display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:24px; align-items:start; margin-top:30px; }
-  .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); }
-  .panel-head { padding:20px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
-  .panel-head h2 { font-size:18px; font-weight:700; letter-spacing:-.3px; }
-  .panel-head .count-badge { margin-left:auto; background:var(--surface-3); color:var(--fg-soft); font-size:13px; font-weight:600; padding:4px 12px; border-radius:999px; }
-  .panel-body { padding:22px; }
-
-  .form-side { position:sticky; top:82px; }
-
-  /* ==================== FORM ==================== */
-  .field { margin-bottom:16px; }
-  .field.row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .field.row2 > div { margin:0; }
-  label.lbl { display:block; margin-bottom:7px; font-size:13px; font-weight:600; color:var(--fg-soft); }
-  .req::after { content:' *'; color:var(--danger); }
-  input, select, textarea {
-    width:100%; padding:12px 14px; font-family:inherit; font-size:14.5px; color:var(--fg);
-    background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--radius-sm);
-    transition:.18s ease;
-  }
-  input::placeholder, textarea::placeholder { color:var(--fg-muted); }
-  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--brand-500); background:var(--surface); box-shadow:var(--ring); }
-  textarea { min-height:100px; resize:vertical; line-height:1.5; }
-  select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:38px; }
-
-  /* segmented control (operación) */
-  .segment { display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--surface-3); padding:5px; border-radius:12px; }
+  .segment { display:grid; grid-template-columns:1fr 1fr; gap:6px; background:var(--glass-2); border:1px solid var(--line); padding:5px; border-radius:13px; }
   .segment input { display:none; }
-  .segment label { text-align:center; padding:9px; border-radius:9px; font-size:13.5px; font-weight:600; color:var(--fg-soft); cursor:pointer; transition:.18s; }
-  .segment input:checked + label { background:var(--surface); color:var(--brand); box-shadow:var(--shadow-sm); }
-  [data-theme="dark"] .segment input:checked + label { background:var(--brand); color:#04211d; }
+  .segment label { text-align:center; padding:9px; border-radius:9px; font-size:13px; font-weight:700; color:var(--fg-soft); cursor:pointer; transition:.18s; }
+  .segment input:checked + label { background:linear-gradient(135deg,var(--teal-d),var(--teal)); color:#04211d; box-shadow:0 4px 14px rgba(45,212,191,.35); }
 
-  /* chips extras */
   .chips { display:flex; flex-wrap:wrap; gap:8px; }
   .chip-check input { display:none; }
   .chip-check label {
-    display:inline-flex; align-items:center; gap:6px; padding:8px 12px; font-size:13px; font-weight:500;
-    border:1.5px solid var(--border); border-radius:999px; cursor:pointer; color:var(--fg-soft);
-    background:var(--surface-2); transition:.15s; user-select:none;
+    display:inline-flex; align-items:center; gap:6px; padding:8px 13px; font-size:12.5px; font-weight:600;
+    border:1.5px solid var(--line); border-radius:999px; cursor:pointer; color:var(--fg-soft); background:var(--glass); transition:.15s; user-select:none;
   }
-  .chip-check label:hover { border-color:var(--brand-500); }
-  .chip-check input:checked + label { background:var(--brand-soft); border-color:var(--brand-500); color:var(--brand); font-weight:600; }
-  [data-theme="dark"] .chip-check input:checked + label { color:var(--brand-500); }
+  .chip-check label:hover { border-color:var(--teal); color:var(--fg); }
+  .chip-check input:checked + label { background:rgba(45,212,191,.14); border-color:var(--teal); color:var(--teal); box-shadow:0 0 14px rgba(45,212,191,.2); }
 
-  /* upload */
-  .dropzone {
-    border:2px dashed var(--border-strong); border-radius:var(--radius); padding:26px 18px; text-align:center;
-    cursor:pointer; transition:.2s; background:var(--surface-2); position:relative;
+  /* ═══════════════ KPI / DASHBOARD ═══════════════ */
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .kpi {
+    background:var(--glass); border:1px solid var(--line); border-radius:var(--r); padding:20px;
+    position:relative; overflow:hidden; backdrop-filter:blur(14px); transition:.3s; transform-style:preserve-3d;
   }
-  .dropzone:hover { border-color:var(--brand-500); background:color-mix(in srgb, var(--brand) 6%, var(--surface-2)); }
-  .dropzone.drag { border-color:var(--brand); background:var(--brand-soft); transform:scale(1.01); }
-  .dropzone .dz-ico { font-size:30px; }
-  .dropzone .dz-t { font-weight:600; font-size:14px; margin-top:8px; }
-  .dropzone .dz-s { font-size:12px; color:var(--fg-muted); margin-top:3px; }
+  .kpi::after { content:''; position:absolute; width:130px; height:130px; border-radius:50%; top:-55px; right:-40px; filter:blur(34px); opacity:.5; background:var(--kc,var(--teal)); pointer-events:none; }
+  .kpi:hover { border-color:var(--line-2); box-shadow:var(--sh-glow); }
+  .kpi .k-ico { font-size:21px; }
+  .kpi .k-lbl { font-size:11.5px; color:var(--fg-mut); font-weight:700; text-transform:uppercase; letter-spacing:1.2px; margin-top:10px; }
+  .kpi .k-val { font-family:'Plus Jakarta Sans'; font-size:30px; font-weight:800; letter-spacing:-1px; margin-top:4px; }
+  .kpi .k-sub { font-size:12px; color:var(--fg-soft); margin-top:3px; }
 
-  .thumbs { display:grid; grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:10px; margin-top:14px; }
-  .thumb { position:relative; border-radius:11px; overflow:hidden; aspect-ratio:1; box-shadow:var(--shadow-sm); background:var(--surface-3); }
-  .thumb img, .thumb video { width:100%; height:100%; object-fit:cover; display:block; }
-  .thumb .th-rm {
-    position:absolute; top:4px; right:4px; width:24px; height:24px; border-radius:50%;
-    background:rgba(220,38,38,.92); color:#fff; border:none; cursor:pointer; font-size:14px; line-height:1;
-    display:grid; place-items:center; transition:.15s;
-  }
-  .thumb .th-rm:hover { transform:scale(1.12); }
-  .thumb .th-cover { position:absolute; bottom:4px; left:4px; font-size:9px; font-weight:700; background:var(--gold); color:#fff; padding:2px 6px; border-radius:6px; letter-spacing:.3px; }
-  .thumb.is-cover { outline:2.5px solid var(--gold); outline-offset:-2.5px; }
-  .thumb .th-vid { position:absolute; inset:0; display:grid; place-items:center; color:#fff; font-size:22px; pointer-events:none; text-shadow:0 2px 6px rgba(0,0,0,.6); }
+  .dash-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:16px; margin-top:16px; }
+  .charts-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .chart-box { padding:18px 20px; }
+  .chart-box h3 { font-size:14px; font-weight:700; color:var(--fg-soft); margin-bottom:14px; letter-spacing:.2px; }
+  .chart-box canvas { width:100%; height:210px; display:block; }
+  .legend { display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:12px; }
+  .legend span { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--fg-soft); font-weight:600; }
+  .legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
 
-  /* ==================== TOOLBAR / FILTERS ==================== */
-  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:20px; }
-  .search-box { position:relative; flex:1; min-width:200px; }
-  .search-box svg { position:absolute; left:13px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--fg-muted); }
-  .search-box input { padding-left:40px; }
-  .filters { display:flex; flex-wrap:wrap; gap:10px; }
-  .filters select, .filters input { width:auto; min-width:120px; padding:10px 12px; font-size:13.5px; }
-  .filters .price-in { width:110px; padding-right:12px; }
-  .view-toggle { display:flex; gap:4px; background:var(--surface-3); padding:4px; border-radius:11px; }
-  .view-toggle button { width:36px; height:34px; border:none; background:transparent; border-radius:8px; cursor:pointer; color:var(--fg-muted); display:grid; place-items:center; }
-  .view-toggle button.active { background:var(--surface); color:var(--brand); box-shadow:var(--shadow-sm); }
-  .view-toggle svg { width:18px; height:18px; }
-  .active-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-  .fpill { display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; background:var(--brand-soft); color:var(--brand); padding:5px 10px; border-radius:999px; }
-  [data-theme="dark"] .fpill { color:var(--brand-500); }
+  .mini-list { display:flex; flex-direction:column; gap:10px; }
+  .mini-item { display:flex; align-items:center; gap:12px; padding:11px 13px; background:var(--glass-2); border:1px solid var(--line); border-radius:13px; font-size:13.5px; transition:.2s; }
+  .mini-item:hover { border-color:var(--line-2); transform:translateX(3px); }
+  .mini-item .mi-ico { width:34px; height:34px; border-radius:10px; background:var(--glass-3); display:grid; place-items:center; font-size:16px; flex-shrink:0; }
+  .mini-item .mi-tx { flex:1; min-width:0; }
+  .mini-item .mi-tx b { display:block; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mini-item .mi-tx small { color:var(--fg-mut); font-size:11.5px; }
+  .mini-empty { color:var(--fg-mut); font-size:13px; text-align:center; padding:18px 8px; }
+
+  /* ═══════════════ TOOLBAR / FILTROS ═══════════════ */
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+  .search-box { position:relative; flex:1; min-width:190px; }
+  .search-box svg { position:absolute; left:13px; top:50%; transform:translateY(-50%); width:17px; height:17px; color:var(--fg-mut); }
+  .search-box input { padding-left:39px; }
+  .toolbar select, .toolbar input.pin { width:auto; min-width:112px; padding:10px 12px; font-size:13px; }
+  .toolbar input.pin { width:104px; }
+  .view-toggle { display:flex; gap:4px; background:var(--glass-2); border:1px solid var(--line); padding:4px; border-radius:12px; }
+  .view-toggle button { width:35px; height:33px; border:none; background:transparent; border-radius:9px; cursor:pointer; color:var(--fg-mut); display:grid; place-items:center; }
+  .view-toggle button.active { background:var(--glass-3); color:var(--teal); }
+  .view-toggle svg { width:17px; height:17px; }
+  .fpills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .fpill { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; background:rgba(45,212,191,.13); color:var(--teal); border:1px solid rgba(45,212,191,.3); padding:5px 11px; border-radius:999px; }
   .fpill button { border:none; background:none; color:inherit; cursor:pointer; font-size:14px; line-height:1; opacity:.7; }
   .fpill button:hover { opacity:1; }
 
-  /* ==================== PROPERTY CARDS ==================== */
-  .listing { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px; }
+  /* ═══════════════ TARJETAS PROPIEDAD (3D) ═══════════════ */
+  .grid-2 { display:grid; grid-template-columns:minmax(0,1fr) 396px; gap:18px; align-items:start; }
+  .form-side { position:sticky; top:84px; max-height:calc(100vh - 100px); overflow-y:auto; }
+  .form-side::-webkit-scrollbar { width:5px; } .form-side::-webkit-scrollbar-thumb { background:var(--line-2); border-radius:3px; }
+
+  .listing { display:grid; grid-template-columns:repeat(auto-fill,minmax(272px,1fr)); gap:16px; perspective:1400px; }
   .listing.list-view { grid-template-columns:1fr; }
   .prop {
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-    overflow:hidden; box-shadow:var(--shadow-sm); transition:.25s ease; display:flex; flex-direction:column;
-    animation:pop .4s ease backwards;
+    background:var(--glass); border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+    display:flex; flex-direction:column; backdrop-filter:blur(14px);
+    transition:box-shadow .3s, border-color .3s; transform-style:preserve-3d; will-change:transform;
+    animation:pop .45s cubic-bezier(.2,.8,.25,1) backwards; position:relative;
   }
-  @keyframes pop { from { opacity:0; transform:translateY(12px); } }
-  .prop:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--border-strong); }
-  .prop-media { position:relative; aspect-ratio:16/10; background:var(--surface-3); overflow:hidden; cursor:pointer; }
-  .prop-media img { width:100%; height:100%; object-fit:cover; transition:.4s ease; }
-  .prop:hover .prop-media img { transform:scale(1.06); }
-  .prop-media .no-photo { width:100%; height:100%; display:grid; place-items:center; font-size:40px; color:var(--fg-muted); }
-  .prop-badges { position:absolute; top:10px; left:10px; display:flex; gap:6px; flex-wrap:wrap; }
-  .badge { font-size:11px; font-weight:700; padding:4px 9px; border-radius:7px; letter-spacing:.2px; backdrop-filter:blur(4px); }
-  .badge.venta { background:rgba(15,118,110,.92); color:#fff; }
-  .badge.alquiler { background:rgba(37,99,235,.92); color:#fff; }
-  .badge.destacado { background:rgba(217,119,6,.95); color:#fff; }
-  .badge.estado-reservado { background:rgba(217,119,6,.92); color:#fff; }
-  .badge.estado-vendido { background:rgba(15,23,42,.82); color:#fff; }
-  .prop-photocount { position:absolute; bottom:10px; right:10px; font-size:11px; font-weight:600; background:rgba(15,23,42,.7); color:#fff; padding:3px 8px; border-radius:7px; display:flex; gap:4px; align-items:center; backdrop-filter:blur(4px); }
-  .prop-body { padding:15px 16px 16px; display:flex; flex-direction:column; gap:10px; flex:1; }
-  .prop-price { font-family:'Plus Jakarta Sans'; font-size:22px; font-weight:800; color:var(--fg); letter-spacing:-.5px; }
-  .prop-price small { font-size:13px; font-weight:600; color:var(--fg-muted); }
-  .prop-ref { font-size:11px; color:var(--fg-muted); font-weight:600; }
-  .prop-title { font-weight:700; font-size:15.5px; line-height:1.3; }
-  .prop-loc { font-size:13px; color:var(--fg-soft); display:flex; align-items:center; gap:5px; }
-  .prop-loc svg { width:14px; height:14px; flex-shrink:0; color:var(--brand); }
-  .prop-specs { display:flex; gap:14px; flex-wrap:wrap; padding-top:10px; border-top:1px solid var(--border); margin-top:auto; }
-  .spec { display:flex; align-items:center; gap:5px; font-size:13px; color:var(--fg-soft); font-weight:500; }
-  .spec svg { width:16px; height:16px; color:var(--fg-muted); }
-  .prop-actions { display:flex; gap:7px; padding:0 16px 16px; }
+  @keyframes pop { from { opacity:0; transform:translateY(18px) scale(.97); } }
+  .prop::after {
+    content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .3s;
+    background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%), rgba(45,212,191,.14), transparent 65%);
+  }
+  .prop:hover { border-color:var(--line-2); box-shadow:var(--sh-lg), 0 0 30px -8px rgba(45,212,191,.3); }
+  .prop:hover::after { opacity:1; }
+  .prop-media { position:relative; aspect-ratio:16/10; background:linear-gradient(135deg,var(--glass-2),var(--glass-3)); overflow:hidden; cursor:pointer; }
+  .prop-media img { width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.2,.8,.25,1); }
+  .prop:hover .prop-media img { transform:scale(1.08); }
+  .prop-media .no-photo { width:100%; height:100%; display:grid; place-items:center; font-size:42px; opacity:.5; }
+  .prop-badges { position:absolute; top:10px; left:10px; display:flex; gap:6px; flex-wrap:wrap; z-index:2; }
+  .badge { font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:8px; letter-spacing:.4px; backdrop-filter:blur(8px); text-transform:uppercase; }
+  .badge.venta { background:rgba(13,148,136,.85); color:#eafffa; box-shadow:0 4px 14px rgba(45,212,191,.4); }
+  .badge.alquiler { background:rgba(96,165,250,.85); color:#0a1a33; box-shadow:0 4px 14px rgba(96,165,250,.4); }
+  .badge.st-res { background:rgba(245,158,11,.9); color:#331c02; }
+  .badge.st-cer { background:rgba(15,23,42,.8); color:#cbd5e1; }
+  .badge.st-match { background:rgba(139,92,246,.9); color:#fff; }
+  .prop-count { position:absolute; bottom:10px; right:10px; font-size:11px; font-weight:700; background:rgba(5,8,16,.7); color:#fff; padding:3px 9px; border-radius:8px; display:flex; gap:5px; align-items:center; backdrop-filter:blur(6px); z-index:2; }
+  .prop-body { padding:14px 16px; display:flex; flex-direction:column; gap:9px; flex:1; }
+  .prop-price { font-family:'Plus Jakarta Sans'; font-size:22px; font-weight:800; letter-spacing:-.6px; background:linear-gradient(90deg,var(--teal),var(--blue)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .prop-price small { font-size:12.5px; font-weight:700; }
+  .prop-ref { font-size:10.5px; color:var(--fg-mut); font-weight:700; letter-spacing:.6px; }
+  .prop-title { font-weight:700; font-size:15px; line-height:1.3; }
+  .prop-loc { font-size:12.5px; color:var(--fg-soft); display:flex; align-items:center; gap:5px; }
+  .prop-loc svg { width:13px; height:13px; flex-shrink:0; color:var(--teal); }
+  .prop-specs { display:flex; gap:13px; flex-wrap:wrap; padding-top:9px; border-top:1px solid var(--line); margin-top:auto; }
+  .spec { display:flex; align-items:center; gap:5px; font-size:12.5px; color:var(--fg-soft); font-weight:600; }
+  .spec svg { width:15px; height:15px; color:var(--fg-mut); }
+  .prop-actions { display:flex; gap:7px; padding:0 15px 15px; }
   .prop-actions .btn { flex:1; }
   .a-menu { position:relative; }
-  .a-menu-btn { width:40px; flex:0 0 auto !important; }
-  .a-pop {
-    position:absolute; right:0; bottom:calc(100% + 6px); background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; box-shadow:var(--shadow-lg); padding:6px; min-width:170px; z-index:20; display:none;
-  }
-  .a-pop.open { display:block; animation:pop .15s ease; }
-  .a-pop button { width:100%; text-align:left; border:none; background:none; padding:9px 11px; border-radius:8px; font-family:inherit; font-size:13.5px; color:var(--fg); cursor:pointer; display:flex; align-items:center; gap:9px; }
-  .a-pop button:hover { background:var(--surface-3); }
+  .a-menu-btn { width:38px; flex:0 0 auto !important; }
+  .a-pop { position:absolute; right:0; bottom:calc(100% + 6px); background:#0d1420; border:1px solid var(--line-2); border-radius:13px; box-shadow:var(--sh-lg); padding:6px; min-width:180px; z-index:30; display:none; }
+  [data-theme="light"] .a-pop { background:#fff; }
+  .a-pop.open { display:block; animation:pop .16s ease; }
+  .a-pop button { width:100%; text-align:left; border:none; background:none; padding:9px 11px; border-radius:9px; font-family:inherit; font-size:13px; font-weight:600; color:var(--fg); cursor:pointer; display:flex; align-items:center; gap:9px; }
+  .a-pop button:hover { background:var(--glass-3); }
   .a-pop button.danger { color:var(--danger); }
-
-  /* list-view tweaks */
   .list-view .prop { flex-direction:row; }
-  .list-view .prop-media { width:280px; flex-shrink:0; aspect-ratio:auto; }
-  .list-view .prop-body { flex:1; }
-  .list-view .prop-actions { flex-direction:column; padding:16px 16px 16px 0; justify-content:center; }
+  .list-view .prop-media { width:270px; flex-shrink:0; aspect-ratio:auto; }
+  .list-view .prop-actions { flex-direction:column; padding:15px 15px 15px 0; justify-content:center; }
 
-  /* empty state */
-  .empty { text-align:center; padding:70px 20px; color:var(--fg-muted); }
-  .empty .e-ico { font-size:56px; }
-  .empty h3 { font-size:19px; color:var(--fg-soft); margin-top:14px; font-weight:700; }
-  .empty p { margin-top:6px; font-size:14px; }
+  .empty { text-align:center; padding:64px 20px; color:var(--fg-mut); }
+  .empty .e-ico { font-size:54px; filter:drop-shadow(0 8px 24px rgba(45,212,191,.35)); }
+  .empty h3 { font-size:18px; color:var(--fg-soft); margin-top:14px; }
+  .empty p { margin-top:6px; font-size:13.5px; }
 
-  /* ==================== MODAL ==================== */
-  .modal-back {
-    position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.62); backdrop-filter:blur(5px);
-    display:none; align-items:center; justify-content:center; padding:20px;
-  }
+  /* dropzone / thumbs */
+  .dropzone { border:2px dashed var(--line-2); border-radius:var(--r); padding:24px 16px; text-align:center; cursor:pointer; transition:.2s; background:var(--glass); }
+  .dropzone:hover, .dropzone.drag { border-color:var(--teal); background:rgba(45,212,191,.07); box-shadow:inset 0 0 30px rgba(45,212,191,.08); }
+  .dropzone .dz-i { font-size:28px; } .dropzone .dz-t { font-weight:700; font-size:13.5px; margin-top:7px; } .dropzone .dz-s { font-size:11.5px; color:var(--fg-mut); margin-top:3px; }
+  .thumbs { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:9px; margin-top:12px; }
+  .thumb { position:relative; border-radius:11px; overflow:hidden; aspect-ratio:1; background:var(--glass-2); cursor:pointer; }
+  .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .thumb .th-rm { position:absolute; top:4px; right:4px; width:23px; height:23px; border-radius:50%; background:rgba(248,113,113,.95); color:#fff; border:none; cursor:pointer; font-size:13px; display:grid; place-items:center; }
+  .thumb .th-cv { position:absolute; bottom:4px; left:4px; font-size:8.5px; font-weight:800; background:var(--gold); color:#331c02; padding:2px 6px; border-radius:6px; }
+  .thumb.is-cover { outline:2.5px solid var(--gold); outline-offset:-2.5px; }
+
+  /* ═══════════════ CLIENTES ═══════════════ */
+  .clients-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px; }
+  .client { background:var(--glass); border:1px solid var(--line); border-radius:var(--r); padding:18px; backdrop-filter:blur(14px); transition:.25s; animation:pop .4s ease backwards; }
+  .client:hover { border-color:var(--line-2); box-shadow:var(--sh-md); transform:translateY(-3px); }
+  .cl-top { display:flex; gap:13px; align-items:center; }
+  .cl-av { width:46px; height:46px; border-radius:14px; display:grid; place-items:center; font-family:'Plus Jakarta Sans'; font-weight:800; font-size:18px; color:#fff; flex-shrink:0; box-shadow:0 6px 18px -4px rgba(0,0,0,.4); }
+  .cl-name { font-weight:700; font-size:15px; }
+  .cl-tag { font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:7px; text-transform:uppercase; letter-spacing:.5px; display:inline-block; margin-top:3px; }
+  .cl-tag.comprador { background:rgba(45,212,191,.15); color:var(--teal); }
+  .cl-tag.inquilino { background:rgba(96,165,250,.15); color:var(--blue); }
+  .cl-tag.vendedor { background:rgba(245,158,11,.15); color:var(--gold); }
+  .cl-tag.propietario { background:rgba(139,92,246,.15); color:var(--violet); }
+  .cl-info { display:flex; flex-direction:column; gap:6px; margin:13px 0; font-size:12.5px; color:var(--fg-soft); }
+  .cl-info span { display:flex; gap:8px; align-items:center; }
+  .cl-match { border-top:1px solid var(--line); padding-top:12px; margin-top:2px; }
+  .cl-match .cm-t { font-size:11px; font-weight:800; color:var(--violet); letter-spacing:.8px; text-transform:uppercase; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+  .cm-item { display:flex; align-items:center; gap:9px; padding:8px 10px; background:var(--glass-2); border:1px solid var(--line); border-radius:10px; font-size:12px; margin-bottom:6px; }
+  .cm-item b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+  .cm-item .cm-p { color:var(--teal); font-weight:800; }
+  .cm-item button { border:none; background:var(--wa); color:#fff; width:26px; height:26px; border-radius:8px; cursor:pointer; font-size:12px; flex-shrink:0; }
+  .cl-actions { display:flex; gap:7px; margin-top:12px; }
+  .cl-actions .btn { flex:1; }
+
+  /* ═══════════════ AGENDA ═══════════════ */
+  .ag-day { margin-bottom:22px; }
+  .ag-day h3 { font-size:13px; font-weight:800; color:var(--fg-mut); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:10px; display:flex; align-items:center; gap:9px; }
+  .ag-day h3.today { color:var(--teal); }
+  .visit { display:flex; align-items:center; gap:14px; background:var(--glass); border:1px solid var(--line); border-radius:15px; padding:14px 16px; margin-bottom:9px; transition:.2s; backdrop-filter:blur(10px); }
+  .visit:hover { border-color:var(--line-2); transform:translateX(3px); }
+  .visit.done { opacity:.5; } .visit.cancel { opacity:.4; text-decoration:line-through; }
+  .v-time { font-family:'Plus Jakarta Sans'; font-weight:800; font-size:16px; color:var(--teal); min-width:52px; }
+  .v-info { flex:1; min-width:0; }
+  .v-info b { display:block; font-size:14px; }
+  .v-info small { color:var(--fg-soft); font-size:12px; display:block; margin-top:2px; }
+  .v-acts { display:flex; gap:6px; }
+  .v-acts button { width:34px; height:34px; border-radius:10px; border:1px solid var(--line); background:var(--glass-2); cursor:pointer; font-size:14px; transition:.15s; }
+  .v-acts button:hover { transform:scale(1.1); border-color:var(--line-2); }
+
+  /* ═══════════════ HERRAMIENTAS ═══════════════ */
+  .tools-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+  .tool h3 { font-size:15px; display:flex; align-items:center; gap:9px; margin-bottom:4px; }
+  .tool .t-sub { font-size:12px; color:var(--fg-mut); margin-bottom:16px; }
+  .t-result { margin-top:14px; background:var(--glass-2); border:1px solid var(--line); border-radius:14px; padding:15px; display:none; }
+  .t-result.show { display:block; animation:pop .3s ease; }
+  .t-big { font-family:'Plus Jakarta Sans'; font-size:26px; font-weight:800; letter-spacing:-.7px; background:linear-gradient(90deg,var(--teal),var(--violet)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .t-rows { margin-top:9px; display:flex; flex-direction:column; gap:5px; }
+  .t-rows div { display:flex; justify-content:space-between; font-size:12.5px; color:var(--fg-soft); }
+  .t-rows div b { color:var(--fg); }
+
+  /* ═══════════════ MODALES ═══════════════ */
+  .modal-back { position:fixed; inset:0; z-index:70; background:rgba(2,4,10,.72); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:18px; }
   .modal-back.open { display:flex; animation:fade .2s ease; }
   @keyframes fade { from { opacity:0; } }
-  .modal {
-    background:var(--surface); border-radius:var(--radius-lg); width:100%; max-width:820px; max-height:90vh;
-    overflow:auto; box-shadow:var(--shadow-lg); animation:pop .25s ease;
-  }
-  .modal-x { position:sticky; top:0; float:right; margin:14px 14px 0; z-index:2; }
-  .m-gallery { position:relative; background:#0b0f19; aspect-ratio:16/9; }
+  .modal { background:#0b111d; border:1px solid var(--line-2); border-radius:var(--r-lg); width:100%; max-width:840px; max-height:92vh; overflow:auto; box-shadow:var(--sh-lg); animation:pop .3s cubic-bezier(.2,.8,.25,1); }
+  [data-theme="light"] .modal { background:#fff; }
+  .modal::-webkit-scrollbar { width:6px; } .modal::-webkit-scrollbar-thumb { background:var(--line-2); border-radius:3px; }
+  .modal-x { position:sticky; top:12px; float:right; margin:0 14px 0 0; z-index:5; }
+  .m-gallery { position:relative; background:#020409; aspect-ratio:16/9; }
   .m-gallery img { width:100%; height:100%; object-fit:contain; }
-  .m-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:none; background:rgba(255,255,255,.16); color:#fff; font-size:22px; cursor:pointer; display:grid; place-items:center; backdrop-filter:blur(6px); transition:.2s; }
-  .m-nav:hover { background:rgba(255,255,255,.3); }
+  .m-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:none; background:rgba(255,255,255,.13); color:#fff; font-size:22px; cursor:pointer; backdrop-filter:blur(8px); transition:.2s; }
+  .m-nav:hover { background:var(--teal); color:#04211d; }
   .m-nav.prev { left:14px; } .m-nav.next { right:14px; }
   .m-dots { position:absolute; bottom:12px; left:0; right:0; display:flex; justify-content:center; gap:6px; }
-  .m-dots span { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.45); transition:.2s; cursor:pointer; }
-  .m-dots span.on { background:#fff; width:22px; border-radius:5px; }
-  .m-body { padding:26px 28px 30px; }
-  .m-price { font-family:'Plus Jakarta Sans'; font-size:32px; font-weight:800; letter-spacing:-.8px; }
-  .m-price small { font-size:16px; color:var(--fg-muted); font-weight:600; }
-  .m-title { font-size:21px; font-weight:700; margin-top:4px; }
-  .m-loc { color:var(--fg-soft); margin-top:6px; display:flex; align-items:center; gap:6px; }
-  .m-specs { display:grid; grid-template-columns:repeat(auto-fit, minmax(110px,1fr)); gap:12px; margin:22px 0; }
-  .m-spec { background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
-  .m-spec .v { font-family:'Plus Jakarta Sans'; font-size:20px; font-weight:800; }
-  .m-spec .l { font-size:11.5px; color:var(--fg-muted); text-transform:uppercase; letter-spacing:.4px; margin-top:2px; font-weight:600; }
-  .m-desc { line-height:1.7; color:var(--fg-soft); white-space:pre-wrap; }
-  .m-extras { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
-  .m-extra { font-size:13px; font-weight:600; background:var(--brand-soft); color:var(--brand); padding:6px 12px; border-radius:999px; display:flex; gap:6px; align-items:center; }
-  [data-theme="dark"] .m-extra { color:var(--brand-500); }
-  .m-video { margin-top:20px; border-radius:14px; overflow:hidden; aspect-ratio:16/9; border:1px solid var(--border); }
-  .m-video iframe, .m-video video { width:100%; height:100%; border:none; }
-  .m-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; }
+  .m-dots span { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.4); cursor:pointer; transition:.2s; }
+  .m-dots span.on { background:var(--teal); width:24px; border-radius:5px; }
+  .m-body { padding:24px 28px 30px; }
+  .m-price { font-family:'Plus Jakarta Sans'; font-size:33px; font-weight:800; letter-spacing:-1px; background:linear-gradient(90deg,var(--teal),var(--blue)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .m-title { font-size:20px; font-weight:700; margin-top:4px; }
+  .m-loc { color:var(--fg-soft); margin-top:6px; display:flex; align-items:center; gap:6px; font-size:14px; }
+  .m-specs { display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:11px; margin:20px 0; }
+  .m-spec { background:var(--glass); border:1px solid var(--line); border-radius:13px; padding:13px; text-align:center; }
+  .m-spec .v { font-family:'Plus Jakarta Sans'; font-size:19px; font-weight:800; }
+  .m-spec .l { font-size:10.5px; color:var(--fg-mut); text-transform:uppercase; letter-spacing:.6px; margin-top:2px; font-weight:700; }
+  .m-desc { line-height:1.7; color:var(--fg-soft); white-space:pre-wrap; font-size:14px; }
+  .m-extras { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+  .m-extra { font-size:12.5px; font-weight:700; background:rgba(45,212,191,.12); color:var(--teal); border:1px solid rgba(45,212,191,.25); padding:6px 12px; border-radius:999px; }
+  .m-video { margin-top:18px; border-radius:14px; overflow:hidden; aspect-ratio:16/9; border:1px solid var(--line); }
+  .m-video iframe { width:100%; height:100%; border:none; }
+  .m-actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:24px; }
+  .m-int { margin-top:20px; border-top:1px solid var(--line); padding-top:16px; }
+  .m-int h4 { font-size:12px; font-weight:800; color:var(--violet); letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 
-  /* confirm modal */
   .confirm { max-width:400px; text-align:center; padding:30px 26px; }
-  .confirm .c-ico { font-size:44px; }
-  .confirm h3 { font-size:19px; margin-top:12px; }
-  .confirm p { color:var(--fg-soft); margin-top:8px; font-size:14.5px; line-height:1.5; }
-  .confirm .c-actions { display:flex; gap:10px; margin-top:24px; }
-  .confirm .c-actions .btn { flex:1; }
+  .confirm .c-ico { font-size:44px; } .confirm h3 { font-size:18px; margin-top:12px; }
+  .confirm p { color:var(--fg-soft); margin-top:8px; font-size:14px; line-height:1.5; }
+  .confirm .c-acts { display:flex; gap:10px; margin-top:22px; } .confirm .c-acts .btn { flex:1; }
 
-  /* ==================== TOAST ==================== */
-  .toasts { position:fixed; bottom:22px; right:22px; z-index:80; display:flex; flex-direction:column; gap:10px; max-width:340px; }
-  .toast {
-    background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--brand);
-    border-radius:12px; padding:14px 16px; box-shadow:var(--shadow-lg); display:flex; gap:11px; align-items:flex-start;
-    animation:toastIn .3s cubic-bezier(.2,.9,.3,1.3);
-  }
-  .toast.out { animation:toastOut .3s ease forwards; }
-  @keyframes toastIn { from { opacity:0; transform:translateX(60px); } }
-  @keyframes toastOut { to { opacity:0; transform:translateX(60px); } }
+  /* ═══════════════ TOASTS ═══════════════ */
+  .toasts { position:fixed; bottom:22px; right:22px; z-index:90; display:flex; flex-direction:column; gap:10px; max-width:340px; }
+  .toast { background:#0d1420; border:1px solid var(--line-2); border-left:4px solid var(--teal); border-radius:13px; padding:13px 16px; box-shadow:var(--sh-lg); display:flex; gap:11px; align-items:flex-start; animation:tIn .35s cubic-bezier(.2,.9,.3,1.3); }
+  [data-theme="light"] .toast { background:#fff; }
+  .toast.out { animation:tOut .3s ease forwards; }
+  @keyframes tIn { from { opacity:0; transform:translateX(60px); } }
+  @keyframes tOut { to { opacity:0; transform:translateX(60px); } }
   .toast.ok { border-left-color:var(--ok); } .toast.err { border-left-color:var(--danger); } .toast.warn { border-left-color:var(--warn); }
-  .toast .t-ico { font-size:18px; }
-  .toast .t-msg { font-size:14px; font-weight:500; line-height:1.4; }
+  .toast .t-i { font-size:17px; } .toast .t-m { font-size:13.5px; font-weight:600; line-height:1.4; }
 
-  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+  footer.foot { text-align:center; padding:34px 20px 12px; color:var(--fg-mut); font-size:12.5px; }
+  footer.foot a { color:var(--teal); text-decoration:none; font-weight:700; }
 
-  footer.foot { text-align:center; padding:30px 20px 10px; color:var(--fg-muted); font-size:13px; }
-  footer.foot a { color:var(--brand); text-decoration:none; font-weight:600; }
-  footer.foot a:hover { text-decoration:underline; }
-
-  /* ==================== RESPONSIVE ==================== */
-  @media (max-width: 940px) {
+  /* ═══════════════ RESPONSIVE ═══════════════ */
+  @media (max-width:1080px) { .dash-grid { grid-template-columns:1fr; } .charts-row { grid-template-columns:1fr 1fr; } }
+  @media (max-width:940px) {
     .grid-2 { grid-template-columns:1fr; }
-    .form-side { position:static; order:2; }
-    .stats { grid-template-columns:repeat(2,1fr); }
+    .form-side { position:static; max-height:none; order:2; }
+    .kpis { grid-template-columns:repeat(2,1fr); }
     .list-view .prop { flex-direction:column; }
     .list-view .prop-media { width:100%; aspect-ratio:16/10; }
-    .list-view .prop-actions { flex-direction:row; padding:0 16px 16px; }
+    .list-view .prop-actions { flex-direction:row; padding:0 15px 15px; }
+    nav.tabs { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); z-index:60; background:rgba(10,15,26,.85); backdrop-filter:blur(20px); box-shadow:var(--sh-lg); margin:0; }
+    [data-theme="light"] nav.tabs { background:rgba(255,255,255,.9); }
+    nav.tabs button { padding:9px 13px; font-size:12px; }
+    nav.tabs button span.tx { display:none; }
+    nav.tabs button { font-size:17px; }
   }
-  @media (max-width: 560px) {
-    .wrap { padding:0 14px 60px; }
-    .brand-sub { display:none; }
-    .stats { grid-template-columns:1fr 1fr; gap:10px; }
-    .stat .s-value { font-size:22px; }
-    .field.row2 { grid-template-columns:1fr; }
-    .toolbar { gap:8px; }
-    .filters { width:100%; }
-    .filters select { flex:1; }
-    .m-body { padding:20px; }
-    .toasts { left:14px; right:14px; max-width:none; }
+  @media (max-width:600px) {
+    .wrap { padding:18px 13px 130px; }
+    .kpis { gap:10px; } .kpi { padding:15px; } .kpi .k-val { font-size:23px; }
+    .charts-row { grid-template-columns:1fr; }
+    .row3 { grid-template-columns:1fr; }
+    .m-body { padding:20px 18px; }
+    .toasts { left:13px; right:13px; max-width:none; }
+    .brand small { display:none; }
   }
-  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; scroll-behavior:auto; } }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
+
+  @media print {
+    body * { visibility:hidden; } #fx,nav.tabs,header.top { display:none; }
+  }
 </style>
 </head>
 <body>
-  <!-- ============ HEADER ============ -->
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="app">
+
+  <!-- ═══════════ HEADER ═══════════ -->
   <header class="top">
-    <div class="top-inner">
+    <div class="top-in">
       <div class="brand">
-        <div class="brand-logo">🏠</div>
-        <div class="brand-text">
-          <div class="brand-name">Asesoría Castresana</div>
-          <div class="brand-sub">Gestión de propiedades · Oviedo</div>
-        </div>
+        <div class="brand-logo">🏙️</div>
+        <div><b>Castresana Suite</b><small>Inmobiliaria · Oviedo</small></div>
       </div>
+      <nav class="tabs" id="tabsNav">
+        <button data-tab="dash" class="on">📊<span class="tx"> Panel</span></button>
+        <button data-tab="props">🏘️<span class="tx"> Propiedades</span> <span class="nb" id="nbProps">0</span></button>
+        <button data-tab="clients">👥<span class="tx"> Clientes</span> <span class="nb" id="nbClients">0</span></button>
+        <button data-tab="agenda">📅<span class="tx"> Agenda</span> <span class="nb" id="nbVisits">0</span></button>
+        <button data-tab="tools">🧮<span class="tx"> Herramientas</span></button>
+      </nav>
       <div class="top-actions">
-        <button class="icon-btn" id="btnImport" title="Importar copia de seguridad" aria-label="Importar datos">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </button>
-        <button class="icon-btn" id="btnExport" title="Exportar copia de seguridad" aria-label="Exportar datos">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        </button>
-        <button class="icon-btn" id="btnTheme" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">
-          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
+        <button class="icon-btn" id="btnImport" title="Importar copia" aria-label="Importar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
+        <button class="icon-btn" id="btnExport" title="Exportar copia" aria-label="Exportar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+        <button class="icon-btn" id="btnTheme" title="Tema" aria-label="Cambiar tema"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
       </div>
     </div>
   </header>
 
   <div class="wrap">
-    <!-- ============ HERO + STATS ============ -->
-    <section class="hero">
-      <h1>Panel de propiedades</h1>
-      <p>Gestiona tu cartera de inmuebles, comparte fichas por WhatsApp y controla tus estadísticas en un solo lugar.</p>
-      <div class="stats" id="stats"></div>
+
+    <!-- ═══════════ TAB: PANEL ═══════════ -->
+    <section class="tab-page on" id="tab-dash">
+      <div class="kpis" id="kpis"></div>
+      <div class="dash-grid">
+        <div>
+          <div class="charts-row">
+            <div class="panel chart-box"><h3>📊 Cartera por tipo</h3><canvas id="chTipos"></canvas><div class="legend" id="lgTipos"></div></div>
+            <div class="panel chart-box"><h3>📈 Altas últimos 6 meses</h3><canvas id="chAltas"></canvas></div>
+          </div>
+          <div class="panel chart-box" style="margin-top:16px"><h3>🎯 Estado de la cartera</h3><canvas id="chEstado" style="height:120px"></canvas></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="panel"><div class="p-head"><h2>📅 Visitas de hoy</h2></div><div class="p-body mini-list" id="dashToday"></div></div>
+          <div class="panel"><div class="p-head"><h2>💜 Últimos matches</h2></div><div class="p-body mini-list" id="dashMatch"></div></div>
+          <div class="panel"><div class="p-head"><h2>⚡ Actividad reciente</h2></div><div class="p-body mini-list" id="dashAct"></div></div>
+        </div>
+      </div>
     </section>
 
-    <div class="grid-2">
-      <!-- ============ LISTA (izquierda) ============ -->
-      <section class="panel" id="listPanel">
-        <div class="panel-head">
-          <h2>🏘️ Cartera de propiedades</h2>
-          <span class="count-badge" id="countBadge">0</span>
-        </div>
-        <div class="panel-body">
-          <div class="toolbar">
-            <div class="search-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="search" id="search" placeholder="Buscar por título, zona o referencia…" aria-label="Buscar propiedades" />
+    <!-- ═══════════ TAB: PROPIEDADES ═══════════ -->
+    <section class="tab-page" id="tab-props">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="p-head"><h2>🏘️ Cartera</h2><span class="badge-n" id="countBadge">0</span></div>
+          <div class="p-body">
+            <div class="toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" id="search" placeholder="Buscar título, zona, referencia…" aria-label="Buscar" />
+              </div>
+              <div class="view-toggle">
+                <button id="viewGrid" class="active" aria-label="Cuadrícula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+                <button id="viewList" aria-label="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+              </div>
             </div>
-            <div class="view-toggle" role="group" aria-label="Vista">
-              <button id="viewGrid" class="active" title="Cuadrícula" aria-label="Vista cuadrícula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
-              <button id="viewList" title="Lista" aria-label="Vista lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <div class="toolbar">
+              <select id="fOperacion"><option value="">Operación</option><option value="venta">Venta</option><option value="alquiler">Alquiler</option></select>
+              <select id="fTipo"><option value="">Tipo</option><option value="piso">Piso</option><option value="casa">Casa</option><option value="chalet">Chalet</option><option value="apartamento">Apartamento</option><option value="duplex">Dúplex</option><option value="estudio">Estudio</option><option value="atico">Ático</option><option value="local">Local</option><option value="terreno">Terreno</option></select>
+              <select id="fEstado"><option value="">Estado</option><option value="disponible">Disponible</option><option value="reservado">Reservado</option><option value="cerrado">Vendido/Alq.</option></select>
+              <select id="fHab"><option value="">Dorm.</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select>
+              <input type="number" class="pin" id="fMin" placeholder="€ mín" />
+              <input type="number" class="pin" id="fMax" placeholder="€ máx" />
+              <select id="fSort"><option value="recent">Recientes</option><option value="price-asc">Precio ↑</option><option value="price-desc">Precio ↓</option><option value="area-desc">Superficie ↓</option></select>
             </div>
+            <div class="fpills" id="activeFilters"></div>
+            <div class="listing" id="listing"></div>
           </div>
-          <div class="toolbar filters">
-            <select id="fOperacion" aria-label="Filtrar por operación"><option value="">Operación</option><option value="venta">Venta</option><option value="alquiler">Alquiler</option></select>
-            <select id="fTipo" aria-label="Filtrar por tipo"><option value="">Tipo</option><option value="piso">Piso</option><option value="casa">Casa</option><option value="chalet">Chalet</option><option value="apartamento">Apartamento</option><option value="duplex">Dúplex</option><option value="estudio">Estudio</option><option value="atico">Ático</option><option value="local">Local</option><option value="terreno">Terreno</option></select>
-            <select id="fEstado" aria-label="Filtrar por estado"><option value="">Estado</option><option value="disponible">Disponible</option><option value="reservado">Reservado</option><option value="cerrado">Vendido/Alquilado</option></select>
-            <select id="fHab" aria-label="Filtrar por dormitorios"><option value="">Dorm.</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select>
-            <input type="number" class="price-in" id="fMin" placeholder="€ mín" aria-label="Precio mínimo" />
-            <input type="number" class="price-in" id="fMax" placeholder="€ máx" aria-label="Precio máximo" />
-            <select id="fSort" aria-label="Ordenar"><option value="recent">Más recientes</option><option value="price-asc">Precio ↑</option><option value="price-desc">Precio ↓</option><option value="area-desc">Superficie ↓</option></select>
+        </div>
+
+        <div class="panel form-side">
+          <div class="p-head"><h2 id="formTitle">📝 Nueva propiedad</h2></div>
+          <div class="p-body">
+            <form id="propForm" novalidate>
+              <input type="hidden" id="editId" />
+              <div class="field"><label class="lbl">Operación</label>
+                <div class="segment">
+                  <input type="radio" name="operacion" id="op-venta" value="venta" checked><label for="op-venta">🏷️ Venta</label>
+                  <input type="radio" name="operacion" id="op-alq" value="alquiler"><label for="op-alq">🔑 Alquiler</label>
+                </div>
+              </div>
+              <div class="field"><label class="lbl req" for="title">Título</label><input type="text" id="title" placeholder="Ej: Ático con terraza en el centro" /></div>
+              <div class="field row2">
+                <div><label class="lbl req" for="price">Precio (€)</label><input type="number" id="price" min="0" placeholder="185000" /></div>
+                <div><label class="lbl req" for="type">Tipo</label><select id="type"><option value="">Seleccionar…</option><option value="piso">Piso</option><option value="casa">Casa</option><option value="chalet">Chalet</option><option value="apartamento">Apartamento</option><option value="duplex">Dúplex</option><option value="estudio">Estudio</option><option value="atico">Ático</option><option value="local">Local comercial</option><option value="terreno">Terreno</option></select></div>
+              </div>
+              <div class="field"><label class="lbl req" for="location">Ubicación / Zona</label><input type="text" id="location" placeholder="Ej: Centro, Oviedo" /></div>
+              <div class="field row2">
+                <div><label class="lbl" for="bedrooms">🛏️ Dormitorios</label><input type="number" id="bedrooms" min="0" placeholder="3" /></div>
+                <div><label class="lbl" for="bathrooms">🚿 Baños</label><input type="number" id="bathrooms" min="0" placeholder="2" /></div>
+              </div>
+              <div class="field row2">
+                <div><label class="lbl" for="area">📐 m²</label><input type="number" id="area" min="0" placeholder="90" /></div>
+                <div><label class="lbl" for="year">🗓️ Año</label><input type="number" id="year" min="1800" max="2100" placeholder="2005" /></div>
+              </div>
+              <div class="field row2">
+                <div><label class="lbl" for="estado">Estado</label><select id="estado"><option value="disponible">Disponible</option><option value="reservado">Reservado</option><option value="cerrado">Vendido/Alquilado</option></select></div>
+                <div><label class="lbl" for="energy">Cert. energético</label><select id="energy"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option value="tramite">En trámite</option></select></div>
+              </div>
+              <div class="field"><label class="lbl" for="owner">🤝 Propietario (interno)</label><input type="text" id="owner" placeholder="Nombre y teléfono del propietario" /></div>
+              <div class="field"><label class="lbl">Extras</label>
+                <div class="chips" id="extrasChips">
+                  <span class="chip-check"><input type="checkbox" id="ex-garaje" value="Garaje"><label for="ex-garaje">🚗 Garaje</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-ascensor" value="Ascensor"><label for="ex-ascensor">🛗 Ascensor</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-terraza" value="Terraza"><label for="ex-terraza">🌿 Terraza</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-piscina" value="Piscina"><label for="ex-piscina">🏊 Piscina</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-trastero" value="Trastero"><label for="ex-trastero">📦 Trastero</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-aire" value="Aire acondicionado"><label for="ex-aire">❄️ A/A</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-amueblado" value="Amueblado"><label for="ex-amueblado">🛋️ Amueblado</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-jardin" value="Jardín"><label for="ex-jardin">🌳 Jardín</label></span>
+                  <span class="chip-check"><input type="checkbox" id="ex-obra" value="Obra nueva"><label for="ex-obra">✨ Obra nueva</label></span>
+                </div>
+              </div>
+              <div class="field"><label class="lbl req" for="description">Descripción</label><textarea id="description" placeholder="Describe la propiedad…"></textarea></div>
+              <div class="field"><label class="lbl" for="videoUrl">🎥 Vídeo / Tour virtual (URL)</label><input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=…" /></div>
+              <div class="field"><label class="lbl">📸 Fotos <span style="color:var(--fg-mut);font-weight:500">(se optimizan solas)</span></label>
+                <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Subir fotos">
+                  <div class="dz-i">📤</div><div class="dz-t">Arrastra fotos o haz clic</div><div class="dz-s">La 1ª será la portada · clic en miniatura para cambiarla</div>
+                  <input type="file" id="fileInput" accept="image/*" multiple hidden />
+                </div>
+                <div class="thumbs" id="thumbs"></div>
+              </div>
+              <div style="display:flex;gap:9px;margin-top:20px">
+                <button type="submit" class="btn btn-pri" style="flex:1" id="submitBtn">💾 <span id="submitLabel">Guardar propiedad</span></button>
+                <button type="button" class="btn btn-gh" id="resetBtn" style="display:none">Cancelar</button>
+              </div>
+            </form>
           </div>
-          <div class="active-filters" id="activeFilters"></div>
-          <div class="listing" id="listing"></div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ============ FORMULARIO (derecha) ============ -->
-      <section class="panel form-side">
-        <div class="panel-head">
-          <h2 id="formTitle">📝 Nueva propiedad</h2>
+    <!-- ═══════════ TAB: CLIENTES ═══════════ -->
+    <section class="tab-page" id="tab-clients">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="p-head"><h2>👥 Cartera de clientes</h2><span class="badge-n" id="clCount">0</span></div>
+          <div class="p-body">
+            <div class="toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" id="clSearch" placeholder="Buscar cliente…" />
+              </div>
+              <select id="clFilter"><option value="">Todos</option><option value="comprador">Compradores</option><option value="inquilino">Inquilinos</option><option value="vendedor">Vendedores</option><option value="propietario">Propietarios</option></select>
+            </div>
+            <div class="clients-grid" id="clientsList"></div>
+          </div>
         </div>
-        <div class="panel-body">
-          <form id="propForm" novalidate>
-            <input type="hidden" id="editId" />
-
-            <div class="field">
-              <label class="lbl">Operación</label>
-              <div class="segment">
-                <input type="radio" name="operacion" id="op-venta" value="venta" checked><label for="op-venta">🏷️ Venta</label>
-                <input type="radio" name="operacion" id="op-alq" value="alquiler"><label for="op-alq">🔑 Alquiler</label>
+        <div class="panel form-side">
+          <div class="p-head"><h2 id="clFormTitle">➕ Nuevo cliente</h2></div>
+          <div class="p-body">
+            <form id="clientForm" novalidate>
+              <input type="hidden" id="clEditId" />
+              <div class="field"><label class="lbl req" for="clName">Nombre</label><input type="text" id="clName" placeholder="Nombre y apellidos" /></div>
+              <div class="field row2">
+                <div><label class="lbl" for="clPhone">📞 Teléfono</label><input type="tel" id="clPhone" placeholder="600 000 000" /></div>
+                <div><label class="lbl" for="clEmail">✉️ Email</label><input type="email" id="clEmail" placeholder="cliente@mail.com" /></div>
               </div>
-            </div>
-
-            <div class="field">
-              <label class="lbl req" for="title">Título</label>
-              <input type="text" id="title" placeholder="Ej: Piso reformado en el centro" required />
-            </div>
-
-            <div class="field row2">
-              <div>
-                <label class="lbl req" for="price">Precio (€)</label>
-                <input type="number" id="price" min="0" placeholder="150000" required />
+              <div class="field"><label class="lbl" for="clTipo">Perfil</label>
+                <select id="clTipo"><option value="comprador">🛒 Comprador</option><option value="inquilino">🔑 Busca alquiler</option><option value="vendedor">🏷️ Vendedor</option><option value="propietario">🏠 Propietario (alquila)</option></select>
               </div>
-              <div>
-                <label class="lbl req" for="type">Tipo</label>
-                <select id="type" required>
-                  <option value="">Seleccionar…</option>
-                  <option value="piso">Piso</option><option value="casa">Casa</option><option value="chalet">Chalet</option>
-                  <option value="apartamento">Apartamento</option><option value="duplex">Dúplex</option><option value="estudio">Estudio</option>
-                  <option value="atico">Ático</option><option value="local">Local comercial</option><option value="terreno">Terreno</option>
-                </select>
+              <div class="field row2">
+                <div><label class="lbl" for="clMin">💶 Presup. mín</label><input type="number" id="clMin" placeholder="0" /></div>
+                <div><label class="lbl" for="clMax">💶 Presup. máx</label><input type="number" id="clMax" placeholder="200000" /></div>
               </div>
-            </div>
-
-            <div class="field">
-              <label class="lbl req" for="location">Ubicación</label>
-              <input type="text" id="location" placeholder="Ej: Centro, Oviedo" required />
-            </div>
-
-            <div class="field row2">
-              <div><label class="lbl" for="bedrooms">🛏️ Dormitorios</label><input type="number" id="bedrooms" min="0" placeholder="3" /></div>
-              <div><label class="lbl" for="bathrooms">🚿 Baños</label><input type="number" id="bathrooms" min="0" placeholder="2" /></div>
-            </div>
-            <div class="field row2">
-              <div><label class="lbl" for="area">📐 Superficie (m²)</label><input type="number" id="area" min="0" placeholder="80" /></div>
-              <div><label class="lbl" for="year">🗓️ Año</label><input type="number" id="year" min="1800" max="2100" placeholder="2005" /></div>
-            </div>
-
-            <div class="field row2">
-              <div>
-                <label class="lbl" for="estado">Estado</label>
-                <select id="estado"><option value="disponible">Disponible</option><option value="reservado">Reservado</option><option value="cerrado">Vendido/Alquilado</option></select>
+              <div class="field row2">
+                <div><label class="lbl" for="clWant">Busca tipo</label><select id="clWant"><option value="">Cualquiera</option><option value="piso">Piso</option><option value="casa">Casa</option><option value="chalet">Chalet</option><option value="apartamento">Apartamento</option><option value="duplex">Dúplex</option><option value="estudio">Estudio</option><option value="atico">Ático</option><option value="local">Local</option><option value="terreno">Terreno</option></select></div>
+                <div><label class="lbl" for="clZone">Zona preferida</label><input type="text" id="clZone" placeholder="Centro, Naranco…" /></div>
               </div>
-              <div>
-                <label class="lbl" for="energy">Cert. energético</label>
-                <select id="energy"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option value="tramite">En trámite</option></select>
+              <div class="field"><label class="lbl" for="clNotes">Notas</label><textarea id="clNotes" style="min-height:70px" placeholder="Necesidades, horarios de contacto…"></textarea></div>
+              <div style="display:flex;gap:9px;margin-top:18px">
+                <button type="submit" class="btn btn-vio" style="flex:1">💾 <span id="clSubmitLabel">Guardar cliente</span></button>
+                <button type="button" class="btn btn-gh" id="clResetBtn" style="display:none">Cancelar</button>
               </div>
-            </div>
-
-            <div class="field">
-              <label class="lbl">Extras</label>
-              <div class="chips" id="extrasChips">
-                <span class="chip-check"><input type="checkbox" id="ex-garaje" value="Garaje"><label for="ex-garaje">🚗 Garaje</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-ascensor" value="Ascensor"><label for="ex-ascensor">🛗 Ascensor</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-terraza" value="Terraza"><label for="ex-terraza">🌿 Terraza</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-piscina" value="Piscina"><label for="ex-piscina">🏊 Piscina</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-trastero" value="Trastero"><label for="ex-trastero">📦 Trastero</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-aire" value="Aire acondicionado"><label for="ex-aire">❄️ A/A</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-amueblado" value="Amueblado"><label for="ex-amueblado">🛋️ Amueblado</label></span>
-                <span class="chip-check"><input type="checkbox" id="ex-jardin" value="Jardín"><label for="ex-jardin">🌳 Jardín</label></span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="lbl req" for="description">Descripción</label>
-              <textarea id="description" placeholder="Describe las características principales de la propiedad…" required></textarea>
-            </div>
-
-            <div class="field">
-              <label class="lbl" for="videoUrl">🎥 URL de vídeo (YouTube/Vimeo, opcional)</label>
-              <input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=…" />
-            </div>
-
-            <div class="field">
-              <label class="lbl">📸 Fotos <span style="color:var(--fg-muted);font-weight:500">(se optimizan automáticamente)</span></label>
-              <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Subir fotos">
-                <div class="dz-ico">📤</div>
-                <div class="dz-t">Arrastra fotos o haz clic</div>
-                <div class="dz-s">JPG, PNG, WebP · La 1ª será la portada</div>
-                <input type="file" id="fileInput" accept="image/*" multiple hidden />
-              </div>
-              <div class="thumbs" id="thumbs"></div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin-top:22px;">
-              <button type="submit" class="btn btn-primary" style="flex:1" id="submitBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                <span id="submitLabel">Guardar propiedad</span>
-              </button>
-              <button type="button" class="btn btn-ghost" id="resetBtn" style="display:none">Cancelar</button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ TAB: AGENDA ═══════════ -->
+    <section class="tab-page" id="tab-agenda">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="p-head"><h2>📅 Agenda de visitas</h2><span class="badge-n" id="agCount">0</span></div>
+          <div class="p-body" id="agendaList"></div>
+        </div>
+        <div class="panel form-side">
+          <div class="p-head"><h2>➕ Nueva visita</h2></div>
+          <div class="p-body">
+            <form id="visitForm" novalidate>
+              <div class="field"><label class="lbl req" for="vProp">🏠 Propiedad</label><select id="vProp"><option value="">Seleccionar…</option></select></div>
+              <div class="field"><label class="lbl" for="vClient">👤 Cliente</label><select id="vClient"><option value="">Sin cliente / anotar en notas</option></select></div>
+              <div class="field row2">
+                <div><label class="lbl req" for="vDate">📆 Fecha</label><input type="date" id="vDate" /></div>
+                <div><label class="lbl req" for="vTime">🕐 Hora</label><input type="time" id="vTime" value="10:00" /></div>
+              </div>
+              <div class="field"><label class="lbl" for="vNotes">Notas</label><textarea id="vNotes" style="min-height:70px" placeholder="Llevar llaves, confirmar antes…"></textarea></div>
+              <button type="submit" class="btn btn-pri" style="width:100%;margin-top:14px">📅 Programar visita</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ TAB: HERRAMIENTAS ═══════════ -->
+    <section class="tab-page" id="tab-tools">
+      <div class="tools-grid">
+        <div class="panel p-body tool">
+          <h3>🏦 Calculadora de hipoteca</h3><div class="t-sub">Cuota mensual con amortización francesa</div>
+          <div class="field"><label class="lbl">Precio del inmueble (€)</label><input type="number" id="hPrecio" placeholder="185000" /></div>
+          <div class="field row2">
+            <div><label class="lbl">Entrada (%)</label><input type="number" id="hEntrada" value="20" /></div>
+            <div><label class="lbl">Interés anual (%)</label><input type="number" id="hInteres" step="0.01" value="2.9" /></div>
+          </div>
+          <div class="field"><label class="lbl">Plazo (años)</label><input type="number" id="hAnios" value="30" /></div>
+          <button class="btn btn-pri" style="width:100%" id="hCalc">Calcular cuota</button>
+          <div class="t-result" id="hRes"></div>
+        </div>
+
+        <div class="panel p-body tool">
+          <h3>📈 Rentabilidad de alquiler</h3><div class="t-sub">Yield bruto y neto para inversores</div>
+          <div class="field"><label class="lbl">Precio de compra (€)</label><input type="number" id="rPrecio" placeholder="120000" /></div>
+          <div class="field row2">
+            <div><label class="lbl">Renta mensual (€)</label><input type="number" id="rRenta" placeholder="650" /></div>
+            <div><label class="lbl">Gastos anuales (€)</label><input type="number" id="rGastos" placeholder="1400" /></div>
+          </div>
+          <button class="btn btn-vio" style="width:100%" id="rCalc">Calcular rentabilidad</button>
+          <div class="t-result" id="rRes"></div>
+        </div>
+
+        <div class="panel p-body tool">
+          <h3>💼 Honorarios de agencia</h3><div class="t-sub">Comisión con IVA desglosado</div>
+          <div class="field"><label class="lbl">Precio de operación (€)</label><input type="number" id="cPrecio" placeholder="185000" /></div>
+          <div class="field"><label class="lbl">Comisión (%)</label><input type="number" id="cPct" step="0.1" value="3" /></div>
+          <button class="btn btn-pri" style="width:100%" id="cCalc">Calcular honorarios</button>
+          <div class="t-result" id="cRes"></div>
+        </div>
+
+        <div class="panel p-body tool">
+          <h3>📐 Comparador €/m²</h3><div class="t-sub">Compara un inmueble contra tu cartera</div>
+          <div class="field row2">
+            <div><label class="lbl">Precio (€)</label><input type="number" id="mPrecio" placeholder="185000" /></div>
+            <div><label class="lbl">Superficie (m²)</label><input type="number" id="mArea" placeholder="95" /></div>
+          </div>
+          <button class="btn btn-vio" style="width:100%" id="mCalc">Comparar</button>
+          <div class="t-result" id="mRes"></div>
+        </div>
+      </div>
+    </section>
 
     <footer class="foot">
-      <p>© 2025 <a href="https://asesoriacastresana.com" target="_blank" rel="noopener">Asesoría Castresana</a> · Tu inmobiliaria de confianza en Oviedo</p>
-      <p style="margin-top:6px; opacity:.75;">Los datos se guardan en tu navegador. Usa <strong>Exportar</strong> para tener una copia de seguridad.</p>
+      <p>© 2025 <a href="https://asesoriacastresana.com" target="_blank" rel="noopener">Asesoría Castresana</a> · Oviedo — Los datos viven en tu navegador · usa <b>Exportar</b> ⬇️ para copias de seguridad</p>
     </footer>
   </div>
+</div>
 
-  <!-- ============ MODAL DETALLE ============ -->
-  <div class="modal-back" id="detailBack" role="dialog" aria-modal="true" aria-label="Detalle de propiedad">
-    <div class="modal" id="detailModal"></div>
+<!-- ═══════════ MODALES ═══════════ -->
+<div class="modal-back" id="detailBack" role="dialog" aria-modal="true"><div class="modal" id="detailModal"></div></div>
+<div class="modal-back" id="confirmBack" role="dialog" aria-modal="true">
+  <div class="modal confirm">
+    <div class="c-ico" id="cIco">⚠️</div><h3 id="cTitle">¿Seguro?</h3><p id="cText"></p>
+    <div class="c-acts"><button class="btn btn-gh" id="cCancel">Cancelar</button><button class="btn btn-dg" id="cOk">Eliminar</button></div>
   </div>
-
-  <!-- ============ MODAL CONFIRM ============ -->
-  <div class="modal-back" id="confirmBack" role="dialog" aria-modal="true">
-    <div class="modal confirm">
-      <div class="c-ico" id="cIco">⚠️</div>
-      <h3 id="cTitle">¿Estás seguro?</h3>
-      <p id="cText">Esta acción no se puede deshacer.</p>
-      <div class="c-actions">
-        <button class="btn btn-ghost" id="cCancel">Cancelar</button>
-        <button class="btn btn-danger" id="cOk">Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-  <input type="file" id="importInput" accept="application/json,.json" hidden />
-  <div class="toasts" id="toasts" aria-live="polite"></div>
+</div>
+<input type="file" id="importInput" accept="application/json,.json" hidden />
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
 (function () {
   "use strict";
 
-  /* ==================== ESTADO ==================== */
-  const LS_KEY = "ac_properties_v2";
-  const LS_THEME = "ac_theme";
-  const LS_SEQ = "ac_ref_seq";
-  let properties = load();
-  let media = [];            // media de la propiedad en edición (dataURLs)
-  let coverIndex = 0;        // índice de portada en `media`
-  let view = "grid";
-  let gallery = { items: [], i: 0 };  // lightbox del modal
-
+  /* ═══════════ UTILS ═══════════ */
   const $ = (id) => document.getElementById(id);
-  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const fmtEur = (n) => "€" + (parseInt(n, 10) || 0).toLocaleString("es-ES");
-  const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const fmtEur = (n) => "€" + (parseInt(n,10)||0).toLocaleString("es-ES");
+  const debounce = (fn,ms) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; };
+  const todayStr = () => new Date().toISOString().slice(0,10);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarse = matchMedia("(pointer: coarse)").matches;
+  const num = (v) => parseInt(v,10) || 0;
+  const CSSVAR = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
-  function load() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; } }
+  /* ═══════════ STORE ═══════════ */
+  const LS = "ac_suite_v3", LS_THEME = "ac_theme", LS_SEQ = "ac_ref_seq";
+  let db = loadDB();
+  function loadDB() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS));
+      if (raw && Array.isArray(raw.properties)) return { properties:raw.properties, clients:raw.clients||[], visits:raw.visits||[], activity:raw.activity||[] };
+    } catch {}
+    // migración desde v2
+    try {
+      const old = JSON.parse(localStorage.getItem("ac_properties_v2"));
+      if (Array.isArray(old) && old.length) return { properties:old, clients:[], visits:[], activity:[] };
+    } catch {}
+    return { properties:[], clients:[], visits:[], activity:[] };
+  }
   function persist() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(properties)); return true; }
-    catch (e) {
-      toast("Almacenamiento lleno. Exporta una copia y elimina fotos antiguas.", "err", 6000);
-      return false;
-    }
+    try { localStorage.setItem(LS, JSON.stringify(db)); return true; }
+    catch { toast("Almacenamiento lleno. Exporta una copia y borra fotos antiguas.","err",6000); return false; }
   }
-  function nextRef() {
-    let n = parseInt(localStorage.getItem(LS_SEQ) || "0", 10) + 1;
-    localStorage.setItem(LS_SEQ, String(n));
-    return "AC-" + String(n).padStart(4, "0");
-  }
+  function nextRef() { const n = num(localStorage.getItem(LS_SEQ))+1; localStorage.setItem(LS_SEQ,String(n)); return "AC-"+String(n).padStart(4,"0"); }
+  function logAct(icon,text) { db.activity.unshift({ ts:new Date().toISOString(), icon, text }); db.activity = db.activity.slice(0,30); }
 
-  /* ==================== TEMA ==================== */
-  function initTheme() {
-    const saved = localStorage.getItem(LS_THEME) || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    setTheme(saved);
-  }
-  function setTheme(t) {
-    document.documentElement.setAttribute("data-theme", t);
-    localStorage.setItem(LS_THEME, t);
-    $("themeIcon").innerHTML = t === "dark"
+  /* ═══════════ FONDO CINEMATOGRÁFICO ═══════════ */
+  (function fx(){
+    const cv = $("fx"), ctx = cv.getContext("2d");
+    if (reduced) { cv.remove(); return; }
+    let W,H,parts=[],orbs=[];
+    function size(){ W=cv.width=innerWidth*devicePixelRatio; H=cv.height=innerHeight*devicePixelRatio; cv.style.width=innerWidth+"px"; cv.style.height=innerHeight+"px"; }
+    size(); addEventListener("resize",size);
+    const N = Math.min(55, Math.floor(innerWidth/26));
+    for (let i=0;i<N;i++) parts.push({ x:Math.random(), y:Math.random(), r:(Math.random()*1.6+.5)*devicePixelRatio, s:Math.random()*.00012+.00004, o:Math.random()*.5+.15, ph:Math.random()*6.28 });
+    orbs = [
+      { c:[45,212,191], x:.85, y:.1,  r:.5,  sx:.00005, sy:.00003 },
+      { c:[139,92,246], x:.1,  y:.85, r:.55, sx:-.00004, sy:.00005 },
+      { c:[245,158,11], x:.5,  y:.5,  r:.4,  sx:.00003, sy:-.00004 },
+    ];
+    let t=0, running=true;
+    document.addEventListener("visibilitychange", ()=>{ running = !document.hidden; if(running) loop(); });
+    function loop(){
+      if (!running) return;
+      t++;
+      ctx.clearRect(0,0,W,H);
+      const dark = document.documentElement.getAttribute("data-theme")!=="light";
+      const oAlpha = dark? .13 : .1;
+      orbs.forEach(o=>{
+        const x=(o.x+Math.sin(t*o.sx*60)*.06)*W, y=(o.y+Math.cos(t*o.sy*60)*.06)*H, r=o.r*Math.min(W,H);
+        const g=ctx.createRadialGradient(x,y,0,x,y,r);
+        g.addColorStop(0,`rgba(${o.c[0]},${o.c[1]},${o.c[2]},${oAlpha})`); g.addColorStop(1,"transparent");
+        ctx.fillStyle=g; ctx.fillRect(x-r,y-r,r*2,r*2);
+      });
+      ctx.fillStyle = dark? "rgba(180,230,255,1)" : "rgba(13,80,110,1)";
+      parts.forEach(p=>{
+        p.y -= p.s; if (p.y<-.02) { p.y=1.02; p.x=Math.random(); }
+        const tw = .5+.5*Math.sin(t*.02+p.ph);
+        ctx.globalAlpha = p.o*tw*(dark?1:.55);
+        ctx.beginPath(); ctx.arc(p.x*W,p.y*H,p.r,0,6.28); ctx.fill();
+      });
+      ctx.globalAlpha=1;
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+
+  /* ═══════════ TEMA ═══════════ */
+  function setTheme(t){
+    document.documentElement.setAttribute("data-theme",t);
+    localStorage.setItem(LS_THEME,t);
+    $("themeIcon").innerHTML = t==="dark"
       ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
       : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    if (activeTab==="dash") renderDash();
   }
-  $("btnTheme").onclick = () => setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  $("btnTheme").onclick = () => setTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark");
 
-  /* ==================== TOASTS ==================== */
-  function toast(msg, type = "ok", ms = 3200) {
-    const icons = { ok: "✅", err: "⛔", warn: "⚠️", info: "ℹ️" };
-    const el = document.createElement("div");
-    el.className = "toast " + type;
-    el.innerHTML = `<span class="t-ico">${icons[type] || "ℹ️"}</span><span class="t-msg">${esc(msg)}</span>`;
+  /* ═══════════ TOASTS + CONFIRM ═══════════ */
+  function toast(msg,type="ok",ms=3200){
+    const icons={ok:"✅",err:"⛔",warn:"⚠️",info:"💡"};
+    const el=document.createElement("div"); el.className="toast "+type;
+    el.innerHTML=`<span class="t-i">${icons[type]||"💡"}</span><span class="t-m">${esc(msg)}</span>`;
     $("toasts").appendChild(el);
-    setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 300); }, ms);
+    setTimeout(()=>{ el.classList.add("out"); setTimeout(()=>el.remove(),300); },ms);
   }
-
-  /* ==================== CONFIRM ==================== */
-  function confirmDialog({ title, text, ok = "Eliminar", ico = "⚠️", danger = true } = {}) {
-    return new Promise((resolve) => {
-      $("cTitle").textContent = title; $("cText").textContent = text;
-      $("cIco").textContent = ico; $("cOk").textContent = ok;
-      $("cOk").className = "btn " + (danger ? "btn-danger" : "btn-primary");
-      const back = $("confirmBack"); back.classList.add("open");
-      const done = (v) => { back.classList.remove("open"); $("cOk").onclick = $("cCancel").onclick = null; resolve(v); };
-      $("cOk").onclick = () => done(true);
-      $("cCancel").onclick = () => done(false);
-      back.onclick = (e) => { if (e.target === back) done(false); };
+  function confirmDialog({title,text,ok="Eliminar",ico="⚠️",danger=true}={}){
+    return new Promise(res=>{
+      $("cTitle").textContent=title; $("cText").textContent=text; $("cIco").textContent=ico; $("cOk").textContent=ok;
+      $("cOk").className="btn "+(danger?"btn-dg":"btn-pri");
+      const back=$("confirmBack"); back.classList.add("open");
+      const done=v=>{ back.classList.remove("open"); $("cOk").onclick=$("cCancel").onclick=back.onclick=null; res(v); };
+      $("cOk").onclick=()=>done(true); $("cCancel").onclick=()=>done(false);
+      back.onclick=e=>{ if(e.target===back) done(false); };
     });
   }
 
-  /* ==================== COMPRESIÓN DE IMÁGENES ==================== */
-  function compress(file, maxDim = 1600, quality = 0.72) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        URL.revokeObjectURL(url);
-        let { width: w, height: h } = img;
-        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
-        else if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
-        const cv = document.createElement("canvas");
-        cv.width = w; cv.height = h;
-        cv.getContext("2d").drawImage(img, 0, 0, w, h);
-        resolve(cv.toDataURL("image/jpeg", quality));
+  /* ═══════════ TABS ═══════════ */
+  let activeTab="dash";
+  $("tabsNav").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    activeTab=b.dataset.tab;
+    $("tabsNav").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+    document.querySelectorAll(".tab-page").forEach(p=>p.classList.toggle("on",p.id==="tab-"+activeTab));
+    if (activeTab==="dash") renderDash();
+    if (activeTab==="agenda") renderAgenda();
+    if (activeTab==="clients") renderClients();
+  });
+  function badges(){
+    $("nbProps").textContent=db.properties.length;
+    $("nbClients").textContent=db.clients.length;
+    const pend=db.visits.filter(v=>v.status==="pendiente" && v.date>=todayStr()).length;
+    $("nbVisits").textContent=pend;
+  }
+
+  /* ═══════════ TILT 3D ═══════════ */
+  function addTilt(el, max=7){
+    if (reduced||coarse) return;
+    el.addEventListener("pointermove",e=>{
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      el.style.transform=`perspective(1000px) rotateY(${x*max}deg) rotateX(${-y*max}deg) translateY(-4px)`;
+      el.style.setProperty("--gx",((x+.5)*100)+"%"); el.style.setProperty("--gy",((y+.5)*100)+"%");
+    });
+    el.addEventListener("pointerleave",()=>{ el.style.transform=""; });
+  }
+
+  /* ═══════════ IMÁGENES ═══════════ */
+  let media=[], coverIndex=0;
+  function compress(file,maxDim=1600,q=.72){
+    return new Promise((res,rej)=>{
+      const img=new Image(), url=URL.createObjectURL(file);
+      img.onload=()=>{ URL.revokeObjectURL(url);
+        let {width:w,height:h}=img;
+        if (w>h&&w>maxDim){h=Math.round(h*maxDim/w);w=maxDim;} else if (h>maxDim){w=Math.round(w*maxDim/h);h=maxDim;}
+        const cv=document.createElement("canvas"); cv.width=w; cv.height=h;
+        cv.getContext("2d").drawImage(img,0,0,w,h);
+        res(cv.toDataURL("image/jpeg",q));
       };
-      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
-      img.src = url;
+      img.onerror=()=>{URL.revokeObjectURL(url);rej();};
+      img.src=url;
     });
   }
-
-  /* ==================== UPLOAD ==================== */
-  const dz = $("dropzone"), fileInput = $("fileInput");
-  dz.onclick = () => fileInput.click();
-  dz.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); } };
-  ["dragover", "dragenter"].forEach(ev => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("drag"); }));
-  ["dragleave", "drop"].forEach(ev => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("drag"); }));
-  dz.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
-  fileInput.onchange = (e) => { handleFiles(e.target.files); fileInput.value = ""; };
-
-  async function handleFiles(fileList) {
-    const files = Array.from(fileList).filter(f => f.type.startsWith("image/"));
-    if (!files.length) { toast("Solo se admiten imágenes. Para vídeos usa el campo URL.", "warn"); return; }
-    for (const f of files) {
-      try { media.push(await compress(f)); }
-      catch { toast("No se pudo procesar " + f.name, "err"); }
-    }
+  const dz=$("dropzone"), fi=$("fileInput");
+  dz.onclick=()=>fi.click();
+  dz.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();fi.click();} };
+  ["dragover","dragenter"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("drag");}));
+  ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("drag");}));
+  dz.addEventListener("drop",e=>handleFiles(e.dataTransfer.files));
+  fi.onchange=e=>{handleFiles(e.target.files);fi.value="";};
+  async function handleFiles(list){
+    const files=Array.from(list).filter(f=>f.type.startsWith("image/"));
+    if(!files.length){toast("Solo imágenes — para vídeo usa el campo URL","warn");return;}
+    for(const f of files){ try{ media.push(await compress(f)); }catch{ toast("No se pudo procesar "+f.name,"err"); } }
     renderThumbs();
   }
-
-  function renderThumbs() {
-    const box = $("thumbs");
-    if (!media.length) { box.innerHTML = ""; return; }
-    box.innerHTML = media.map((src, i) => `
-      <div class="thumb ${i === coverIndex ? "is-cover" : ""}" data-i="${i}" title="Clic para portada">
-        <img src="${src}" alt="Foto ${i + 1}" />
-        ${i === coverIndex ? '<span class="th-cover">PORTADA</span>' : ""}
-        <button type="button" class="th-rm" data-rm="${i}" aria-label="Eliminar foto">×</button>
+  function renderThumbs(){
+    const box=$("thumbs");
+    box.innerHTML=media.map((src,i)=>`
+      <div class="thumb ${i===coverIndex?"is-cover":""}" data-i="${i}" title="Clic = portada">
+        <img src="${src}" alt="Foto ${i+1}" />
+        ${i===coverIndex?'<span class="th-cv">PORTADA</span>':""}
+        <button type="button" class="th-rm" data-rm="${i}" aria-label="Quitar">×</button>
       </div>`).join("");
-    box.querySelectorAll("[data-rm]").forEach(b => b.onclick = (e) => {
-      e.stopPropagation();
-      const i = +b.dataset.rm; media.splice(i, 1);
-      if (coverIndex >= media.length) coverIndex = 0;
-      renderThumbs();
-    });
-    box.querySelectorAll(".thumb").forEach(t => t.onclick = () => { coverIndex = +t.dataset.i; renderThumbs(); });
+    box.querySelectorAll("[data-rm]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); media.splice(+b.dataset.rm,1); if(coverIndex>=media.length)coverIndex=0; renderThumbs(); });
+    box.querySelectorAll(".thumb").forEach(t=>t.onclick=()=>{ coverIndex=+t.dataset.i; renderThumbs(); });
   }
 
-  /* ==================== FORM: GUARDAR ==================== */
-  const form = $("propForm");
-  form.addEventListener("submit", (e) => {
+  /* ═══════════ PROPIEDADES: CRUD ═══════════ */
+  const form=$("propForm");
+  form.addEventListener("submit",e=>{
     e.preventDefault();
-    const get = (id) => $(id).value.trim();
-    if (!get("title") || !get("price") || !$("type").value || !get("location") || !get("description")) {
-      toast("Completa los campos obligatorios (*)", "warn"); return;
-    }
-    const extras = Array.from(document.querySelectorAll("#extrasChips input:checked")).map(c => c.value);
-    const editId = $("editId").value;
-    const ordered = coverIndex > 0 ? [media[coverIndex], ...media.filter((_, i) => i !== coverIndex)] : media.slice();
-
-    const base = {
-      operacion: document.querySelector('input[name="operacion"]:checked').value,
-      title: get("title"), price: get("price"), type: $("type").value, location: get("location"),
-      bedrooms: get("bedrooms"), bathrooms: get("bathrooms"), area: get("area"), year: get("year"),
-      estado: $("estado").value, energy: $("energy").value, extras,
-      description: get("description"), videoUrl: get("videoUrl"), media: ordered,
+    const g=id=>$(id).value.trim();
+    if(!g("title")||!g("price")||!$("type").value||!g("location")||!g("description")){ toast("Completa los campos obligatorios (*)","warn"); return; }
+    const extras=Array.from(document.querySelectorAll("#extrasChips input:checked")).map(c=>c.value);
+    const editId=$("editId").value;
+    const ordered=coverIndex>0?[media[coverIndex],...media.filter((_,i)=>i!==coverIndex)]:media.slice();
+    const base={
+      operacion:document.querySelector('input[name="operacion"]:checked').value,
+      title:g("title"),price:g("price"),type:$("type").value,location:g("location"),
+      bedrooms:g("bedrooms"),bathrooms:g("bathrooms"),area:g("area"),year:g("year"),
+      estado:$("estado").value,energy:$("energy").value,owner:g("owner"),extras,
+      description:g("description"),videoUrl:g("videoUrl"),media:ordered,
     };
-
-    if (editId) {
-      const idx = properties.findIndex(p => String(p.id) === editId);
-      if (idx > -1) properties[idx] = { ...properties[idx], ...base, updatedAt: new Date().toISOString() };
-      toast("Propiedad actualizada", "ok");
+    if(editId){
+      const i=db.properties.findIndex(p=>String(p.id)===editId);
+      if(i>-1) db.properties[i]={...db.properties[i],...base,updatedAt:new Date().toISOString()};
+      logAct("✏️","Actualizada: "+base.title);
+      toast("Propiedad actualizada");
     } else {
-      properties.unshift({ id: Date.now(), ref: nextRef(), ...base, createdAt: new Date().toISOString() });
-      toast("Propiedad guardada", "ok");
+      db.properties.unshift({id:Date.now(),ref:nextRef(),...base,createdAt:new Date().toISOString()});
+      logAct("🏠","Nueva propiedad: "+base.title);
+      toast("Propiedad guardada");
     }
-    if (!persist()) return;
-    resetForm();
-    render();
-    $("listPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    if(!persist())return;
+    resetForm(); render();
   });
-
-  $("resetBtn").onclick = resetForm;
-  function resetForm() {
-    form.reset(); $("editId").value = ""; media = []; coverIndex = 0; renderThumbs();
-    $("formTitle").textContent = "📝 Nueva propiedad";
-    $("submitLabel").textContent = "Guardar propiedad";
-    $("resetBtn").style.display = "none";
+  $("resetBtn").onclick=resetForm;
+  function resetForm(){
+    form.reset(); $("editId").value=""; media=[]; coverIndex=0; renderThumbs();
+    $("formTitle").textContent="📝 Nueva propiedad"; $("submitLabel").textContent="Guardar propiedad"; $("resetBtn").style.display="none";
   }
-
-  function editProperty(id) {
-    const p = properties.find(x => String(x.id) === String(id));
-    if (!p) return;
-    $("editId").value = p.id;
-    (document.querySelector(`input[name="operacion"][value="${p.operacion || "venta"}"]`) || {}).checked = true;
-    $("title").value = p.title || ""; $("price").value = p.price || ""; $("type").value = p.type || "";
-    $("location").value = p.location || ""; $("bedrooms").value = p.bedrooms || ""; $("bathrooms").value = p.bathrooms || "";
-    $("area").value = p.area || ""; $("year").value = p.year || ""; $("estado").value = p.estado || "disponible";
-    $("energy").value = p.energy || ""; $("description").value = p.description || ""; $("videoUrl").value = p.videoUrl || "";
-    document.querySelectorAll("#extrasChips input").forEach(c => c.checked = (p.extras || []).includes(c.value));
-    media = (p.media || []).slice(); coverIndex = 0; renderThumbs();
-    $("formTitle").textContent = "✏️ Editar propiedad";
-    $("submitLabel").textContent = "Guardar cambios";
-    $("resetBtn").style.display = "inline-flex";
-    document.querySelector(".form-side").scrollIntoView({ behavior: "smooth", block: "start" });
+  function editProperty(id){
+    const p=db.properties.find(x=>String(x.id)===String(id)); if(!p)return;
+    $("editId").value=p.id;
+    (document.querySelector(`input[name="operacion"][value="${p.operacion||"venta"}"]`)||{}).checked=true;
+    ["title","price","location","bedrooms","bathrooms","area","year","description","videoUrl","owner"].forEach(k=>$(k).value=p[k]||"");
+    $("type").value=p.type||""; $("estado").value=p.estado||"disponible"; $("energy").value=p.energy||"";
+    document.querySelectorAll("#extrasChips input").forEach(c=>c.checked=(p.extras||[]).includes(c.value));
+    media=(p.media||[]).slice(); coverIndex=0; renderThumbs();
+    $("formTitle").textContent="✏️ Editar propiedad"; $("submitLabel").textContent="Guardar cambios"; $("resetBtn").style.display="inline-flex";
+    switchTab("props");
+    document.querySelector("#tab-props .form-side").scrollIntoView({behavior:"smooth",block:"start"});
   }
-
-  async function deleteProperty(id) {
-    const p = properties.find(x => String(x.id) === String(id));
-    if (!(await confirmDialog({ title: "Eliminar propiedad", text: `Se eliminará "${p ? p.title : ""}" de forma permanente.`, ico: "🗑️" }))) return;
-    properties = properties.filter(x => String(x.id) !== String(id));
-    persist(); render(); toast("Propiedad eliminada", "ok");
+  async function deleteProperty(id){
+    const p=db.properties.find(x=>String(x.id)===String(id));
+    if(!(await confirmDialog({title:"Eliminar propiedad",text:`Se eliminará "${p?p.title:""}" y sus visitas asociadas.`,ico:"🗑️"})))return;
+    db.properties=db.properties.filter(x=>String(x.id)!==String(id));
+    db.visits=db.visits.filter(v=>String(v.propertyId)!==String(id));
+    logAct("🗑️","Eliminada: "+(p?p.title:""));
+    persist(); render(); toast("Propiedad eliminada");
   }
-
-  function duplicateProperty(id) {
-    const p = properties.find(x => String(x.id) === String(id));
-    if (!p) return;
-    properties.unshift({ ...p, id: Date.now(), ref: nextRef(), title: p.title + " (copia)", estado: "disponible", createdAt: new Date().toISOString() });
-    persist(); render(); toast("Propiedad duplicada", "ok");
+  function duplicateProperty(id){
+    const p=db.properties.find(x=>String(x.id)===String(id)); if(!p)return;
+    db.properties.unshift({...p,id:Date.now(),ref:nextRef(),title:p.title+" (copia)",estado:"disponible",createdAt:new Date().toISOString()});
+    logAct("📋","Duplicada: "+p.title);
+    persist(); render(); toast("Propiedad duplicada");
   }
+  function switchTab(name){ $("tabsNav").querySelector(`[data-tab="${name}"]`).click(); }
 
-  /* ==================== FILTROS / RENDER ==================== */
-  const filterState = { q: "", operacion: "", tipo: "", estado: "", hab: "", min: "", max: "", sort: "recent" };
-  const bind = (id, key, ev = "change") => $(id).addEventListener(ev, (e) => { filterState[key] = e.target.value; render(); });
-  $("search").addEventListener("input", debounce((e) => { filterState.q = e.target.value.toLowerCase(); render(); }, 180));
-  bind("fOperacion", "operacion"); bind("fTipo", "tipo"); bind("fEstado", "estado"); bind("fHab", "hab");
-  bind("fMin", "min", "input"); bind("fMax", "max", "input"); bind("fSort", "sort");
-  $("viewGrid").onclick = () => { view = "grid"; $("viewGrid").classList.add("active"); $("viewList").classList.remove("active"); render(); };
-  $("viewList").onclick = () => { view = "list"; $("viewList").classList.add("active"); $("viewGrid").classList.remove("active"); render(); };
+  /* ═══════════ PROPIEDADES: FILTROS + RENDER ═══════════ */
+  const fState={q:"",operacion:"",tipo:"",estado:"",hab:"",min:"",max:"",sort:"recent"};
+  let view="grid";
+  const bindF=(id,key,ev="change")=>$(id).addEventListener(ev,e=>{fState[key]=e.target.value;renderProps();});
+  $("search").addEventListener("input",debounce(e=>{fState.q=e.target.value.toLowerCase();renderProps();},160));
+  bindF("fOperacion","operacion");bindF("fTipo","tipo");bindF("fEstado","estado");bindF("fHab","hab");
+  bindF("fMin","min","input");bindF("fMax","max","input");bindF("fSort","sort");
+  $("viewGrid").onclick=()=>{view="grid";$("viewGrid").classList.add("active");$("viewList").classList.remove("active");renderProps();};
+  $("viewList").onclick=()=>{view="list";$("viewList").classList.add("active");$("viewGrid").classList.remove("active");renderProps();};
 
-  function applyFilters() {
-    let list = properties.slice();
-    const f = filterState;
-    if (f.q) list = list.filter(p => (p.title + " " + p.location + " " + (p.ref || "") + " " + p.description).toLowerCase().includes(f.q));
-    if (f.operacion) list = list.filter(p => (p.operacion || "venta") === f.operacion);
-    if (f.tipo) list = list.filter(p => p.type === f.tipo);
-    if (f.estado) list = list.filter(p => (p.estado || "disponible") === f.estado);
-    if (f.hab) list = list.filter(p => (parseInt(p.bedrooms, 10) || 0) >= parseInt(f.hab, 10));
-    if (f.min) list = list.filter(p => (parseInt(p.price, 10) || 0) >= parseInt(f.min, 10));
-    if (f.max) list = list.filter(p => (parseInt(p.price, 10) || 0) <= parseInt(f.max, 10));
-    const num = (p, k) => parseInt(p[k], 10) || 0;
-    if (f.sort === "price-asc") list.sort((a, b) => num(a, "price") - num(b, "price"));
-    else if (f.sort === "price-desc") list.sort((a, b) => num(b, "price") - num(a, "price"));
-    else if (f.sort === "area-desc") list.sort((a, b) => num(b, "area") - num(a, "area"));
-    return list;
+  function applyFilters(){
+    let l=db.properties.slice(); const f=fState;
+    if(f.q) l=l.filter(p=>(p.title+" "+p.location+" "+(p.ref||"")+" "+p.description).toLowerCase().includes(f.q));
+    if(f.operacion) l=l.filter(p=>(p.operacion||"venta")===f.operacion);
+    if(f.tipo) l=l.filter(p=>p.type===f.tipo);
+    if(f.estado) l=l.filter(p=>(p.estado||"disponible")===f.estado);
+    if(f.hab) l=l.filter(p=>num(p.bedrooms)>=num(f.hab));
+    if(f.min) l=l.filter(p=>num(p.price)>=num(f.min));
+    if(f.max) l=l.filter(p=>num(p.price)<=num(f.max));
+    if(f.sort==="price-asc") l.sort((a,b)=>num(a.price)-num(b.price));
+    else if(f.sort==="price-desc") l.sort((a,b)=>num(b.price)-num(a.price));
+    else if(f.sort==="area-desc") l.sort((a,b)=>num(b.area)-num(a.area));
+    return l;
   }
-
-  function renderActiveFilters() {
-    const f = filterState, box = $("activeFilters"), pills = [];
-    const add = (label, key, val = "") => pills.push(`<span class="fpill">${esc(label)}<button data-clear="${key}" aria-label="Quitar filtro">×</button></span>`);
-    if (f.operacion) add(f.operacion, "operacion");
-    if (f.tipo) add(f.tipo, "tipo");
-    if (f.estado) add(f.estado, "estado");
-    if (f.hab) add(f.hab + "+ dorm.", "hab");
-    if (f.min) add("desde " + fmtEur(f.min), "min");
-    if (f.max) add("hasta " + fmtEur(f.max), "max");
-    box.innerHTML = pills.join("");
-    box.querySelectorAll("[data-clear]").forEach(b => b.onclick = () => {
-      const k = b.dataset.clear; filterState[k] = "";
-      const map = { operacion: "fOperacion", tipo: "fTipo", estado: "fEstado", hab: "fHab", min: "fMin", max: "fMax" };
-      if (map[k]) $(map[k]).value = "";
-      render();
+  function renderPills(){
+    const f=fState,pills=[];
+    const add=(lb,k)=>pills.push(`<span class="fpill">${esc(lb)}<button data-clear="${k}">×</button></span>`);
+    if(f.operacion)add(f.operacion,"operacion"); if(f.tipo)add(f.tipo,"tipo"); if(f.estado)add(f.estado,"estado");
+    if(f.hab)add(f.hab+"+ dorm.","hab"); if(f.min)add("desde "+fmtEur(f.min),"min"); if(f.max)add("hasta "+fmtEur(f.max),"max");
+    $("activeFilters").innerHTML=pills.join("");
+    $("activeFilters").querySelectorAll("[data-clear]").forEach(b=>b.onclick=()=>{
+      const k=b.dataset.clear;fState[k]="";
+      const map={operacion:"fOperacion",tipo:"fTipo",estado:"fEstado",hab:"fHab",min:"fMin",max:"fMax"};
+      if(map[k])$(map[k]).value=""; renderProps();
     });
   }
-
-  const ICON = {
-    bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>',
-    bath: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.7 3 4 3.7 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5H4"/><line x1="10" y1="5" x2="8" y2="7"/></svg>',
-    area: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>',
-    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-    photo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  const ICON={
+    bed:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>',
+    bath:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.7 3 4 3.7 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5H4"/><line x1="10" y1="5" x2="8" y2="7"/></svg>',
+    area:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>',
+    pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+    cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
   };
-  const priceLabel = (p) => fmtEur(p.price) + (((p.operacion || "venta") === "alquiler") ? '<small>/mes</small>' : "");
-  const estadoBadge = (p) => {
-    const e = p.estado || "disponible";
-    if (e === "reservado") return '<span class="badge estado-reservado">Reservado</span>';
-    if (e === "cerrado") return `<span class="badge estado-vendido">${(p.operacion || "venta") === "alquiler" ? "Alquilado" : "Vendido"}</span>`;
+  const priceLabel=p=>fmtEur(p.price)+(((p.operacion||"venta")==="alquiler")?'<small>/mes</small>':"");
+  const estadoBadge=p=>{
+    const e=p.estado||"disponible";
+    if(e==="reservado")return '<span class="badge st-res">Reservado</span>';
+    if(e==="cerrado")return `<span class="badge st-cer">${(p.operacion||"venta")==="alquiler"?"Alquilado":"Vendido"}</span>`;
     return "";
   };
 
-  function render() {
-    const list = applyFilters();
-    $("countBadge").textContent = properties.length;
-    renderStats();
-    renderActiveFilters();
-    const box = $("listing");
-    box.className = "listing" + (view === "list" ? " list-view" : "");
-
-    if (!properties.length) {
-      box.innerHTML = `<div class="empty"><div class="e-ico">🏠</div><h3>Aún no hay propiedades</h3><p>Añade tu primer inmueble con el formulario de la derecha.</p></div>`;
-      return;
-    }
-    if (!list.length) {
-      box.innerHTML = `<div class="empty"><div class="e-ico">🔍</div><h3>Sin resultados</h3><p>Prueba a ajustar la búsqueda o los filtros.</p></div>`;
-      return;
-    }
-
-    box.innerHTML = list.map((p, idx) => {
-      const cover = (p.media && p.media[0]) || "";
-      const specs = [
-        p.bedrooms ? `<span class="spec">${ICON.bed}${p.bedrooms}</span>` : "",
-        p.bathrooms ? `<span class="spec">${ICON.bath}${p.bathrooms}</span>` : "",
-        p.area ? `<span class="spec">${ICON.area}${p.area} m²</span>` : "",
+  function renderProps(){
+    const list=applyFilters();
+    $("countBadge").textContent=db.properties.length;
+    renderPills();
+    const box=$("listing");
+    box.className="listing"+(view==="list"?" list-view":"");
+    if(!db.properties.length){ box.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="e-ico">🏙️</div><h3>Cartera vacía</h3><p>Da de alta tu primer inmueble con el formulario.</p></div>`; return; }
+    if(!list.length){ box.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="e-ico">🔍</div><h3>Sin resultados</h3><p>Ajusta la búsqueda o los filtros.</p></div>`; return; }
+    box.innerHTML=list.map((p,idx)=>{
+      const cover=(p.media&&p.media[0])||"";
+      const nMatch=matchClientsFor(p).length;
+      const specs=[
+        p.bedrooms?`<span class="spec">${ICON.bed}${p.bedrooms}</span>`:"",
+        p.bathrooms?`<span class="spec">${ICON.bath}${p.bathrooms}</span>`:"",
+        p.area?`<span class="spec">${ICON.area}${p.area} m²</span>`:"",
       ].join("");
       return `
-      <article class="prop" style="animation-delay:${Math.min(idx * 40, 300)}ms">
+      <article class="prop" style="animation-delay:${Math.min(idx*35,280)}ms" data-tilt>
         <div class="prop-media" data-open="${p.id}">
-          ${cover ? `<img src="${cover}" alt="${esc(p.title)}" loading="lazy" />` : `<div class="no-photo">🏠</div>`}
+          ${cover?`<img src="${cover}" alt="${esc(p.title)}" loading="lazy" />`:`<div class="no-photo">🏠</div>`}
           <div class="prop-badges">
-            <span class="badge ${(p.operacion || "venta")}">${(p.operacion || "venta") === "alquiler" ? "Alquiler" : "Venta"}</span>
+            <span class="badge ${(p.operacion||"venta")}">${(p.operacion||"venta")==="alquiler"?"Alquiler":"Venta"}</span>
             ${estadoBadge(p)}
+            ${nMatch?`<span class="badge st-match">💜 ${nMatch} match</span>`:""}
           </div>
-          ${p.media && p.media.length ? `<span class="prop-photocount">${ICON.photo}${p.media.length}</span>` : ""}
+          ${p.media&&p.media.length?`<span class="prop-count">${ICON.cam}${p.media.length}</span>`:""}
         </div>
         <div class="prop-body">
-          <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px">
-            <div class="prop-price">${priceLabel(p)}</div>
-            <div class="prop-ref">${esc(p.ref || "")}</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+            <div class="prop-price">${priceLabel(p)}</div><div class="prop-ref">${esc(p.ref||"")}</div>
           </div>
           <div class="prop-title">${esc(p.title)}</div>
           <div class="prop-loc">${ICON.pin}${esc(p.location)}</div>
-          ${specs ? `<div class="prop-specs">${specs}</div>` : ""}
+          ${specs?`<div class="prop-specs">${specs}</div>`:""}
         </div>
         <div class="prop-actions">
           <button class="btn btn-wa btn-sm" data-wa="${p.id}">📱 WhatsApp</button>
-          <button class="btn btn-ghost btn-sm" data-open="${p.id}">Ver</button>
+          <button class="btn btn-gh btn-sm" data-open="${p.id}">Ver</button>
           <div class="a-menu">
-            <button class="btn btn-ghost btn-sm a-menu-btn" data-menu="${p.id}" aria-label="Más acciones">⋯</button>
+            <button class="btn btn-gh btn-sm a-menu-btn" data-menu="${p.id}">⋯</button>
             <div class="a-pop" id="pop-${p.id}">
               <button data-edit="${p.id}">✏️ Editar</button>
+              <button data-visit="${p.id}">📅 Programar visita</button>
+              <button data-print="${p.id}">🖨️ Imprimir ficha</button>
               <button data-dup="${p.id}">📋 Duplicar</button>
               <button class="danger" data-del="${p.id}">🗑️ Eliminar</button>
             </div>
@@ -908,183 +1021,573 @@
         </div>
       </article>`;
     }).join("");
-
-    box.querySelectorAll("[data-open]").forEach(el => el.onclick = () => openDetail(el.dataset.open));
-    box.querySelectorAll("[data-wa]").forEach(el => el.onclick = (e) => { e.stopPropagation(); shareWhatsApp(el.dataset.wa); });
-    box.querySelectorAll("[data-edit]").forEach(el => el.onclick = () => editProperty(el.dataset.edit));
-    box.querySelectorAll("[data-dup]").forEach(el => el.onclick = () => duplicateProperty(el.dataset.dup));
-    box.querySelectorAll("[data-del]").forEach(el => el.onclick = () => deleteProperty(el.dataset.del));
-    box.querySelectorAll("[data-menu]").forEach(el => el.onclick = (e) => {
+    box.querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>openDetail(el.dataset.open));
+    box.querySelectorAll("[data-wa]").forEach(el=>el.onclick=e=>{e.stopPropagation();shareWA(el.dataset.wa);});
+    box.querySelectorAll("[data-edit]").forEach(el=>el.onclick=()=>editProperty(el.dataset.edit));
+    box.querySelectorAll("[data-dup]").forEach(el=>el.onclick=()=>duplicateProperty(el.dataset.dup));
+    box.querySelectorAll("[data-del]").forEach(el=>el.onclick=()=>deleteProperty(el.dataset.del));
+    box.querySelectorAll("[data-print]").forEach(el=>el.onclick=()=>printFicha(el.dataset.print));
+    box.querySelectorAll("[data-visit]").forEach(el=>el.onclick=()=>{ switchTab("agenda"); $("vProp").value=el.dataset.visit; $("vDate").value=todayStr(); });
+    box.querySelectorAll("[data-menu]").forEach(el=>el.onclick=e=>{
       e.stopPropagation();
-      const pop = $("pop-" + el.dataset.menu);
-      document.querySelectorAll(".a-pop.open").forEach(p => p !== pop && p.classList.remove("open"));
+      const pop=$("pop-"+el.dataset.menu);
+      document.querySelectorAll(".a-pop.open").forEach(p=>p!==pop&&p.classList.remove("open"));
       pop.classList.toggle("open");
     });
+    box.querySelectorAll("[data-tilt]").forEach(el=>addTilt(el));
   }
-  document.addEventListener("click", () => document.querySelectorAll(".a-pop.open").forEach(p => p.classList.remove("open")));
+  document.addEventListener("click",()=>document.querySelectorAll(".a-pop.open").forEach(p=>p.classList.remove("open")));
 
-  /* ==================== ESTADÍSTICAS ==================== */
-  function renderStats() {
-    const disp = properties.filter(p => (p.estado || "disponible") === "disponible");
-    const totalValue = properties.reduce((s, p) => s + (parseInt(p.price, 10) || 0), 0);
-    const withArea = properties.filter(p => parseInt(p.area, 10) > 0 && parseInt(p.price, 10) > 0);
-    const avgM2 = withArea.length ? Math.round(withArea.reduce((s, p) => s + parseInt(p.price, 10) / parseInt(p.area, 10), 0) / withArea.length) : 0;
-    const compact = (n) => n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(".", ",") + "M" : n >= 1e3 ? Math.round(n / 1e3) + "K" : n;
-    $("stats").innerHTML = `
-      <div class="stat"><div class="s-icon">🏘️</div><div class="s-label">En cartera</div><div class="s-value">${properties.length}</div><div class="s-foot">${disp.length} disponibles</div></div>
-      <div class="stat accent"><div class="s-icon">💰</div><div class="s-label">Valor cartera</div><div class="s-value">€${compact(totalValue)}</div><div class="s-foot">suma de precios</div></div>
-      <div class="stat"><div class="s-icon">📊</div><div class="s-label">Precio medio /m²</div><div class="s-value">${avgM2 ? "€" + avgM2.toLocaleString("es-ES") : "—"}</div><div class="s-foot">${withArea.length} con superficie</div></div>
-      <div class="stat"><div class="s-icon">🔑</div><div class="s-label">En alquiler</div><div class="s-value">${properties.filter(p => p.operacion === "alquiler").length}</div><div class="s-foot">${properties.filter(p => (p.operacion || "venta") === "venta").length} en venta</div></div>`;
+  /* ═══════════ DETALLE + GALERÍA ═══════════ */
+  let gallery={items:[],i:0};
+  function videoEmbed(url){
+    if(!url)return"";
+    const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+    if(yt)return`<div class="m-video"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen loading="lazy"></iframe></div>`;
+    const vm=url.match(/vimeo\.com\/(\d+)/);
+    if(vm)return`<div class="m-video"><iframe src="https://player.vimeo.com/video/${vm[1]}" allowfullscreen loading="lazy"></iframe></div>`;
+    return`<div style="margin-top:18px"><a class="btn btn-gh" href="${esc(url)}" target="_blank" rel="noopener">🎥 Ver vídeo / tour</a></div>`;
   }
-
-  /* ==================== MODAL DETALLE + LIGHTBOX ==================== */
-  function videoEmbed(url) {
-    if (!url) return "";
-    const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
-    if (yt) return `<div class="m-video"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen loading="lazy"></iframe></div>`;
-    const vm = url.match(/vimeo\.com\/(\d+)/);
-    if (vm) return `<div class="m-video"><iframe src="https://player.vimeo.com/video/${vm[1]}" allowfullscreen loading="lazy"></iframe></div>`;
-    return `<div style="margin-top:20px"><a class="btn btn-ghost" href="${esc(url)}" target="_blank" rel="noopener">🎥 Ver vídeo</a></div>`;
-  }
-
-  function openDetail(id) {
-    const p = properties.find(x => String(x.id) === String(id));
-    if (!p) return;
-    gallery = { items: (p.media || []).slice(), i: 0 };
-    const specs = [
-      p.bedrooms ? { v: p.bedrooms, l: "Dormitorios" } : null,
-      p.bathrooms ? { v: p.bathrooms, l: "Baños" } : null,
-      p.area ? { v: p.area + " m²", l: "Superficie" } : null,
-      p.year ? { v: p.year, l: "Año" } : null,
-      p.energy ? { v: p.energy === "tramite" ? "En trámite" : p.energy, l: "Cert. energ." } : null,
+  function openDetail(id){
+    const p=db.properties.find(x=>String(x.id)===String(id)); if(!p)return;
+    gallery={items:(p.media||[]).slice(),i:0};
+    const specs=[
+      p.bedrooms?{v:p.bedrooms,l:"Dormitorios"}:null, p.bathrooms?{v:p.bathrooms,l:"Baños"}:null,
+      p.area?{v:p.area+" m²",l:"Superficie"}:null, p.year?{v:p.year,l:"Año"}:null,
+      p.area&&num(p.price)?{v:"€"+Math.round(num(p.price)/num(p.area)).toLocaleString("es-ES"),l:"€/m²"}:null,
+      p.energy?{v:p.energy==="tramite"?"Trámite":p.energy,l:"Cert. energ."}:null,
     ].filter(Boolean);
-
-    $("detailModal").innerHTML = `
-      <button class="icon-btn modal-x" id="detailClose" aria-label="Cerrar">✕</button>
-      ${gallery.items.length ? `
+    const interested=matchClientsFor(p);
+    $("detailModal").innerHTML=`
+      <button class="icon-btn modal-x" id="dClose" aria-label="Cerrar">✕</button>
+      ${gallery.items.length?`
         <div class="m-gallery">
           <img id="galImg" src="${gallery.items[0]}" alt="${esc(p.title)}" />
-          ${gallery.items.length > 1 ? `
-            <button class="m-nav prev" id="galPrev" aria-label="Anterior">‹</button>
-            <button class="m-nav next" id="galNext" aria-label="Siguiente">›</button>
-            <div class="m-dots" id="galDots">${gallery.items.map((_, i) => `<span class="${i === 0 ? "on" : ""}" data-d="${i}"></span>`).join("")}</div>` : ""}
-        </div>` : `<div class="m-gallery" style="display:grid;place-items:center;font-size:60px">🏠</div>`}
+          ${gallery.items.length>1?`
+            <button class="m-nav prev" id="galPrev">‹</button><button class="m-nav next" id="galNext">›</button>
+            <div class="m-dots" id="galDots">${gallery.items.map((_,i)=>`<span class="${i===0?"on":""}" data-d="${i}"></span>`).join("")}</div>`:""}
+        </div>`:`<div class="m-gallery" style="display:grid;place-items:center;font-size:58px">🏠</div>`}
       <div class="m-body">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
           <div>
             <div class="m-price">${priceLabel(p)}</div>
             <div class="m-title">${esc(p.title)}</div>
             <div class="m-loc">${ICON.pin}${esc(p.location)}</div>
           </div>
           <div style="text-align:right">
-            <span class="badge ${(p.operacion || "venta")}" style="position:static">${(p.operacion || "venta") === "alquiler" ? "Alquiler" : "Venta"}</span>
-            ${estadoBadge(p)}
-            <div class="prop-ref" style="margin-top:8px">${esc(p.ref || "")}</div>
+            <span class="badge ${(p.operacion||"venta")}">${(p.operacion||"venta")==="alquiler"?"Alquiler":"Venta"}</span> ${estadoBadge(p)}
+            <div class="prop-ref" style="margin-top:8px">${esc(p.ref||"")}</div>
           </div>
         </div>
-        ${specs.length ? `<div class="m-specs">${specs.map(s => `<div class="m-spec"><div class="v">${esc(s.v)}</div><div class="l">${esc(s.l)}</div></div>`).join("")}</div>` : ""}
-        ${(p.extras && p.extras.length) ? `<div class="m-extras">${p.extras.map(x => `<span class="m-extra">✓ ${esc(x)}</span>`).join("")}</div>` : ""}
+        ${specs.length?`<div class="m-specs">${specs.map(s=>`<div class="m-spec"><div class="v">${esc(s.v)}</div><div class="l">${esc(s.l)}</div></div>`).join("")}</div>`:""}
+        ${(p.extras&&p.extras.length)?`<div class="m-extras">${p.extras.map(x=>`<span class="m-extra">✓ ${esc(x)}</span>`).join("")}</div>`:""}
         <p class="m-desc">${esc(p.description)}</p>
+        ${p.owner?`<p style="margin-top:14px;font-size:12.5px;color:var(--fg-mut)">🤝 Propietario: ${esc(p.owner)} <em>(interno)</em></p>`:""}
         ${videoEmbed(p.videoUrl)}
+        ${interested.length?`<div class="m-int"><h4>💜 Clientes que encajan (${interested.length})</h4>
+          ${interested.slice(0,5).map(c=>`<div class="cm-item"><b>${esc(c.name)}</b><span class="cm-p">${c.budgetMax?("hasta "+fmtEur(c.budgetMax)):"sin tope"}</span>
+          ${c.phone?`<button data-send="${c.id}" title="Enviar ficha por WhatsApp">📱</button>`:""}</div>`).join("")}</div>`:""}
         <div class="m-actions">
-          <button class="btn btn-wa" data-wa="${p.id}" style="flex:1">📱 Compartir por WhatsApp</button>
-          <button class="btn btn-ghost" id="copyBtn">📋 Copiar ficha</button>
-          <button class="btn btn-ghost" data-edit="${p.id}">✏️ Editar</button>
+          <button class="btn btn-wa" data-mwa style="flex:1">📱 Compartir por WhatsApp</button>
+          <button class="btn btn-gh" data-mcopy>📋 Copiar ficha</button>
+          <button class="btn btn-gh" data-mprint>🖨️ Imprimir</button>
+          <button class="btn btn-gh" data-medit>✏️ Editar</button>
         </div>
       </div>`;
-
-    $("detailBack").classList.add("open");
-    document.body.style.overflow = "hidden";
-    $("detailClose").onclick = closeDetail;
-    const wa = $("detailModal").querySelector("[data-wa]"); if (wa) wa.onclick = () => shareWhatsApp(p.id);
-    const ed = $("detailModal").querySelector("[data-edit]"); if (ed) ed.onclick = () => { closeDetail(); editProperty(p.id); };
-    $("copyBtn") && ($("copyBtn").onclick = () => copyFicha(p));
-    if (gallery.items.length > 1) {
-      $("galPrev").onclick = () => galNav(-1);
-      $("galNext").onclick = () => galNav(1);
-      $("galDots").querySelectorAll("[data-d]").forEach(d => d.onclick = () => { gallery.i = +d.dataset.d; galUpdate(); });
+    $("detailBack").classList.add("open"); document.body.style.overflow="hidden";
+    $("dClose").onclick=closeDetail;
+    $("detailModal").querySelector("[data-mwa]").onclick=()=>shareWA(p.id);
+    $("detailModal").querySelector("[data-mcopy]").onclick=()=>copyFicha(p);
+    $("detailModal").querySelector("[data-mprint]").onclick=()=>printFicha(p.id);
+    $("detailModal").querySelector("[data-medit]").onclick=()=>{closeDetail();editProperty(p.id);};
+    $("detailModal").querySelectorAll("[data-send]").forEach(b=>b.onclick=()=>sendToClient(p.id,b.dataset.send));
+    if(gallery.items.length>1){
+      $("galPrev").onclick=()=>galNav(-1); $("galNext").onclick=()=>galNav(1);
+      $("galDots").querySelectorAll("[data-d]").forEach(d=>d.onclick=()=>{gallery.i=+d.dataset.d;galUpd();});
     }
   }
-  function galNav(dir) { gallery.i = (gallery.i + dir + gallery.items.length) % gallery.items.length; galUpdate(); }
-  function galUpdate() {
-    $("galImg").src = gallery.items[gallery.i];
-    $("galDots") && $("galDots").querySelectorAll("span").forEach((s, i) => s.classList.toggle("on", i === gallery.i));
-  }
-  function closeDetail() { $("detailBack").classList.remove("open"); document.body.style.overflow = ""; }
-  $("detailBack").onclick = (e) => { if (e.target === $("detailBack")) closeDetail(); };
-  document.addEventListener("keydown", (e) => {
-    if (!$("detailBack").classList.contains("open")) return;
-    if (e.key === "Escape") closeDetail();
-    if (gallery.items.length > 1 && e.key === "ArrowLeft") galNav(-1);
-    if (gallery.items.length > 1 && e.key === "ArrowRight") galNav(1);
+  function galNav(d){gallery.i=(gallery.i+d+gallery.items.length)%gallery.items.length;galUpd();}
+  function galUpd(){ $("galImg").src=gallery.items[gallery.i]; const dd=$("galDots"); if(dd)dd.querySelectorAll("span").forEach((s,i)=>s.classList.toggle("on",i===gallery.i)); }
+  function closeDetail(){$("detailBack").classList.remove("open");document.body.style.overflow="";}
+  $("detailBack").onclick=e=>{if(e.target===$("detailBack"))closeDetail();};
+  document.addEventListener("keydown",e=>{
+    if(!$("detailBack").classList.contains("open"))return;
+    if(e.key==="Escape")closeDetail();
+    if(gallery.items.length>1&&e.key==="ArrowLeft")galNav(-1);
+    if(gallery.items.length>1&&e.key==="ArrowRight")galNav(1);
   });
 
-  /* ==================== COMPARTIR ==================== */
-  function fichaText(p) {
-    const L = [];
-    L.push(`🏠 *${p.title}*  (${p.ref || ""})`);
-    L.push(`💰 *${(parseInt(p.price, 10) || 0).toLocaleString("es-ES")} €*${(p.operacion || "venta") === "alquiler" ? "/mes" : ""}`);
-    L.push(`📍 ${p.location}`);
-    L.push(`🏷️ ${p.type}${(p.operacion || "venta") === "alquiler" ? " · Alquiler" : " · Venta"}`);
-    const sp = [];
-    if (p.bedrooms) sp.push(`🛏️ ${p.bedrooms} hab.`);
-    if (p.bathrooms) sp.push(`🚿 ${p.bathrooms} baños`);
-    if (p.area) sp.push(`📐 ${p.area} m²`);
-    if (sp.length) L.push(sp.join("  ·  "));
-    if (p.extras && p.extras.length) L.push("✨ " + p.extras.join(", "));
-    L.push("");
-    L.push(p.description);
-    if (p.videoUrl) L.push(`\n🎥 Vídeo: ${p.videoUrl}`);
+  /* ═══════════ COMPARTIR / IMPRIMIR ═══════════ */
+  function fichaText(p){
+    const L=[];
+    L.push(`🏠 *${p.title}*  (${p.ref||""})`);
+    L.push(`💰 *${num(p.price).toLocaleString("es-ES")} €*${(p.operacion||"venta")==="alquiler"?"/mes":""}`);
+    L.push(`📍 ${p.location}`); L.push(`🏷️ ${p.type}${(p.operacion||"venta")==="alquiler"?" · Alquiler":" · Venta"}`);
+    const sp=[]; if(p.bedrooms)sp.push(`🛏️ ${p.bedrooms} hab.`); if(p.bathrooms)sp.push(`🚿 ${p.bathrooms} baños`); if(p.area)sp.push(`📐 ${p.area} m²`);
+    if(sp.length)L.push(sp.join("  ·  "));
+    if(p.extras&&p.extras.length)L.push("✨ "+p.extras.join(", "));
+    L.push(""); L.push(p.description);
+    if(p.videoUrl)L.push(`\n🎥 Vídeo: ${p.videoUrl}`);
     L.push(`\n———\n🏢 *Asesoría Castresana* · Oviedo\n🌐 https://asesoriacastresana.com`);
     return L.join("\n");
   }
-  function shareWhatsApp(id) {
-    const p = properties.find(x => String(x.id) === String(id));
-    if (!p) return;
-    window.open("https://wa.me/?text=" + encodeURIComponent(fichaText(p)), "_blank");
+  function shareWA(id){ const p=db.properties.find(x=>String(x.id)===String(id)); if(!p)return; window.open("https://wa.me/?text="+encodeURIComponent(fichaText(p)),"_blank"); }
+  function sendToClient(pid,cid){
+    const p=db.properties.find(x=>String(x.id)===String(pid)), c=db.clients.find(x=>String(x.id)===String(cid));
+    if(!p||!c)return;
+    let ph=(c.phone||"").replace(/\D/g,""); if(ph.length===9)ph="34"+ph;
+    const msg=`Hola ${c.name.split(" ")[0]} 👋 Te paso una propiedad que encaja con lo que buscas:\n\n`+fichaText(p);
+    window.open(`https://wa.me/${ph}?text=`+encodeURIComponent(msg),"_blank");
+    logAct("📤",`Ficha ${p.ref||""} enviada a ${c.name}`); persist();
   }
-  async function copyFicha(p) {
-    try { await navigator.clipboard.writeText(fichaText(p)); toast("Ficha copiada al portapapeles", "ok"); }
-    catch { toast("No se pudo copiar", "err"); }
+  async function copyFicha(p){ try{ await navigator.clipboard.writeText(fichaText(p)); toast("Ficha copiada"); }catch{ toast("No se pudo copiar","err"); } }
+  function printFicha(id){
+    const p=db.properties.find(x=>String(x.id)===String(id)); if(!p)return;
+    const w=window.open("","_blank"); if(!w){toast("Permite ventanas emergentes para imprimir","warn");return;}
+    const photos=(p.media||[]).slice(0,6);
+    w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>${esc(p.ref||"")} — ${esc(p.title)}</title>
+      <style>body{font-family:system-ui,sans-serif;color:#111;max-width:800px;margin:24px auto;padding:0 20px}
+      h1{font-size:24px;margin:4px 0}.pr{font-size:28px;font-weight:800;color:#0d9488}
+      .meta{color:#555;font-size:14px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+      .grid img{width:100%;height:150px;object-fit:cover;border-radius:8px}
+      .specs{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0;font-size:14px}
+      .specs b{font-size:17px}.desc{line-height:1.6;font-size:14px;white-space:pre-wrap}
+      .foot{margin-top:26px;border-top:1px solid #ddd;padding-top:12px;font-size:12px;color:#666}
+      .tag{display:inline-block;background:#e6fffb;color:#0d9488;border-radius:20px;padding:3px 10px;font-size:12px;margin:2px}</style></head><body>
+      <div class="meta">Asesoría Castresana · Oviedo · Ref. ${esc(p.ref||"")}</div>
+      <h1>${esc(p.title)}</h1>
+      <div class="pr">${num(p.price).toLocaleString("es-ES")} €${(p.operacion||"venta")==="alquiler"?"/mes":""}</div>
+      <div class="meta">📍 ${esc(p.location)} · ${esc(p.type)} · ${(p.operacion||"venta")==="alquiler"?"Alquiler":"Venta"}</div>
+      ${photos.length?`<div class="grid">${photos.map(m=>`<img src="${m}">`).join("")}</div>`:""}
+      <div class="specs">
+        ${p.bedrooms?`<span>🛏️ <b>${p.bedrooms}</b> dorm.</span>`:""} ${p.bathrooms?`<span>🚿 <b>${p.bathrooms}</b> baños</span>`:""}
+        ${p.area?`<span>📐 <b>${p.area}</b> m²</span>`:""} ${p.year?`<span>🗓️ <b>${p.year}</b></span>`:""}
+        ${p.energy?`<span>⚡ Cert. <b>${esc(p.energy)}</b></span>`:""}
+      </div>
+      ${(p.extras||[]).map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join("")}
+      <p class="desc">${esc(p.description)}</p>
+      <div class="foot">🏢 Asesoría Castresana — Tu inmobiliaria de confianza en Oviedo · https://asesoriacastresana.com</div>
+      <script>window.onload=()=>setTimeout(()=>window.print(),300)<\/script></body></html>`);
+    w.document.close();
   }
 
-  /* ==================== EXPORTAR / IMPORTAR ==================== */
-  $("btnExport").onclick = () => {
-    if (!properties.length) { toast("No hay propiedades que exportar", "warn"); return; }
-    const blob = new Blob([JSON.stringify({ app: "asesoria-castresana", version: 2, exportedAt: new Date().toISOString(), properties }, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "propiedades-" + new Date().toISOString().slice(0, 10) + ".json";
-    a.click(); URL.revokeObjectURL(a.href);
-    toast("Copia de seguridad descargada", "ok");
+  /* ═══════════ CLIENTES ═══════════ */
+  const clForm=$("clientForm");
+  const CL_COLORS=["#0d9488","#7c3aed","#d97706","#e11d48","#2563eb","#059669"];
+  clForm.addEventListener("submit",e=>{
+    e.preventDefault();
+    const name=$("clName").value.trim();
+    if(!name){toast("El nombre es obligatorio","warn");return;}
+    const c={
+      name, phone:$("clPhone").value.trim(), email:$("clEmail").value.trim(), tipo:$("clTipo").value,
+      budgetMin:$("clMin").value, budgetMax:$("clMax").value, wantType:$("clWant").value,
+      zone:$("clZone").value.trim(), notes:$("clNotes").value.trim(),
+    };
+    const editId=$("clEditId").value;
+    if(editId){
+      const i=db.clients.findIndex(x=>String(x.id)===editId);
+      if(i>-1)db.clients[i]={...db.clients[i],...c};
+      toast("Cliente actualizado");
+    } else {
+      db.clients.unshift({id:Date.now(),...c,createdAt:new Date().toISOString()});
+      logAct("👤","Nuevo cliente: "+name);
+      toast("Cliente guardado");
+    }
+    persist(); resetClForm(); render();
+  });
+  $("clResetBtn").onclick=resetClForm;
+  function resetClForm(){ clForm.reset(); $("clEditId").value=""; $("clFormTitle").textContent="➕ Nuevo cliente"; $("clSubmitLabel").textContent="Guardar cliente"; $("clResetBtn").style.display="none"; }
+  function editClient(id){
+    const c=db.clients.find(x=>String(x.id)===String(id)); if(!c)return;
+    $("clEditId").value=c.id; $("clName").value=c.name; $("clPhone").value=c.phone||""; $("clEmail").value=c.email||"";
+    $("clTipo").value=c.tipo||"comprador"; $("clMin").value=c.budgetMin||""; $("clMax").value=c.budgetMax||"";
+    $("clWant").value=c.wantType||""; $("clZone").value=c.zone||""; $("clNotes").value=c.notes||"";
+    $("clFormTitle").textContent="✏️ Editar cliente"; $("clSubmitLabel").textContent="Guardar cambios"; $("clResetBtn").style.display="inline-flex";
+  }
+  async function deleteClient(id){
+    const c=db.clients.find(x=>String(x.id)===String(id));
+    if(!(await confirmDialog({title:"Eliminar cliente",text:`Se eliminará "${c?c.name:""}".`,ico:"🗑️"})))return;
+    db.clients=db.clients.filter(x=>String(x.id)!==String(id));
+    db.visits=db.visits.filter(v=>String(v.clientId)!==String(id));
+    persist(); render(); toast("Cliente eliminado");
+  }
+  /* matching bidireccional */
+  function matchPropsFor(c){
+    if(c.tipo==="vendedor"||c.tipo==="propietario")return[];
+    const wantOp=c.tipo==="inquilino"?"alquiler":"venta";
+    return db.properties.filter(p=>{
+      if((p.estado||"disponible")!=="disponible")return false;
+      if((p.operacion||"venta")!==wantOp)return false;
+      const pr=num(p.price);
+      if(c.budgetMin&&pr<num(c.budgetMin))return false;
+      if(c.budgetMax&&pr>num(c.budgetMax))return false;
+      if(c.wantType&&p.type!==c.wantType)return false;
+      if(c.zone&&!(p.location||"").toLowerCase().includes(c.zone.toLowerCase()))return false;
+      return true;
+    });
+  }
+  function matchClientsFor(p){
+    if((p.estado||"disponible")!=="disponible")return[];
+    return db.clients.filter(c=>matchPropsFor(c).some(x=>x.id===p.id));
+  }
+  const clFState={q:"",tipo:""};
+  $("clSearch").addEventListener("input",debounce(e=>{clFState.q=e.target.value.toLowerCase();renderClients();},160));
+  $("clFilter").addEventListener("change",e=>{clFState.tipo=e.target.value;renderClients();});
+  const TIPO_LBL={comprador:"Comprador",inquilino:"Busca alquiler",vendedor:"Vendedor",propietario:"Propietario"};
+  function renderClients(){
+    let l=db.clients.slice();
+    if(clFState.q)l=l.filter(c=>(c.name+" "+(c.phone||"")+" "+(c.zone||"")).toLowerCase().includes(clFState.q));
+    if(clFState.tipo)l=l.filter(c=>c.tipo===clFState.tipo);
+    $("clCount").textContent=db.clients.length;
+    const box=$("clientsList");
+    if(!db.clients.length){box.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="e-ico">👥</div><h3>Sin clientes aún</h3><p>Registra compradores e inquilinos y la app te dirá qué propiedades encajan.</p></div>`;return;}
+    if(!l.length){box.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="e-ico">🔍</div><h3>Sin resultados</h3></div>`;return;}
+    box.innerHTML=l.map((c,i)=>{
+      const matches=matchPropsFor(c);
+      const color=CL_COLORS[i%CL_COLORS.length];
+      const budget=(c.budgetMin||c.budgetMax)?`${c.budgetMin?fmtEur(c.budgetMin):"0€"} — ${c.budgetMax?fmtEur(c.budgetMax):"∞"}`:"";
+      return `
+      <div class="client" style="animation-delay:${Math.min(i*35,250)}ms">
+        <div class="cl-top">
+          <div class="cl-av" style="background:${color}">${esc((c.name||"?")[0].toUpperCase())}</div>
+          <div><div class="cl-name">${esc(c.name)}</div><span class="cl-tag ${c.tipo}">${TIPO_LBL[c.tipo]||c.tipo}</span></div>
+        </div>
+        <div class="cl-info">
+          ${c.phone?`<span>📞 ${esc(c.phone)}</span>`:""}
+          ${c.email?`<span>✉️ ${esc(c.email)}</span>`:""}
+          ${budget?`<span>💶 ${budget}</span>`:""}
+          ${c.wantType?`<span>🏠 Busca: ${esc(c.wantType)}${c.zone?" en "+esc(c.zone):""}</span>`:(c.zone?`<span>📍 Zona: ${esc(c.zone)}</span>`:"")}
+          ${c.notes?`<span>📝 ${esc(c.notes)}</span>`:""}
+        </div>
+        ${matches.length?`<div class="cl-match"><div class="cm-t">💜 ${matches.length} propiedad${matches.length>1?"es":""} encaja${matches.length>1?"n":""}</div>
+          ${matches.slice(0,3).map(p=>`<div class="cm-item"><b>${esc(p.title)}</b><span class="cm-p">${fmtEur(p.price)}</span>
+            ${c.phone?`<button data-send-p="${p.id}" data-send-c="${c.id}" title="Enviar por WhatsApp">📱</button>`:""}</div>`).join("")}
+        </div>`:""}
+        <div class="cl-actions">
+          ${c.phone?`<a class="btn btn-wa btn-sm" style="text-decoration:none" href="https://wa.me/${(c.phone||"").replace(/\D/g,"").length===9?"34":""}${(c.phone||"").replace(/\D/g,"")}" target="_blank" rel="noopener">💬</a>`:""}
+          ${c.phone?`<a class="btn btn-gh btn-sm" style="text-decoration:none" href="tel:${esc(c.phone)}">📞</a>`:""}
+          <button class="btn btn-gh btn-sm" data-cedit="${c.id}">✏️</button>
+          <button class="btn btn-dg btn-sm" data-cdel="${c.id}">🗑️</button>
+        </div>
+      </div>`;
+    }).join("");
+    box.querySelectorAll("[data-cedit]").forEach(b=>b.onclick=()=>editClient(b.dataset.cedit));
+    box.querySelectorAll("[data-cdel]").forEach(b=>b.onclick=()=>deleteClient(b.dataset.cdel));
+    box.querySelectorAll("[data-send-p]").forEach(b=>b.onclick=()=>sendToClient(b.dataset.sendP,b.dataset.sendC));
+  }
+
+  /* ═══════════ AGENDA ═══════════ */
+  $("visitForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const pid=$("vProp").value, date=$("vDate").value, time=$("vTime").value;
+    if(!pid||!date||!time){toast("Propiedad, fecha y hora son obligatorios","warn");return;}
+    db.visits.push({id:Date.now(),propertyId:pid,clientId:$("vClient").value||"",date,time,notes:$("vNotes").value.trim(),status:"pendiente"});
+    const p=db.properties.find(x=>String(x.id)===String(pid));
+    logAct("📅","Visita programada: "+(p?p.title:""));
+    persist(); $("visitForm").reset(); $("vDate").value=todayStr(); $("vTime").value="10:00";
+    render(); renderAgenda(); toast("Visita programada");
+  });
+  function fillVisitSelects(){
+    $("vProp").innerHTML='<option value="">Seleccionar…</option>'+db.properties.map(p=>`<option value="${p.id}">${esc((p.ref?p.ref+" · ":"")+p.title)}</option>`).join("");
+    $("vClient").innerHTML='<option value="">Sin cliente / anotar en notas</option>'+db.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  }
+  function fmtDay(d){
+    const today=todayStr();
+    const dt=new Date(d+"T00:00:00");
+    const tm=new Date(); tm.setDate(tm.getDate()+1);
+    if(d===today)return"Hoy";
+    if(d===tm.toISOString().slice(0,10))return"Mañana";
+    return dt.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+  }
+  function renderAgenda(){
+    fillVisitSelects();
+    const box=$("agendaList");
+    const sorted=db.visits.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+    $("agCount").textContent=sorted.filter(v=>v.status==="pendiente").length+" pendientes";
+    if(!sorted.length){box.innerHTML=`<div class="empty"><div class="e-ico">📅</div><h3>Agenda vacía</h3><p>Programa visitas desde aquí o desde el menú ⋯ de cada propiedad.</p></div>`;return;}
+    const groups={};
+    sorted.forEach(v=>{(groups[v.date]=groups[v.date]||[]).push(v);});
+    box.innerHTML=Object.keys(groups).sort().map(d=>`
+      <div class="ag-day">
+        <h3 class="${d===todayStr()?"today":""}">${d===todayStr()?"⭐ ":""}${fmtDay(d)}</h3>
+        ${groups[d].map(v=>{
+          const p=db.properties.find(x=>String(x.id)===String(v.propertyId));
+          const c=db.clients.find(x=>String(x.id)===String(v.clientId));
+          return `<div class="visit ${v.status==="hecha"?"done":v.status==="cancelada"?"cancel":""}">
+            <div class="v-time">${esc(v.time)}</div>
+            <div class="v-info"><b>${esc(p?p.title:"(propiedad eliminada)")}</b>
+              <small>${c?"👤 "+esc(c.name):""}${v.notes?(c?" · ":"")+"📝 "+esc(v.notes):""}</small></div>
+            <div class="v-acts">
+              ${v.status==="pendiente"?`<button data-vok="${v.id}" title="Marcar realizada">✅</button><button data-vno="${v.id}" title="Cancelar">🚫</button>`:""}
+              <button data-vdel="${v.id}" title="Borrar">🗑️</button>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`).join("");
+    box.querySelectorAll("[data-vok]").forEach(b=>b.onclick=()=>setVisit(b.dataset.vok,"hecha"));
+    box.querySelectorAll("[data-vno]").forEach(b=>b.onclick=()=>setVisit(b.dataset.vno,"cancelada"));
+    box.querySelectorAll("[data-vdel]").forEach(b=>b.onclick=async()=>{
+      if(!(await confirmDialog({title:"Borrar visita",text:"Se quitará de la agenda.",ico:"🗑️"})))return;
+      db.visits=db.visits.filter(v=>String(v.id)!==String(b.dataset.vdel)); persist(); renderAgenda(); badges();
+    });
+  }
+  function setVisit(id,st){
+    const v=db.visits.find(x=>String(x.id)===String(id)); if(!v)return;
+    v.status=st;
+    if(st==="hecha"){const p=db.properties.find(x=>String(x.id)===String(v.propertyId));logAct("✅","Visita realizada: "+(p?p.title:""));}
+    persist(); renderAgenda(); badges(); toast(st==="hecha"?"Visita marcada como realizada":"Visita cancelada");
+  }
+
+  /* ═══════════ GRÁFICOS CANVAS ═══════════ */
+  function setupCanvas(cv){
+    const dpr=devicePixelRatio||1, w=cv.clientWidth, h=cv.clientHeight;
+    cv.width=w*dpr; cv.height=h*dpr;
+    const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx,w,h};
+  }
+  function animate(draw,dur=800){
+    if(reduced){draw(1);return;}
+    const t0=performance.now();
+    (function fr(t){
+      const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+      draw(e); if(k<1)requestAnimationFrame(fr);
+    })(t0);
+  }
+  const PALETTE=["#2dd4bf","#8b5cf6","#f59e0b","#60a5fa","#fb7185","#34d399","#facc15","#a78bfa","#f472b6"];
+  function donutChart(cv,data,legendEl){
+    const {ctx,w,h}=setupCanvas(cv);
+    const total=data.reduce((s,d)=>s+d.value,0);
+    const cx=w/2, cy=h/2, R=Math.min(w,h)/2-10, r=R*.62;
+    const fgColor=CSSVAR("--fg"), mutColor=CSSVAR("--fg-mut");
+    animate(e=>{
+      ctx.clearRect(0,0,w,h);
+      if(!total){ctx.fillStyle=mutColor;ctx.font="600 13px Inter";ctx.textAlign="center";ctx.fillText("Sin datos todavía",cx,cy);return;}
+      let a=-Math.PI/2;
+      data.forEach((d,i)=>{
+        const ang=(d.value/total)*Math.PI*2*e;
+        ctx.beginPath(); ctx.arc(cx,cy,R,a,a+ang); ctx.arc(cx,cy,r,a+ang,a,true); ctx.closePath();
+        ctx.fillStyle=PALETTE[i%PALETTE.length]; ctx.fill();
+        a+=ang;
+      });
+      ctx.fillStyle=fgColor; ctx.font="800 26px 'Plus Jakarta Sans'"; ctx.textAlign="center"; ctx.textBaseline="middle";
+      ctx.fillText(String(total),cx,cy-8);
+      ctx.fillStyle=mutColor; ctx.font="600 11px Inter"; ctx.fillText("inmuebles",cx,cy+14);
+    });
+    if(legendEl)legendEl.innerHTML=data.map((d,i)=>`<span><i style="background:${PALETTE[i%PALETTE.length]}"></i>${esc(d.label)} (${d.value})</span>`).join("");
+  }
+  function barChart(cv,labels,values){
+    const {ctx,w,h}=setupCanvas(cv);
+    const max=Math.max(1,...values), pad=26, bw=(w-pad*2)/labels.length;
+    const mutColor=CSSVAR("--fg-mut"), fgColor=CSSVAR("--fg");
+    animate(e=>{
+      ctx.clearRect(0,0,w,h);
+      labels.forEach((lb,i)=>{
+        const v=values[i]*e, bh=(v/max)*(h-52), x=pad+i*bw+bw*.18, y=h-30-bh;
+        const g=ctx.createLinearGradient(0,y,0,h-30);
+        g.addColorStop(0,"#2dd4bf"); g.addColorStop(1,"#8b5cf6");
+        ctx.fillStyle=g;
+        ctx.beginPath(); ctx.roundRect(x,y,bw*.64,Math.max(bh,2),6); ctx.fill();
+        ctx.fillStyle=mutColor; ctx.font="600 10.5px Inter"; ctx.textAlign="center";
+        ctx.fillText(lb,x+bw*.32,h-12);
+        if(values[i]){ctx.fillStyle=fgColor;ctx.font="800 12px 'Plus Jakarta Sans'";ctx.fillText(String(Math.round(v)),x+bw*.32,y-6);}
+      });
+    });
+  }
+  function hbarChart(cv,rows){
+    const {ctx,w,h}=setupCanvas(cv);
+    const total=Math.max(1,rows.reduce((s,r)=>s+r.value,0));
+    const bh=16, gap=(h-rows.length*bh)/(rows.length+1);
+    const fgColor=CSSVAR("--fg"), softColor=CSSVAR("--fg-soft");
+    animate(e=>{
+      ctx.clearRect(0,0,w,h);
+      rows.forEach((r,i)=>{
+        const y=gap+(bh+gap)*i, bw=(r.value/total)*(w-170)*e;
+        ctx.fillStyle=softColor; ctx.font="600 12px Inter"; ctx.textAlign="left"; ctx.textBaseline="middle";
+        ctx.fillText(r.label,0,y+bh/2);
+        ctx.fillStyle="rgba(128,140,160,.15)";
+        ctx.beginPath(); ctx.roundRect(110,y,w-170,bh,8); ctx.fill();
+        ctx.fillStyle=r.color;
+        ctx.beginPath(); ctx.roundRect(110,y,Math.max(bw,r.value?4:0),bh,8); ctx.fill();
+        ctx.fillStyle=fgColor; ctx.font="800 12px 'Plus Jakarta Sans'"; ctx.textAlign="right";
+        ctx.fillText(String(Math.round(r.value*e)),w-8,y+bh/2);
+      });
+    });
+  }
+
+  /* ═══════════ DASHBOARD ═══════════ */
+  function countUp(el,target,fmt){
+    if(reduced){el.textContent=fmt(target);return;}
+    const t0=performance.now(),dur=900;
+    (function fr(t){
+      const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+      el.textContent=fmt(Math.round(target*e));
+      if(k<1)requestAnimationFrame(fr);
+    })(t0);
+  }
+  const compact=n=>n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(".",",")+"M":n>=1e3?Math.round(n/1e3)+"K":String(n);
+  function renderDash(){
+    const props=db.properties;
+    const disp=props.filter(p=>(p.estado||"disponible")==="disponible");
+    const totalValue=props.reduce((s,p)=>s+num(p.price),0);
+    const withArea=props.filter(p=>num(p.area)>0&&num(p.price)>0);
+    const avgM2=withArea.length?Math.round(withArea.reduce((s,p)=>s+num(p.price)/num(p.area),0)/withArea.length):0;
+    const pendVisits=db.visits.filter(v=>v.status==="pendiente"&&v.date>=todayStr()).length;
+    $("kpis").innerHTML=`
+      <div class="kpi" style="--kc:#2dd4bf" data-tilt><div class="k-ico">🏘️</div><div class="k-lbl">Cartera</div><div class="k-val num" id="k1">0</div><div class="k-sub">${disp.length} disponibles</div></div>
+      <div class="kpi" style="--kc:#f59e0b" data-tilt><div class="k-ico">💰</div><div class="k-lbl">Valor cartera</div><div class="k-val num" id="k2">0</div><div class="k-sub">precio medio/m²: ${avgM2?"€"+avgM2.toLocaleString("es-ES"):"—"}</div></div>
+      <div class="kpi" style="--kc:#8b5cf6" data-tilt><div class="k-ico">👥</div><div class="k-lbl">Clientes</div><div class="k-val num" id="k3">0</div><div class="k-sub">${db.clients.filter(c=>c.tipo==="comprador"||c.tipo==="inquilino").length} demandantes</div></div>
+      <div class="kpi" style="--kc:#60a5fa" data-tilt><div class="k-ico">📅</div><div class="k-lbl">Visitas pendientes</div><div class="k-val num" id="k4">0</div><div class="k-sub">${db.visits.filter(v=>v.date===todayStr()&&v.status==="pendiente").length} hoy</div></div>`;
+    countUp($("k1"),props.length,n=>String(n));
+    countUp($("k2"),totalValue,n=>"€"+compact(n));
+    countUp($("k3"),db.clients.length,n=>String(n));
+    countUp($("k4"),pendVisits,n=>String(n));
+    document.querySelectorAll("#kpis [data-tilt]").forEach(el=>addTilt(el,5));
+
+    // donut tipos
+    const byType={};
+    props.forEach(p=>{byType[p.type]=(byType[p.type]||0)+1;});
+    const tData=Object.entries(byType).sort((a,b)=>b[1]-a[1]).slice(0,7).map(([label,value])=>({label,value}));
+    donutChart($("chTipos"),tData,$("lgTipos"));
+
+    // barras altas por mes
+    const months=[],counts=[];
+    const now=new Date();
+    for(let i=5;i>=0;i--){
+      const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+      const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+      months.push(d.toLocaleDateString("es-ES",{month:"short"}));
+      counts.push(props.filter(p=>(p.createdAt||"").slice(0,7)===key).length);
+    }
+    barChart($("chAltas"),months,counts);
+
+    // estado
+    hbarChart($("chEstado"),[
+      {label:"Disponible",value:props.filter(p=>(p.estado||"disponible")==="disponible").length,color:"#34d399"},
+      {label:"Reservado",value:props.filter(p=>p.estado==="reservado").length,color:"#fbbf24"},
+      {label:"Cerrado",value:props.filter(p=>p.estado==="cerrado").length,color:"#8b5cf6"},
+    ]);
+
+    // visitas hoy
+    const today=db.visits.filter(v=>v.date===todayStr()&&v.status==="pendiente").sort((a,b)=>a.time.localeCompare(b.time));
+    $("dashToday").innerHTML=today.length?today.map(v=>{
+      const p=db.properties.find(x=>String(x.id)===String(v.propertyId));
+      const c=db.clients.find(x=>String(x.id)===String(v.clientId));
+      return `<div class="mini-item"><div class="mi-ico">🕐</div><div class="mi-tx"><b>${esc(v.time)} — ${esc(p?p.title:"?")}</b><small>${c?"con "+esc(c.name):""}</small></div></div>`;
+    }).join(""):`<div class="mini-empty">Sin visitas hoy — ¡día de captación! 💪</div>`;
+
+    // últimos matches
+    const matchRows=[];
+    db.clients.forEach(c=>{
+      const m=matchPropsFor(c);
+      if(m.length)matchRows.push({c,n:m.length,top:m[0]});
+    });
+    matchRows.sort((a,b)=>b.n-a.n);
+    $("dashMatch").innerHTML=matchRows.length?matchRows.slice(0,4).map(r=>
+      `<div class="mini-item"><div class="mi-ico">💜</div><div class="mi-tx"><b>${esc(r.c.name)} → ${r.n} propiedad${r.n>1?"es":""}</b><small>ej: ${esc(r.top.title)}</small></div></div>`
+    ).join(""):`<div class="mini-empty">Cuando registres clientes con presupuesto, verás aquí los cruces automáticos.</div>`;
+
+    // actividad
+    $("dashAct").innerHTML=db.activity.length?db.activity.slice(0,6).map(a=>{
+      const d=new Date(a.ts);
+      return `<div class="mini-item"><div class="mi-ico">${a.icon}</div><div class="mi-tx"><b>${esc(a.text)}</b><small>${d.toLocaleDateString("es-ES",{day:"numeric",month:"short"})} · ${d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}</small></div></div>`;
+    }).join(""):`<div class="mini-empty">Aquí verás tu actividad reciente.</div>`;
+  }
+
+  /* ═══════════ HERRAMIENTAS ═══════════ */
+  $("hCalc").onclick=()=>{
+    const P=num($("hPrecio").value), ent=parseFloat($("hEntrada").value)||0, i=parseFloat($("hInteres").value)||0, y=num($("hAnios").value);
+    if(!P||!y){toast("Indica precio y plazo","warn");return;}
+    const principal=P*(1-ent/100), r=i/100/12, n=y*12;
+    const cuota=r>0?principal*r/(1-Math.pow(1+r,-n)):principal/n;
+    const total=cuota*n, intereses=total-principal;
+    $("hRes").className="t-result show";
+    $("hRes").innerHTML=`<div class="t-big">${cuota.toLocaleString("es-ES",{maximumFractionDigits:0})} €/mes</div>
+      <div class="t-rows">
+        <div><span>Importe financiado</span><b>${principal.toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+        <div><span>Entrada (${ent}%)</span><b>${(P*ent/100).toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+        <div><span>Total intereses</span><b>${intereses.toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+        <div><span>Total a devolver</span><b>${total.toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+      </div>`;
   };
-  $("btnImport").onclick = () => $("importInput").click();
-  $("importInput").onchange = (e) => {
-    const file = e.target.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const data = JSON.parse(reader.result);
-        const incoming = Array.isArray(data) ? data : data.properties;
-        if (!Array.isArray(incoming)) throw new Error("format");
-        const merge = properties.length && await confirmDialog({
-          title: "Importar datos", text: `Se han encontrado ${incoming.length} propiedades. ¿Añadirlas a las ${properties.length} actuales? (Cancelar = reemplazar todo)`,
-          ok: "Añadir", ico: "📥", danger: false,
-        });
-        const existingIds = new Set(properties.map(p => String(p.id)));
-        const clean = incoming.map(p => ({ ...p, id: (merge && existingIds.has(String(p.id))) ? Date.now() + Math.floor(Math.random() * 1e4) : p.id, ref: p.ref || nextRef() }));
-        properties = merge ? [...clean, ...properties] : clean;
-        persist(); render();
-        toast(`Importadas ${incoming.length} propiedades`, "ok");
-      } catch { toast("Archivo no válido", "err"); }
-      $("importInput").value = "";
+  $("rCalc").onclick=()=>{
+    const P=num($("rPrecio").value), R=num($("rRenta").value), G=num($("rGastos").value);
+    if(!P||!R){toast("Indica precio y renta","warn");return;}
+    const bruta=R*12/P*100, neta=(R*12-G)/P*100;
+    $("rRes").className="t-result show";
+    $("rRes").innerHTML=`<div class="t-big">${neta.toFixed(2)}% neta</div>
+      <div class="t-rows">
+        <div><span>Rentabilidad bruta</span><b>${bruta.toFixed(2)}%</b></div>
+        <div><span>Ingresos anuales</span><b>${(R*12).toLocaleString("es-ES")} €</b></div>
+        <div><span>Gastos anuales</span><b>${G.toLocaleString("es-ES")} €</b></div>
+        <div><span>Beneficio neto/año</span><b>${(R*12-G).toLocaleString("es-ES")} €</b></div>
+      </div>`;
+  };
+  $("cCalc").onclick=()=>{
+    const P=num($("cPrecio").value), pct=parseFloat($("cPct").value)||0;
+    if(!P){toast("Indica el precio","warn");return;}
+    const base=P*pct/100, iva=base*.21;
+    $("cRes").className="t-result show";
+    $("cRes").innerHTML=`<div class="t-big">${(base+iva).toLocaleString("es-ES",{maximumFractionDigits:0})} €</div>
+      <div class="t-rows">
+        <div><span>Honorarios (${pct}%)</span><b>${base.toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+        <div><span>IVA 21%</span><b>${iva.toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+        <div><span>Total con IVA</span><b>${(base+iva).toLocaleString("es-ES",{maximumFractionDigits:0})} €</b></div>
+      </div>`;
+  };
+  $("mCalc").onclick=()=>{
+    const P=num($("mPrecio").value), A=num($("mArea").value);
+    if(!P||!A){toast("Indica precio y superficie","warn");return;}
+    const m2=Math.round(P/A);
+    const withArea=db.properties.filter(p=>num(p.area)>0&&num(p.price)>0&&(p.operacion||"venta")==="venta");
+    const avg=withArea.length?Math.round(withArea.reduce((s,p)=>s+num(p.price)/num(p.area),0)/withArea.length):0;
+    const diff=avg?((m2-avg)/avg*100):null;
+    $("mRes").className="t-result show";
+    $("mRes").innerHTML=`<div class="t-big">${m2.toLocaleString("es-ES")} €/m²</div>
+      <div class="t-rows">
+        <div><span>Media de tu cartera (venta)</span><b>${avg?avg.toLocaleString("es-ES")+" €/m²":"sin datos"}</b></div>
+        ${diff!=null?`<div><span>Diferencia</span><b style="color:${diff>0?"var(--warn)":"var(--ok)"}">${diff>0?"+":""}${diff.toFixed(1)}% ${diff>0?"por encima":"por debajo"}</b></div>`:""}
+      </div>`;
+  };
+
+  /* ═══════════ EXPORT / IMPORT ═══════════ */
+  $("btnExport").onclick=()=>{
+    const payload={app:"castresana-suite",version:3,exportedAt:new Date().toISOString(),properties:db.properties,clients:db.clients,visits:db.visits,activity:db.activity};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="castresana-"+todayStr()+".json"; a.click(); URL.revokeObjectURL(a.href);
+    toast("Copia de seguridad descargada");
+  };
+  $("btnImport").onclick=()=>$("importInput").click();
+  $("importInput").onchange=e=>{
+    const file=e.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=async()=>{
+      try{
+        const data=JSON.parse(reader.result);
+        const props=Array.isArray(data)?data:(data.properties||[]);
+        if(!Array.isArray(props))throw 0;
+        const merge=db.properties.length&&await confirmDialog({title:"Importar datos",text:`${props.length} propiedades, ${(data.clients||[]).length} clientes, ${(data.visits||[]).length} visitas. ¿Añadir a lo actual? (Cancelar = reemplazar todo)`,ok:"Añadir",ico:"📥",danger:false});
+        if(merge){
+          db.properties=[...props,...db.properties];
+          db.clients=[...(data.clients||[]),...db.clients];
+          db.visits=[...(data.visits||[]),...db.visits];
+        } else {
+          db={properties:props,clients:data.clients||[],visits:data.visits||[],activity:data.activity||[]};
+        }
+        persist(); render(); renderAgenda();
+        toast("Datos importados");
+      }catch{toast("Archivo no válido","err");}
+      $("importInput").value="";
     };
     reader.readAsText(file);
   };
 
-  /* ==================== INIT ==================== */
-  initTheme();
-  render();
+  /* ═══════════ RENDER GLOBAL + INIT ═══════════ */
+  function render(){ badges(); renderProps(); renderClients(); fillVisitSelects(); if(activeTab==="dash")renderDash(); }
+  setTheme(localStorage.getItem(LS_THEME)||"dark");
+  $("vDate").value=todayStr();
+  render(); renderAgenda();
+  addEventListener("resize",debounce(()=>{ if(activeTab==="dash")renderDash(); },250));
 })();
 </script>
 </body>
