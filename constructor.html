@@ -2162,6 +2162,175 @@
   .ai-badge.live { background: rgba(0,215,116,0.15); color: var(--green); }
   .ai-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
   .ai-badge.live .dot { animation: pulse 1.6s ease-in-out infinite; }
+
+  /* ===== HOY panel ===== */
+  .today-panel {
+    background: linear-gradient(135deg, rgba(22,163,74,0.15) 0%, rgba(108,92,231,0.12) 60%, rgba(34,211,238,0.1) 100%);
+    border: 1px solid var(--input-border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .today-panel::before {
+    content: ""; position: absolute; top: -50%; right: -20%;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(22,163,74,0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .today-greeting { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; position: relative; }
+  .today-title { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1; }
+  body.theme-light .today-title { color: #0b1224; }
+  .today-date { font-size: 13px; color: var(--muted); margin-top: 4px; text-transform: capitalize; }
+  .today-streak {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 10px 18px; border-radius: 14px;
+    background: rgba(255,140,0,0.15); border: 1px solid rgba(255,140,0,0.4);
+    flex-shrink: 0;
+  }
+  .streak-num { font-size: 24px; font-weight: 900; color: #ff8c00; line-height: 1; }
+  .streak-label { font-size: 10px; color: #ff8c00; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; font-weight: 700; }
+
+  .today-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; }
+  @media (max-width: 900px) { .today-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .today-grid { grid-template-columns: 1fr; } }
+
+  .today-card {
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    min-height: 90px;
+  }
+  .today-card-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 700; }
+  .today-card-value { font-size: 22px; font-weight: 900; color: var(--fg); line-height: 1.1; }
+  body.theme-light .today-card-value { color: #0b1224; }
+  .today-card-sub { font-size: 12px; color: var(--muted); }
+  .today-card.action {
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    border: none; color: #fff; cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .today-card.action:hover { transform: translateY(-2px); }
+  .today-card.action .today-card-label { color: rgba(255,255,255,0.85); }
+  .today-card.action .today-card-value { color: #fff; }
+  .today-card.action .today-card-sub { color: rgba(255,255,255,0.85); }
+
+  .goal-progress {
+    height: 8px; background: rgba(0,0,0,0.15); border-radius: 999px;
+    overflow: hidden; margin-top: 4px;
+  }
+  body.theme-light .goal-progress { background: rgba(0,0,0,0.08); }
+  .goal-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--green), var(--cyan));
+    transition: width 0.6s cubic-bezier(0.2,0.9,0.3,1);
+  }
+
+  /* Empty state within HOY */
+  .today-empty {
+    font-size: 12px; color: var(--muted); font-style: italic;
+  }
+
+  /* ===== FAB Quick Capture ===== */
+  .fab-capture {
+    position: fixed; bottom: 22px; right: 22px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #fff;
+    display: grid; place-items: center;
+    box-shadow: 0 12px 32px rgba(22,163,74,0.5);
+    z-index: 40;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+  }
+  .fab-capture:hover { transform: scale(1.08); }
+  .fab-capture:active { transform: scale(0.96); }
+  .fab-capture svg { width: 28px; height: 28px; }
+  .chat-bubble { bottom: 92px; }
+  @media (max-width: 820px) { .fab-capture { bottom: 92px; } .chat-bubble { bottom: 162px; } }
+
+  /* Capture modal */
+  .capture-modal {
+    position: fixed; inset: 0;
+    background: rgba(11,18,36,0.85); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 90;
+  }
+  .capture-modal.open { display: flex; }
+  .capture-card {
+    width: min(520px, 100%);
+    background: var(--card); border: 1px solid var(--input-border);
+    border-radius: 20px; padding: 24px;
+    display: flex; flex-direction: column; gap: 14px;
+    animation: fadeSlide 0.25s ease;
+  }
+  .capture-card h2 { font-size: 20px; font-weight: 900; }
+  .capture-card .capture-hint { font-size: 12px; color: var(--muted); margin-top: -8px; }
+  .capture-card textarea {
+    width: 100%; padding: 14px; border-radius: 12px;
+    background: var(--input); border: 1px solid var(--input-border);
+    color: var(--fg); font-family: inherit; font-size: 15px;
+    line-height: 1.5; min-height: 100px; resize: vertical; outline: none;
+  }
+  .capture-card textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,211,238,0.15); }
+  .capture-type-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  @media (max-width: 540px) { .capture-type-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; } }
+  .capture-type {
+    padding: 12px 6px;
+    background: var(--card-2); border: 1px solid var(--input-border);
+    border-radius: 10px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; color: var(--fg);
+    transition: all 0.15s ease;
+  }
+  .capture-type:hover { border-color: var(--cyan); background: var(--card-3); }
+  .capture-type.active {
+    background: linear-gradient(135deg, rgba(22,163,74,0.2), rgba(34,211,238,0.15));
+    border-color: var(--green); color: var(--green);
+  }
+  .capture-type svg { width: 20px; height: 20px; }
+
+  .capture-extras { display: flex; gap: 8px; flex-wrap: wrap; }
+  .capture-extras input { flex: 1; padding: 10px 12px; border-radius: 8px; background: var(--input); border: 1px solid var(--input-border); color: var(--fg); font-size: 13px; min-width: 100px; }
+
+  .capture-actions { display: flex; gap: 10px; margin-top: 4px; }
+  .capture-actions button { flex: 1; padding: 12px 16px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+  .capture-save {
+    background: linear-gradient(135deg, #16a34a, #15803d); color: #fff;
+  }
+  .capture-save:hover { filter: brightness(1.05); }
+
+  /* Install button */
+  .topbar-btn.install-btn {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #fff; border: none;
+  }
+  .topbar-btn.install-btn:hover { filter: brightness(1.08); }
+
+  /* iOS install instructions */
+  .ios-install-modal {
+    position: fixed; inset: 0;
+    background: rgba(11,18,36,0.85); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 90;
+  }
+  .ios-install-modal.open { display: flex; }
+  .ios-install-card {
+    width: min(420px, 100%); background: var(--card); border-radius: 20px;
+    padding: 26px; text-align: center;
+    border: 1px solid var(--input-border);
+  }
+  .ios-install-card svg.share-ic {
+    width: 48px; height: 48px; color: var(--cyan);
+    margin: 0 auto 12px;
+    display: block;
+  }
+  .ios-install-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .ios-install-card p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+  .ios-install-card ol { text-align: left; margin: 14px 0; padding-left: 20px; }
+  .ios-install-card ol li { font-size: 13px; padding: 5px 0; color: var(--fg); }
+  body.theme-light .ios-install-card ol li { color: #0b1224; }
 </style>
 </head>
 <body>
@@ -2246,6 +2415,10 @@
         <span class="dot"></span>
         <span id="savePillText">Guardado</span>
       </span>
+      <button class="topbar-btn install-btn" id="installBtn" title="Instalar app" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Instalar
+      </button>
       <button class="topbar-btn" id="themeToggle" title="Cambiar tema" aria-label="Cambiar tema">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -2253,6 +2426,62 @@
 
     <!-- ====== DASHBOARD ====== -->
     <section class="view active" data-view-content="dashboard">
+
+      <!-- ======== HOY ======== -->
+      <div class="today-panel">
+        <div class="today-greeting">
+          <div>
+            <h1 class="today-title" id="todayGreeting">Buenos días</h1>
+            <p class="today-date" id="todayDate">—</p>
+          </div>
+          <div class="today-streak" title="Días seguidos abriendo la app">
+            <span class="streak-num" id="streakNum">1</span>
+            <span class="streak-label">días 🔥</span>
+          </div>
+        </div>
+
+        <div class="today-grid">
+          <div class="today-card" id="cardGoal">
+            <span class="today-card-label">Meta del mes</span>
+            <span class="today-card-value"><span id="earnedNow">0</span> € <small style="font-size:12px; color:var(--muted); font-weight:600;">/ <span id="goalTarget">5.000</span> €</small></span>
+            <div class="goal-progress"><div class="goal-progress-fill" id="goalFill" style="width:0%"></div></div>
+            <span class="today-card-sub" id="goalPct">0 % completado</span>
+          </div>
+
+          <div class="today-card" id="cardTasks">
+            <span class="today-card-label">Pendientes hoy</span>
+            <span class="today-card-value" id="tasksCount">0</span>
+            <span class="today-card-sub" id="tasksSub">Sin tareas · añade una</span>
+          </div>
+
+          <div class="today-card" id="cardNext">
+            <span class="today-card-label">Próxima cita</span>
+            <span class="today-card-value" id="nextTime" style="font-size:18px;">—</span>
+            <span class="today-card-sub" id="nextWho">Sin citas programadas</span>
+          </div>
+
+          <button class="today-card action" onclick="openCapture('nota')">
+            <span class="today-card-label">Nota rápida</span>
+            <span class="today-card-value" style="font-size:16px;">📝 Añadir</span>
+            <span class="today-card-sub">Idea, apunte, lo que sea</span>
+          </button>
+
+          <button class="today-card action" onclick="openCapture('ingreso')" style="background:linear-gradient(135deg, #16a34a, #15803d);">
+            <span class="today-card-label">Registrar ingreso</span>
+            <span class="today-card-value" style="font-size:16px;">💰 Sumar €</span>
+            <span class="today-card-sub">Cuenta hacia tu meta del mes</span>
+          </button>
+
+          <button class="today-card action" onclick="openCapture('tarea')" style="background:linear-gradient(135deg, #f59e0b, #d97706);">
+            <span class="today-card-label">Nueva tarea</span>
+            <span class="today-card-value" style="font-size:16px;">✅ Añadir</span>
+            <span class="today-card-sub">Pendiente para hoy o mañana</span>
+          </button>
+        </div>
+
+        <div id="todayItemsList" style="margin-top:14px;"></div>
+      </div>
+
       <h1 class="dashboard-title">Recursos personalizados</h1>
 
       <div class="resource-grid">
@@ -3996,6 +4225,73 @@
     </div>
   </div>
 
+  <!-- ===== FAB Quick Capture ===== -->
+  <button class="fab-capture" id="fabCapture" aria-label="Captura rápida" title="Captura rápida (Ctrl+/)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <!-- ===== Capture Modal ===== -->
+  <div class="capture-modal" id="captureModal" role="dialog" aria-modal="true">
+    <div class="capture-card">
+      <div>
+        <h2>Captura rápida</h2>
+        <p class="capture-hint">Guarda algo ahora, píensalo después. Se guarda al instante.</p>
+      </div>
+      <textarea id="captureText" placeholder="¿Qué necesitas capturar? Idea, lead, apunte, gasto, cita…" autofocus></textarea>
+
+      <div class="capture-type-grid" id="captureTypeGrid">
+        <button class="capture-type" data-type="nota">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Nota
+        </button>
+        <button class="capture-type" data-type="lead">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3 3-3-3"/></svg>
+          Lead
+        </button>
+        <button class="capture-type" data-type="tarea">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Tarea
+        </button>
+        <button class="capture-type" data-type="ingreso">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Ingreso
+        </button>
+        <button class="capture-type" data-type="cita">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Cita
+        </button>
+      </div>
+
+      <div class="capture-extras" id="captureExtras" style="display:none;">
+        <!-- Populated dynamically depending on type -->
+      </div>
+
+      <div class="capture-actions">
+        <button class="topbar-btn" id="captureCancel">Cancelar</button>
+        <button class="capture-save" id="captureSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== iOS Install instructions ===== -->
+  <div class="ios-install-modal" id="iosInstallModal" role="dialog">
+    <div class="ios-install-card">
+      <svg class="share-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+        <polyline points="16 6 12 2 8 6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+      <h3>Instalar en iPhone / iPad</h3>
+      <p>Añade Ayuda de Negocios JPMR a tu pantalla de inicio para abrirla como app nativa.</p>
+      <ol>
+        <li>Pulsa el botón <strong>Compartir</strong> en Safari (⤴️ abajo en el centro)</li>
+        <li>Baja hasta <strong>"Añadir a pantalla de inicio"</strong></li>
+        <li>Pulsa <strong>Añadir</strong> arriba a la derecha</li>
+      </ol>
+      <button class="topbar-btn" onclick="document.getElementById('iosInstallModal').classList.remove('open')" style="margin-top:8px; width:100%; padding:12px;">Entendido</button>
+    </div>
+  </div>
+
   <button class="chat-bubble" aria-label="Ayuda" title="¿Qué es El Constructor?" onclick="switchView('ayuda')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
   </button>
@@ -4852,7 +5148,12 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
     { id: 'act-export', section: 'Acciones', title: 'Exportar JSON', sub: 'Descargar backup', action: () => document.getElementById('btnExport').click() },
     { id: 'act-onboarding', section: 'Acciones', title: 'Ver tour de bienvenida', sub: 'Volver a ver el onboarding', action: () => { safeStorage.removeItem(ONBOARD_KEY); startOnboarding(); } },
     { id: 'act-test-ai', section: 'IA', title: 'Probar conexión con IA', sub: 'Verifica que las claves API funcionan', action: () => { switchView('ajustes'); setTimeout(() => document.getElementById('btnTestAI')?.click(), 200); } },
-    { id: 'go-abacus', section: 'IA', title: 'Configurar Abacus AI', sub: 'Conecta tu suscripción de ChatLLM', action: () => { switchView('ajustes'); setTimeout(() => document.getElementById('keyAbacus')?.focus(), 200); } }
+    { id: 'go-abacus', section: 'IA', title: 'Configurar Abacus AI', sub: 'Conecta tu suscripción de ChatLLM', action: () => { switchView('ajustes'); setTimeout(() => document.getElementById('keyAbacus')?.focus(), 200); } },
+    { id: 'cap-nota', section: 'Captura rápida', title: 'Añadir nota', sub: 'Ctrl+/', action: () => openCapture('nota') },
+    { id: 'cap-lead', section: 'Captura rápida', title: 'Añadir lead', sub: 'Contacto potencial', action: () => openCapture('lead') },
+    { id: 'cap-tarea', section: 'Captura rápida', title: 'Añadir tarea', sub: 'Pendiente para hoy', action: () => openCapture('tarea') },
+    { id: 'cap-ingreso', section: 'Captura rápida', title: 'Registrar ingreso', sub: 'Suma a la meta del mes', action: () => openCapture('ingreso') },
+    { id: 'cap-cita', section: 'Captura rápida', title: 'Añadir cita', sub: 'Evento en el calendario', action: () => openCapture('cita') }
   ];
   let cmdFocus = 0; let cmdFiltered = COMMANDS;
   function renderCmdList() {
@@ -5522,6 +5823,11 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   // ============ LEGACY castRender state (kept for migration) ===========
   // =====================================================================
   if (!state.castRender) state.castRender = { saved: [], count: 0 };
+  if (!state.hoy) state.hoy = {
+    streaks: { current: 0, longest: 0, lastOpenISO: '' },
+    monthlyGoal: 5000,
+    items: []
+  };
 
   let crCurrentPhotoUrl = null;
   document.getElementById('crFoto')?.addEventListener('change', (e) => {
@@ -5722,6 +6028,8 @@ Genera el sitio respetando estos puntos y optimiza para conversión.`;
   renderProjects();
   renderApps();
   cr2RenderHistory();
+  updateStreak();
+  renderHoy();
   updateProgress();
 
   // First-time onboarding
@@ -6077,6 +6385,264 @@ Estructura: apertura · romper patrón · dolor · caballo de Troya · cierre co
       showToast(hasAIKey() ? 'API falló — plantilla local.' : 'Sin API key — plantilla local.', 'success');
     });
   }
+
+  // =====================================================================
+  // ============ HOY panel: streak, greeting, tasks, income =============
+  // =====================================================================
+  function todayISO() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function yesterdayISO() {
+    const d = new Date(); d.setDate(d.getDate() - 1);
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function updateStreak() {
+    const today = todayISO();
+    const last = state.hoy.streaks.lastOpenISO;
+    if (last === today) return;
+    if (last === yesterdayISO()) state.hoy.streaks.current++;
+    else state.hoy.streaks.current = 1;
+    state.hoy.streaks.longest = Math.max(state.hoy.streaks.longest || 0, state.hoy.streaks.current);
+    state.hoy.streaks.lastOpenISO = today;
+    saveState();
+  }
+  function getGreeting() {
+    const h = new Date().getHours();
+    const name = (state.user?.name || 'Pau').split(' ')[0];
+    if (h < 6) return `Trasnochando, ${name}`;
+    if (h < 12) return `Buenos días, ${name}`;
+    if (h < 18) return `Buenas tardes, ${name}`;
+    return `Buenas noches, ${name}`;
+  }
+  function formatDateLong() {
+    return new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  function isThisMonth(iso) {
+    const d = new Date(iso);
+    const now = new Date();
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }
+  function isTodayISO(iso) {
+    if (!iso) return false;
+    return iso.slice(0, 10) === todayISO();
+  }
+  function renderHoy() {
+    document.getElementById('todayGreeting').textContent = getGreeting();
+    document.getElementById('todayDate').textContent = formatDateLong();
+    document.getElementById('streakNum').textContent = state.hoy.streaks.current;
+
+    // Meta del mes
+    const monthEarned = (state.hoy.items || [])
+      .filter(i => i.type === 'ingreso' && isThisMonth(i.createdAt))
+      .reduce((sum, i) => sum + (+i.extra?.amount || 0), 0);
+    const goal = state.hoy.monthlyGoal || 5000;
+    const pct = Math.min(100, Math.round((monthEarned / goal) * 100));
+    document.getElementById('earnedNow').textContent = monthEarned.toLocaleString('es-ES');
+    document.getElementById('goalTarget').textContent = goal.toLocaleString('es-ES');
+    document.getElementById('goalFill').style.width = pct + '%';
+    document.getElementById('goalPct').textContent = pct + ' % completado';
+
+    // Pendientes hoy
+    const openTasks = (state.hoy.items || []).filter(i => i.type === 'tarea' && !i.done);
+    document.getElementById('tasksCount').textContent = openTasks.length;
+    document.getElementById('tasksSub').textContent = openTasks.length === 0
+      ? 'Sin tareas · añade una'
+      : openTasks[0].text.slice(0, 40) + (openTasks[0].text.length > 40 ? '…' : '');
+
+    // Próxima cita
+    const upcoming = (state.hoy.items || [])
+      .filter(i => i.type === 'cita' && i.extra?.when && new Date(i.extra.when) >= new Date())
+      .sort((a, b) => new Date(a.extra.when) - new Date(b.extra.when))[0];
+    if (upcoming) {
+      const t = new Date(upcoming.extra.when);
+      document.getElementById('nextTime').textContent = t.toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+      document.getElementById('nextWho').textContent = upcoming.text.slice(0, 40) + (upcoming.text.length > 40 ? '…' : '');
+    } else {
+      document.getElementById('nextTime').textContent = '—';
+      document.getElementById('nextWho').textContent = 'Sin citas programadas';
+    }
+
+    // Lista de items recientes
+    renderHoyItems();
+  }
+  function renderHoyItems() {
+    const list = document.getElementById('todayItemsList');
+    if (!list) return;
+    const items = (state.hoy.items || []).slice(0, 8);
+    if (items.length === 0) { list.innerHTML = ''; return; }
+    const typeIc = { nota: '📝', lead: '👤', tarea: '✅', ingreso: '💰', cita: '📅' };
+    list.innerHTML = `
+      <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--input-border);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <strong style="font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted);">Últimas capturas</strong>
+          <button class="topbar-btn" onclick="clearOldHoy()" style="padding:4px 10px; font-size:11px;">Limpiar viejos</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${items.map(i => `
+            <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--card); border-radius:8px; border:1px solid var(--input-border);">
+              <span style="font-size:18px;">${typeIc[i.type] || '•'}</span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; color:var(--fg); font-weight:600; ${i.done ? 'text-decoration:line-through; opacity:0.5;' : ''}">${escapeHTML(i.text)}</div>
+                <div style="font-size:11px; color:var(--muted);">${i.type} · ${new Date(i.createdAt).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}${i.extra?.amount ? ' · '+(+i.extra.amount).toLocaleString('es-ES')+' €' : ''}${i.extra?.when ? ' · '+new Date(i.extra.when).toLocaleString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : ''}</div>
+              </div>
+              ${i.type === 'tarea' ? `<button onclick="toggleHoyItem('${i.id}')" style="background:transparent; color:${i.done?'var(--muted)':'var(--green)'}; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700;">${i.done?'Reabrir':'Hecho'}</button>` : ''}
+              <button onclick="deleteHoyItem('${i.id}')" style="background:transparent; color:var(--muted); padding:4px 6px; border-radius:6px;" aria-label="Borrar">✕</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+  window.toggleHoyItem = function(id) {
+    const item = state.hoy.items.find(x => x.id === id);
+    if (!item) return;
+    item.done = !item.done;
+    saveState(); renderHoy();
+  };
+  window.deleteHoyItem = function(id) {
+    state.hoy.items = state.hoy.items.filter(x => x.id !== id);
+    saveState(); renderHoy();
+  };
+  window.clearOldHoy = function() {
+    if (!confirm('¿Borrar todas las capturas anteriores a hoy?')) return;
+    const today = todayISO();
+    state.hoy.items = state.hoy.items.filter(x => (x.createdAt || '').slice(0, 10) === today);
+    saveState(); renderHoy();
+    showToast('Capturas antiguas eliminadas.', 'success');
+  };
+
+  // =====================================================================
+  // ============ Quick Capture (FAB + modal) ============================
+  // =====================================================================
+  var captureType = 'nota';
+  function openCapture(type) {
+    type = type || 'nota';
+    captureType = type;
+    document.getElementById('captureModal').classList.add('open');
+    document.getElementById('captureText').value = '';
+    document.querySelectorAll('.capture-type').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+    renderCaptureExtras(type);
+    setTimeout(() => document.getElementById('captureText').focus(), 100);
+  }
+  window.openCapture = openCapture;
+  function renderCaptureExtras(type) {
+    const ex = document.getElementById('captureExtras');
+    if (type === 'ingreso') {
+      ex.style.display = 'flex';
+      ex.innerHTML = '<input id="capAmount" type="number" placeholder="Importe €" step="0.01" min="0">';
+    } else if (type === 'cita') {
+      const dt = new Date(); dt.setHours(dt.getHours()+1, 0, 0, 0);
+      const iso = dt.toISOString().slice(0, 16);
+      ex.style.display = 'flex';
+      ex.innerHTML = `<input id="capWhen" type="datetime-local" value="${iso}">
+                     <input id="capContact" type="text" placeholder="Con quién (opcional)">`;
+    } else if (type === 'lead') {
+      ex.style.display = 'flex';
+      ex.innerHTML = '<input id="capContact" type="text" placeholder="Teléfono / WhatsApp / email">';
+    } else if (type === 'tarea') {
+      const dt = new Date(); dt.setHours(23, 59, 0, 0);
+      const iso = dt.toISOString().slice(0, 16);
+      ex.style.display = 'flex';
+      ex.innerHTML = `<input id="capWhen" type="datetime-local" value="${iso}">`;
+    } else {
+      ex.style.display = 'none';
+      ex.innerHTML = '';
+    }
+  }
+  function closeCapture() { document.getElementById('captureModal').classList.remove('open'); }
+  function saveCapture() {
+    const text = document.getElementById('captureText').value.trim();
+    if (!text) { showToast('Escribe algo antes de guardar.', 'error'); return; }
+    const extra = {};
+    if (captureType === 'ingreso') extra.amount = +(document.getElementById('capAmount')?.value || 0);
+    if (captureType === 'cita' || captureType === 'tarea') {
+      const w = document.getElementById('capWhen')?.value;
+      if (w) extra.when = new Date(w).toISOString();
+    }
+    if (captureType === 'lead' || captureType === 'cita') {
+      const c = document.getElementById('capContact')?.value?.trim();
+      if (c) extra.contact = c;
+    }
+    const id = 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    state.hoy.items = state.hoy.items || [];
+    state.hoy.items.unshift({ id, type: captureType, text, extra, done: false, createdAt: new Date().toISOString() });
+    // Keep last 50
+    state.hoy.items = state.hoy.items.slice(0, 50);
+    saveState();
+    closeCapture();
+    renderHoy();
+    if (document.querySelector('.view.active')?.dataset.viewContent !== 'dashboard') switchView('dashboard');
+    showToast(`${captureType[0].toUpperCase()+captureType.slice(1)} guardado.`, 'success');
+  }
+  document.getElementById('fabCapture')?.addEventListener('click', () => openCapture('nota'));
+  document.getElementById('captureCancel')?.addEventListener('click', closeCapture);
+  document.getElementById('captureSave')?.addEventListener('click', saveCapture);
+  document.querySelectorAll('.capture-type').forEach(b => {
+    b.addEventListener('click', () => {
+      captureType = b.dataset.type;
+      document.querySelectorAll('.capture-type').forEach(x => x.classList.toggle('active', x === b));
+      renderCaptureExtras(captureType);
+    });
+  });
+  document.getElementById('captureModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'captureModal') closeCapture();
+  });
+  // Ctrl/⌘+Enter saves, Ctrl/⌘+/ opens capture
+  document.getElementById('captureText')?.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); saveCapture(); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === '/') { e.preventDefault(); openCapture('nota'); }
+    if (e.key === 'Escape' && document.getElementById('captureModal').classList.contains('open')) closeCapture();
+  });
+
+  // Meta editable (click on Meta card cycles or long-press to set)
+  document.getElementById('cardGoal')?.addEventListener('click', () => {
+    const cur = state.hoy.monthlyGoal || 5000;
+    const v = prompt(`Meta del mes actual: ${cur} €\n\nNueva meta (en €):`, cur);
+    if (v && !isNaN(+v) && +v > 0) {
+      state.hoy.monthlyGoal = +v;
+      saveState(); renderHoy();
+      showToast('Meta actualizada.', 'success');
+    }
+  });
+
+  // =====================================================================
+  // ============ PWA install prompt =====================================
+  // =====================================================================
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const btn = document.getElementById('installBtn');
+    if (btn) btn.style.display = 'inline-flex';
+  });
+  document.getElementById('installBtn')?.addEventListener('click', async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      const { outcome } = await deferredInstallPrompt.userChoice;
+      if (outcome === 'accepted') showToast('¡App instalada!', 'success');
+      deferredInstallPrompt = null;
+      document.getElementById('installBtn').style.display = 'none';
+    } else {
+      // iOS Safari fallback
+      document.getElementById('iosInstallModal').classList.add('open');
+    }
+  });
+  // Show iOS button if iOS Safari and not already standalone
+  (function() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    if (isIOS && !isStandalone) {
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'inline-flex';
+    }
+  })();
+  // Close iOS modal on outside click
+  document.getElementById('iosInstallModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'iosInstallModal') e.target.classList.remove('open');
+  });
 
   // Register service worker (PWA) — uses Blob URL so no extra file needed
   if ('serviceWorker' in navigator) {
