@@ -4,6 +4,8 @@
 
 📖 Visión de producto, naming de módulos, plan de despliegue, checklist de producción y roadmap V1–V4: **[PRODUCT.md](./PRODUCT.md)**.
 
+**PWA instalable**: manifest con accesos directos (Resultados, Media Studio, Torre de control), iconos maskable y service worker con modo offline — desde Chrome/Edge/Android: «Instalar aplicación»; desde iOS Safari: «Añadir a pantalla de inicio».
+
 ## Arranque
 
 ```bash

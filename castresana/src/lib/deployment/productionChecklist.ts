@@ -19,7 +19,7 @@ export const PRODUCTION_CHECKLIST: ChecklistItem[] = [
   { area: "Storage", item: "Reglas de Storage por tenant + URLs firmadas para portales", status: "pendiente" },
   { area: "Portales", item: "Tokens con expiración/revocación validados en servidor", status: "hecho" },
   { area: "Portales", item: "noindex en todas las rutas privadas", status: "hecho" },
-  { area: "PWA", item: "Manifest + iconos + service worker con estrategia offline", status: "pendiente" },
+  { area: "PWA", item: "Manifest + iconos + service worker con estrategia offline", status: "hecho", note: "instalable; offline con fallback elegante; portales excluidos de caché" },
   { area: "Notificaciones", item: "FCM push + digest diario por email", status: "pendiente" },
   { area: "Rendimiento", item: "Imágenes optimizadas (next/image + Storage CDN)", status: "pendiente" },
   { area: "Rendimiento", item: "Build de producción sin errores TS estrictos", status: "hecho" },

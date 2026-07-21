@@ -1,21 +1,31 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { PwaRegister } from "@/components/os/PwaRegister";
 
 export const metadata: Metadata = {
-  title: { default: "Castresana", template: "%s · Castresana" },
+  title: { default: "Castresana OS", template: "%s · Castresana OS" },
   description:
-    "Castresana — asesoría inmobiliaria premium en Oviedo. Portales privados para clientes y propietarios.",
-  robots: { index: false, follow: false }, // portales privados: nunca indexar
+    "Castresana OS — sistema operativo inmobiliario premium. Portales privados, Media Studio y gestión completa de la agencia.",
+  robots: { index: false, follow: false }, // OS interno + portales privados: nunca indexar
+  applicationName: "Castresana OS",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Castresana" },
+  icons: {
+    icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: "#191512",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
+        {/* Compatibilidad con iOS antiguos (Next 15 solo emite el estándar moderno) */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -23,7 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <PwaRegister />
+        {children}
+      </body>
     </html>
   );
 }

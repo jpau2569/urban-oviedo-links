@@ -58,7 +58,7 @@ La matriz de la UI (`RoleMatrix`) se **genera desde la definición real**; las s
 - **Backups**: export diario programado de Firestore a bucket con retención 30 días; runbook de restauración probado en staging.
 - **Monitorización**: Sentry (errores cliente/servidor) + alertas de Functions + uptime del dominio; auditoría interna en `tenants/{id}/audit`.
 - **Rendimiento**: `next/image` sobre Storage CDN, streaming de Server Components, presupuesto <150 kB de JS inicial (hoy ~110 kB).
-- **PWA**: manifest + iconos + service worker con precache del shell y cola offline para acciones de escritura.
+- **PWA** *(hecho)*: manifest con accesos directos, iconos maskable, service worker (red-primero en navegaciones con fallback offline elegante, cache-first en estáticos, portales privados excluidos de caché). Pendiente V2: cola offline para acciones de escritura.
 - **SEO**: solo las páginas públicas futuras (web de la agencia) se indexan; todo el OS y los portales, `noindex`.
 - **Routing**: el middleware resuelve tenant por hostname y protege rutas internas por sesión; los portales quedan fuera del auth (token propio).
 
