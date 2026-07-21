@@ -1,6 +1,8 @@
-# Castresana — Portales externos (Fase 7) + Media Studio (Fase 8)
+# Castresana OS
 
-Portal privado del **cliente comprador/demandante**, portal del **propietario/vendedor** y **Media Studio / Vende Todo** (fábrica de contenido inmobiliario), construidos como app Next.js (App Router) con TypeScript estricto. Los módulos internos de fases anteriores (Inbox, Explorer, Dashboard…) se integrarán sobre esta misma estructura.
+**Sistema operativo inmobiliario premium.** Portales privados (fase 7), Media Studio / Vende Todo (fase 8) y el cierre maestro del producto (fase 9: launcher, roles y permisos, ajustes, analytics, torre de control, onboarding y base multi-tenant), como app Next.js (App Router) con TypeScript estricto.
+
+📖 Visión de producto, naming de módulos, plan de despliegue, checklist de producción y roadmap V1–V4: **[PRODUCT.md](./PRODUCT.md)**.
 
 ## Arranque
 
@@ -12,8 +14,13 @@ npm run build      # build de producción (typecheck estricto incluido)
 
 **Accesos de demostración**
 
-| Portal | URL |
+| Pantalla | URL |
 |---|---|
+| Launcher del OS | `/` |
+| Resultados (analytics) | `/analytics` |
+| Ajustes (7 secciones) | `/settings` |
+| Torre de control (admin) | `/admin` |
+| Onboarding de agente | `/onboarding` |
 | Cliente (Lucía) | `/client-portal/demo-cliente` |
 | Propietario (Javier) | `/owner-portal/demo-propietario` |
 | Enlace caducado | `/client-portal/demo-caducado` |
