@@ -1,0 +1,59 @@
+# Castresana — Portales externos (Fase 7)
+
+Portal privado del **cliente comprador/demandante** y portal del **propietario/vendedor**, construidos como app Next.js (App Router) con TypeScript estricto. Esta fase crea la base de la plataforma en este repositorio; los módulos internos (Inbox, Explorer, Dashboard…) de fases anteriores se integrarán sobre esta misma estructura.
+
+## Arranque
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # build de producción (typecheck estricto incluido)
+```
+
+**Accesos de demostración**
+
+| Portal | URL |
+|---|---|
+| Cliente (Lucía) | `/client-portal/demo-cliente` |
+| Propietario (Javier) | `/owner-portal/demo-propietario` |
+| Enlace caducado | `/client-portal/demo-caducado` |
+
+## Arquitectura
+
+```
+src/
+├─ app/
+│  ├─ client-portal/[token]/            Home del cliente (selección curada + próximos pasos)
+│  │  ├─ properties/[id]/               Ficha premium con nota personal del agente
+│  │  ├─ visits/                        Visitas + elección de franjas propuestas
+│  │  ├─ messages/                      Seguimiento: pasos + resumen de conversaciones
+│  │  └─ documents/                     Biblioteca de dosieres e informes
+│  └─ owner-portal/[token]/             Resumen: estado, métricas, embudo, feedback
+│     ├─ activity/                      Timeline comercial + visitas + comunicaciones
+│     └─ documents/                     Archivo del inmueble (contratos, certificados…)
+├─ components/portal/                   12 componentes reutilizables (shell, tarjetas, métricas…)
+├─ lib/portal/
+│  ├─ accessTokens.ts                   Generación/validación de enlaces mágicos con expiración
+│  ├─ portalPermissions.ts              Matriz rol → permisos (solo lectura por defecto)
+│  ├─ portalQueries.ts                  Contrato PortalRepository + implementación mock
+│  ├─ portalViewModels.ts               Composición de datos → view-models por pantalla
+│  └─ mockData.ts                       Dataset con la forma exacta de Firestore
+└─ types/portal.ts                      Modelo completo (sesiones, selecciones, visitas, métricas…)
+```
+
+### Modelo de acceso
+
+- Enlace mágico con token opaco de 128 bits: `/{portal}/{token}`.
+- El token vive en `portalTokens/{token}` con rol, sujeto, expiración, revocación y scopes opcionales.
+- Toda página valida el token **en servidor** antes de renderizar; token inválido → pantalla de acceso con motivo (caducado / revocado / no encontrado / rol equivocado).
+- Solo lectura por defecto. Escrituras del cliente (interés, franjas de visita) pasarán por Route Handlers que re-validan token + scope. `approve:actions` queda declarado para la fase de aprobaciones del propietario.
+- `robots: noindex` global: los portales jamás se indexan.
+
+### Paso a producción (Firebase)
+
+1. Implementar `firestoreRepository` con el contrato `PortalRepository` (colecciones homónimas a `mockData.ts`).
+2. Cambiar el export `repo` en `portalQueries.ts`.
+3. Servir documentos con URLs firmadas de Storage generadas tras validar el token.
+4. Crear tokens desde el panel interno («Compartir portal con…»).
+
+Ni páginas ni componentes necesitan cambios: solo la capa de datos.
