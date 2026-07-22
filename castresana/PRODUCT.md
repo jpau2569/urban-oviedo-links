@@ -23,7 +23,24 @@ Un solo sistema para operar una agencia inmobiliaria de principio a fin: desde e
 | 🎛️ **Ajustes** | Settings | El OS, a la medida de tu agencia. |
 | 🗼 **Torre de control** | Admin | Salud, auditoría y lanzamiento. |
 
-Tono de producto: **premium sereno** — castellano cuidado, frases cortas, cero jerga SaaS. "Vende Todo" es el nombre del agente de IA en todo el sistema (respuestas, scoring, recomendaciones de media).
+Tono de producto: **premium sereno** — castellano cuidado, frases cortas, cero jerga SaaS.
+
+### El equipo de agentes IA (`/agents`)
+
+"Vende Todo" no es una función: es el **jefe de un equipo de seis agentes especializados**, cada uno operando en un único módulo con los permisos de ese módulo — ni uno más:
+
+| Agente | Cargo | Módulo |
+|---|---|---|
+| 🎩 **Vende Todo** | Director comercial IA · jefe de equipo | Inteligencia |
+| 💬 **Primera Línea** | Respuesta inmediata | Conversaciones |
+| 🔭 **El Vigía** | Seguimiento comercial | Oportunidades |
+| 🎬 **El Guionista** | Contenido y media | Media Studio |
+| 📈 **El Analista** | Precios y resultados | Resultados |
+| 🗂️ **El Notario** | Datos y documentos | Archivo |
+
+**Flujo canónico**: el agente *observa → propone* (con su porqué siempre explicado) *→ una persona aprueba o descarta → el sistema ejecuta → queda auditado* → la **tasa de aceptación** es la nota del agente (si baja del 70%, se recalibra antes de seguir).
+
+**El contrato de los agentes** (innegociable, codificado en `agentRegistry.ts`): nada llega a un cliente sin revisión humana; toda propuesta es explicable; todo queda auditado; permisos mínimos por módulo; la aceptación humana mide su calidad.
 
 Fuente de verdad en código: `src/lib/os/modules.ts` — la home, la navegación y esta tabla se derivan del mismo registro.
 

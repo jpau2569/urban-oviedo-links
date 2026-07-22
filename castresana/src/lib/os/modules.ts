@@ -35,7 +35,7 @@ export const OS_MODULES: OsModule[] = [
   { id: "archivo", name: "Archivo", codename: "Documents", icon: "🗂️", claim: "Todo documento, en su sitio y firmable.", href: "#", status: "en-camino" },
   { id: "resultados", name: "Resultados", codename: "Analytics", icon: "📈", claim: "Decisiones con números, no sensaciones.", href: "/analytics", status: "activo" },
   { id: "autopiloto", name: "Autopiloto", codename: "Automation", icon: "⚙️", claim: "El trabajo repetitivo, solo.", href: "/settings/automation", status: "activo" },
-  { id: "inteligencia", name: "Inteligencia", codename: "AI Insights", icon: "✨", claim: "Vende Todo piensa contigo.", href: "/settings/ai", status: "activo" },
+  { id: "inteligencia", name: "Inteligencia", codename: "AI Insights", icon: "✨", claim: "Vende Todo y su equipo de agentes, contigo.", href: "/agents", status: "activo" },
   { id: "ajustes", name: "Ajustes", codename: "Settings", icon: "🎛️", claim: "El OS, a la medida de tu agencia.", href: "/settings", status: "activo" },
   { id: "sistema", name: "Torre de control", codename: "Admin", icon: "🗼", claim: "Salud, auditoría y lanzamiento.", href: "/admin", status: "activo" },
 ];

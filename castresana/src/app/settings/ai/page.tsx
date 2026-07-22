@@ -15,7 +15,7 @@ export default async function AISettingsPage() {
       active="/settings/ai"
       user={guard.user}
       title="Inteligencia"
-      intro="Vende Todo piensa contigo: borradores, scoring y recomendaciones — siempre con revisión humana."
+      intro="Preferencias del equipo de agentes IA: tono, capacidades y consumo. Conoce al equipo y revisa sus propuestas en el módulo Inteligencia (/agents)."
     >
       <AISettingsPanel initial={AI_SETTINGS} />
     </SettingsShell>

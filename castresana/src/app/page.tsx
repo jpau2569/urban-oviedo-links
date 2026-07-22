@@ -22,9 +22,10 @@ export default async function OsHome() {
         <h1>Buenos días, {user.name.split(" ")[0]}.</h1>
         <p className="lede">{OS_CLAIM}</p>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 22 }}>
-          <Link className="btn btn-copper" href="/analytics">📈 Ver resultados del mes</Link>
-          <Link className="btn btn-ghost" style={{ color: "#c9976f", borderColor: "rgba(201,151,111,.35)" }} href="/media-studio">🎬 Abrir Media Studio</Link>
-          <Link className="btn btn-ghost" style={{ color: "#c9976f", borderColor: "rgba(201,151,111,.35)" }} href="/onboarding">✨ Onboarding de agente</Link>
+          <Link className="btn btn-copper" href="/agents">🎩 Revisar propuestas del equipo IA</Link>
+          <Link className="btn btn-ghost" style={{ color: "#c9976f", borderColor: "rgba(201,151,111,.35)" }} href="/analytics">📈 Resultados del mes</Link>
+          <Link className="btn btn-ghost" style={{ color: "#c9976f", borderColor: "rgba(201,151,111,.35)" }} href="/media-studio">🎬 Media Studio</Link>
+          <Link className="btn btn-ghost" style={{ color: "#c9976f", borderColor: "rgba(201,151,111,.35)" }} href="/onboarding">✨ Onboarding</Link>
         </div>
       </section>
 
