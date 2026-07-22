@@ -18,21 +18,22 @@
 <style>
   /* ═══════════════ TOKENS ═══════════════ */
   :root {
-    --teal:#2dd4bf; --teal-d:#0d9488; --violet:#8b5cf6; --gold:#f59e0b; --rose:#fb7185; --blue:#60a5fa;
+    /* v4 — neón futurista: cian eléctrico + magenta sobre negro profundo */
+    --teal:#00e5ff; --teal-d:#0092b8; --violet:#d24bff; --gold:#ffc233; --rose:#ff4d8d; --blue:#4da6ff;
     --wa:#25d366;
-    --bg:#050810;
-    --glass:rgba(255,255,255,.045);
-    --glass-2:rgba(255,255,255,.07);
-    --glass-3:rgba(255,255,255,.10);
-    --line:rgba(255,255,255,.09);
-    --line-2:rgba(255,255,255,.16);
-    --fg:#eef2f8; --fg-soft:#a8b3c7; --fg-mut:#5d6b82;
-    --ok:#34d399; --warn:#fbbf24; --danger:#f87171;
-    --sh-glow:0 0 0 1px rgba(45,212,191,.25), 0 10px 40px -8px rgba(45,212,191,.35);
-    --sh-lg:0 30px 60px -15px rgba(0,0,0,.7);
-    --sh-md:0 12px 30px -8px rgba(0,0,0,.55);
+    --bg:#02040c;
+    --glass:rgba(120,200,255,.05);
+    --glass-2:rgba(120,200,255,.08);
+    --glass-3:rgba(120,200,255,.12);
+    --line:rgba(0,229,255,.14);
+    --line-2:rgba(0,229,255,.30);
+    --fg:#eaf6ff; --fg-soft:#9fb8d4; --fg-mut:#54688a;
+    --ok:#2bffb0; --warn:#ffc233; --danger:#ff5f6b;
+    --sh-glow:0 0 0 1px rgba(0,229,255,.35), 0 0 24px rgba(0,229,255,.25), 0 10px 44px -8px rgba(0,229,255,.35);
+    --sh-lg:0 30px 60px -15px rgba(0,0,0,.8), 0 0 30px -6px rgba(0,229,255,.18);
+    --sh-md:0 12px 30px -8px rgba(0,0,0,.6);
     --r:18px; --r-sm:12px; --r-lg:24px;
-    --ring:0 0 0 3px rgba(45,212,191,.35);
+    --ring:0 0 0 3px rgba(0,229,255,.4);
   }
   [data-theme="light"] {
     --bg:#eef1f7;
@@ -51,9 +52,17 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
-    font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--fg);
+    font-family:'Inter',system-ui,sans-serif; color:var(--fg);
+    background:
+      linear-gradient(rgba(0,229,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,.035) 1px, transparent 1px),
+      radial-gradient(1100px 600px at 80% -10%, rgba(0,146,184,.14), transparent 60%),
+      radial-gradient(900px 600px at 0% 100%, rgba(210,75,255,.10), transparent 55%),
+      var(--bg);
+    background-size: 44px 44px, 44px 44px, auto, auto, auto;
     min-height:100vh; -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
+  [data-theme="light"] body { background:var(--bg); }
   h1,h2,h3,.num { font-family:'Plus Jakarta Sans',sans-serif; }
   ::selection { background:var(--teal); color:#04211d; }
   #fx { position:fixed; inset:0; z-index:0; pointer-events:none; }
@@ -401,6 +410,39 @@
     .toasts { left:13px; right:13px; max-width:none; }
     .brand small { display:none; }
   }
+  /* ═══════════════ v4: AGENTES IA ═══════════════ */
+  .agents-hero { background:linear-gradient(140deg, rgba(0,229,255,.10), rgba(210,75,255,.08)); border:1px solid var(--line-2); border-radius:var(--r-lg); padding:22px 24px; margin-bottom:18px; box-shadow:var(--sh-glow); }
+  .agents-hero h2 { font-family:'Plus Jakarta Sans'; font-size:22px; letter-spacing:-.4px; }
+  .agents-hero p { color:var(--fg-soft); font-size:13px; margin-top:6px; line-height:1.6; }
+  .agent-sug { display:flex; gap:14px; align-items:flex-start; background:var(--glass); border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:15px; padding:15px 17px; margin-bottom:11px; backdrop-filter:blur(10px); animation:pop .35s ease backwards; }
+  .agent-sug.done { opacity:.45; }
+  .agent-sug .a-ico { width:42px; height:42px; border-radius:13px; background:linear-gradient(135deg, rgba(0,229,255,.18), rgba(210,75,255,.18)); border:1px solid var(--line-2); display:grid; place-items:center; font-size:19px; flex-shrink:0; box-shadow:0 0 16px rgba(0,229,255,.25); }
+  .agent-sug .a-tx { flex:1; min-width:0; }
+  .agent-sug .a-who { font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); }
+  .agent-sug .a-tit { font-size:14px; font-weight:700; margin-top:3px; }
+  .agent-sug .a-why { font-size:12.5px; color:var(--fg-soft); margin-top:4px; line-height:1.5; }
+  .agent-sug .a-acts { display:flex; flex-direction:column; gap:7px; flex-shrink:0; }
+  .agent-card-mini { background:var(--glass); border:1px solid var(--line); border-radius:15px; padding:15px; text-align:center; }
+  .agent-card-mini .em { font-size:26px; filter:drop-shadow(0 0 10px rgba(0,229,255,.5)); }
+  .agent-card-mini b { display:block; font-size:13px; margin-top:7px; }
+  .agent-card-mini small { color:var(--fg-mut); font-size:10.5px; display:block; margin-top:2px; }
+  .agents-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
+
+  /* Chip de sincronización nube */
+  .sync-chip { display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:700; padding:8px 13px; border-radius:999px; border:1px solid var(--line); background:var(--glass); color:var(--fg-soft); cursor:pointer; transition:.2s; }
+  .sync-chip:hover { border-color:var(--line-2); }
+  .sync-chip .dot { width:8px; height:8px; border-radius:50%; background:var(--fg-mut); }
+  .sync-chip.ok .dot { background:var(--ok); box-shadow:0 0 8px var(--ok); }
+  .sync-chip.busy .dot { background:var(--gold); box-shadow:0 0 8px var(--gold); animation:pulse 1s infinite; }
+  .sync-chip.err .dot { background:var(--danger); box-shadow:0 0 8px var(--danger); }
+  @keyframes pulse { 50% { opacity:.4; } }
+
+  /* Chips de vídeo */
+  .video-chips { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+  .video-chip { display:flex; align-items:center; gap:10px; background:var(--glass-2); border:1px solid var(--line); border-radius:12px; padding:9px 12px; font-size:12.5px; font-weight:600; }
+  .video-chip .rm { margin-left:auto; border:none; background:rgba(255,95,107,.15); color:var(--danger); width:26px; height:26px; border-radius:8px; cursor:pointer; }
+  .m-videos video { width:100%; border-radius:14px; border:1px solid var(--line); margin-top:12px; background:#000; }
+
   @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
 
   @media print {
@@ -425,8 +467,12 @@
         <button data-tab="clients">👥<span class="tx"> Clientes</span> <span class="nb" id="nbClients">0</span></button>
         <button data-tab="agenda">📅<span class="tx"> Agenda</span> <span class="nb" id="nbVisits">0</span></button>
         <button data-tab="tools">🧮<span class="tx"> Herramientas</span></button>
+        <button data-tab="agentes">🎩<span class="tx"> Agentes</span> <span class="nb" id="nbAgentes">0</span></button>
       </nav>
       <div class="top-actions">
+        <button class="sync-chip" id="syncChip" title="Sincronización con la nube (Supabase)"><span class="dot"></span><span id="syncLabel">nube</span></button>
+        <a class="icon-btn" href="https://www.asesoriacastresana.com" target="_blank" rel="noopener" title="Web asesoriacastresana.com" aria-label="Web de la asesoría"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+        <a class="icon-btn" id="crmLink" href="https://www.inmoweb.es" target="_blank" rel="noopener" title="CRM Inmoweb" aria-label="CRM Inmoweb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></a>
         <button class="icon-btn" id="btnImport" title="Importar copia" aria-label="Importar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
         <button class="icon-btn" id="btnExport" title="Exportar copia" aria-label="Exportar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
         <button class="icon-btn" id="btnTheme" title="Tema" aria-label="Cambiar tema"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -530,12 +576,13 @@
               </div>
               <div class="field"><label class="lbl req" for="description">Descripción</label><textarea id="description" placeholder="Describe la propiedad…"></textarea></div>
               <div class="field"><label class="lbl" for="videoUrl">🎥 Vídeo / Tour virtual (URL)</label><input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=…" /></div>
-              <div class="field"><label class="lbl">📸 Fotos <span style="color:var(--fg-mut);font-weight:500">(se optimizan solas)</span></label>
-                <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Subir fotos">
-                  <div class="dz-i">📤</div><div class="dz-t">Arrastra fotos o haz clic</div><div class="dz-s">La 1ª será la portada · clic en miniatura para cambiarla</div>
-                  <input type="file" id="fileInput" accept="image/*" multiple hidden />
+              <div class="field"><label class="lbl">📸 Fotos y 🎥 vídeos reales <span style="color:var(--fg-mut);font-weight:500">(las fotos se optimizan solas)</span></label>
+                <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Subir fotos y vídeos">
+                  <div class="dz-i">📤</div><div class="dz-t">Arrastra fotos o vídeos, o haz clic</div><div class="dz-s">Fotos: la 1ª será portada · Vídeos: hasta 60 MB, se guardan en tu dispositivo</div>
+                  <input type="file" id="fileInput" accept="image/*,video/*" multiple hidden />
                 </div>
                 <div class="thumbs" id="thumbs"></div>
+                <div class="video-chips" id="videoChips"></div>
               </div>
               <div style="display:flex;gap:9px;margin-top:20px">
                 <button type="submit" class="btn btn-pri" style="flex:1" id="submitBtn">💾 <span id="submitLabel">Guardar propiedad</span></button>
@@ -666,8 +713,21 @@
       </div>
     </section>
 
+    <!-- ═══════════ TAB: AGENTES IA ═══════════ -->
+    <section class="tab-page" id="tab-agentes">
+      <div class="agents-hero">
+        <h2>🎩 Vende Todo y su equipo</h2>
+        <p>Seis agentes IA analizan <b>tus datos reales</b> — cartera, clientes y agenda — y te proponen la siguiente jugada. Tú apruebas con un toque y la acción se ejecuta al momento. Nada se hace sin ti.</p>
+      </div>
+      <div class="agents-grid" id="agentsGrid"></div>
+      <div class="panel">
+        <div class="p-head"><h2>⚡ Propuestas de hoy</h2><span class="badge-n" id="agSugCount">0</span></div>
+        <div class="p-body" id="agentSuggestions"></div>
+      </div>
+    </section>
+
     <footer class="foot">
-      <p>© 2025 <a href="https://asesoriacastresana.com" target="_blank" rel="noopener">Asesoría Castresana</a> · Oviedo — Los datos viven en tu navegador · usa <b>Exportar</b> ⬇️ para copias de seguridad</p>
+      <p>© 2025 <a href="https://www.asesoriacastresana.com" target="_blank" rel="noopener">Asesoría Castresana</a> · Oviedo — Datos en tu navegador + copia en la nube ☁️ · <b>Exportar</b> ⬇️ para respaldo local</p>
     </footer>
   </div>
 </div>
@@ -687,8 +747,34 @@
 (function () {
   "use strict";
 
+  /* ═══════════ CONFIG (editable) ═══════════ */
+  // Sincronización en la nube — proyecto Supabase de la asesoría.
+  const SUPA_URL = "https://qwljkqisnupjgzbdyzym.supabase.co";
+  const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bGprcWlzbnVwamd6YmR5enltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2MzE4MjUsImV4cCI6MjA5NTIwNzgyNX0.Sll2rYf1uYR_Eg3fDH1TkvHKNQFiZiqC7AcZl4Dc5w4";
+  const MAX_VIDEO_MB = 60;
+
   /* ═══════════ UTILS ═══════════ */
   const $ = (id) => document.getElementById(id);
+
+  /* ═══════════ INDEXEDDB (vídeos reales, sin límite de localStorage) ═══════════ */
+  let idb = null;
+  function idbOpen() {
+    return new Promise((res, rej) => {
+      if (idb) return res(idb);
+      const rq = indexedDB.open("castresana_media", 1);
+      rq.onupgradeneeded = () => rq.result.createObjectStore("videos");
+      rq.onsuccess = () => { idb = rq.result; res(idb); };
+      rq.onerror = () => rej(rq.error);
+    });
+  }
+  const idbTx = (mode, fn) => idbOpen().then((db) => new Promise((res, rej) => {
+    const tx = db.transaction("videos", mode), st = tx.objectStore("videos"), out = fn(st);
+    tx.oncomplete = () => res(out && out.result !== undefined ? out.result : undefined);
+    tx.onerror = () => rej(tx.error);
+  }));
+  const videoPut = (id, blob) => idbTx("readwrite", (st) => st.put(blob, id));
+  const videoGet = (id) => idbTx("readonly", (st) => st.get(id));
+  const videoDel = (id) => idbTx("readwrite", (st) => st.delete(id));
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   const fmtEur = (n) => "€" + (parseInt(n,10)||0).toLocaleString("es-ES");
   const debounce = (fn,ms) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; };
@@ -704,17 +790,17 @@
   function loadDB() {
     try {
       const raw = JSON.parse(localStorage.getItem(LS));
-      if (raw && Array.isArray(raw.properties)) return { properties:raw.properties, clients:raw.clients||[], visits:raw.visits||[], activity:raw.activity||[] };
+      if (raw && Array.isArray(raw.properties)) return { properties:raw.properties, clients:raw.clients||[], visits:raw.visits||[], activity:raw.activity||[], tombstones:raw.tombstones||[] };
     } catch {}
     // migración desde v2
     try {
       const old = JSON.parse(localStorage.getItem("ac_properties_v2"));
-      if (Array.isArray(old) && old.length) return { properties:old, clients:[], visits:[], activity:[] };
+      if (Array.isArray(old) && old.length) return { properties:old, clients:[], visits:[], activity:[], tombstones:[] };
     } catch {}
-    return { properties:[], clients:[], visits:[], activity:[] };
+    return { properties:[], clients:[], visits:[], activity:[], tombstones:[] };
   }
   function persist() {
-    try { localStorage.setItem(LS, JSON.stringify(db)); return true; }
+    try { localStorage.setItem(LS, JSON.stringify(db)); scheduleSync(); return true; }
     catch { toast("Almacenamiento lleno. Exporta una copia y borra fotos antiguas.","err",6000); return false; }
   }
   function nextRef() { const n = num(localStorage.getItem(LS_SEQ))+1; localStorage.setItem(LS_SEQ,String(n)); return "AC-"+String(n).padStart(4,"0"); }
@@ -730,9 +816,9 @@
     const N = Math.min(55, Math.floor(innerWidth/26));
     for (let i=0;i<N;i++) parts.push({ x:Math.random(), y:Math.random(), r:(Math.random()*1.6+.5)*devicePixelRatio, s:Math.random()*.00012+.00004, o:Math.random()*.5+.15, ph:Math.random()*6.28 });
     orbs = [
-      { c:[45,212,191], x:.85, y:.1,  r:.5,  sx:.00005, sy:.00003 },
-      { c:[139,92,246], x:.1,  y:.85, r:.55, sx:-.00004, sy:.00005 },
-      { c:[245,158,11], x:.5,  y:.5,  r:.4,  sx:.00003, sy:-.00004 },
+      { c:[0,229,255],  x:.85, y:.1,  r:.5,  sx:.00005, sy:.00003 },
+      { c:[210,75,255], x:.1,  y:.85, r:.55, sx:-.00004, sy:.00005 },
+      { c:[77,166,255], x:.5,  y:.5,  r:.4,  sx:.00003, sy:-.00004 },
     ];
     let t=0, running=true;
     document.addEventListener("visibilitychange", ()=>{ running = !document.hidden; if(running) loop(); });
@@ -800,12 +886,14 @@
     if (activeTab==="dash") renderDash();
     if (activeTab==="agenda") renderAgenda();
     if (activeTab==="clients") renderClients();
+    if (activeTab==="agentes") renderAgentes();
   });
   function badges(){
     $("nbProps").textContent=db.properties.length;
     $("nbClients").textContent=db.clients.length;
     const pend=db.visits.filter(v=>v.status==="pendiente" && v.date>=todayStr()).length;
     $("nbVisits").textContent=pend;
+    try{ $("nbAgentes").textContent=agentProposals().length; }catch{}
   }
 
   /* ═══════════ TILT 3D ═══════════ */
@@ -843,11 +931,29 @@
   ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("drag");}));
   dz.addEventListener("drop",e=>handleFiles(e.dataTransfer.files));
   fi.onchange=e=>{handleFiles(e.target.files);fi.value="";};
+  let videos=[]; // [{id,name,size}] — blobs en IndexedDB
   async function handleFiles(list){
-    const files=Array.from(list).filter(f=>f.type.startsWith("image/"));
-    if(!files.length){toast("Solo imágenes — para vídeo usa el campo URL","warn");return;}
-    for(const f of files){ try{ media.push(await compress(f)); }catch{ toast("No se pudo procesar "+f.name,"err"); } }
-    renderThumbs();
+    const files=Array.from(list);
+    const imgs=files.filter(f=>f.type.startsWith("image/"));
+    const vids=files.filter(f=>f.type.startsWith("video/"));
+    if(!imgs.length&&!vids.length){toast("Formato no soportado — fotos o vídeos","warn");return;}
+    for(const f of imgs){ try{ media.push(await compress(f)); }catch{ toast("No se pudo procesar "+f.name,"err"); } }
+    for(const f of vids){
+      if(f.size>MAX_VIDEO_MB*1024*1024){ toast(`«${f.name}» supera ${MAX_VIDEO_MB} MB`,"warn"); continue; }
+      const id="vid-"+Date.now()+"-"+Math.random().toString(36).slice(2,7);
+      try{ await videoPut(id,f); videos.push({id,name:f.name,size:f.size}); toast("Vídeo guardado: "+f.name); }
+      catch{ toast("No se pudo guardar "+f.name,"err"); }
+    }
+    renderThumbs(); renderVideoChips();
+  }
+  function renderVideoChips(){
+    $("videoChips").innerHTML=videos.map(v=>`
+      <div class="video-chip">🎥 <span>${esc(v.name)}</span><span style="color:var(--fg-mut);font-weight:500">${(v.size/1048576).toFixed(1)} MB</span>
+      <button type="button" class="rm" data-vrm="${v.id}" aria-label="Quitar vídeo">×</button></div>`).join("");
+    $("videoChips").querySelectorAll("[data-vrm]").forEach(b=>b.onclick=async()=>{
+      await videoDel(b.dataset.vrm).catch(()=>{});
+      videos=videos.filter(v=>v.id!==b.dataset.vrm); renderVideoChips();
+    });
   }
   function renderThumbs(){
     const box=$("thumbs");
@@ -875,11 +981,12 @@
       title:g("title"),price:g("price"),type:$("type").value,location:g("location"),
       bedrooms:g("bedrooms"),bathrooms:g("bathrooms"),area:g("area"),year:g("year"),
       estado:$("estado").value,energy:$("energy").value,owner:g("owner"),extras,
-      description:g("description"),videoUrl:g("videoUrl"),media:ordered,
+      description:g("description"),videoUrl:g("videoUrl"),media:ordered,videos:videos.slice(),
+      updatedAt:new Date().toISOString(),
     };
     if(editId){
       const i=db.properties.findIndex(p=>String(p.id)===editId);
-      if(i>-1) db.properties[i]={...db.properties[i],...base,updatedAt:new Date().toISOString()};
+      if(i>-1) db.properties[i]={...db.properties[i],...base};
       logAct("✏️","Actualizada: "+base.title);
       toast("Propiedad actualizada");
     } else {
@@ -892,7 +999,7 @@
   });
   $("resetBtn").onclick=resetForm;
   function resetForm(){
-    form.reset(); $("editId").value=""; media=[]; coverIndex=0; renderThumbs();
+    form.reset(); $("editId").value=""; media=[]; videos=[]; coverIndex=0; renderThumbs(); renderVideoChips();
     $("formTitle").textContent="📝 Nueva propiedad"; $("submitLabel").textContent="Guardar propiedad"; $("resetBtn").style.display="none";
   }
   function editProperty(id){
@@ -902,7 +1009,7 @@
     ["title","price","location","bedrooms","bathrooms","area","year","description","videoUrl","owner"].forEach(k=>$(k).value=p[k]||"");
     $("type").value=p.type||""; $("estado").value=p.estado||"disponible"; $("energy").value=p.energy||"";
     document.querySelectorAll("#extrasChips input").forEach(c=>c.checked=(p.extras||[]).includes(c.value));
-    media=(p.media||[]).slice(); coverIndex=0; renderThumbs();
+    media=(p.media||[]).slice(); videos=(p.videos||[]).slice(); coverIndex=0; renderThumbs(); renderVideoChips();
     $("formTitle").textContent="✏️ Editar propiedad"; $("submitLabel").textContent="Guardar cambios"; $("resetBtn").style.display="inline-flex";
     switchTab("props");
     document.querySelector("#tab-props .form-side").scrollIntoView({behavior:"smooth",block:"start"});
@@ -910,6 +1017,8 @@
   async function deleteProperty(id){
     const p=db.properties.find(x=>String(x.id)===String(id));
     if(!(await confirmDialog({title:"Eliminar propiedad",text:`Se eliminará "${p?p.title:""}" y sus visitas asociadas.`,ico:"🗑️"})))return;
+    for(const v of (p&&p.videos)||[]) videoDel(v.id).catch(()=>{});
+    tombstone("property",id); db.visits.filter(v=>String(v.propertyId)===String(id)).forEach(v=>tombstone("visit",v.id));
     db.properties=db.properties.filter(x=>String(x.id)!==String(id));
     db.visits=db.visits.filter(v=>String(v.propertyId)!==String(id));
     logAct("🗑️","Eliminada: "+(p?p.title:""));
@@ -1088,6 +1197,7 @@
         <p class="m-desc">${esc(p.description)}</p>
         ${p.owner?`<p style="margin-top:14px;font-size:12.5px;color:var(--fg-mut)">🤝 Propietario: ${esc(p.owner)} <em>(interno)</em></p>`:""}
         ${videoEmbed(p.videoUrl)}
+        ${(p.videos&&p.videos.length)?`<div class="m-videos" id="mVideos"><p style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-top:18px">🎥 Vídeos del inmueble</p></div>`:""}
         ${interested.length?`<div class="m-int"><h4>💜 Clientes que encajan (${interested.length})</h4>
           ${interested.slice(0,5).map(c=>`<div class="cm-item"><b>${esc(c.name)}</b><span class="cm-p">${c.budgetMax?("hasta "+fmtEur(c.budgetMax)):"sin tope"}</span>
           ${c.phone?`<button data-send="${c.id}" title="Enviar ficha por WhatsApp">📱</button>`:""}</div>`).join("")}</div>`:""}
@@ -1108,6 +1218,17 @@
     if(gallery.items.length>1){
       $("galPrev").onclick=()=>galNav(-1); $("galNext").onclick=()=>galNav(1);
       $("galDots").querySelectorAll("[data-d]").forEach(d=>d.onclick=()=>{gallery.i=+d.dataset.d;galUpd();});
+    }
+    // vídeos reales desde IndexedDB
+    if(p.videos&&p.videos.length&&$("mVideos")){
+      p.videos.forEach(async(v)=>{
+        try{
+          const blob=await videoGet(v.id);
+          if(!blob)return;
+          const el=document.createElement("video"); el.controls=true; el.preload="metadata"; el.src=URL.createObjectURL(blob);
+          $("mVideos")&&$("mVideos").appendChild(el);
+        }catch{}
+      });
     }
   }
   function galNav(d){gallery.i=(gallery.i+d+gallery.items.length)%gallery.items.length;galUpd();}
@@ -1185,7 +1306,7 @@
     const c={
       name, phone:$("clPhone").value.trim(), email:$("clEmail").value.trim(), tipo:$("clTipo").value,
       budgetMin:$("clMin").value, budgetMax:$("clMax").value, wantType:$("clWant").value,
-      zone:$("clZone").value.trim(), notes:$("clNotes").value.trim(),
+      zone:$("clZone").value.trim(), notes:$("clNotes").value.trim(), updatedAt:new Date().toISOString(),
     };
     const editId=$("clEditId").value;
     if(editId){
@@ -1211,6 +1332,7 @@
   async function deleteClient(id){
     const c=db.clients.find(x=>String(x.id)===String(id));
     if(!(await confirmDialog({title:"Eliminar cliente",text:`Se eliminará "${c?c.name:""}".`,ico:"🗑️"})))return;
+    tombstone("client",id); db.visits.filter(v=>String(v.clientId)===String(id)).forEach(v=>tombstone("visit",v.id));
     db.clients=db.clients.filter(x=>String(x.id)!==String(id));
     db.visits=db.visits.filter(v=>String(v.clientId)!==String(id));
     persist(); render(); toast("Cliente eliminado");
@@ -1285,7 +1407,7 @@
     e.preventDefault();
     const pid=$("vProp").value, date=$("vDate").value, time=$("vTime").value;
     if(!pid||!date||!time){toast("Propiedad, fecha y hora son obligatorios","warn");return;}
-    db.visits.push({id:Date.now(),propertyId:pid,clientId:$("vClient").value||"",date,time,notes:$("vNotes").value.trim(),status:"pendiente"});
+    db.visits.push({id:Date.now(),propertyId:pid,clientId:$("vClient").value||"",date,time,notes:$("vNotes").value.trim(),status:"pendiente",updatedAt:new Date().toISOString()});
     const p=db.properties.find(x=>String(x.id)===String(pid));
     logAct("📅","Visita programada: "+(p?p.title:""));
     persist(); $("visitForm").reset(); $("vDate").value=todayStr(); $("vTime").value="10:00";
@@ -1322,22 +1444,38 @@
             <div class="v-info"><b>${esc(p?p.title:"(propiedad eliminada)")}</b>
               <small>${c?"👤 "+esc(c.name):""}${v.notes?(c?" · ":"")+"📝 "+esc(v.notes):""}</small></div>
             <div class="v-acts">
+              ${c&&c.phone?`<button data-vwa="${v.id}" title="Enviar cita por WhatsApp a ${esc(c.name)}" style="background:linear-gradient(135deg,#128c7e,var(--wa));border-color:transparent">📲</button>`:""}
               ${v.status==="pendiente"?`<button data-vok="${v.id}" title="Marcar realizada">✅</button><button data-vno="${v.id}" title="Cancelar">🚫</button>`:""}
               <button data-vdel="${v.id}" title="Borrar">🗑️</button>
             </div>
           </div>`;
         }).join("")}
       </div>`).join("");
+    box.querySelectorAll("[data-vwa]").forEach(b=>b.onclick=()=>sendVisitWA(b.dataset.vwa));
     box.querySelectorAll("[data-vok]").forEach(b=>b.onclick=()=>setVisit(b.dataset.vok,"hecha"));
     box.querySelectorAll("[data-vno]").forEach(b=>b.onclick=()=>setVisit(b.dataset.vno,"cancelada"));
     box.querySelectorAll("[data-vdel]").forEach(b=>b.onclick=async()=>{
       if(!(await confirmDialog({title:"Borrar visita",text:"Se quitará de la agenda.",ico:"🗑️"})))return;
+      tombstone("visit",b.dataset.vdel);
       db.visits=db.visits.filter(v=>String(v.id)!==String(b.dataset.vdel)); persist(); renderAgenda(); badges();
     });
   }
+  /* Enviar la cita agendada al WhatsApp del cliente */
+  function sendVisitWA(visitId){
+    const v=db.visits.find(x=>String(x.id)===String(visitId)); if(!v)return;
+    const c=db.clients.find(x=>String(x.id)===String(v.clientId));
+    const p=db.properties.find(x=>String(x.id)===String(v.propertyId));
+    if(!c||!c.phone){toast("Este cliente no tiene teléfono guardado","warn");return;}
+    let ph=(c.phone||"").replace(/\D/g,""); if(ph.length===9)ph="34"+ph;
+    const msg=`Hola ${c.name.split(" ")[0]} 👋\n\nTe confirmo tu visita con *Asesoría Castresana*:\n\n🏠 *${p?p.title:"Inmueble"}*${p&&p.ref?` (${p.ref})`:""}\n📍 ${p?p.location:""}\n📆 *${fmtDay(v.date)}* — ${fmtWeekdayLong(v.date)}\n🕐 *${v.time} h*\n${v.notes?`\n📝 ${v.notes}\n`:""}\nSi necesitas cambiar la hora, respóndeme por aquí. ¡Nos vemos!\n\n🏢 Asesoría Castresana · Oviedo\n🌐 https://www.asesoriacastresana.com`;
+    window.open(`https://wa.me/${ph}?text=`+encodeURIComponent(msg),"_blank");
+    logAct("📲",`Cita de ${c.name} enviada por WhatsApp`); persist();
+  }
+  function fmtWeekdayLong(d){ return new Date(d+"T12:00:00").toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"}); }
+
   function setVisit(id,st){
     const v=db.visits.find(x=>String(x.id)===String(id)); if(!v)return;
-    v.status=st;
+    v.status=st; v.updatedAt=new Date().toISOString();
     if(st==="hecha"){const p=db.properties.find(x=>String(x.id)===String(v.propertyId));logAct("✅","Visita realizada: "+(p?p.title:""));}
     persist(); renderAgenda(); badges(); toast(st==="hecha"?"Visita marcada como realizada":"Visita cancelada");
   }
@@ -1553,6 +1691,168 @@
       </div>`;
   };
 
+  /* ═══════════ AGENTES IA (reglas sobre TUS datos reales) ═══════════ */
+  const AGENT_TEAM=[
+    {id:"vende-todo",icon:"🎩",name:"Vende Todo",rol:"Jefe de equipo"},
+    {id:"primera-linea",icon:"💬",name:"Primera Línea",rol:"Respuesta"},
+    {id:"el-vigia",icon:"🔭",name:"El Vigía",rol:"Seguimiento"},
+    {id:"el-guionista",icon:"🎬",name:"El Guionista",rol:"Media"},
+    {id:"el-analista",icon:"📈",name:"El Analista",rol:"Precios"},
+    {id:"el-notario",icon:"🗂️",name:"El Notario",rol:"Datos"},
+  ];
+  const dismissedSug=new Set(JSON.parse(localStorage.getItem("ac_sug_dismissed")||"[]"));
+  function saveDismissed(){ localStorage.setItem("ac_sug_dismissed",JSON.stringify([...dismissedSug].slice(-200))); }
+
+  function agentProposals(){
+    const out=[]; const today=todayStr();
+    const add=(agent,key,title,why,actLabel,run)=>{ if(!dismissedSug.has(key)) out.push({agent,key,title,why,actLabel,run}); };
+    const disp=db.properties.filter(p=>(p.estado||"disponible")==="disponible");
+
+    // El Guionista: material visual incompleto
+    disp.filter(p=>!(p.media&&p.media.length)).forEach(p=>add(
+      AGENT_TEAM[3],`fotos-${p.id}`,`«${p.title}» está sin fotos`,
+      "Un anuncio sin fotos pierde el 90% de los contactos. Súbelas y la portada se elige sola.",
+      "📸 Subir fotos",()=>{editProperty(p.id);toast("El Guionista te ha abierto la ficha — sube las fotos","info");}));
+    disp.filter(p=>(p.media&&p.media.length)&&!(p.videos&&p.videos.length)&&!p.videoUrl).forEach(p=>add(
+      AGENT_TEAM[3],`video-${p.id}`,`«${p.title}» no tiene vídeo`,
+      "Con vídeo, los anuncios generan hasta 4× más interés. Vale uno de móvil de 30 segundos.",
+      "🎥 Añadir vídeo",()=>{editProperty(p.id);toast("Sube el vídeo en la zona de archivos","info");}));
+
+    // Vende Todo: matches sin visita agendada
+    db.clients.forEach(c=>{
+      matchPropsFor(c).forEach(p=>{
+        const has=db.visits.some(v=>String(v.propertyId)===String(p.id)&&String(v.clientId)===String(c.id)&&v.status!=="cancelada");
+        if(!has)add(AGENT_TEAM[0],`match-${c.id}-${p.id}`,`${c.name.split(" ")[0]} encaja con «${p.title}» y aún no hay visita`,
+          `Presupuesto y criterios cuadran. Cada día sin visita es un día para que la encuentre en otro sitio.`,
+          "📅 Agendar visita",()=>{switchTab("agenda");$("vProp").value=p.id;$("vClient").value=c.id;$("vDate").value=todayStr();toast("Vende Todo ha preparado la visita — elige hora y guarda","info");});
+      });
+    });
+
+    // Primera Línea: visitas de hoy sin confirmar por WhatsApp
+    db.visits.filter(v=>v.status==="pendiente"&&v.date>=today).forEach(v=>{
+      const c=db.clients.find(x=>String(x.id)===String(v.clientId));
+      const p=db.properties.find(x=>String(x.id)===String(v.propertyId));
+      if(c&&c.phone)add(AGENT_TEAM[1],`conf-${v.id}`,`Confirma a ${c.name.split(" ")[0]} la visita del ${fmtDay(v.date)} (${v.time} h)`,
+        `Una cita confirmada por WhatsApp reduce los plantones a casi cero.${p?` Inmueble: ${p.title}.`:""}`,
+        "📲 Enviar WhatsApp",()=>sendVisitWA(v.id));
+    });
+
+    // El Vigía: clientes demandantes sin teléfono
+    db.clients.filter(c=>(c.tipo==="comprador"||c.tipo==="inquilino")&&!c.phone).forEach(c=>add(
+      AGENT_TEAM[2],`tel-${c.id}`,`${c.name} no tiene teléfono guardado`,
+      "Sin teléfono no hay WhatsApp ni aviso rápido de novedades: el lead se enfría solo.",
+      "✏️ Completar ficha",()=>{switchTab("clients");editClient(c.id);}));
+
+    // El Analista: precio desviado sobre la media de la cartera
+    const withM2=disp.filter(p=>num(p.area)>0&&num(p.price)>0&&(p.operacion||"venta")==="venta");
+    if(withM2.length>=3){
+      const avg=withM2.reduce((s,p)=>s+num(p.price)/num(p.area),0)/withM2.length;
+      withM2.filter(p=>num(p.price)/num(p.area)>avg*1.25).forEach(p=>add(
+        AGENT_TEAM[4],`precio-${p.id}`,`«${p.title}» está un ${Math.round((num(p.price)/num(p.area)/avg-1)*100)}% sobre tu media de €/m²`,
+        `Tu cartera de venta promedia €${Math.round(avg).toLocaleString("es-ES")}/m². Si no hay un motivo premium claro, el precio frenará visitas.`,
+        "🧮 Revisar en calculadora",()=>{switchTab("tools");$("mPrecio").value=p.price;$("mArea").value=p.area;$("mCalc").click();}));
+    }
+
+    // El Notario: fichas incompletas
+    disp.filter(p=>!num(p.area)||!num(p.bedrooms)).forEach(p=>add(
+      AGENT_TEAM[5],`ficha-${p.id}`,`Ficha incompleta: «${p.title}»`,
+      `Faltan ${!num(p.area)?"superficie":""}${!num(p.area)&&!num(p.bedrooms)?" y ":""}${!num(p.bedrooms)?"dormitorios":""} — los portales y el matching los necesitan.`,
+      "✏️ Completar",()=>editProperty(p.id)));
+
+    return out;
+  }
+
+  function renderAgentes(){
+    const props=agentProposals();
+    $("nbAgentes").textContent=props.length;
+    $("agSugCount").textContent=props.length;
+    const perAgent={};
+    props.forEach(s=>{perAgent[s.agent.id]=(perAgent[s.agent.id]||0)+1;});
+    $("agentsGrid").innerHTML=AGENT_TEAM.map(a=>`
+      <div class="agent-card-mini"><div class="em">${a.icon}</div><b>${a.name}</b><small>${a.rol} · ${perAgent[a.id]||0} propuesta${(perAgent[a.id]||0)===1?"":"s"}</small></div>`).join("");
+    const box=$("agentSuggestions");
+    if(!props.length){
+      box.innerHTML=`<div class="empty"><div class="e-ico">🥂</div><h3>Todo al día</h3><p>El equipo no ve nada urgente en tus datos. Cuando entre material nuevo, volverán a proponer.</p></div>`;
+      return;
+    }
+    box.innerHTML=props.map((s,i)=>`
+      <div class="agent-sug" style="animation-delay:${Math.min(i*40,300)}ms" id="sug-${i}">
+        <div class="a-ico">${s.agent.icon}</div>
+        <div class="a-tx">
+          <div class="a-who">${s.agent.name} · ${s.agent.rol}</div>
+          <div class="a-tit">${esc(s.title)}</div>
+          <div class="a-why">🧠 ${esc(s.why)}</div>
+        </div>
+        <div class="a-acts">
+          <button class="btn btn-pri btn-sm" data-sgo="${i}">${s.actLabel}</button>
+          <button class="btn btn-gh btn-sm" data-sno="${i}">Descartar</button>
+        </div>
+      </div>`).join("");
+    box.querySelectorAll("[data-sgo]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sgo]; if(s){logAct(s.agent.icon,`${s.agent.name}: aprobada «${s.title}»`);persist();s.run();}});
+    box.querySelectorAll("[data-sno]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sno]; if(s){dismissedSug.add(s.key);saveDismissed();renderAgentes();}});
+  }
+
+  /* ═══════════ SINCRONIZACIÓN SUPABASE ═══════════ */
+  function tombstone(kind,id){ db.tombstones=db.tombstones||[]; db.tombstones.push({kind,id:String(id),at:new Date().toISOString()}); }
+  const supaHeaders={ "apikey":SUPA_KEY, "Authorization":"Bearer "+SUPA_KEY, "Content-Type":"application/json" };
+  let syncTimer=null, syncState="off";
+  function setSync(state,label){ syncState=state; const chip=$("syncChip"); chip.className="sync-chip "+(state==="ok"?"ok":state==="busy"?"busy":state==="err"?"err":""); $("syncLabel").textContent=label; }
+  function scheduleSync(){ clearTimeout(syncTimer); syncTimer=setTimeout(syncNow,1500); }
+
+  function entityRows(){
+    const strip=(o)=>{const{...r}=o;return r;};
+    const rows=[];
+    db.properties.forEach(p=>rows.push({id:"property:"+p.id,kind:"property",data:strip(p),updated_at:p.updatedAt||new Date(0).toISOString(),deleted:false}));
+    db.clients.forEach(c=>rows.push({id:"client:"+c.id,kind:"client",data:strip(c),updated_at:c.updatedAt||new Date(0).toISOString(),deleted:false}));
+    db.visits.forEach(v=>rows.push({id:"visit:"+v.id,kind:"visit",data:strip(v),updated_at:v.updatedAt||new Date(0).toISOString(),deleted:false}));
+    (db.tombstones||[]).forEach(t=>rows.push({id:t.kind+":"+t.id,kind:t.kind,data:{},updated_at:t.at,deleted:true}));
+    return rows;
+  }
+
+  async function syncNow(){
+    if(!SUPA_URL||!SUPA_KEY){setSync("off","sin nube");return;}
+    setSync("busy","sincronizando…");
+    try{
+      // 1) PULL — traer lo remoto y fusionar (gana el más reciente)
+      const res=await fetch(SUPA_URL+"/rest/v1/castresana_suite?select=id,kind,data,updated_at,deleted",{headers:supaHeaders});
+      if(!res.ok)throw new Error("pull "+res.status);
+      const remote=await res.json();
+      let changed=false;
+      const colFor={property:"properties",client:"clients",visit:"visits"};
+      remote.forEach(r=>{
+        const rawId=r.id.split(":").slice(1).join(":");
+        const col=colFor[r.kind]; if(!col)return;
+        const idx=db[col].findIndex(x=>String(x.id)===rawId);
+        const localAt=idx>-1?(db[col][idx].updatedAt||"1970"):null;
+        if(r.deleted){
+          if(idx>-1&&r.updated_at>localAt){db[col].splice(idx,1);changed=true;}
+          return;
+        }
+        if(idx===-1){
+          const isTomb=(db.tombstones||[]).some(t=>t.kind===r.kind&&t.id===rawId);
+          if(!isTomb){db[col].unshift(r.data);changed=true;}
+        } else if(r.updated_at>localAt){
+          db[col][idx]=r.data;changed=true;
+        }
+      });
+      if(changed){localStorage.setItem(LS,JSON.stringify(db));render();renderAgenda();}
+      // 2) PUSH — subir el estado local (upsert)
+      const rows=entityRows();
+      if(rows.length){
+        const up=await fetch(SUPA_URL+"/rest/v1/castresana_suite",{
+          method:"POST",
+          headers:{...supaHeaders,"Prefer":"resolution=merge-duplicates,return=minimal"},
+          body:JSON.stringify(rows),
+        });
+        if(!up.ok)throw new Error("push "+up.status);
+      }
+      setSync("ok","nube ✓");
+    }catch(e){
+      setSync("err","sin conexión");
+    }
+  }
+  $("syncChip").onclick=()=>{setSync("busy","sincronizando…");syncNow();};
+
   /* ═══════════ EXPORT / IMPORT ═══════════ */
   $("btnExport").onclick=()=>{
     const payload={app:"castresana-suite",version:3,exportedAt:new Date().toISOString(),properties:db.properties,clients:db.clients,visits:db.visits,activity:db.activity};
@@ -1591,6 +1891,7 @@
   setTheme(localStorage.getItem(LS_THEME)||"dark");
   $("vDate").value=todayStr();
   render(); renderAgenda();
+  syncNow(); // primera sincronización con la nube al abrir
   addEventListener("resize",debounce(()=>{ if(activeTab==="dash")renderDash(); },250));
 })();
 </script>
