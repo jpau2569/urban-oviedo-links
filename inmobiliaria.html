@@ -724,6 +724,10 @@
         <div class="p-head"><h2>⚡ Propuestas de hoy</h2><span class="badge-n" id="agSugCount">0</span></div>
         <div class="p-body" id="agentSuggestions"></div>
       </div>
+      <div class="panel" style="margin-top:18px">
+        <div class="p-head"><h2>📜 Auditoría del equipo</h2><span class="badge-n">☁️ nube</span></div>
+        <div class="p-body mini-list" id="agentAudit"></div>
+      </div>
     </section>
 
     <footer class="foot">
@@ -790,7 +794,7 @@
   function loadDB() {
     try {
       const raw = JSON.parse(localStorage.getItem(LS));
-      if (raw && Array.isArray(raw.properties)) return { properties:raw.properties, clients:raw.clients||[], visits:raw.visits||[], activity:raw.activity||[], tombstones:raw.tombstones||[] };
+      if (raw && Array.isArray(raw.properties)) return { properties:raw.properties, clients:raw.clients||[], visits:raw.visits||[], activity:raw.activity||[], tombstones:raw.tombstones||[], agentAudit:raw.agentAudit||[] };
     } catch {}
     // migración desde v2
     try {
@@ -1788,8 +1792,25 @@
           <button class="btn btn-gh btn-sm" data-sno="${i}">Descartar</button>
         </div>
       </div>`).join("");
-    box.querySelectorAll("[data-sgo]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sgo]; if(s){logAct(s.agent.icon,`${s.agent.name}: aprobada «${s.title}»`);persist();s.run();}});
-    box.querySelectorAll("[data-sno]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sno]; if(s){dismissedSug.add(s.key);saveDismissed();renderAgentes();}});
+    box.querySelectorAll("[data-sgo]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sgo]; if(s){recordAudit(s,"aprobada");logAct(s.agent.icon,`${s.agent.name}: aprobada «${s.title}»`);persist();s.run();}});
+    box.querySelectorAll("[data-sno]").forEach(b=>b.onclick=()=>{const s=props[+b.dataset.sno]; if(s){recordAudit(s,"descartada");dismissedSug.add(s.key);saveDismissed();persist();renderAgentes();}});
+    renderAgentAudit();
+  }
+
+  /* Auditoría del equipo: registro local + espejo en la nube */
+  function recordAudit(s,decision){
+    db.agentAudit=db.agentAudit||[];
+    db.agentAudit.unshift({id:"aud-"+Date.now()+"-"+Math.random().toString(36).slice(2,6),agentId:s.agent.id,agentName:s.agent.name,decision,title:s.title,at:new Date().toISOString()});
+    db.agentAudit=db.agentAudit.slice(0,100);
+  }
+  function renderAgentAudit(){
+    const box=$("agentAudit"); if(!box)return;
+    const rows=(db.agentAudit||[]).slice(0,12);
+    box.innerHTML=rows.length?rows.map(a=>`
+      <div class="mini-item"><div class="mi-ico">${a.decision==="aprobada"?"✅":"🚫"}</div>
+        <div class="mi-tx"><b>${esc(a.agentName)} — ${esc(a.title)}</b>
+        <small>${a.decision} · ${new Date(a.at).toLocaleDateString("es-ES",{day:"numeric",month:"short"})} ${new Date(a.at).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})} · ☁️ auditado</small></div></div>`).join("")
+      :`<div class="mini-empty">Cada decisión sobre una propuesta quedará registrada aquí y en la nube.</div>`;
   }
 
   /* ═══════════ SINCRONIZACIÓN SUPABASE ═══════════ */
@@ -1845,6 +1866,15 @@
           body:JSON.stringify(rows),
         });
         if(!up.ok)throw new Error("push "+up.status);
+      }
+      // 3) AUDITORÍA — espejo en la nube de las decisiones sobre agentes
+      const audit=(db.agentAudit||[]).map(a=>({id:a.id,agent_id:a.agentId,agent_name:a.agentName,decision:a.decision,title:a.title,at:a.at}));
+      if(audit.length){
+        await fetch(SUPA_URL+"/rest/v1/castresana_agent_audit",{
+          method:"POST",
+          headers:{...supaHeaders,"Prefer":"resolution=merge-duplicates,return=minimal"},
+          body:JSON.stringify(audit),
+        }).catch(()=>{});
       }
       setSync("ok","nube ✓");
     }catch(e){

@@ -97,5 +97,37 @@ const mockRepository: PortalRepository = {
   },
 };
 
-/** Repositorio activo. Cambiar aquí a `firestoreRepository` en producción. */
-export const repo: PortalRepository = mockRepository;
+/**
+ * Repositorio activo: CLOUD-FIRST con respaldo local.
+ * Cada lectura intenta Supabase (timeout 3 s); si la nube no responde,
+ * sirve los datos locales al instante — el portal jamás se cae.
+ */
+import { supabaseRepository } from "./supabaseRepository";
+
+function cloudFirst(cloud: PortalRepository, local: PortalRepository): PortalRepository {
+  const wrap = <K extends keyof PortalRepository>(method: K): PortalRepository[K] =>
+    (async (...args: unknown[]) => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return await (cloud[method] as any)(...args);
+      } catch {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return await (local[method] as any)(...args);
+      }
+    }) as PortalRepository[K];
+  return {
+    getClient: wrap("getClient"),
+    getOwner: wrap("getOwner"),
+    getProperty: wrap("getProperty"),
+    getSelectionsForClient: wrap("getSelectionsForClient"),
+    getVisitsForClient: wrap("getVisitsForClient"),
+    getVisitsForProperty: wrap("getVisitsForProperty"),
+    getTimelineForProperty: wrap("getTimelineForProperty"),
+    getCommunications: wrap("getCommunications"),
+    getNextSteps: wrap("getNextSteps"),
+    getDocumentsFor: wrap("getDocumentsFor"),
+    getOwnerMetrics: wrap("getOwnerMetrics"),
+  };
+}
+
+export const repo: PortalRepository = cloudFirst(supabaseRepository, mockRepository);

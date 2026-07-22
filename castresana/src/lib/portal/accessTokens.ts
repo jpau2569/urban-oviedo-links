@@ -51,10 +51,18 @@ export function isExpired(access: PortalAccessToken, at: Date = new Date()): boo
 
 /**
  * Valida un token contra el almacén.
- * Mock: diccionario en memoria. Firestore: `getDoc(doc(db, 'portalTokens', token))`.
+ * Cloud-first: busca en la tabla castresana_os (kind=token) de Supabase;
+ * si la nube no responde, cae al diccionario local sin interrumpir acceso.
  */
 export async function validateToken(token: string): Promise<TokenValidation> {
-  const access = mockTokens[token];
+  let access = null;
+  try {
+    const { fetchCloudToken } = await import("./supabaseRepository");
+    access = await fetchCloudToken(token);
+  } catch {
+    /* nube inaccesible → respaldo local */
+  }
+  access = access ?? mockTokens[token] ?? null;
   if (!access) return { status: "not_found" };
   if (access.revoked) return { status: "revoked", access };
   if (isExpired(access)) return { status: "expired", access };
