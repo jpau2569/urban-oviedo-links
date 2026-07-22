@@ -68,6 +68,7 @@ export default async function OsHome() {
             <Link className="btn btn-sm btn-ghost" href="/client-portal/demo-cliente">👤 Portal cliente (Lucía)</Link>
             <Link className="btn btn-sm btn-ghost" href="/owner-portal/demo-propietario">🏠 Portal propietario (Javier)</Link>
             <Link className="btn btn-sm btn-ghost" href="/client-portal/demo-caducado">⏳ Enlace caducado</Link>
+            <a className="btn btn-sm btn-ghost" href="/suite.html">🏙️ Suite clásica (un archivo)</a>
           </div>
         </div>
       </section>
