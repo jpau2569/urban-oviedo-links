@@ -69,6 +69,7 @@ export default async function OsHome() {
             <Link className="btn btn-sm btn-ghost" href="/owner-portal/demo-propietario">🏠 Portal propietario (Javier)</Link>
             <Link className="btn btn-sm btn-ghost" href="/client-portal/demo-caducado">⏳ Enlace caducado</Link>
             <a className="btn btn-sm btn-ghost" href="/suite.html">🏙️ Suite clásica (un archivo)</a>
+            <a className="btn btn-sm btn-ghost" href="/jpmr.html" target="_blank" rel="noopener">🧰 Ayuda de Negocios JPMR</a>
           </div>
         </div>
       </section>

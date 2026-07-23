@@ -81,6 +81,7 @@ cat <<EOF
   ═══════════════════════════════════════════════════
    OS completo ......... http://${IP}:${PORT}/
    Suite un-archivo .... http://${IP}:${PORT}/suite.html
+   Ayuda Negocios JPMR . http://${IP}:${PORT}/jpmr.html
    Portal cliente ...... http://${IP}:${PORT}/client-portal/demo-cliente
    Portal propietario .. http://${IP}:${PORT}/owner-portal/demo-propietario
    Media Studio ........ http://${IP}:${PORT}/media-studio

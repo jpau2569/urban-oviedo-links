@@ -9,6 +9,7 @@
 | Qué | Enlace |
 |---|---|
 | **Suite (usar ya, en el navegador)** | https://claude.ai/code/artifact/a80476e1-05aa-45f3-a5c2-1aef058824f9 |
+| **Ayuda de Negocios JPMR** (herramienta) | `jpmr.html` — botón 🧰 en la Suite y en el launcher del OS · en el VPS: `http://82.29.170.102:3010/jpmr.html` |
 | **Repositorio (GitHub, público)** | https://github.com/jpau2569/urban-oviedo-links |
 | **Pull Request a `main`** | https://github.com/jpau2569/urban-oviedo-links/pull/2 |
 | **Tu VPS Hostinger** (tras instalar) | `http://82.29.170.102:3010/` (OS) · `http://82.29.170.102:3010/suite.html` (Suite) |
@@ -67,6 +68,22 @@ Idempotente: pegarlo de nuevo = actualizar. No toca OpenClaw (puerto 40846). Par
 **Arquitectura de datos — cloud-first con respaldo**: cada lectura intenta Supabase (tabla `castresana_os`, timeout 3 s, caché 10 s) y si la nube falla sirve el dataset local al instante. **El portal no puede caerse por la base de datos** (verificado con kill del servidor). Los **tokens de los portales viven en la nube**: revocar un enlace = editar una fila, sin redeploy.
 
 Documentación completa del producto: `castresana/PRODUCT.md` (visión, naming, multi-tenant, plan de despliegue, roadmap V1–V4).
+
+---
+
+## 3·bis · 🧰 Ayuda de Negocios JPMR (`jpmr.html`)
+
+**Herramienta integrada** en el ecosistema: app de un solo archivo, servida junto a la Suite y el OS. Acceso con un clic desde el botón **🧰** de la cabecera de la Suite y desde la tarjeta del launcher del OS; en el VPS queda en `/jpmr.html`.
+
+| Módulo | Qué hace |
+|---|---|
+| 🤖 **CLARA IA** | Asistente con paleta de comandos (⌘K) y claves propias (Anthropic/Google/OpenAI/Abacus) guardadas en el navegador |
+| 🗺️ **Mapa de Ruta** | Plan de negocio en 11 pasos |
+| ✍️ **Creador de contenido** | Flyers y piezas para redes |
+| 👥 **Contactos CRM · Proyectos** | Gestión de contactos y proyectos propios |
+| 🎨 **Cast Render · LimpiaFotos** | Réplica de Castresana Render IA y editor/limpiador de fotos |
+
+Autónoma (datos en su propio `localStorage`) y PWA instalable. Verificada en navegador real sin errores de código (solo se bloquea la hoja de Google Fonts en el sandbox de claude.ai; usa fuente del sistema como respaldo y carga normal en el VPS o en local).
 
 ---
 
