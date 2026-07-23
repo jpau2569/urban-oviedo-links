@@ -85,6 +85,19 @@
   .nav button:hover { background: rgba(255,255,255,0.04); color: #fff; }
   .nav button.active { background: rgba(159, 231, 245, 0.08); color: #fff; }
   .nav svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
+  .nav-ext {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 12px; border-radius: 10px;
+    color: #c9d2eb; font-size: 14px; font-weight: 500; text-decoration: none;
+    margin-top: 4px;
+    background: linear-gradient(135deg, rgba(108,92,231,0.14), rgba(34,211,238,0.10));
+    border: 1px solid rgba(108,92,231,0.3);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .nav-ext:hover { background: linear-gradient(135deg, rgba(108,92,231,0.24), rgba(34,211,238,0.18)); color: #fff; border-color: rgba(108,92,231,0.6); }
+  .nav-ext svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
+  .nav-ext span { flex: 1; }
+  .nav-ext .ext-ico { width: 13px; height: 13px; opacity: 0.6; }
   .sidebar-bottom { margin-top: auto; }
   .user-card {
     display: flex; align-items: center; gap: 10px;
@@ -2163,6 +2176,28 @@
   .ai-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
   .ai-badge.live .dot { animation: pulse 1.6s ease-in-out infinite; }
 
+  /* ===== Clara Pro access card ===== */
+  .clarapro-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 22px; margin-bottom: 22px;
+    border-radius: 16px; text-decoration: none;
+    background: linear-gradient(135deg, #6c5ce7 0%, #8b5cf6 50%, #22d3ee 100%);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(108,92,231,0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .clarapro-card:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(108,92,231,0.45); }
+  .clarapro-ic {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(255,255,255,0.2); display: grid; place-items: center;
+  }
+  .clarapro-ic svg { width: 28px; height: 28px; }
+  .clarapro-txt { flex: 1; min-width: 0; }
+  .clarapro-txt strong { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .clarapro-badge { font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 999px; letter-spacing: 0.5px; }
+  .clarapro-txt span { font-size: 13px; opacity: 0.92; display: block; margin-top: 3px; }
+  .clarapro-arrow { width: 22px; height: 22px; flex-shrink: 0; }
+
   /* ===== HOY panel ===== */
   .today-panel {
     background: linear-gradient(135deg, rgba(22,163,74,0.15) 0%, rgba(108,92,231,0.12) 60%, rgba(34,211,238,0.1) 100%);
@@ -2670,6 +2705,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         Ayuda
       </button>
+      <a class="nav-ext" id="navClaraPro" href="https://claude.ai/code/artifact/a80476e1-05aa-45f3-a5c2-1aef058824f9" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="12" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <span>Clara Pro</span>
+        <svg class="ext-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
     </nav>
 
     <div class="sidebar-bottom">
@@ -2778,6 +2818,17 @@
 
         <div id="todayItemsList" style="margin-top:14px;"></div>
       </div>
+
+      <a class="clarapro-card" href="https://claude.ai/code/artifact/a80476e1-05aa-45f3-a5c2-1aef058824f9" target="_blank" rel="noopener">
+        <div class="clarapro-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="clarapro-txt">
+          <strong>Clara Pro <span class="clarapro-badge">Herramienta</span></strong>
+          <span>Abre tu herramienta avanzada de Clara con búsqueda web</span>
+        </div>
+        <svg class="clarapro-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
 
       <h1 class="dashboard-title">Recursos personalizados</h1>
 
