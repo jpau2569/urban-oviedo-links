@@ -47,7 +47,9 @@
     { "@type": "Question", "name": "¿Vale para toda Asturias?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Cubrimos los 78 concejos: Oviedo, Gijón, Avilés, Siero, Llanera, las Cuencas, el Oriente y el Occidente. Somos una agencia asturiana y solo trabajamos en Asturias." } },
     { "@type": "Question", "name": "¿Estoy obligado a vender si pido la tasación?", "acceptedAnswer": { "@type": "Answer", "text": "No. Muchos propietarios la piden solo por curiosidad, por una herencia o para decidir con calma. El informe es tuyo, decidas lo que decidas." } },
     { "@type": "Question", "name": "¿Qué hacéis con mis datos?", "acceptedAnswer": { "@type": "Answer", "text": "Solo los usamos para preparar y enviarte tu valoración. No los cedemos a terceros ni te suscribimos a nada. Puedes pedir su eliminación cuando quieras escribiendo a asesoriacastresana@gmail.com." } },
-    { "@type": "Question", "name": "¿En qué se diferencia de una tasación bancaria?", "acceptedAnswer": { "@type": "Answer", "text": "La tasación bancaria oficial (para hipotecas) la emite una sociedad homologada y tiene coste. Nuestra valoración es de mercado: te dice a qué precio real se puede vender hoy tu vivienda en tu zona de Asturias, que es lo que necesitas para tomar decisiones." } }
+    { "@type": "Question", "name": "¿En qué se diferencia de una tasación bancaria?", "acceptedAnswer": { "@type": "Answer", "text": "La tasación bancaria oficial (para hipotecas) la emite una sociedad homologada y tiene coste. Nuestra valoración es de mercado: te dice a qué precio real se puede vender hoy tu vivienda en tu zona de Asturias, que es lo que necesitas para tomar decisiones." } },
+    { "@type": "Question", "name": "¿Qué impuestos y gastos hay al comprar o vender en Asturias?", "acceptedAnswer": { "@type": "Answer", "text": "Al comprar vivienda de segunda mano en Asturias se paga el ITP (8%, con tramos hasta el 10% según el precio); en obra nueva, IVA del 10% más AJD del 1,2%. Súmale notaría, registro y gestoría: en total, un 10–12% extra sobre el precio. Al vender, cuenta con la plusvalía municipal y la posible ganancia en el IRPF. Te calculamos todo antes de firmar." } },
+    { "@type": "Question", "name": "¿Os encargáis de los trámites y de la reforma?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Gestionamos el papeleo completo de la compraventa (nota simple, certificado energético, arras, notaría…) y, si el piso necesita reforma, la coordinamos de principio a fin con gremios asturianos de confianza: presupuesto cerrado, calendario claro y entrega llave en mano." } }
   ]
 }
 </script>
@@ -456,6 +458,50 @@
   }
   .promo-note { text-align:center; font-size: 12px; color: #7d766c; margin-top: 26px; position:relative; }
 
+  /* ───────── Trámites compra/venta ───────── */
+  .doc-card h3 { display:flex; align-items:center; gap:10px; }
+  .doc-card .gestionamos { font-size: 11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color: var(--ok); background: rgba(61,122,79,.1); border-radius:99px; padding: 3px 10px; white-space:nowrap; }
+  .tramites-cta {
+    margin-top: 26px; background: var(--carbon); border-radius: var(--radius);
+    padding: 26px 30px; display:flex; align-items:center; justify-content:space-between; gap: 18px; flex-wrap:wrap;
+  }
+  .tramites-cta p { color: var(--beige); font-size: 16.5px; font-weight:600; margin:0; }
+  .tramites-cta small { display:block; color:#a89f90; font-weight:400; font-size: 13px; margin-top:3px; }
+
+  /* ───────── Publicidad reformas ───────── */
+  .reform-banner {
+    position:relative; overflow:hidden; border-radius: 26px;
+    background: linear-gradient(135deg, var(--carbon) 0%, #35291c 55%, #4a3620 100%);
+    color: var(--beige); padding: 56px 48px;
+    display:grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items:center;
+  }
+  .reform-banner::before {
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.6;
+    background: radial-gradient(560px 320px at 90% 10%, rgba(201,151,111,.3), transparent 65%);
+  }
+  .reform-banner .eyebrow { color: var(--copper-light); }
+  .reform-banner h2 { color:#fff; font-size: clamp(26px, 3.2vw, 36px); margin-bottom: 14px; position:relative; }
+  .reform-banner .lede-r { color:#cfc7b8; font-size: 16px; margin-bottom: 22px; position:relative; }
+  .reform-points { list-style:none; display:flex; flex-direction:column; gap: 12px; margin-bottom: 26px; position:relative; }
+  .reform-points li { display:flex; gap: 12px; align-items:flex-start; font-size: 15px; color:#e6dfd2; }
+  .reform-points b { color:#ffd9ae; }
+  .reform-actions { display:flex; gap: 12px; flex-wrap:wrap; position:relative; }
+  .reform-visual { position:relative; text-align:center; }
+  .reform-visual .big-ico {
+    font-size: 120px; line-height:1; display:block; filter: drop-shadow(0 16px 30px rgba(0,0,0,.4));
+    animation: floaty 5s ease-in-out infinite;
+  }
+  @keyframes floaty { 50% { transform: translateY(-14px) rotate(-3deg); } }
+  .reform-tag {
+    display:inline-block; margin-top: 18px; background: rgba(201,151,111,.15); border: 1px solid rgba(201,151,111,.4);
+    color: var(--copper-light); border-radius: 999px; padding: 9px 20px; font-weight:700; font-size: 13.5px; letter-spacing:1px;
+  }
+  @media (max-width: 940px) {
+    .reform-banner { grid-template-columns: 1fr; padding: 40px 26px; }
+    .reform-visual { order: -1; }
+    .reform-visual .big-ico { font-size: 84px; }
+  }
+
   @media (max-width: 940px) {
     .stats { grid-template-columns: 1fr 1fr; }
     .bridge-cards { grid-template-columns: 1fr; }
@@ -799,7 +845,7 @@
         <tbody></tbody>
       </table>
     </div>
-    <p class="tbl-note">* Valores medios orientativos elaborados por Asesoría Castresana a partir de operaciones y ofertas de mercado en Asturias. No constituyen tasación oficial.</p>
+    <p class="tbl-note">* Actualizado agosto 2026. Oviedo, Gijón, Avilés y media de Asturias: datos de mercado publicados por idealista (2026). Resto de concejos: estimación de Asesoría Castresana calibrada sobre esos datos y operaciones propias. Valores medios orientativos; no constituyen tasación oficial.</p>
   </div>
 </section>
 
@@ -817,6 +863,72 @@
       <div class="factor"><b><span class="ico">☀️</span>Orientación y luz</b>Con nuestro clima, una vivienda exterior y luminosa se paga — y se vende antes.</div>
       <div class="factor"><b><span class="ico">🚗</span>Garaje y trastero</b>En Oviedo y Gijón centro, una plaza de garaje incluida puede añadir 8.000–20.000 € al conjunto.</div>
       <div class="factor"><b><span class="ico">🏔️</span>Vistas y entorno</b>Mar en el Oriente, montaña en los valles: el entorno asturiano añade una prima real al precio.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TRÁMITES COMPRA / VENTA ═══════════ -->
+<section class="compare" id="tramites">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Papeleo sin dolores de cabeza</span>
+      <h2>Qué necesitas para vender — y para comprar</h2>
+      <p>Esto es todo lo que hay que preparar en una compraventa en Asturias. La buena noticia: la mayoría lo gestionamos nosotros por ti.</p>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card doc-card">
+        <h3>🏷️ Para vender tu vivienda <span class="gestionamos">Lo gestionamos</span></h3>
+        <ul>
+          <li><span class="tick">✓</span><span><b>DNI y escritura</b> de propiedad (o aceptación de herencia si viene de una)</span></li>
+          <li><span class="tick">✓</span><span><b>Nota simple del Registro</b> — la pedimos nosotros en 24 h</span></li>
+          <li><span class="tick">✓</span><span><b>Certificado energético</b>, obligatorio para anunciar — te lo tramitamos</span></li>
+          <li><span class="tick">✓</span><span><b>Último recibo del IBI</b> y certificado de estar al corriente con la comunidad</span></li>
+          <li><span class="tick">✓</span><span><b>Si hay hipoteca:</b> certificado de deuda y cancelación registral</span></li>
+          <li><span class="tick">✓</span><span><b>Contrato de arras</b> bien redactado — el 90% de los problemas nacen aquí</span></li>
+          <li><span class="tick">✓</span><span><b>Plusvalía municipal e IRPF:</b> te calculamos el impacto antes de firmar, no después</span></li>
+        </ul>
+      </div>
+      <div class="comp-card doc-card">
+        <h3>🔑 Para comprar <span class="gestionamos">Te acompañamos</span></h3>
+        <ul>
+          <li><span class="tick">✓</span><span><b>Reserva y arras:</b> revisamos cargas, comunidad e ITE del edificio antes de que entregues un euro</span></li>
+          <li><span class="tick">✓</span><span><b>Hipoteca:</b> tasación oficial y comparación de ofertas bancarias — te acompañamos con los bancos</span></li>
+          <li><span class="tick">✓</span><span><b>Impuestos en Asturias:</b> ITP del 8% en segunda mano (tramos hasta el 10% según precio); obra nueva IVA 10% + AJD 1,2%</span></li>
+          <li><span class="tick">✓</span><span><b>Notaría, registro y gestoría:</b> cuenta con un 10–12% extra sobre el precio para el total de gastos</span></li>
+          <li><span class="tick">✓</span><span><b>Firma en notaría</b> y entrega de llaves — estamos contigo ese día</span></li>
+          <li><span class="tick">✓</span><span><b>Después de comprar:</b> cambio de suministros y empadronamiento sin colas</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tramites-cta">
+      <p>De la nota simple a las llaves: nos encargamos de todo el papeleo.<small>Cuéntanos tu caso y te decimos exactamente qué necesitas — gratis.</small></p>
+      <button class="btn btn-wa" id="tramitesWA">💬 Consultar mis trámites</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PUBLICIDAD REFORMAS ═══════════ -->
+<section id="reformas">
+  <div class="wrap">
+    <div class="reform-banner">
+      <div>
+        <span class="eyebrow">Compra + reforma, llave en mano</span>
+        <h2>¿El piso necesita reforma? Nosotros nos encargamos.</h2>
+        <p class="lede-r">Muchos de los mejores precios de Asturias están en viviendas para actualizar. Que la reforma no te eche atrás: al comprar tu piso con Castresana, te la dejamos resuelta.</p>
+        <ul class="reform-points">
+          <li><span class="tick">✓</span><span><b>Solución realista:</b> te decimos qué merece la pena reformar y qué no, con números encima de la mesa antes de comprar.</span></li>
+          <li><span class="tick">✓</span><span><b>Rápida:</b> presupuesto cerrado y calendario de obra claro con gremios asturianos de confianza que respondan.</span></li>
+          <li><span class="tick">✓</span><span><b>Sin problemas:</b> coordinamos la obra de principio a fin. Tú recoges las llaves de un piso listo para entrar a vivir.</span></li>
+        </ul>
+        <div class="reform-actions">
+          <button class="btn btn-copper" id="reformWA">🔨 Quiero comprar y reformar</button>
+          <a class="btn btn-ghost" href="#tasador" style="color:var(--beige);border-color:rgba(201,151,111,.5)">Primero, tasar mi vivienda</a>
+        </div>
+      </div>
+      <div class="reform-visual">
+        <span class="big-ico">🏗️</span>
+        <span class="reform-tag">Piso a reformar → hogar listo para vivir</span>
+      </div>
     </div>
   </div>
 </section>
@@ -938,6 +1050,14 @@
         <summary>¿En qué se diferencia de una tasación bancaria?</summary>
         <p>La tasación oficial para hipotecas la emite una sociedad homologada y tiene coste. Nuestra valoración es <b>de mercado</b>: te dice a qué precio real se puede vender hoy tu vivienda en tu zona de Asturias — que es lo que necesitas para tomar decisiones.</p>
       </details>
+      <details>
+        <summary>¿Qué impuestos y gastos hay al comprar o vender en Asturias?</summary>
+        <p>Al <b>comprar</b> de segunda mano en Asturias se paga el ITP (8%, con tramos hasta el 10% según el precio); en obra nueva, IVA del 10% más AJD del 1,2%. Súmale notaría, registro y gestoría: en total, un <b>10–12% extra</b> sobre el precio. Al <b>vender</b>, cuenta con la plusvalía municipal y la posible ganancia en el IRPF. Te calculamos todo antes de firmar, no después.</p>
+      </details>
+      <details>
+        <summary>¿Os encargáis de los trámites y de la reforma?</summary>
+        <p>Sí. Gestionamos el papeleo completo de la compraventa (nota simple, certificado energético, arras, notaría…) y, si el piso necesita reforma, la coordinamos de principio a fin con gremios asturianos de confianza: <b>presupuesto cerrado, calendario claro y entrega llave en mano</b>.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -989,39 +1109,41 @@ const CONFIG = {
 };
 
 /* ═══════════ Datos de mercado: €/m² medio por concejo (orientativo) ═══════════ */
+/* Anclas reales idealista 2026: Asturias 1.802 · Oviedo 2.286 (abr) · Gijón 2.614 (jun) · Avilés 1.614 (jun).
+   Resto de concejos: estimación propia calibrada sobre esas anclas. Actualizado: agosto 2026. */
 const CONCEJOS = [
-  { n: "Oviedo",            z: "Centro",    m2: 1750 },
-  { n: "Gijón",             z: "Centro",    m2: 1950 },
-  { n: "Avilés",            z: "Centro",    m2: 1250 },
-  { n: "Siero",             z: "Centro",    m2: 1350 },
-  { n: "Llanera",           z: "Centro",    m2: 1400 },
-  { n: "Noreña",            z: "Centro",    m2: 1250 },
-  { n: "Castrillón",        z: "Centro",    m2: 1450 },
-  { n: "Corvera",           z: "Centro",    m2: 1000 },
-  { n: "Carreño (Candás)",  z: "Centro",    m2: 1400 },
-  { n: "Gozón (Luanco)",    z: "Centro",    m2: 1700 },
-  { n: "Grado",             z: "Occidente", m2: 950 },
-  { n: "Pravia",            z: "Occidente", m2: 900 },
-  { n: "Salas",             z: "Occidente", m2: 750 },
-  { n: "Valdés (Luarca)",   z: "Occidente", m2: 1150 },
-  { n: "Navia",             z: "Occidente", m2: 1200 },
-  { n: "Tineo",             z: "Occidente", m2: 700 },
-  { n: "Cangas del Narcea", z: "Occidente", m2: 750 },
-  { n: "Langreo",           z: "Cuencas",   m2: 750 },
-  { n: "Mieres",            z: "Cuencas",   m2: 700 },
-  { n: "San Martín del Rey Aurelio", z: "Cuencas", m2: 650 },
-  { n: "Laviana",           z: "Cuencas",   m2: 700 },
-  { n: "Aller",             z: "Cuencas",   m2: 650 },
-  { n: "Lena",              z: "Cuencas",   m2: 700 },
-  { n: "Villaviciosa",      z: "Oriente",   m2: 1700 },
-  { n: "Colunga",           z: "Oriente",   m2: 1550 },
-  { n: "Ribadesella",       z: "Oriente",   m2: 2050 },
-  { n: "Llanes",            z: "Oriente",   m2: 2200 },
-  { n: "Cangas de Onís",    z: "Oriente",   m2: 1450 },
-  { n: "Parres (Arriondas)",z: "Oriente",   m2: 1150 },
-  { n: "Piloña (Infiesto)", z: "Oriente",   m2: 850 },
-  { n: "Nava",              z: "Oriente",   m2: 1000 },
-  { n: "Otro concejo asturiano", z: "—",    m2: 900 }
+  { n: "Oviedo",            z: "Centro",    m2: 2286 },
+  { n: "Gijón",             z: "Centro",    m2: 2614 },
+  { n: "Avilés",            z: "Centro",    m2: 1614 },
+  { n: "Siero",             z: "Centro",    m2: 1750 },
+  { n: "Llanera",           z: "Centro",    m2: 1800 },
+  { n: "Noreña",            z: "Centro",    m2: 1600 },
+  { n: "Castrillón",        z: "Centro",    m2: 1850 },
+  { n: "Corvera",           z: "Centro",    m2: 1300 },
+  { n: "Carreño (Candás)",  z: "Centro",    m2: 1800 },
+  { n: "Gozón (Luanco)",    z: "Centro",    m2: 2200 },
+  { n: "Grado",             z: "Occidente", m2: 1200 },
+  { n: "Pravia",            z: "Occidente", m2: 1150 },
+  { n: "Salas",             z: "Occidente", m2: 950 },
+  { n: "Valdés (Luarca)",   z: "Occidente", m2: 1500 },
+  { n: "Navia",             z: "Occidente", m2: 1550 },
+  { n: "Tineo",             z: "Occidente", m2: 900 },
+  { n: "Cangas del Narcea", z: "Occidente", m2: 950 },
+  { n: "Langreo",           z: "Cuencas",   m2: 950 },
+  { n: "Mieres",            z: "Cuencas",   m2: 900 },
+  { n: "San Martín del Rey Aurelio", z: "Cuencas", m2: 850 },
+  { n: "Laviana",           z: "Cuencas",   m2: 900 },
+  { n: "Aller",             z: "Cuencas",   m2: 850 },
+  { n: "Lena",              z: "Cuencas",   m2: 900 },
+  { n: "Villaviciosa",      z: "Oriente",   m2: 2200 },
+  { n: "Colunga",           z: "Oriente",   m2: 2000 },
+  { n: "Ribadesella",       z: "Oriente",   m2: 2650 },
+  { n: "Llanes",            z: "Oriente",   m2: 2850 },
+  { n: "Cangas de Onís",    z: "Oriente",   m2: 1900 },
+  { n: "Parres (Arriondas)",z: "Oriente",   m2: 1500 },
+  { n: "Piloña (Infiesto)", z: "Oriente",   m2: 1100 },
+  { n: "Nava",              z: "Oriente",   m2: 1300 },
+  { n: "Otro concejo asturiano", z: "—",    m2: 1200 }
 ];
 
 /* Multiplicadores del modelo */
@@ -1267,6 +1389,16 @@ $$(".tilt-card").forEach(card => {
   };
   card.addEventListener("click", go);
   card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+});
+
+/* ═══════════ CTAs de trámites y reformas ═══════════ */
+$("#tramitesWA")?.addEventListener("click", () => {
+  const msg = "🗂️ Hola, os escribo desde la página de tasación (asesoriacastresana.com).\n\nQuiero consultar los trámites de mi caso:\n\n• Quiero: (vender / comprar)\n• Zona: \n• Situación: ";
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+});
+$("#reformWA")?.addEventListener("click", () => {
+  const msg = "🔨 Hola, os escribo desde la página de tasación (asesoriacastresana.com).\n\nMe interesa el servicio de *compra + reforma llave en mano*:\n\n• Zona donde busco: \n• Presupuesto aproximado: \n• Lo que necesito: ";
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
 });
 
 /* Ocultar CTA fija cuando el wizard está a la vista */
