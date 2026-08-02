@@ -84,6 +84,14 @@
   .wrap { width: min(1120px, 92%); margin: 0 auto; }
   .eyebrow { display:inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--copper-dark); margin-bottom: 14px; }
 
+  /* ───────── Top bar ───────── */
+  .topbar {
+    background: var(--carbon); color: var(--beige);
+    font-size: 13px; text-align: center; padding: 8px 14px;
+  }
+  .topbar a { color: var(--copper-light); font-weight: 600; text-decoration: none; }
+  .topbar a:hover { text-decoration: underline; }
+
   /* ───────── Header ───────── */
   header {
     position: sticky; top: 0; z-index: 50;
@@ -336,10 +344,59 @@
     .two-col { grid-template-columns: 1fr; }
     .result-meta { grid-template-columns: 1fr; }
   }
-  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } }
+  /* ───────── Scroll reveal ───────── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal:nth-child(2) { transition-delay: .1s; }
+  .reveal:nth-child(3) { transition-delay: .2s; }
+
+  /* ───────── Stats counters ───────── */
+  .stats { display:grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .stat {
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius);
+    padding: 28px 20px; text-align:center;
+  }
+  .stat b { display:block; font-family:'Fraunces',serif; font-size: 42px; font-weight:700; color: var(--copper-dark); line-height:1.1; }
+  .stat span { font-size: 13.5px; color: var(--muted); font-weight:500; }
+
+  /* ───────── Desglose del cálculo ───────── */
+  .breakdown { margin: 0 0 16px; border:1px solid var(--line); border-radius: 14px; overflow:hidden; }
+  .breakdown-head {
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    padding: 12px 16px; background: var(--ivory); font-size: 13.5px; font-weight:700; color: var(--carbon);
+  }
+  .breakdown-head::after { content:"▾"; color: var(--copper); transition: transform .2s; }
+  .breakdown.open .breakdown-head::after { transform: rotate(180deg); }
+  .breakdown-body { display:none; }
+  .breakdown.open .breakdown-body { display:block; }
+  .bd-row { display:flex; justify-content:space-between; gap:12px; padding: 9px 16px; font-size: 13px; border-top:1px solid var(--beige-2); color: var(--muted); }
+  .bd-row b { color: var(--carbon); font-weight:600; }
+  .bd-row .plus { color: var(--ok); font-weight:700; }
+  .bd-row .minus { color: #b03a2e; font-weight:700; }
+
+  /* ───────── Puente a la web ───────── */
+  .bridge-cards { display:grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .bridge-card {
+    display:block; text-decoration:none; background:#fff; border:1px solid var(--line);
+    border-radius: var(--radius); padding: 30px 26px; color: var(--ink);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .bridge-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--copper-light); }
+  .bridge-card .ico { font-size: 30px; display:block; margin-bottom: 14px; }
+  .bridge-card h3 { font-size: 18px; margin-bottom: 6px; }
+  .bridge-card p { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .bridge-card .go { font-size: 14px; font-weight: 700; color: var(--copper-dark); }
+
+  @media (max-width: 940px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .bridge-cards { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } .reveal { opacity:1; transform:none; } }
 </style>
 </head>
 <body>
+
+<div class="topbar">🏔️ Inmobiliaria 100% asturiana — descubre nuestra cartera de inmuebles en <a href="https://asesoriacastresana.com" target="_blank" rel="noopener">asesoriacastresana.com →</a></div>
 
 <header>
   <div class="wrap nav">
@@ -352,6 +409,7 @@
       <a href="#precios">Precios en Asturias</a>
       <a href="#opiniones">Opiniones</a>
       <a href="#faq">Preguntas</a>
+      <a href="https://asesoriacastresana.com" target="_blank" rel="noopener" style="color:var(--copper-dark);font-weight:600">Nuestra web ↗</a>
     </nav>
     <a class="btn btn-copper btn-sm" href="#tasador">Tasar mi vivienda</a>
   </div>
@@ -510,6 +568,11 @@
           </div>
           <p class="result-note">Horquilla orientativa según precios de mercado de tu concejo. La cifra fina la da la visita de un asesor local — gratis.</p>
 
+          <div class="breakdown" id="breakdown">
+            <div class="breakdown-head" id="breakdownToggle">🧮 ¿Cómo hemos calculado tu precio?</div>
+            <div class="breakdown-body" id="breakdownBody"></div>
+          </div>
+
           <div class="lead-box">
             <h4>📄 Recibe el informe completo gratuito</h4>
             <p>Comparables reales de tu zona, evolución del precio y estrategia de venta. Te lo prepara una persona, no un robot.</p>
@@ -529,6 +592,8 @@
             </div>
             <div class="sent-ok" id="sentOk">✓ ¡Perfecto! Hemos abierto el mensaje con tus datos — solo tienes que enviarlo.</div>
           </div>
+
+          <a class="btn btn-ghost" href="https://asesoriacastresana.com" target="_blank" rel="noopener" style="margin-top:12px;width:100%">🔎 Ver inmuebles en venta en asesoriacastresana.com</a>
 
           <div class="wizard-nav">
             <button class="btn btn-ghost btn-sm" data-prev>← Corregir datos</button>
@@ -645,6 +710,49 @@
       <div class="factor"><b><span class="ico">☀️</span>Orientación y luz</b>Con nuestro clima, una vivienda exterior y luminosa se paga — y se vende antes.</div>
       <div class="factor"><b><span class="ico">🚗</span>Garaje y trastero</b>En Oviedo y Gijón centro, una plaza de garaje incluida puede añadir 8.000–20.000 € al conjunto.</div>
       <div class="factor"><b><span class="ico">🏔️</span>Vistas y entorno</b>Mar en el Oriente, montaña en los valles: el entorno asturiano añade una prima real al precio.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CIFRAS ═══════════ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><b data-count="78">0</b><span>concejos asturianos cubiertos</span></div>
+      <div class="stat reveal"><b data-count="31">0</b><span>zonas con datos propios de precio</span></div>
+      <div class="stat reveal"><b data-count="3">0</b><span>minutos para tu valoración</span></div>
+      <div class="stat reveal"><b data-count="0" data-suffix=" €">0 €</b><span>coste — gratis de verdad</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PUENTE A LA WEB ═══════════ -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Más que un tasador</span>
+      <h2>Conoce Asesoría Castresana</h2>
+      <p>Detrás de esta herramienta hay una inmobiliaria asturiana de verdad. Pásate por nuestra web y descubre todo lo que podemos hacer por ti.</p>
+    </div>
+    <div class="bridge-cards">
+      <a class="bridge-card reveal" href="https://asesoriacastresana.com" target="_blank" rel="noopener">
+        <span class="ico">🏘️</span>
+        <h3>Inmuebles en venta</h3>
+        <p>Pisos y casas seleccionados en Oviedo, Gijón y toda Asturias. Quizá tu próxima casa ya está en nuestra cartera.</p>
+        <span class="go">Ver la cartera →</span>
+      </a>
+      <a class="bridge-card reveal" href="https://asesoriacastresana.com" target="_blank" rel="noopener">
+        <span class="ico">🤝</span>
+        <h3>Vendemos tu vivienda</h3>
+        <p>Fotografía profesional, difusión en portales y negociación experta. Tú decides, nosotros hacemos el trabajo.</p>
+        <span class="go">Cómo trabajamos →</span>
+      </a>
+      <a class="bridge-card reveal" href="https://asesoriacastresana.com" target="_blank" rel="noopener">
+        <span class="ico">💬</span>
+        <h3>Habla con nosotros</h3>
+        <p>Sin bots ni centralitas: te atiende una persona de aquí que conoce tu zona. Cuéntanos tu caso sin compromiso.</p>
+        <span class="go">Contactar →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -885,22 +993,33 @@ $$("[data-plus]").forEach(b => b.addEventListener("click", () => { const i = $("
 let lastResult = null;
 function computeResult() {
   const c = CONCEJOS[state.concejo];
-  let ppm2 = c.m2 * (TIPO_MULT[state.tipo] || 1) * (ESTADO_MULT[state.estado] || 1);
+  const rows = [];
+  const pct = m => (m >= 1 ? "+" : "−") + Math.round(Math.abs(m - 1) * 100) + "%";
+  const tipoNombre = { piso:"Piso", atico:"Ático", duplex:"Dúplex", casa:"Casa/Chalet", bajo:"Bajo", estudio:"Estudio" }[state.tipo];
+  const estadoNombre = { reformar:"Para reformar", bueno:"Buen estado", reformado:"Reformado", nuevo:"Obra nueva/seminuevo" }[state.estado];
+
+  let ppm2 = c.m2;
+  rows.push({ l: `Precio base en ${c.n}`, v: c.m2.toLocaleString("es-ES") + " €/m² × " + state.m2 + " m²", cls: "" });
+  const tMult = TIPO_MULT[state.tipo] || 1;
+  if (tMult !== 1) rows.push({ l: `Tipo: ${tipoNombre}`, v: pct(tMult), cls: tMult >= 1 ? "plus" : "minus" });
+  const eMult = ESTADO_MULT[state.estado] || 1;
+  if (eMult !== 1) rows.push({ l: `Estado: ${estadoNombre}`, v: pct(eMult), cls: eMult >= 1 ? "plus" : "minus" });
+  ppm2 *= tMult * eMult;
 
   const esPiso = state.tipo !== "casa";
   if (esPiso) {
     const alta = state.planta !== "bajo" && +state.planta >= 2;
-    if (state.ascensor === "no" && alta) ppm2 *= 0.88;       // planta alta sin ascensor
-    else if (state.ascensor === "si" && alta) ppm2 *= 1.04;  // altura con ascensor
+    if (state.ascensor === "no" && alta) { ppm2 *= 0.88; rows.push({ l: "Planta alta sin ascensor", v: "−12%", cls: "minus" }); }
+    else if (state.ascensor === "si" && alta) { ppm2 *= 1.04; rows.push({ l: "Altura con ascensor", v: "+4%", cls: "plus" }); }
   }
-  if (state.extras.includes("exterior"))    ppm2 *= 1.05;
-  if (state.extras.includes("terraza"))     ppm2 *= 1.04;
-  if (state.extras.includes("vistas"))      ppm2 *= 1.04;
-  if (state.extras.includes("calefaccion")) ppm2 *= 1.02;
+  const extraMults = { exterior: [1.05, "Vivienda exterior"], terraza: [1.04, "Terraza / balcón"], vistas: [1.04, "Buenas vistas"], calefaccion: [1.02, "Calefacción central"] };
+  for (const [key, [m, label]] of Object.entries(extraMults)) {
+    if (state.extras.includes(key)) { ppm2 *= m; rows.push({ l: label, v: pct(m), cls: "plus" }); }
+  }
 
   let value = ppm2 * state.m2;
-  if (state.extras.includes("garaje"))   value += 9000;
-  if (state.extras.includes("trastero")) value += 3500;
+  if (state.extras.includes("garaje"))   { value += 9000; rows.push({ l: "Plaza de garaje", v: "+9.000 €", cls: "plus" }); }
+  if (state.extras.includes("trastero")) { value += 3500; rows.push({ l: "Trastero", v: "+3.500 €", cls: "plus" }); }
 
   const round = v => Math.round(v / 1000) * 1000;
   const est = round(value), min = round(value * 0.92), max = round(value * 1.08);
@@ -912,7 +1031,12 @@ function computeResult() {
   $("#resM2").textContent = c.m2.toLocaleString("es-ES") + " €/m²";
   const tipoTxt = { piso:"Piso", atico:"Ático", duplex:"Dúplex", casa:"Casa", bajo:"Bajo", estudio:"Estudio" }[state.tipo];
   $("#resResumen").textContent = `${tipoTxt} · ${state.m2} m² · ${state.habs} hab.`;
+
+  rows.push({ l: "Valoración estimada", v: fmt(est), cls: "plus" });
+  $("#breakdownBody").innerHTML = rows.map(r =>
+    `<div class="bd-row"><b>${r.l}</b><span class="${r.cls}">${r.v}</span></div>`).join("");
 }
+$("#breakdownToggle").addEventListener("click", () => $("#breakdown").classList.toggle("open"));
 
 function animateCount(el, target) {
   const dur = 900, t0 = performance.now();
@@ -970,6 +1094,28 @@ $("#restart").addEventListener("click", () => {
 });
 
 $("#year").textContent = new Date().getFullYear();
+
+/* ═══════════ Animaciones de scroll + contadores ═══════════ */
+$$(".step-card, .factor, .testi, .comp-card, .stat, .bridge-card").forEach(el => el.classList.add("reveal"));
+const revealIO = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); revealIO.unobserve(en.target); } });
+}, { threshold: .15 });
+$$(".reveal").forEach(el => revealIO.observe(el));
+
+const countIO = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    countIO.unobserve(en.target);
+    const el = en.target, target = +el.dataset.count, suffix = el.dataset.suffix || "";
+    const dur = 1200, t0 = performance.now();
+    (function tick(t) {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  });
+}, { threshold: .5 });
+$$("[data-count]").forEach(el => countIO.observe(el));
 
 /* Ocultar CTA fija cuando el wizard está a la vista */
 const sticky = $("#stickyCta");
