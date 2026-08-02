@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231c1a17'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' font-weight='bold' fill='%23c9976f' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E" />
 
 <script type="application/ld+json">
 {
@@ -74,6 +75,10 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+  ::selection { background: rgba(176,118,63,.28); }
+  :focus-visible { outline: 3px solid rgba(176,118,63,.6); outline-offset: 2px; }
+  button, a, .opt, .chip { touch-action: manipulation; }
+  section[id], div[id="tasador"] { scroll-margin-top: 92px; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: var(--ivory);
@@ -81,7 +86,7 @@
     -webkit-font-smoothing: antialiased;
     line-height: 1.55;
   }
-  h1,h2,h3 { font-family: 'Fraunces', Georgia, serif; color: var(--carbon); line-height: 1.15; }
+  h1,h2,h3 { font-family: 'Fraunces', Georgia, serif; color: var(--carbon); line-height: 1.15; text-wrap: balance; }
   a { color: var(--copper-dark); }
   img { max-width: 100%; }
   .wrap { width: min(1120px, 92%); margin: 0 auto; }
@@ -212,7 +217,7 @@
 
   /* Result */
   .result-badge { text-align:center; margin-bottom: 6px; font-size: 12.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color: var(--copper-dark); }
-  .result-price { text-align:center; font-family:'Fraunces',serif; font-size: 42px; font-weight:700; color: var(--carbon); margin-bottom: 2px; }
+  .result-price { text-align:center; font-family:'Fraunces',serif; font-size: 42px; font-weight:700; color: var(--carbon); margin-bottom: 2px; font-variant-numeric: tabular-nums; }
   .result-range { text-align:center; color: var(--muted); font-size: 14px; margin-bottom: 16px; }
   .range-bar { position:relative; height: 10px; border-radius:99px; margin: 6px 4px 26px; background: linear-gradient(90deg, var(--beige-2), var(--copper-light), var(--copper)); }
   .range-bar::after {
@@ -275,7 +280,9 @@
   /* Prices table */
   .table-scroll { overflow-x:auto; border:1px solid var(--line); border-radius: var(--radius); background:#fff; }
   table.prices { width:100%; border-collapse: collapse; min-width: 560px; }
-  .prices th, .prices td { padding: 13px 18px; text-align:left; font-size: 14.5px; border-bottom: 1px solid var(--beige-2); }
+  .prices th, .prices td { padding: 13px 18px; text-align:left; font-size: 14.5px; border-bottom: 1px solid var(--beige-2); font-variant-numeric: tabular-nums; }
+  .prices tbody tr { transition: background .15s ease; }
+  .prices tbody tr:hover { background: var(--ivory); }
   .prices th { background: var(--carbon); color: var(--beige); font-weight:600; font-size: 13px; letter-spacing:.6px; text-transform:uppercase; position: sticky; top:0; }
   .prices tr:last-child td { border-bottom:none; }
   .prices td b { color: var(--carbon); }
@@ -502,6 +509,81 @@
     .reform-visual .big-ico { font-size: 84px; }
   }
 
+  /* ───────── Barra de progreso de scroll ───────── */
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 100;
+    background: linear-gradient(90deg, var(--copper-light), var(--copper));
+    box-shadow: 0 0 8px rgba(176,118,63,.5); pointer-events: none;
+  }
+
+  /* ───────── Orbes decorativos del hero ───────── */
+  .orb {
+    position:absolute; border-radius:50%; filter: blur(60px); pointer-events:none; z-index:0;
+    opacity:.55; will-change: transform;
+  }
+  .orb-1 { width: 320px; height: 320px; right: -60px; top: -80px; background: radial-gradient(circle, rgba(201,151,111,.5), transparent 70%); animation: orbFloat 11s ease-in-out infinite; }
+  .orb-2 { width: 240px; height: 240px; left: -80px; bottom: -60px; background: radial-gradient(circle, rgba(176,118,63,.35), transparent 70%); animation: orbFloat 14s ease-in-out infinite reverse; }
+  @keyframes orbFloat { 50% { transform: translate(24px, 20px) scale(1.08); } }
+
+  /* ───────── Casa 3D isométrica (CSS puro) ───────── */
+  .h3d-scene { width: 300px; height: 300px; margin: 0 auto; perspective: 1000px; position: relative; }
+  .h3d {
+    position:absolute; left:50%; top:56%; width:0; height:0;
+    transform-style: preserve-3d;
+    transform: rotateX(-26deg) rotateY(-40deg);
+    animation: houseFloat 6s ease-in-out infinite;
+  }
+  @keyframes houseFloat { 50% { transform: rotateX(-26deg) rotateY(-34deg) translateY(-12px); } }
+  .h3d .face { position:absolute; left:0; top:0; backface-visibility: hidden; }
+  /* muros: frente 150×95, lado 110×95 */
+  .hf-front { width:150px; height:95px; margin-left:-75px; margin-top:-47.5px; transform: translateZ(55px);
+    background: linear-gradient(180deg, #f7f1e6, #e9e0cf); border: 1px solid #d8cdb8; }
+  .hf-back  { width:150px; height:95px; margin-left:-75px; margin-top:-47.5px; transform: translateZ(-55px) rotateY(180deg);
+    background:#e0d6c4; }
+  .hf-right { width:110px; height:95px; margin-left:-55px; margin-top:-47.5px; transform: rotateY(90deg) translateZ(75px);
+    background: linear-gradient(180deg, #e6dcc9, #d5c8b0); border: 1px solid #cbbfa6; }
+  .hf-left  { width:110px; height:95px; margin-left:-55px; margin-top:-47.5px; transform: rotateY(-90deg) translateZ(75px);
+    background:#d5c8b0; }
+  /* tejado: dos aguas 150×78 */
+  .hf-roof-f { width:154px; height:78px; margin-left:-77px; margin-top:-125.5px; transform-origin: bottom; transform: translateZ(55px) rotateX(45deg);
+    background: linear-gradient(180deg, var(--copper-light), var(--copper)); border-bottom: 4px solid var(--copper-dark); }
+  .hf-roof-b { width:154px; height:78px; margin-left:-77px; margin-top:-125.5px; transform-origin: bottom; transform: translateZ(-55px) rotateX(-45deg);
+    background: var(--copper-dark); }
+  /* hastiales (triángulos laterales) */
+  .hf-gable-r { width:0; height:0; margin-left:-55px; margin-top:-102.5px;
+    border-left:55px solid transparent; border-right:55px solid transparent; border-bottom:55px solid #efe6d5;
+    transform: rotateY(90deg) translateZ(75px); }
+  .hf-gable-l { width:0; height:0; margin-left:-55px; margin-top:-102.5px;
+    border-left:55px solid transparent; border-right:55px solid transparent; border-bottom:55px solid #ddd1ba;
+    transform: rotateY(-90deg) translateZ(75px); }
+  /* puerta y ventanas sobre la fachada */
+  .hf-front .door { position:absolute; left:16px; bottom:0; width:30px; height:52px; background: var(--carbon); border-radius: 4px 4px 0 0; }
+  .hf-front .door::after { content:""; position:absolute; right:5px; top:24px; width:4px; height:4px; border-radius:50%; background: var(--copper-light); }
+  .hf-front .win { position:absolute; width:32px; height:26px; background: linear-gradient(135deg, #ffe6c4, #ffd9ae); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+  .hf-front .w1 { right:18px; top:22px; }
+  .hf-front .w2 { right:64px; top:22px; }
+  .hf-right .winr { position:absolute; left:38px; top:26px; width:30px; height:24px; background:#f5e3c8; border:3px solid #fff; opacity:.9; }
+  /* etiqueta € flotante */
+  .h3d-tag {
+    position:absolute; left:50%; top:6%; transform: translateX(-50%);
+    width:54px; height:54px; border-radius:50%;
+    background: linear-gradient(135deg, #ffd9ae, var(--copper-light));
+    color:#14120f; font-weight:800; font-size:24px; font-family:'Fraunces',serif;
+    display:grid; place-items:center;
+    box-shadow: 0 12px 30px rgba(201,151,111,.5);
+    animation: tagBob 3.2s ease-in-out infinite;
+  }
+  @keyframes tagBob { 50% { transform: translateX(-50%) translateY(-10px); } }
+  /* sombra en el suelo */
+  .h3d-shadow {
+    position:absolute; left:50%; bottom:4%; transform: translateX(-50%);
+    width:210px; height:36px; border-radius:50%;
+    background: radial-gradient(ellipse, rgba(0,0,0,.4), transparent 70%);
+    animation: shadowPulse 6s ease-in-out infinite;
+  }
+  @keyframes shadowPulse { 50% { transform: translateX(-50%) scale(.88); opacity:.75; } }
+  @media (max-width: 940px) { .h3d-scene { transform: scale(.82); margin: -20px auto; } }
+
   @media (max-width: 940px) {
     .stats { grid-template-columns: 1fr 1fr; }
     .bridge-cards { grid-template-columns: 1fr; }
@@ -513,6 +595,8 @@
 </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <div class="topbar">🏔️ Inmobiliaria 100% asturiana — descubre nuestra cartera de inmuebles en <a href="https://asesoriacastresana.com" target="_blank" rel="noopener">asesoriacastresana.com →</a></div>
 
@@ -535,6 +619,8 @@
 
 <!-- ═══════════ HERO + WIZARD ═══════════ -->
 <div class="hero">
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Tasación online · 100% Asturias</span>
@@ -598,9 +684,9 @@
           <div class="field">
             <label class="f-label" for="m2">Superficie construida (m²)</label>
             <div class="stepper">
-              <button type="button" data-minus="m2">−</button>
+              <button type="button" data-minus="m2" aria-label="Reducir superficie 5 metros cuadrados">−</button>
               <input type="number" id="m2" min="20" max="900" step="5" value="90" inputmode="numeric" />
-              <button type="button" data-plus="m2">+</button>
+              <button type="button" data-plus="m2" aria-label="Aumentar superficie 5 metros cuadrados">+</button>
             </div>
           </div>
           <div class="two-col">
@@ -677,7 +763,7 @@
         <!-- Paso 6: resultado -->
         <div class="step" data-step="6">
           <p class="result-badge">Valoración orientativa</p>
-          <div class="result-price" id="resPrice">—</div>
+          <div class="result-price" id="resPrice" aria-live="polite">—</div>
           <p class="result-range" id="resRange">—</p>
           <div class="range-bar"></div>
           <div class="result-meta">
@@ -708,7 +794,7 @@
               <button class="btn btn-wa" id="sendWA">💬 Recibirlo por WhatsApp</button>
               <button class="btn btn-dark" id="sendMail">✉️ Recibirlo por email</button>
             </div>
-            <div class="sent-ok" id="sentOk">✓ ¡Perfecto! Hemos abierto el mensaje con tus datos — solo tienes que enviarlo.</div>
+            <div class="sent-ok" id="sentOk" aria-live="polite">✓ ¡Perfecto! Hemos abierto el mensaje con tus datos — solo tienes que enviarlo.</div>
           </div>
 
           <a class="btn btn-ghost" href="https://asesoriacastresana.com" target="_blank" rel="noopener" style="margin-top:12px;width:100%">🔎 Ver inmuebles en venta en asesoriacastresana.com</a>
@@ -926,7 +1012,20 @@
         </div>
       </div>
       <div class="reform-visual">
-        <span class="big-ico">🏗️</span>
+        <div class="h3d-scene" aria-hidden="true">
+          <span class="h3d-tag">€</span>
+          <div class="h3d">
+            <div class="face hf-back"></div>
+            <div class="face hf-left"></div>
+            <div class="face hf-gable-l"></div>
+            <div class="face hf-roof-b"></div>
+            <div class="face hf-right"><span class="winr"></span></div>
+            <div class="face hf-gable-r"></div>
+            <div class="face hf-front"><span class="door"></span><span class="win w1"></span><span class="win w2"></span></div>
+            <div class="face hf-roof-f"></div>
+          </div>
+          <div class="h3d-shadow"></div>
+        </div>
         <span class="reform-tag">Piso a reformar → hogar listo para vivir</span>
       </div>
     </div>
@@ -1405,6 +1504,20 @@ $("#reformWA")?.addEventListener("click", () => {
   const msg = "🔨 Hola, os escribo desde la página de tasación (asesoriacastresana.com).\n\nMe interesa el servicio de *compra + reforma llave en mano*:\n\n• Zona donde busco: \n• Presupuesto aproximado: \n• Lo que necesito: ";
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
 });
+
+/* ═══════════ Barra de progreso de scroll ═══════════ */
+const progressEl = $("#scrollProgress");
+let progressTick = false;
+addEventListener("scroll", () => {
+  if (progressTick) return;
+  progressTick = true;
+  requestAnimationFrame(() => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    progressEl.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    progressTick = false;
+  });
+}, { passive: true });
 
 /* Ocultar CTA fija cuando el wizard está a la vista */
 const sticky = $("#stickyCta");
