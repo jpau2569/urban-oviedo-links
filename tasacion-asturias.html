@@ -387,11 +387,82 @@
   .bridge-card p { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
   .bridge-card .go { font-size: 14px; font-weight: 700; color: var(--copper-dark); }
 
+  /* ───────── Promo futurista «Todos ganamos» ───────── */
+  .promo { background: #14120f; position: relative; overflow: hidden; padding: 0 0 90px; }
+  .promo::before {
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background:
+      radial-gradient(700px 400px at 20% 0%, rgba(201,151,111,.16), transparent 60%),
+      radial-gradient(600px 400px at 85% 100%, rgba(176,118,63,.14), transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 39px, rgba(201,151,111,.05) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, rgba(201,151,111,.05) 39px 40px);
+  }
+  .promo .sec-head h2 { color:#fff; }
+  .promo .sec-head p { color:#a89f90; }
+  .marquee { overflow:hidden; border-top:1px solid rgba(201,151,111,.25); border-bottom:1px solid rgba(201,151,111,.25); background: rgba(201,151,111,.06); margin-bottom: 64px; position:relative; }
+  .marquee-track {
+    display:inline-flex; gap: 0; white-space: nowrap; will-change: transform;
+    animation: marquee 28s linear infinite; padding: 13px 0;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track span {
+    font-size: 13.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--copper-light); padding: 0 28px; text-shadow: 0 0 18px rgba(201,151,111,.55);
+  }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .tilt-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 26px; perspective: 1300px; position:relative; }
+  .tilt-card {
+    --mx: 50%; --my: 50%;
+    position: relative; border-radius: 24px; padding: 40px 34px;
+    background: linear-gradient(165deg, #262119, #1a1713 70%);
+    border: 1px solid rgba(201,151,111,.3);
+    transform-style: preserve-3d; transition: transform .18s ease-out, box-shadow .3s ease;
+    cursor: pointer; outline: none; color: #cfc7b8;
+  }
+  .tilt-card:hover, .tilt-card:focus-visible { box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 50px rgba(201,151,111,.18); }
+  .tilt-card::before {
+    content:""; position:absolute; inset:-1.5px; border-radius: 25px; padding: 1.5px; z-index:-1;
+    background: conic-gradient(from var(--spin,0deg), transparent 0 30%, rgba(201,151,111,.9) 42%, #ffd9ae 50%, rgba(201,151,111,.9) 58%, transparent 70% 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin360 6s linear infinite;
+  }
+  @property --spin { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  @keyframes spin360 { to { --spin: 360deg; } }
+  .tilt-card .shine {
+    position:absolute; inset:0; border-radius:24px; pointer-events:none; opacity:0; transition: opacity .25s;
+    background: radial-gradient(320px 320px at var(--mx) var(--my), rgba(255,224,190,.16), transparent 65%);
+  }
+  .tilt-card:hover .shine { opacity:1; }
+  .t-badge {
+    display:inline-block; font-size: 11.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    color: var(--copper-light); border: 1px solid rgba(201,151,111,.45); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 20px; background: rgba(201,151,111,.08);
+    transform: translateZ(40px);
+  }
+  .tilt-card h3 { color:#fff; font-size: 24px; margin-bottom: 12px; transform: translateZ(50px); }
+  .tilt-card p { font-size: 15px; margin-bottom: 22px; transform: translateZ(30px); }
+  .t-big {
+    font-family:'Fraunces',serif; font-weight:700; font-size: 74px; line-height:1; color: #ffd9ae;
+    text-shadow: 0 0 34px rgba(201,151,111,.65), 0 4px 0 rgba(0,0,0,.35);
+    margin-bottom: 10px; transform: translateZ(60px);
+  }
+  .t-cta {
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size: 15px;
+    color: #14120f; background: linear-gradient(120deg, #ffd9ae, var(--copper-light));
+    border-radius: 999px; padding: 13px 24px; transform: translateZ(45px);
+    box-shadow: 0 10px 30px rgba(201,151,111,.35);
+  }
+  .promo-note { text-align:center; font-size: 12px; color: #7d766c; margin-top: 26px; position:relative; }
+
   @media (max-width: 940px) {
     .stats { grid-template-columns: 1fr 1fr; }
     .bridge-cards { grid-template-columns: 1fr; }
+    .tilt-grid { grid-template-columns: 1fr; }
+    .t-big { font-size: 58px; }
+    .marquee { margin-bottom: 44px; }
   }
-  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } .reveal { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } .reveal { opacity:1; transform:none; } .marquee-track { animation:none; } .tilt-card { transform:none !important; } }
 </style>
 </head>
 <body>
@@ -675,6 +746,41 @@
         </ul>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ PROMO «TODOS GANAMOS» (futurista 3D) ═══════════ -->
+<section class="promo" id="todos-ganamos">
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>✦ Todos ganamos</span><span>✦ Comisión pactada contigo · solo a éxito</span><span>✦ Tráenos un piso y llévate 200 €</span><span>✦ 100% Asturias</span>
+      <span>✦ Todos ganamos</span><span>✦ Comisión pactada contigo · solo a éxito</span><span>✦ Tráenos un piso y llévate 200 €</span><span>✦ 100% Asturias</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Nuestra forma de trabajar</span>
+      <h2>Todos ganamos.</h2>
+      <p>Aquí no hay letra pequeña: tú ganas cuando vendes, nosotros cobramos cuando tú ganas. Y si nos echas un cable, también te toca premio.</p>
+    </div>
+    <div class="tilt-grid">
+      <div class="tilt-card" data-goto="#tasador" role="link" tabindex="0" aria-label="Comisión pactada contigo — tasar mi vivienda gratis">
+        <span class="shine"></span>
+        <span class="t-badge">🤝 Si vendes tu piso</span>
+        <h3>Comisión pactada contigo, a razón de la venta</h3>
+        <p>Los honorarios se acuerdan contigo <b style="color:#ffd9ae">antes de empezar</b> y solo se cobran si la venta se cierra. Si no vendemos, no pagas nada. Así de claro: <b style="color:#ffd9ae">todos ganamos</b>.</p>
+        <span class="t-cta">Tasar mi vivienda gratis →</span>
+      </div>
+      <div class="tilt-card" id="referralCard" role="link" tabindex="0" aria-label="Tráenos un piso y llévate 200 euros — recomendar por WhatsApp">
+        <span class="shine"></span>
+        <span class="t-badge">🎁 Si nos traes un piso</span>
+        <div class="t-big">200&nbsp;€</div>
+        <h3>Para ti, nada más firmar en notaría</h3>
+        <p>¿Un vecino, familiar o conocido vende su piso? Tráenoslo: si lo vendemos, <b style="color:#ffd9ae">te regalamos 200 €</b> justo después de la firma en notaría. Sin sorteos ni condiciones raras.</p>
+        <span class="t-cta">💬 Recomendar un piso por WhatsApp →</span>
+      </div>
+    </div>
+    <p class="promo-note">* Programa «Trae un piso»: los 200 € se entregan tras la firma en notaría de la compraventa del inmueble recomendado. Honorarios de venta: porcentaje pactado por escrito con el propietario antes de iniciar la comercialización.</p>
   </div>
 </section>
 
@@ -1116,6 +1222,35 @@ const countIO = new IntersectionObserver(entries => {
   });
 }, { threshold: .5 });
 $$("[data-count]").forEach(el => countIO.observe(el));
+
+/* ═══════════ Promo «Todos ganamos»: tilt 3D + clics ═══════════ */
+const finePointer = matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+$$(".tilt-card").forEach(card => {
+  if (finePointer) {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      card.style.transform = `rotateY(${(px - .5) * 14}deg) rotateX(${(.5 - py) * 12}deg) translateZ(6px)`;
+      card.style.setProperty("--mx", (px * 100) + "%");
+      card.style.setProperty("--my", (py * 100) + "%");
+    });
+    card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+  }
+  const go = () => {
+    if (card.dataset.goto) { document.querySelector(card.dataset.goto)?.scrollIntoView({ behavior: "smooth" }); return; }
+    if (card.id === "referralCard") {
+      const msg = [
+        "🎁 *Programa «Trae un piso» — asesoriacastresana.com*", "",
+        "¡Hola! Conozco un piso en venta en Asturias y quiero recomendároslo.",
+        "Me han dicho que si lo vendéis me lleváis 200 € tras la firma en notaría. 😄", "",
+        "📍 Zona del inmueble: ", "🏠 Datos del piso: ", "👤 Mi nombre: "
+      ].join("\n");
+      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+    }
+  };
+  card.addEventListener("click", go);
+  card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+});
 
 /* Ocultar CTA fija cuando el wizard está a la vista */
 const sticky = $("#stickyCta");
