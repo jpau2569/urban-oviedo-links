@@ -845,7 +845,7 @@
         <tbody></tbody>
       </table>
     </div>
-    <p class="tbl-note">* Actualizado agosto 2026. Oviedo, Gijón, Avilés y media de Asturias: datos de mercado publicados por idealista (2026). Resto de concejos: estimación de Asesoría Castresana calibrada sobre esos datos y operaciones propias. Valores medios orientativos; no constituyen tasación oficial.</p>
+    <p class="tbl-note">* Actualizado agosto 2026. Oviedo, Gijón, Avilés, Mieres, Siero y Pola de Siero: datos de mercado publicados por idealista (2026). Lugones, Colloto y resto de concejos: estimación de Asesoría Castresana calibrada sobre esos datos y operaciones propias. Valores medios orientativos; no constituyen tasación oficial.</p>
   </div>
 </section>
 
@@ -1109,13 +1109,18 @@ const CONFIG = {
 };
 
 /* ═══════════ Datos de mercado: €/m² medio por concejo (orientativo) ═══════════ */
-/* Anclas reales idealista 2026: Asturias 1.802 · Oviedo 2.286 (abr) · Gijón 2.614 (jun) · Avilés 1.614 (jun).
-   Resto de concejos: estimación propia calibrada sobre esas anclas. Actualizado: agosto 2026. */
+/* Anclas reales idealista 2026: Asturias 1.802 · Oviedo 2.286 (abr) · Gijón 2.614 (jun) · Avilés 1.614 (jun)
+   · Mieres 991 (abr) · Siero 1.494 (jun) · La Pola Siero 1.281 (mar).
+   Lugones y Colloto: estimación calibrada sobre las anclas vecinas (sin índice público propio).
+   Resto de concejos: estimación propia calibrada. Actualizado: agosto 2026. */
 const CONCEJOS = [
   { n: "Oviedo",            z: "Centro",    m2: 2286 },
+  { n: "Oviedo — Colloto",  z: "Centro",    m2: 1900 },
   { n: "Gijón",             z: "Centro",    m2: 2614 },
   { n: "Avilés",            z: "Centro",    m2: 1614 },
-  { n: "Siero",             z: "Centro",    m2: 1750 },
+  { n: "Siero",             z: "Centro",    m2: 1494 },
+  { n: "Siero — Pola de Siero", z: "Centro", m2: 1281 },
+  { n: "Siero — Lugones",   z: "Centro",    m2: 1650 },
   { n: "Llanera",           z: "Centro",    m2: 1800 },
   { n: "Noreña",            z: "Centro",    m2: 1600 },
   { n: "Castrillón",        z: "Centro",    m2: 1850 },
@@ -1130,7 +1135,7 @@ const CONCEJOS = [
   { n: "Tineo",             z: "Occidente", m2: 900 },
   { n: "Cangas del Narcea", z: "Occidente", m2: 950 },
   { n: "Langreo",           z: "Cuencas",   m2: 950 },
-  { n: "Mieres",            z: "Cuencas",   m2: 900 },
+  { n: "Mieres",            z: "Cuencas",   m2: 991 },
   { n: "San Martín del Rey Aurelio", z: "Cuencas", m2: 850 },
   { n: "Laviana",           z: "Cuencas",   m2: 900 },
   { n: "Aller",             z: "Cuencas",   m2: 850 },
