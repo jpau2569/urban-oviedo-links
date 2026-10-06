@@ -1,5 +1,9 @@
 name: Fetch reforma images
-on: workflow_dispatch
+# run 1
+on:
+  push:
+    branches: [claude/skill-md-web-app-design-qtbact]
+    paths: ['.github/workflows/fetch-reforma-images.yml']
 permissions:
   contents: write
 jobs:
