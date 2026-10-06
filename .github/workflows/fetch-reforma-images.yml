@@ -1,0 +1,40 @@
+name: Fetch reforma images
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/skill-md-web-app-design-qtbact
+      - name: Download, split and convert
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+          mkdir -p demo-castresana/img tmp
+          declare -A urls=(
+            [cocina]="https://www.figma.com/api/mcp/asset/52c13c53-d8f4-4f96-a039-cc9f3c955af0.png"
+            [salon]="https://www.figma.com/api/mcp/asset/f147cf56-520e-463f-899a-00972369c83d.png"
+            [bano]="https://www.figma.com/api/mcp/asset/ff45f1de-4b57-4296-a439-b5a491f42962.png"
+          )
+          for room in cocina salon bano; do
+            curl -fsSL -o "tmp/$room.png" "${urls[$room]}"
+            W=$(identify -format %w "tmp/$room.png"); H=$(identify -format %h "tmp/$room.png")
+            HALF=$((W/2)); INNER=6; CW=$((HALF-INNER)); TH=$((CW*3/4))
+            convert "tmp/$room.png" -crop "${CW}x${H}+0+0" +repage \
+              -gravity center -crop "${CW}x${TH}+0+0" +repage \
+              -quality 82 "demo-castresana/img/reforma-$room-antes.webp"
+            convert "tmp/$room.png" -crop "${CW}x${H}+$((HALF+INNER))+0" +repage \
+              -gravity center -crop "${CW}x${TH}+0+0" +repage \
+              -quality 82 "demo-castresana/img/reforma-$room-despues.webp"
+          done
+          ls -la demo-castresana/img
+      - name: Commit images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add demo-castresana/img
+          git commit -m "Add AI before/after reforma images (cocina, salon, bano)"
+          git push
