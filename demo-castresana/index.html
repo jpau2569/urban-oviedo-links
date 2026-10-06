@@ -134,8 +134,9 @@
   }
   .brand-name { font-family:'Fraunces',serif; font-weight:600; font-size:18px; color: var(--carbon); }
   .brand-name small { display:block; font-family:'Inter',sans-serif; font-size:11px; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; color: var(--muted); }
-  .nav-links { display:flex; gap: 26px; }
-  .nav-links a { text-decoration:none; color: var(--ink); font-size: 14.5px; font-weight: 500; position: relative; }
+  .nav-links { display:flex; gap: 20px; }
+  .nav-links { flex-wrap: nowrap; }
+  .nav-links a { text-decoration:none; color: var(--ink); font-size: 14px; font-weight: 500; position: relative; white-space: nowrap; }
   .nav-links a::after { content:""; position:absolute; left:0; bottom:-5px; height:1.5px; width:100%; background: var(--copper); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
   .nav-links a:hover { color: var(--copper-dark); }
   .nav-links a:hover::after { transform: scaleX(1); }
@@ -701,7 +702,66 @@
     .t-big { font-size: 58px; }
     .marquee { margin-bottom: 44px; }
   }
-  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } .reveal { opacity:1; transform:none; } .marquee-track { animation:none; } .tilt-card { transform:none !important; } }
+  /* ───────── Hero 3D (partículas Three.js) ───────── */
+  .hero-3d { position:absolute; inset:0; z-index:0; pointer-events:none; }
+  .hero-3d canvas { display:block; width:100%; height:100%; }
+
+  /* ───────── Acciones del resultado ───────── */
+  .result-actions { display:flex; gap:8px; margin: 0 0 14px; }
+  .result-actions .btn { flex:1; font-size: 12.5px; padding: 10px 8px; min-width:0; }
+  .result-actions .btn .i { width: 15px; height: 15px; }
+
+  /* ───────── Retomar tasación guardada ───────── */
+  .resume-strip {
+    display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%;
+    border:none; cursor:pointer; background: var(--beige); border-radius: 10px;
+    padding: 10px 14px; font: inherit; font-size: 13px; font-weight:600; color: var(--carbon);
+    margin-bottom: 12px; text-align:left; transition: background .2s ease;
+  }
+  .resume-strip:hover { background: var(--beige-2); }
+  .resume-strip em { font-style:normal; color: var(--copper-dark); white-space:nowrap; }
+
+  /* ───────── Calculadoras ───────── */
+  .tools-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .tool-card { background:#fff; border:1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; }
+  .tool-card h3 { display:flex; align-items:center; gap:9px; font-size: 20px; margin-bottom: 4px; }
+  .tool-card h3 .i { width: 21px; height: 21px; color: var(--copper-dark); }
+  .tool-card .hint { font-size: 13.5px; color: var(--muted); margin-bottom: 16px; }
+  .tool-rows { border:1px solid var(--line); border-radius: 12px; overflow:hidden; margin: 6px 0 12px; }
+  .tr-row { display:flex; justify-content:space-between; gap:12px; padding: 9px 14px; font-size: 13.5px; color: var(--muted); border-top:1px solid var(--beige-2); }
+  .tr-row:first-child { border-top:none; }
+  .tr-row b { color: var(--carbon); font-variant-numeric: tabular-nums; white-space:nowrap; }
+  .tool-total { display:flex; justify-content:space-between; align-items:center; background: var(--beige); border-radius: 12px; padding: 12px 16px; font-size: 14px; font-weight:600; gap: 12px; }
+  .tool-total b { font-family:'Fraunces',serif; font-size: 22px; color: var(--copper-dark); font-variant-numeric: tabular-nums; white-space:nowrap; }
+  .tool-note { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+
+  /* ───────── Tabla: buscador y orden ───────── */
+  .tbl-tools { display:flex; gap:10px; align-items:center; margin-bottom: 14px; flex-wrap:wrap; }
+  .tbl-tools input { max-width: 320px; }
+  .prices th.sortable { cursor: pointer; user-select:none; }
+  .prices th.sortable:hover { color:#fff; }
+
+  /* ───────── Informe imprimible ───────── */
+  #printReport { display:none; }
+  @media print {
+    body > *:not(#printReport) { display:none !important; }
+    body::before, body::after { display:none !important; content:none !important; }
+    body { background:#fff; padding:0; }
+    #printReport { display:block; color:#1c1a17; font-family: Georgia, 'Times New Roman', serif; font-size: 13px; line-height: 1.55; padding: 24px 8px; }
+    #printReport .pr-brand { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+    #printReport .pr-sub { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color:#7d766c; margin-bottom: 22px; }
+    #printReport h2 { font-size: 15px; margin: 20px 0 8px; border-bottom: 1.5px solid #1c1a17; padding-bottom: 5px; }
+    #printReport .pr-price { font-size: 32px; font-weight:700; margin: 4px 0 2px; }
+    #printReport .pr-row { display:flex; justify-content:space-between; gap:16px; padding: 5px 0; border-bottom: 1px solid #e7dfd1; }
+    #printReport .pr-note { font-size: 10.5px; color:#7d766c; margin-top: 22px; }
+  }
+
+  @media (max-width: 940px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .result-actions { flex-wrap: wrap; }
+    .result-actions .btn { flex: 1 1 45%; }
+  }
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } .reveal { opacity:1; transform:none; } .marquee-track { animation:none; } .tilt-card { transform:none !important; } .hero-3d { display:none; } }
 </style>
 </head>
 <body>
@@ -742,6 +802,11 @@
 <symbol id="i-houses" viewBox="0 0 24 24"><path d="M3 21V8l5-4.5L13 8v13M13 21v-8l4-3.5 4 3.5v8M3 21h18"/></symbol>
 <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 8h16v4H4zM6 12v8.5h12V12M12 8v12.5M12 8S10.5 3.5 8 3.5a2.25 2.25 0 0 0 0 4.5M12 8s1.5-4.5 4-4.5a2.25 2.25 0 0 1 0 4.5"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol>
+<symbol id="i-euro" viewBox="0 0 24 24"><path d="M17.5 5.8A7.3 7.3 0 1 0 17.5 18.2M4.5 10h9.5M4.5 14h8.5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.5 3.5v17h17"/><path d="M8 17v-4.5M12.5 17V9.5M17 17V6.5"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.9l7.6-4.2M8.2 13.1l7.6 4.2"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5A1.5 1.5 0 0 0 14 3.5H5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h3.5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5V15m0 0l-4.5-4.5M12 15l4.5-4.5M4 17.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-1.5"/></symbol>
 </defs></svg>
 
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -757,6 +822,7 @@
     <nav class="nav-links">
       <a href="#como-funciona">Cómo funciona</a>
       <a href="#precios">Precios en Asturias</a>
+      <a href="#calculadoras">Calculadoras</a>
       <a href="#opiniones">Opiniones</a>
       <a href="#faq">Preguntas</a>
       <a href="https://asesoriacastresana.com" target="_blank" rel="noopener" style="color:var(--copper-dark);font-weight:600">Nuestra web ↗</a>
@@ -769,6 +835,7 @@
 <div class="hero">
   <div class="orb orb-1" aria-hidden="true"></div>
   <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="hero-3d" id="hero3d" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Tasación online · 100% Asturias</span>
@@ -792,6 +859,10 @@
         <div class="progress"><i id="progressBar"></i></div>
       </div>
       <div class="wizard-body">
+
+        <button class="resume-strip" id="resumeStrip" hidden>
+          <span id="resumeText">Tienes una valoración guardada</span><em>Retomar →</em>
+        </button>
 
         <!-- Paso 1: tipo -->
         <div class="step on" data-step="1">
@@ -919,6 +990,12 @@
             <div class="rm">Tu vivienda<b id="resResumen">—</b></div>
           </div>
           <p class="result-note">Horquilla orientativa según precios de mercado de tu concejo. La cifra fina la da la visita de un asesor local — gratis.</p>
+
+          <div class="result-actions">
+            <button class="btn btn-ghost" id="btnPdf" title="Guardar o imprimir el informe en PDF"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Guardar PDF</button>
+            <button class="btn btn-ghost" id="btnCopy" title="Copiar el resumen al portapapeles"><svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>Copiar resumen</button>
+            <button class="btn btn-ghost" id="btnShare" title="Compartir esta valoración"><svg class="i" aria-hidden="true"><use href="#i-share"/></svg>Compartir</button>
+          </div>
 
           <div class="breakdown" id="breakdown">
             <div class="breakdown-head" id="breakdownToggle"><span class="bh"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg>¿Cómo hemos calculado tu precio?</span></div>
@@ -1073,9 +1150,13 @@
       <h2>Precio medio por concejo</h2>
       <p>Referencias orientativas de precio de venta (€/m²) que usa nuestro tasador. El valor fino depende de la zona, el estado y el momento — para eso está la visita.</p>
     </div>
+    <div class="tbl-tools">
+      <input type="text" id="tblSearch" placeholder="Busca tu concejo…" aria-label="Buscar concejo en la tabla" />
+      <span style="font-size:12.5px;color:var(--muted)">Pulsa «€/m² medio» para ordenar por precio</span>
+    </div>
     <div class="table-scroll">
       <table class="prices" id="pricesTable">
-        <thead><tr><th>Concejo</th><th>Zona</th><th>€/m² medio</th><th>Piso 90 m² (orientativo)</th></tr></thead>
+        <thead><tr><th>Concejo</th><th>Zona</th><th class="sortable" id="thPrecio" title="Ordenar por precio">€/m² medio ⇅</th><th>Piso 90 m² (orientativo)</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -1097,6 +1178,64 @@
       <div class="factor"><b><svg class="i ico" aria-hidden="true"><use href="#i-sun"/></svg>Orientación y luz</b>Con nuestro clima, una vivienda exterior y luminosa se paga — y se vende antes.</div>
       <div class="factor"><b><svg class="i ico" aria-hidden="true"><use href="#i-car"/></svg>Garaje y trastero</b>En Oviedo y Gijón centro, una plaza de garaje incluida puede añadir 8.000–20.000 € al conjunto.</div>
       <div class="factor"><b><svg class="i ico" aria-hidden="true"><use href="#i-mountain"/></svg>Vistas y entorno</b>Mar en el Oriente, montaña en los valles: el entorno asturiano añade una prima real al precio.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CALCULADORAS ═══════════ -->
+<section id="calculadoras">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Herramientas gratuitas</span>
+      <h2>Calcula los números antes de decidir</h2>
+      <p>Dos calculadoras con los impuestos reales de Asturias, al instante y sin registrarte — como el tasador.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card reveal">
+        <h3><svg class="i" aria-hidden="true"><use href="#i-euro"/></svg>Gastos e impuestos de compra</h3>
+        <p class="hint">Lo que pagarás de más sobre el precio al comprar en Asturias.</p>
+        <div class="two-col">
+          <div class="field">
+            <label class="f-label" for="gcPrecio">Precio de la vivienda (€)</label>
+            <input type="number" id="gcPrecio" value="150000" min="10000" max="5000000" step="5000" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label class="f-label" for="gcTipo">Tipo de compra</label>
+            <select id="gcTipo">
+              <option value="usada" selected>Segunda mano (ITP)</option>
+              <option value="nueva">Obra nueva (IVA + AJD)</option>
+            </select>
+          </div>
+        </div>
+        <div class="tool-rows" id="gcRows"></div>
+        <div class="tool-total"><span>Coste total aproximado</span><b id="gcTotal">—</b></div>
+        <p class="tool-note">ITP de Asturias por tramos: 8% hasta 300.000 €, 9% de 300.000 a 500.000 € y 10% en adelante. Obra nueva: IVA 10% + AJD 1,2%. Notaría, registro y gestoría estimados. Cálculo orientativo, no vinculante.</p>
+      </div>
+      <div class="tool-card reveal">
+        <h3><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Rentabilidad de alquiler</h3>
+        <p class="hint">¿Comprar para alquilar? Mira qué rentabilidad deja en tu zona.</p>
+        <div class="two-col">
+          <div class="field">
+            <label class="f-label" for="raPrecio">Precio de compra (€)</label>
+            <input type="number" id="raPrecio" value="120000" min="10000" max="5000000" step="5000" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label class="f-label" for="raRenta">Alquiler mensual (€)</label>
+            <input type="number" id="raRenta" value="650" min="100" max="10000" step="25" inputmode="numeric" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="f-label" for="raGastos">Gastos anuales: IBI, comunidad, seguro (€)</label>
+          <input type="number" id="raGastos" value="1200" min="0" max="50000" step="100" inputmode="numeric" />
+        </div>
+        <div class="tool-rows" id="raRows"></div>
+        <div class="tool-total"><span>Rentabilidad neta aproximada</span><b id="raTotal">—</b></div>
+        <p class="tool-note">Neta = (renta anual − gastos) ÷ (precio + ~11% de gastos de compra). No incluye IRPF ni periodos vacíos. Orientativa.</p>
+      </div>
+    </div>
+    <div class="tramites-cta" style="margin-top:26px">
+      <p>¿Bailan los números? Te los aterrizamos con tu caso real.<small>Impuestos, hipoteca y rentabilidad explicados por un asesor asturiano — gratis.</small></p>
+      <button class="btn btn-wa" id="calcWA"><svg class="i" aria-hidden="true"><use href="#i-whatsapp"/></svg>Consultar mis números</button>
     </div>
   </div>
 </section>
@@ -1451,6 +1590,20 @@
     </div>
   </div>
 </footer>
+
+<div id="printReport" aria-hidden="true">
+  <div class="pr-brand">Asesoría Castresana</div>
+  <div class="pr-sub">Inmobiliaria · Oviedo, Asturias · asesoriacastresana.com</div>
+  <h2>Valoración orientativa de vivienda</h2>
+  <div class="pr-price" id="prPrice">—</div>
+  <div id="prRange">—</div>
+  <h2>Datos de la vivienda</h2>
+  <div id="prDatos"></div>
+  <h2>Desglose del cálculo</h2>
+  <div id="prDesglose"></div>
+  <p class="pr-note" id="prFecha"></p>
+  <p class="pr-note">Horquilla orientativa de mercado basada en precios medios por concejo asturiano y en las características declaradas. No constituye tasación oficial a efectos hipotecarios (Orden ECO/805/2003). Para un informe profesional con comparables reales, gratuito y sin compromiso: WhatsApp +34 672 775 721 · asesoriacastresana@gmail.com</p>
+</div>
 
 <div class="sticky-cta" id="stickyCta">
   <a class="btn btn-copper" href="#tasador"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Tasar mi vivienda gratis</a>
@@ -1824,6 +1977,301 @@ const sticky = $("#stickyCta");
 new IntersectionObserver(entries => {
   sticky.style.display = entries[0].isIntersecting ? "none" : "";
 }, { threshold: .2 }).observe($("#tasador"));
+
+/* ═══════════════════════════════════════════════════════════
+   NIVEL 2 — utilidades y productividad
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Resumen en texto plano de la valoración actual ── */
+const TIPO_TXT   = { piso:"Piso", atico:"Ático", duplex:"Dúplex", casa:"Casa/Chalet", bajo:"Bajo", estudio:"Estudio" };
+const ESTADO_TXT = { reformar:"Para reformar", bueno:"Buen estado", reformado:"Reformado", nuevo:"Obra nueva/seminuevo" };
+function resumenTexto() {
+  if (!lastResult) return "";
+  const r = lastResult;
+  return [
+    `Valoración orientativa — Asesoría Castresana`,
+    `${TIPO_TXT[state.tipo]} · ${state.m2} m² · ${state.habs} hab. · ${state.banos} baño(s)`,
+    `${r.c.n}${state.zona ? " · " + state.zona : ""} · ${ESTADO_TXT[state.estado]}`,
+    `Estimación: ${fmt(r.est)} (horquilla ${fmt(r.min)} — ${fmt(r.max)})`,
+    `Precio medio de la zona: ${r.c.m2.toLocaleString("es-ES")} €/m²`,
+    enlaceTasacion()
+  ].join("\n");
+}
+
+/* ── Deep-link: la URL lleva la tasación codificada ── */
+function enlaceTasacion() {
+  const p = new URLSearchParams({ v:"1", t: state.tipo, c: state.concejo, m: state.m2, h: state.habs, b: state.banos,
+    p: state.planta, a: state.ascensor, e: state.estado, x: state.extras.join(".") });
+  if (state.zona) p.set("z", state.zona);
+  return location.origin + location.pathname + "#" + p.toString();
+}
+function applyState(s) {
+  Object.assign(state, s);
+  $$('[data-single="tipo"] .opt').forEach(o => o.classList.toggle("sel", o.dataset.val === state.tipo));
+  $$('[data-single="estado"] .opt').forEach(o => o.classList.toggle("sel", o.dataset.val === state.estado));
+  $("#plantaBlock").style.display = state.tipo === "casa" ? "none" : "grid";
+  sel.value = state.concejo; $("#zona").value = state.zona || "";
+  $("#m2").value = state.m2; $("#habs").value = state.habs; $("#banos").value = state.banos;
+  $("#planta").value = state.planta; $("#ascensor").value = state.ascensor; $("#motivo").value = state.motivo;
+  $$('[data-multi="extras"] .chip').forEach(c => c.classList.toggle("sel", state.extras.includes(c.dataset.val)));
+}
+function stateFromParams(h) {
+  const num = (k, d) => { const v = parseInt(h.get(k), 10); return Number.isFinite(v) ? v : d; };
+  const tipo = TIPO_MULT[h.get("t")] !== undefined ? h.get("t") : null;
+  const estado = ESTADO_MULT[h.get("e")] !== undefined ? h.get("e") : null;
+  const concejo = num("c", -1);
+  if (!tipo || !estado || concejo < 0 || concejo >= CONCEJOS.length) return null;
+  const extrasOk = ["exterior","terraza","garaje","trastero","vistas","calefaccion"];
+  return {
+    tipo, estado, concejo,
+    m2: Math.min(900, Math.max(20, num("m", 90))),
+    habs: ["1","2","3","4","5"].includes(h.get("h")) ? h.get("h") : "3",
+    banos: ["1","2","3"].includes(h.get("b")) ? h.get("b") : "1",
+    planta: ["bajo","1","2","3","4","5"].includes(h.get("p")) ? h.get("p") : "2",
+    ascensor: h.get("a") === "no" ? "no" : "si",
+    extras: (h.get("x") || "").split(".").filter(x => extrasOk.includes(x)),
+    zona: (h.get("z") || "").slice(0, 60), motivo: "curiosidad"
+  };
+}
+
+/* ── Hook tras cada cálculo: guardar, enlazar e informe ── */
+const computeResultBase = computeResult;
+computeResult = function () {
+  computeResultBase();
+  try { localStorage.setItem("tasacion", JSON.stringify({ state, ts: Date.now() })); } catch {}
+  try { history.replaceState(null, "", "#" + enlaceTasacion().split("#")[1]); } catch {}
+  fillPrintReport();
+};
+
+function fillPrintReport() {
+  if (!lastResult) return;
+  const r = lastResult;
+  $("#prPrice").textContent = fmt(r.est);
+  $("#prRange").textContent = `Horquilla estimada: ${fmt(r.min)} — ${fmt(r.max)}`;
+  const datos = [
+    ["Tipo", TIPO_TXT[state.tipo]], ["Concejo", r.c.n + (state.zona ? " · " + state.zona : "")],
+    ["Superficie construida", state.m2 + " m²"], ["Habitaciones / baños", state.habs + " / " + state.banos],
+    ["Estado", ESTADO_TXT[state.estado]],
+    ["Extras", state.extras.length ? state.extras.join(", ") : "ninguno"],
+    ["Precio medio de la zona", r.c.m2.toLocaleString("es-ES") + " €/m²"]
+  ];
+  $("#prDatos").innerHTML = datos.map(d => `<div class="pr-row"><span>${d[0]}</span><b>${d[1]}</b></div>`).join("");
+  $("#prDesglose").innerHTML = $("#breakdownBody").innerHTML.replaceAll("bd-row", "pr-row");
+  $("#prFecha").textContent = "Informe generado el " + new Date().toLocaleDateString("es-ES", { day:"numeric", month:"long", year:"numeric" }) + " en la herramienta online de Asesoría Castresana.";
+}
+
+$("#btnPdf").addEventListener("click", () => { fillPrintReport(); window.print(); });
+
+function flashBtn(btn, txt) {
+  const orig = btn.innerHTML;
+  btn.innerHTML = "✓ " + txt;
+  setTimeout(() => { btn.innerHTML = orig; }, 1800);
+}
+async function copiar(texto) {
+  try { await navigator.clipboard.writeText(texto); return true; }
+  catch {
+    const ta = document.createElement("textarea");
+    ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); return true; } catch { return false; }
+    finally { ta.remove(); }
+  }
+}
+$("#btnCopy").addEventListener("click", async e => {
+  const btn = e.currentTarget;
+  if (await copiar(resumenTexto())) flashBtn(btn, "Copiado");
+});
+$("#btnShare").addEventListener("click", async e => {
+  const btn = e.currentTarget;
+  const data = { title: "Valoración de mi vivienda — Asesoría Castresana", text: resumenTexto().split("\n").slice(0, 4).join("\n"), url: enlaceTasacion() };
+  if (navigator.share) { try { await navigator.share(data); } catch {} }
+  else if (await copiar(enlaceTasacion())) flashBtn(btn, "Enlace copiado");
+});
+
+/* ── Restaurar: enlace compartido o tasación guardada ── */
+(function restaurar() {
+  try {
+    const h = new URLSearchParams(location.hash.slice(1));
+    if (h.get("v") === "1") {
+      const s = stateFromParams(h);
+      if (s) { applyState(s); show(6); return; }
+    }
+    const saved = JSON.parse(localStorage.getItem("tasacion") || "null");
+    if (saved && saved.state && saved.state.tipo && saved.state.estado && saved.state.concejo !== null) {
+      const c = CONCEJOS[saved.state.concejo];
+      if (!c) return;
+      $("#resumeText").textContent = `Tienes una valoración guardada: ${TIPO_TXT[saved.state.tipo] || ""} en ${c.n}`;
+      const strip = $("#resumeStrip");
+      strip.hidden = false;
+      strip.addEventListener("click", () => { applyState(saved.state); strip.hidden = true; show(6); });
+    }
+  } catch {}
+})();
+$("#restart").addEventListener("click", () => {
+  try { localStorage.removeItem("tasacion"); history.replaceState(null, "", location.pathname); } catch {}
+});
+
+/* ── Calculadora: gastos e impuestos de compra (Asturias) ── */
+const fmtPct = n => n.toLocaleString("es-ES", { maximumFractionDigits: 1 }) + "%";
+function itpAsturias(precio) {
+  const t1 = Math.min(precio, 300000) * 0.08;
+  const t2 = precio > 300000 ? (Math.min(precio, 500000) - 300000) * 0.09 : 0;
+  const t3 = precio > 500000 ? (precio - 500000) * 0.10 : 0;
+  return t1 + t2 + t3;
+}
+function calcGastos() {
+  const precio = Math.max(0, +$("#gcPrecio").value || 0);
+  const nueva = $("#gcTipo").value === "nueva";
+  if (precio < 10000) { $("#gcRows").innerHTML = ""; $("#gcTotal").textContent = "—"; return; }
+  const rows = [];
+  let impuestos = 0;
+  if (nueva) {
+    const iva = precio * 0.10, ajd = precio * 0.012;
+    impuestos = iva + ajd;
+    rows.push(["IVA (10%)", fmt(Math.round(iva))], ["AJD (1,2%)", fmt(Math.round(ajd))]);
+  } else {
+    impuestos = itpAsturias(precio);
+    rows.push([`ITP Asturias (tramos 8–10%)`, fmt(Math.round(impuestos))]);
+  }
+  const notaria  = Math.min(1500, Math.max(650, precio * 0.0025));
+  const registro = Math.min(800,  Math.max(400, precio * 0.0015));
+  const gestoria = 350;
+  rows.push(["Notaría (est.)", fmt(Math.round(notaria))], ["Registro (est.)", fmt(Math.round(registro))], ["Gestoría (est.)", fmt(gestoria)]);
+  const gastos = impuestos + notaria + registro + gestoria;
+  rows.push([`Total gastos (${fmtPct(gastos / precio * 100)} del precio)`, fmt(Math.round(gastos))]);
+  $("#gcRows").innerHTML = rows.map(r => `<div class="tr-row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("");
+  $("#gcTotal").textContent = fmt(Math.round(precio + gastos));
+}
+["gcPrecio", "gcTipo"].forEach(id => $("#" + id).addEventListener("input", calcGastos));
+calcGastos();
+
+/* ── Calculadora: rentabilidad de alquiler ── */
+function calcRenta() {
+  const precio = Math.max(0, +$("#raPrecio").value || 0);
+  const renta  = Math.max(0, +$("#raRenta").value || 0);
+  const gastos = Math.max(0, +$("#raGastos").value || 0);
+  if (precio < 10000 || renta < 50) { $("#raRows").innerHTML = ""; $("#raTotal").textContent = "—"; return; }
+  const anual = renta * 12;
+  const bruta = anual / precio * 100;
+  const inversionTotal = precio * 1.11;
+  const neta = Math.max(0, (anual - gastos) / inversionTotal * 100);
+  const valor = bruta >= 7 ? "alta para Asturias" : bruta >= 5 ? "en la media asturiana" : "ajustada — revisa el precio";
+  $("#raRows").innerHTML = [
+    ["Renta anual", fmt(anual)],
+    ["Rentabilidad bruta", fmtPct(bruta) + " · " + valor],
+    ["Inversión total con gastos (~11%)", fmt(Math.round(inversionTotal))]
+  ].map(r => `<div class="tr-row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("");
+  $("#raTotal").textContent = fmtPct(neta);
+}
+["raPrecio", "raRenta", "raGastos"].forEach(id => $("#" + id).addEventListener("input", calcRenta));
+calcRenta();
+
+$("#calcWA")?.addEventListener("click", () => {
+  const msg = "🧮 Hola, vengo de las calculadoras de la página de tasación (asesoriacastresana.com).\n\nQuiero revisar mis números:\n\n• Operación: (comprar / vender / invertir)\n• Precio aproximado: \n• Zona: ";
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+});
+
+/* ── Tabla de precios: buscador y orden ── */
+const tblBody = $("#pricesTable tbody");
+$("#tblSearch").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  [...tblBody.rows].forEach(tr => {
+    tr.style.display = tr.cells[0].textContent.toLowerCase().includes(q) || tr.cells[1].textContent.toLowerCase().includes(q) ? "" : "none";
+  });
+});
+let sortAsc = true;
+$("#thPrecio").addEventListener("click", () => {
+  sortAsc = !sortAsc;
+  [...tblBody.rows]
+    .sort((a, b) => {
+      const va = parseInt(a.cells[2].textContent.replace(/\D/g, ""), 10) || 0;
+      const vb = parseInt(b.cells[2].textContent.replace(/\D/g, ""), 10) || 0;
+      return sortAsc ? va - vb : vb - va;
+    })
+    .forEach(tr => tblBody.appendChild(tr));
+});
+</script>
+
+<!-- ═══════════ Hero 3D: polvo de cobre (Three.js) ═══════════ -->
+<script type="module">
+(async () => {
+  try {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const host = document.getElementById("hero3d");
+    if (!host) return;
+    const probe = document.createElement("canvas");
+    if (!(probe.getContext("webgl2") || probe.getContext("webgl"))) return;
+
+    const THREE = await import("./three.module.min.js");
+
+    const movil = innerWidth < 768;
+    const N = movil ? 420 : 1100;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, Math.max(1, host.clientWidth) / Math.max(1, host.clientHeight), .1, 100);
+    camera.position.z = 14;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, movil ? 1.5 : 2));
+    renderer.setSize(host.clientWidth, host.clientHeight);
+    host.appendChild(renderer.domElement);
+
+    // sprite circular suave (cobre -> transparente), generado en canvas
+    const c = document.createElement("canvas"); c.width = c.height = 64;
+    const g = c.getContext("2d");
+    const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, "rgba(150,98,47,.95)");
+    grad.addColorStop(.45, "rgba(176,118,63,.45)");
+    grad.addColorStop(1, "rgba(176,118,63,0)");
+    g.fillStyle = grad; g.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+
+    const pos = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      pos[i * 3]     = (Math.random() - .5) * 36;
+      pos[i * 3 + 1] = (Math.random() - .5) * 18;
+      pos[i * 3 + 2] = (Math.random() - .5) * 14;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const points = new THREE.Points(geo, new THREE.PointsMaterial({
+      map: tex, size: .28, transparent: true, opacity: .5,
+      depthWrite: false, sizeAttenuation: true
+    }));
+    scene.add(points);
+
+    let tx = 0, ty = 0, running = true, raf = 0;
+    addEventListener("pointermove", e => {
+      tx = e.clientX / innerWidth - .5;
+      ty = e.clientY / innerHeight - .5;
+    }, { passive: true });
+
+    const clock = new THREE.Clock();
+    function frame() {
+      if (!running) return;
+      raf = requestAnimationFrame(frame);
+      const t = clock.getElapsedTime();
+      points.rotation.y = t * .03;
+      points.position.y = Math.sin(t * .4) * .35;
+      camera.position.x += (tx * 1.4 - camera.position.x) * .04;
+      camera.position.y += (-ty * .9 - camera.position.y) * .04;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    function setRunning(on) {
+      if (on === running) return;
+      running = on;
+      if (on) frame(); else cancelAnimationFrame(raf);
+    }
+    frame();
+
+    new IntersectionObserver(en => setRunning(en[0].isIntersecting && !document.hidden), { threshold: 0 }).observe(host);
+    document.addEventListener("visibilitychange", () => setRunning(!document.hidden));
+    addEventListener("resize", () => {
+      camera.aspect = Math.max(1, host.clientWidth) / Math.max(1, host.clientHeight);
+      camera.updateProjectionMatrix();
+      renderer.setSize(host.clientWidth, host.clientHeight);
+    }, { passive: true });
+  } catch (e) { /* sin 3D: quedan los orbes como fondo */ }
+})();
 </script>
 </body>
 </html>
