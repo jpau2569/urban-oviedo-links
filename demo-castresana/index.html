@@ -672,9 +672,17 @@
   .topbar .i { width: 14px; height: 14px; vertical-align: -.15em; margin-right: 4px; color: var(--copper-light); }
 
   /* ───────── Comparador antes/después ───────── */
-  .ba-wrap { position:relative; border-radius: 20px; overflow:hidden; box-shadow: var(--shadow); border:1px solid var(--line); background:#fff; user-select:none; touch-action: pan-y; }
-  .ba-wrap svg { display:block; width:100%; height:auto; }
-  .ba-after { position:absolute; inset:0; clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+  .ba-tabs { display:flex; gap: 8px; margin-bottom: 12px; }
+  .ba-tab {
+    border: 1.5px solid var(--line); background:#fff; border-radius: 999px;
+    padding: 8px 18px; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--ink);
+    cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease;
+  }
+  .ba-tab:hover { border-color: var(--copper-light); }
+  .ba-tab.sel { border-color: var(--copper); background: rgba(176,118,63,.09); color: var(--copper-dark); }
+  .ba-wrap { position:relative; border-radius: 20px; overflow:hidden; box-shadow: var(--shadow); border:1px solid var(--line); background: var(--beige-2); user-select:none; touch-action: pan-y; aspect-ratio: 682 / 511; }
+  .ba-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .ba-after { position:absolute; inset:0; clip-path: inset(0 0 0 var(--pos, 50%)); }
   .ba-handle {
     position:absolute; top:0; bottom:0; left: var(--pos, 50%); width: 4px; margin-left:-2px;
     background:#fff; box-shadow: 0 0 12px rgba(0,0,0,.35); z-index:3; pointer-events:none;
@@ -1334,62 +1342,22 @@
           <li><span class="ia-num">2</span><span><b>Tasación afinada con visión IA</b> — el estado real que muestran las fotos (suelos, carpinterías, cocina, baños) ajusta la horquilla del tasador online.</span></li>
           <li><span class="ia-num">3</span><span><b>Antes / después de cada estancia</b> — cocina, salón, habitación y baño reformados con IA fotorrealista, para que veas el potencial de tu casa (y su precio con reforma).</span></li>
         </ul>
+        <div class="ba-tabs" role="tablist" aria-label="Elegir estancia">
+          <button class="ba-tab sel" data-room="cocina" role="tab" aria-selected="true">Cocina</button>
+          <button class="ba-tab" data-room="salon" role="tab" aria-selected="false">Salón</button>
+          <button class="ba-tab" data-room="bano" role="tab" aria-selected="false">Baño</button>
+        </div>
         <div class="ba-wrap" id="baWrap" style="--pos:50%">
-          <svg viewBox="0 0 600 400" role="img" aria-label="Cocina antes de la reforma">
-            <rect width="600" height="300" fill="#cfc7a8"/>
-            <g opacity=".5" stroke="#b7ae8e" stroke-width="2">
-              <line x1="0" y1="60" x2="600" y2="60"/><line x1="0" y1="120" x2="600" y2="120"/><line x1="0" y1="180" x2="600" y2="180"/>
-              <line x1="100" y1="0" x2="100" y2="300"/><line x1="200" y1="0" x2="200" y2="300"/><line x1="300" y1="0" x2="300" y2="300"/><line x1="500" y1="0" x2="500" y2="300"/>
-            </g>
-            <rect y="300" width="600" height="100" fill="#a89274"/>
-            <g stroke="#93805f" stroke-width="2"><line x1="0" y1="330" x2="600" y2="330"/><line x1="0" y1="365" x2="600" y2="365"/><line x1="150" y1="300" x2="170" y2="400"/><line x1="380" y1="300" x2="400" y2="400"/></g>
-            <rect x="380" y="55" width="160" height="140" fill="#9fb0af" stroke="#7d766c" stroke-width="8"/>
-            <line x1="460" y1="55" x2="460" y2="195" stroke="#7d766c" stroke-width="6"/>
-            <rect x="30" y="60" width="220" height="85" rx="4" fill="#8a6742" stroke="#6e4f30" stroke-width="3"/>
-            <line x1="140" y1="60" x2="140" y2="145" stroke="#6e4f30" stroke-width="3"/>
-            <circle cx="125" cy="102" r="4" fill="#5a3f24"/><circle cx="155" cy="102" r="4" fill="#5a3f24"/>
-            <rect x="20" y="225" width="340" height="18" fill="#9c9c94"/>
-            <rect x="20" y="243" width="340" height="80" fill="#8a6742" stroke="#6e4f30" stroke-width="3"/>
-            <line x1="130" y1="243" x2="130" y2="323" stroke="#6e4f30" stroke-width="3"/>
-            <line x1="240" y1="243" x2="240" y2="323" stroke="#6e4f30" stroke-width="3"/>
-            <circle cx="75" cy="280" r="5" fill="#5a3f24"/><circle cx="185" cy="280" r="5" fill="#5a3f24"/><circle cx="295" cy="280" r="5" fill="#5a3f24"/>
-            <rect x="150" y="200" width="70" height="25" fill="#77726a"/>
-            <path d="M60 40 q10 14 0 26" stroke="#b0a888" stroke-width="3" fill="none"/>
-            <path d="M540 230 l18 40 M548 230 l14 44" stroke="#93805f" stroke-width="3"/>
-          </svg>
+          <img class="ba-img" id="baBefore" src="img/reforma-cocina-antes.webp" alt="Cocina antes de la reforma" width="682" height="511" decoding="async" />
           <div class="ba-after" aria-hidden="true">
-            <svg viewBox="0 0 600 400">
-              <rect width="600" height="300" fill="#f7f3ec"/>
-              <g opacity=".7" stroke="#e8e2d6" stroke-width="2">
-                <line x1="0" y1="150" x2="600" y2="150" /><line x1="0" y1="195" x2="600" y2="195"/>
-                <line x1="80" y1="130" x2="80" y2="225"/><line x1="180" y1="130" x2="180" y2="225"/><line x1="280" y1="130" x2="280" y2="225"/>
-              </g>
-              <rect y="300" width="600" height="100" fill="#e0d2ba"/>
-              <g stroke="#cbb894" stroke-width="2"><line x1="0" y1="335" x2="600" y2="335"/><line x1="200" y1="300" x2="215" y2="400"/><line x1="430" y1="300" x2="445" y2="400"/></g>
-              <rect x="370" y="40" width="190" height="170" fill="#bcd9e8" stroke="#fff" stroke-width="10"/>
-              <path d="M370 180 q40 -30 80 -10 q40 18 110 -8 l0 48 l-190 0 z" fill="#9ec89b" opacity=".8"/>
-              <circle cx="520" cy="80" r="22" fill="#ffe9c4"/>
-              <rect x="30" y="55" width="230" height="70" rx="6" fill="#ffffff" stroke="#e2dacb" stroke-width="2"/>
-              <line x1="145" y1="55" x2="145" y2="125" stroke="#eee7da" stroke-width="3"/>
-              <rect x="128" y="112" width="16" height="4" rx="2" fill="#b0763f"/><rect x="152" y="112" width="16" height="4" rx="2" fill="#b0763f"/>
-              <rect x="20" y="222" width="340" height="16" rx="3" fill="#d9c9ae"/>
-              <rect x="20" y="238" width="340" height="85" rx="4" fill="#ffffff" stroke="#e2dacb" stroke-width="2"/>
-              <line x1="130" y1="238" x2="130" y2="323" stroke="#eee7da" stroke-width="3"/>
-              <line x1="240" y1="238" x2="240" y2="323" stroke="#eee7da" stroke-width="3"/>
-              <rect x="60" y="250" width="24" height="5" rx="2.5" fill="#b0763f"/><rect x="170" y="250" width="24" height="5" rx="2.5" fill="#b0763f"/><rect x="280" y="250" width="24" height="5" rx="2.5" fill="#b0763f"/>
-              <rect x="150" y="190" width="70" height="32" rx="4" fill="#2a2723"/>
-              <circle cx="320" cy="70" r="3" fill="#b0763f"/><line x1="320" y1="0" x2="320" y2="67" stroke="#b0763f" stroke-width="3"/>
-              <path d="M300 88 a20 20 0 0 0 40 0 z" fill="#c9976f"/>
-              <path d="M560 250 q-14 -34 8 -52 q4 30 -8 52" fill="#7fae7c"/>
-              <rect x="548" y="248" width="26" height="30" rx="4" fill="#c9976f"/>
-            </svg>
+            <img class="ba-img" id="baAfter" src="img/reforma-cocina-despues.webp" alt="" width="682" height="511" decoding="async" />
           </div>
           <span class="ba-tag before">Antes</span>
           <span class="ba-tag after">Después</span>
           <div class="ba-handle" aria-hidden="true"></div>
-          <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Comparador antes y después de la reforma" />
+          <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" step="0.1" aria-label="Comparador antes y después de la reforma" />
         </div>
-        <p class="ba-caption">Desliza para comparar — ilustración del tipo de resultado que recibirás con tus propias fotos.</p>
+        <p class="ba-caption">Desliza para comparar — imágenes de ejemplo generadas con IA, como las que recibirás con tus propias fotos.</p>
       </div>
       <div class="ia-form">
         <h3><svg class="i" aria-hidden="true" style="width:19px;height:19px;color:var(--copper-dark);vertical-align:-.2em"><use href="#i-camera"/></svg> Sube las fotos de tu vivienda</h3>
@@ -1916,7 +1884,48 @@ $("#reformWA")?.addEventListener("click", () => {
 
 /* ═══════════ Estudio IA: comparador antes/después ═══════════ */
 const baWrap = $("#baWrap");
-$("#baRange").addEventListener("input", e => baWrap.style.setProperty("--pos", e.target.value + "%"));
+const baRange = $("#baRange");
+let baUserTouched = false;
+baRange.addEventListener("input", e => {
+  baUserTouched = true;
+  baWrap.style.setProperty("--pos", e.target.value + "%");
+});
+
+/* Pestañas de estancia (las imágenes se precargan para cambio instantáneo) */
+const BA_ROOMS = { cocina: "Cocina", salon: "Salón", bano: "Baño" };
+Object.keys(BA_ROOMS).forEach(r => ["antes", "despues"].forEach(s => {
+  const im = new Image(); im.src = `img/reforma-${r}-${s}.webp`;
+}));
+$$(".ba-tab").forEach(tab => tab.addEventListener("click", () => {
+  const room = tab.dataset.room;
+  $$(".ba-tab").forEach(t => { t.classList.toggle("sel", t === tab); t.setAttribute("aria-selected", t === tab); });
+  $("#baBefore").src = `img/reforma-${room}-antes.webp`;
+  $("#baBefore").alt = `${BA_ROOMS[room]} antes de la reforma`;
+  $("#baAfter").src = `img/reforma-${room}-despues.webp`;
+  baRange.value = 50;
+  baWrap.style.setProperty("--pos", "50%");
+}));
+
+/* Barrido automático la primera vez que el comparador entra en pantalla */
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  new IntersectionObserver((en, io) => {
+    if (!en[0].isIntersecting) return;
+    io.disconnect();
+    const t0 = performance.now(), dur = 2400;
+    const ease = p => .5 - Math.cos(p * Math.PI) / 2;
+    (function sweep(t) {
+      if (baUserTouched) return;
+      const p = Math.min(1, (t - t0) / dur);
+      let pos;
+      if (p < .4)       pos = 50 + ease(p / .4) * 28;          // 50 → 78
+      else if (p < .8)  pos = 78 - ease((p - .4) / .4) * 50;   // 78 → 28
+      else              pos = 28 + ease((p - .8) / .2) * 22;   // 28 → 50
+      baWrap.style.setProperty("--pos", pos + "%");
+      baRange.value = pos;
+      if (p < 1) requestAnimationFrame(sweep);
+    })(t0);
+  }, { threshold: .5 }).observe(baWrap);
+}
 
 /* ═══════════ Estudio IA: subida de fotos ═══════════ */
 const iaFotos = {}; // room -> filename
